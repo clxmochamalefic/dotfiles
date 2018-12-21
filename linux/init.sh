@@ -19,9 +19,10 @@ LANG=C xdg-user-dirs-gtk-update
 $pw | sudo apt-get install vim -y
 
 # clone neobundle
-# TODO: Replace Dein.vim
 mkdir -p ~/.vim/bundle
 git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+
+mkdir -p ~/.vim/colors
 
 # clone and apply my .vimrc
 cp ../vimrc/.vimrc $PARENT_DIR/vim/.vimrc
