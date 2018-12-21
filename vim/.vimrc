@@ -16,6 +16,8 @@ elseif has('unix')
     set undodir=$HOME/tmp/undofiles
     set backupdir=$HOME/tmp/backupfiles
 elseif has('mac')
+    set undodir=$HOME/tmp/undofiles
+    set backupdir=$HOME/tmp/backupfiles
 endif
 
 
