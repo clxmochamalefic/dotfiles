@@ -363,6 +363,11 @@ function! LightlineMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
+"--------------------------------------------------
+" vimfiler
+let g:vimfiler_as_default_explorer = 1      " replace default vim file explorer
+let g:vimfiler_safe_mode_by_default = 0     " vim startup with safemode disabled on vimfiler
+
 
 "--------------------------------------------------
 " MSYS PATH
