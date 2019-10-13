@@ -171,61 +171,48 @@ augroup END
 " tags
 
 "---------------------------------------------------------------------------
-" NeoBundle
+" dein.vim
 filetype off
 
-  if has('vim_starting')
-    set nocompatible
-    set runtimepath+=~/.vim/bundle/neobundle.vim
-  endif
+if &compatible
+  set nocompatible
+endif
 
-  call neobundle#begin(expand('~/.vim/bundle'))
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+call dein#begin(expand('~/.vim/dein'))
 
-    " NeoBundle & NeoComplete
-    NeoBundle 'Shougo/neobundle.vim'
-    NeoBundle 'Shougo/neocomplete.git'
+    " dein & NeoComplete
+call dein#add('Shougo/dein.vim')
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+
+call dein#add('Shougo/neocomplete.git')
+call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/neosnippet')
 
     " Vim Basic
-    NeoBundle 'itchyny/lightline.vim'
-    NeoBundle 'thinca/vim-quickrun'
-    NeoBundle 'thinca/vim-fontzoom'
+call dein#add('itchyny/lightline.vim')
+call dein#add('thinca/vim-quickrun')
+call dein#add('thinca/vim-fontzoom')
 
     " Unite.vim
-    NeoBundle 'Shougo/unite.vim'
-    NeoBundle 'Shougo/vimfiler'
-    NeoBundle 'Shougo/neomru.vim'
-"    NeoBundle 'Shougo/vimshell.vim'
-"    NeoBundle 'Shougo/vimproc.vim', {
-"\       'build' : {
-"\           'windows' : 'tools\\update-dll-mingw',
-"\           'cygwin' : 'make -f make_cygwin.mak',
-"\           'mac' : 'make',
-"\           'linux' : 'make',
-"\           'unix' : 'gmake',
-"\       },
-"\   }
+call dein#add('Shougo/denite.vim')
+call dein#add('Shougo/vimfiler')
+call dein#add('Shougo/neomru.vim')
 
     " search module
-    NeoBundle 'actionshrimp/vim-xpath'
+call dein#add('actionshrimp/vim-xpath')
 
     " syntax highlight
-    NeoBundle 'PProvost/vim-ps1'
-    NeoBundle 'gregsexton/MatchTag'
-    NeoBundle 'leafgarland/typescript-vim'
-    NeoBundle 'Quramy/tsuquyomi'
-    NeoBundle 'elzr/vim-json'
-
-    " git relation
-    NeoBundle 'tpope/vim-fugitive'
-    NeoBundle 'kmnk/vim-unite-giti'
+call dein#add('PProvost/vim-ps1')
+call dein#add('gregsexton/MatchTag')
+call dein#add('leafgarland/typescript-vim')
+call dein#add('Quramy/tsuquyomi')
+call dein#add('elzr/vim-json')
 
     " colorschemes
-    NeoBundle 'jonathanfilip/vim-lucius'
+call dein#add('jonathanfilip/vim-lucius')
 
-    " vimshell
-    NeoBundle 'Shougo/vimshell.vim'
-
-  call neobundle#end()
+call dein#end()
 
 " ----------------------------------------
 " Config of NeoComplete
