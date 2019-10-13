@@ -67,14 +67,6 @@ endif
 " Display
 
 "+++++++++++++++
-" colorscheme:
-colorscheme lucius
-LuciusDark
-if has('unix')
-  set t_Co=256
-endif
-
-"+++++++++++++++
 " color and decoration
 set showcmd         "
 set laststatus=2    "
@@ -377,3 +369,11 @@ endfunction
 "--------------------------------------------------
 " Separated configs
 runtime! .uniterc
+
+"+++++++++++++++
+" colorscheme:
+colorscheme lucius
+LuciusDark
+if has('unix')
+  set t_Co=256
+endif
