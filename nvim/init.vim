@@ -72,8 +72,10 @@ endif
 "+++++++++++++++
 " python設定
 if has('win32')
-let g:python3_host_prog = 'C:\Users\akakura-n\AppData\Local\Programs\Python\Python38-32\python.EXE'
+  let g:python3_host_prog = 'C:\Users\akakura-n\AppData\Local\Programs\Python\Python38-32\python.EXE'
 elseif has('mac')
+  let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
+  let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
 endif
 
 set number
@@ -159,10 +161,9 @@ nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
 set termguicolors
 
 " use clipboard ------------------------------------------------------------------
-set clipboard=unnamed
-
 set nopaste
 noremap! <S-Insert> <C-R>+
+set clipboard=unnamed
 
 " Dein ---------------------------------------------------------------------------
 " dein.vimのディレクトリ

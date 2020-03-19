@@ -140,10 +140,8 @@ cnoremap :ub Unite buffer
 cnoremap ;ub Unite buffer
 
 " must install: Shougo/vimfiler.vim
-cnoremap :vf VimFiler
-cnoremap ;vf VimFiler
-cnoremap :vfe VimFilerExplorer
-cnoremap ;vfe VimFilerExplorer
+cnoremap :nt NERDTreeToggle
+cnoremap ;nt NERDTreeToggle
 
 " today date and time
 nmap <F6> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
@@ -170,6 +168,8 @@ if &compatible
   set nocompatible
 endif
 
+let g:python3_host_prog = '/usr/bin/python3'
+
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 call dein#begin(expand('~/.vim/dein'))
 
@@ -188,8 +188,9 @@ call dein#add('thinca/vim-fontzoom')
 
     " Unite.vim
 call dein#add('Shougo/denite.vim')
-call dein#add('Shougo/vimfiler')
 call dein#add('Shougo/neomru.vim')
+
+call dein#add('scrooloose/nerdtree')
 
     " search module
 call dein#add('actionshrimp/vim-xpath')
