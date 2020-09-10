@@ -1,5 +1,5 @@
 if &compatible
-  set nocompatible
+    set nocompatible
 endif
 
 " reset augroup
@@ -176,7 +176,7 @@ let s:initvim_path = fnamemodify(expand('<sfile>'), ':h')
 if !isdirectory(s:dein_repo_dir)
     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
 endif
-execute 'set runtimepath^=' . s:dein_repo_dir
+execute 'set runtimepath+=' . s:dein_repo_dir
 
 if dein#load_state(s:dein_dir)
     call dein#begin(s:dein_dir)
@@ -203,3 +203,4 @@ filetype plugin indent on
 syntax enable
 
 
+call map(dein#check_clean(), "delete(v:val, 'rf')")
