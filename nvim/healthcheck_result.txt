@@ -1,0 +1,52 @@
+
+health#denite#check
+========================================================================
+## denite.nvim
+  - OK: has("python3") was successful
+  - OK: Python 3.6.1+ was successful
+  - OK: Require msgpack 1.0.0+ was successful
+
+health#nvim#check
+========================================================================
+## Configuration
+  - OK: no issues found
+
+## Performance
+  - OK: Build type: RelWithDebInfo
+
+## Remote Plugins
+  - OK: Up to date
+
+health#provider#check
+========================================================================
+## Clipboard (optional)
+  - OK: Clipboard tool found: win32yank
+
+## Python 2 provider (optional)
+  - WARNING: No Python executable found that can `import neovim`. Using the first available executable for diagnostics.
+  - ERROR: Python provider error:
+    - ADVICE:
+      - provider/pythonx: Could not load Python 2:
+          python2 not found in search path or not executable.
+          python2.7 not found in search path or not executable.
+          python2.6 not found in search path or not executable.
+          C:\Users\akakura\AppData\Local\Programs\Python\Python39\python.EXE is Python 3.9 and cannot provide Python 2.
+  - INFO: Executable: Not found
+
+## Python 3 provider (optional)
+  - INFO: Using: g:python3_host_prog = "C:\Users\akakura\AppData\Local\Programs\Python\Python39\python.exe"
+  - INFO: Executable: C:\Users\akakura\AppData\Local\Programs\Python\Python39\python.exe
+  - INFO: Python version: 3.9.0
+  - INFO: pynvim version: 0.4.2
+  - OK: Latest pynvim is installed.
+
+## Ruby provider (optional)
+  - WARNING: `ruby` and `gem` must be in $PATH.
+    - ADVICE:
+      - Install Ruby and verify that `ruby` and `gem` commands work.
+
+## Node.js provider (optional)
+  - WARNING: `node` and `npm` (or `yarn`) must be in $PATH.
+    - ADVICE:
+      - Install Node.js and verify that `node` and `npm` (or `yarn`) commands work.
+
