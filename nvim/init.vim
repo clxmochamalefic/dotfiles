@@ -15,8 +15,8 @@ set fileencoding=utf-8
 "---------------------------------------------------------------------------
 "" UndoFiles
 if has('win32')
-	set undodir=$HOME/apps/vim/undofiles
-	set backupdir=$HOME/apps/vim/backupfiles
+	set undodir=$HOME/undofiles
+	set backupdir=$HOME/backupfiles
 elseif has('unix')
 	set undodir=$HOME/tmp/undofiles
 	set backupdir=$HOME/tmp/backupfiles
@@ -62,7 +62,8 @@ set mousehide
 "---------------------------------------------------------------------------
 " Use Default Shell
 if has('win32')
-"    set shell=PowerShell
+    "set shell=PowerShell
+    set shell=bash
 elseif has('mac')
     "  set guifont=Osaka－等幅:h14
 elseif has('xfontset')
@@ -72,7 +73,7 @@ endif
 "+++++++++++++++
 " python設定
 if has('win32')
-  let g:python3_host_prog = 'C:\Users\akakura-n\AppData\Local\Programs\Python\Python38-32\python.EXE'
+  let g:python3_host_prog = 'C:\Users\akakura\AppData\Local\Programs\Python\Python39\python.exe'
 elseif has('mac')
   let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
   let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
@@ -87,13 +88,45 @@ autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
 set cursorline
 
 "+++++++++++++++
+" 空白文字、タブ文字を表示
+set list listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
+"+++++++++++++++
+" ctags検索
+set tags=tags;$HOME
+
+" tagsファイルが存在する場所に対してctagsを毎回生成するようにする
+function! s:execute_ctags() abort
+    " 探すタグファイル名
+    let tag_name = 'tags'
+    " ディレクトリを遡り、タグファイルを探し、パス取得
+    let tags_path = findfile(tag_name, '.;')
+    " タグファイルパスが見つからなかった場合
+    if tags_path ==# ''
+        return
+    endif
+
+    " タグファイルのディレクトリパスを取得
+    " `:p:h`の部分は、:h filename-modifiersで確認
+    let tags_dirpath = fnamemodify(tags_path, ':p:h')
+    " 見つかったタグファイルのディレクトリに移動して、ctagsをバックグラウンド実行（エラー出力破棄）
+    execute 'silent !cd' tags_dirpath '&& ctags -R -f' tag_name '2> /dev/null &'
+endfunction
+
+" 自動実行
+augroup ctags
+    autocmd!
+    autocmd BufWritePost * call s:execute_ctags()
+augroup END
+
+"+++++++++++++++
 " font:
 if has('win32')
     " Windows用
     " Migu 2M こそ至高フォント。
     "
     " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    set guifont=Migu\ 2M:h10
+    "set guifont=Migu\ 2M:h10
     "set guifont=MS_Mincho:h12:cSHIFTJIS
     " 行間隔の設定
     set linespace=1
@@ -147,18 +180,23 @@ cnoremap :db Denite buffer
 cnoremap ;db Denite buffer
 
 " must install:
+" Shougo/Unite.vim
+cnoremap :ub Unite buffer
+cnoremap ;ub Unite buffer
+
+" must install:
+" Shougo/Unite.vim
+cnoremap :uf Unite file
+cnoremap ;uf Unite file
+
+" must install:
 " Shougo/vimfiler.vim
-cnoremap :vf VimFiler
-cnoremap ;vf VimFiler
-cnoremap :vfe VimFilerExplorer
-cnoremap ;vfe VimFilerExplorer
+cnoremap :nt NERDTree
+cnoremap ;nt NERDTree
 
 " today date and time
 nmap <F6> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
 nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
-
-" use colorschema
-set termguicolors
 
 " use clipboard ------------------------------------------------------------------
 set nopaste
@@ -199,8 +237,19 @@ if dein#check_install()
     call dein#install()
 endif
 
+" use colorschema
+set termguicolors
+colorscheme lucius
+LuciusDark
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+
+let s:removed_plugins = dein#check_clean()
+if len(s:removed_plugins) > 0
+    call map(s:removed_plugins, "delete(v:val, 'rf')")
+    call dein#recache_runtimepath()
+endif
+
 filetype plugin indent on
 syntax enable
-
-
-call map(dein#check_clean(), "delete(v:val, 'rf')")

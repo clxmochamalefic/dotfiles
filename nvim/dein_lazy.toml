@@ -1,13 +1,13 @@
 [[plugins]]
-repo = 'Shougo/deoplete.nvim'
-on_i = 1
-hook_source = '''
-  let g:deoplete#enable_at_startup = 1
-  let g:deoplete#enable_smart_case=1
-  inoremap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
-'''
-
-[[plugins]]
 repo = 'zchee/deoplete-jedi'
 depends = ['deoplete.nvim']
 on_ft = ['python']
+
+[[plugins]]
+repo = 'padawan-php/deoplete-padawan'
+depends = ['deoplete.nvim']
+on_ft = ['php']
+
+[[plugins]]
+repo = 'preservim/tagbar'
+
