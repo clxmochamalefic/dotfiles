@@ -168,44 +168,48 @@ if &compatible
   set nocompatible
 endif
 
-let g:python3_host_prog = '/usr/bin/python3'
+"+++++++++++++++
+" python設定
+if has('win32')
+  let g:python3_host_prog = 'C:\Users\akakura-n\AppData\Local\Programs\Python\Python38-32\python.EXE'
+elseif has('mac')
+  let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
+  let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
+endif
 
-set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
-call dein#begin(expand('~/.vim/dein'))
+" Dein ---------------------------------------------------------------------------
+" dein.vimのディレクトリ
+let s:dein_dir = expand('~/.cache/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-    " dein & NeoComplete
-call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+let s:initvim_path = $HOME . '/.config/nvim'
 
-call dein#add('Shougo/neocomplete.git')
-call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/neosnippet')
+" なければgit clone
+if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+endif
+execute 'set runtimepath^=' . s:dein_repo_dir
 
-    " Vim Basic
-call dein#add('itchyny/lightline.vim')
-call dein#add('thinca/vim-quickrun')
-call dein#add('thinca/vim-fontzoom')
+if dein#load_state(s:dein_dir)
+    call dein#begin(s:dein_dir)
 
-    " Unite.vim
-call dein#add('Shougo/denite.vim')
-call dein#add('Shougo/neomru.vim')
+    " 管理するプラグインを記述したファイル
+    let s:toml = s:initvim_path . '/dein.toml'
+    let s:lazy_toml = s:initvim_path . '/dein_lazy.toml'
+    call dein#load_toml(s:toml, {'lazy': 0})
+    call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-call dein#add('scrooloose/nerdtree')
+    call dein#end()
+    call dein#save_state()
+endif
+" プラグインの追加・削除やtomlファイルの設定を変更した後は
+" 適宜 call dein#update や call dein#clear_state を呼んでください。
+" そもそもキャッシュしなくて良いならload_state/save_stateを呼ばないようにしてください。
 
-    " search module
-call dein#add('actionshrimp/vim-xpath')
-
-    " syntax highlight
-call dein#add('PProvost/vim-ps1')
-call dein#add('gregsexton/MatchTag')
-call dein#add('leafgarland/typescript-vim')
-call dein#add('Quramy/tsuquyomi')
-call dein#add('elzr/vim-json')
-
-    " colorschemes
-call dein#add('jonathanfilip/vim-lucius')
-
-call dein#end()
+" その他インストールしていないものはこちらに入れる
+if dein#check_install()
+    call dein#install()
+endif
 
 " ----------------------------------------
 " Config of NeoComplete
@@ -373,8 +377,6 @@ runtime! .uniterc
 
 "+++++++++++++++
 " colorscheme:
-colorscheme lucius
-LuciusDark
 if has('unix')
   set t_Co=256
 endif
