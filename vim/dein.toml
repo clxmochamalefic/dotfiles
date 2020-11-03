@@ -14,14 +14,28 @@ on_ft = 'toml'
 
 [[plugins]]
 repo = 'roxma/nvim-yarp'
+on_if = '!has("nvim")'
 
 [[plugins]]
 repo = 'roxma/vim-hug-neovim-rpc'
+on_if = '!has("nvim")'
 
 [[plugins]]
 repo = 'Shougo/denite.nvim'
 depends = ['nvim-yarp', 'roxma/vim-hug-neovim-rpc']
 hook_add = '''
+" must install:
+" Shougo/Denite.vim
+  cnoremap :db Denite buffer
+  cnoremap ;db Denite buffer
+  
+  cnoremap :df Denite file/rec
+  cnoremap ;df Denite file/rec
+  
+  cnoremap :dh Denite help
+  cnoremap ;dh Denite help
+
+
   "Define mappings
   autocmd FileType denite call s:denite_my_settings()
   function! s:denite_my_settings() abort
@@ -96,15 +110,21 @@ hook_source = '''
 '''
 
 [[plugins]]
+repo = 'Shougo/deoplete-nextword'
+
+[[plugins]]
 repo = 'Shougo/defx.nvim'
 hook_add = '''
   call defx#custom#option('_', {
-      \ 'columns': 'indent:git:icons:filename',
-      \ 'show_ignored_files': 1,
-      \ })
+    \ 'columns': 'indent:git:icons:filename',
+    \ 'show_ignored_files': 1,
+    \ })
   
   let g:defx_icons_enable_syntax_highlight = 1
   let g:defx_icons_column_length = 2
+
+  cnoremap :dx Defx
+  cnoremap ;dx Defx
   
   autocmd FileType defx call s:defx_my_settings()
       function! s:defx_my_settings() abort
@@ -182,4 +202,10 @@ hook_add = '''
   nnoremap <silent><C-o> :<C-u>Deol -split=floating<CR>
   " 【ESC】 ターミナルモードから抜ける
   tnoremap <ESC>   <C-\><C-n>
+'''
+
+[[plugins]]
+repo = "twitvim/twitvim"
+hook_add = '''
+    
 '''

@@ -141,18 +141,6 @@ nnoremap ; :
 " tag jump
 nnoremap <C-J> <C-]>
 
-" must install:
-" Shougo/Unite.vim
-cnoremap :db Denite buffer
-cnoremap ;db Denite buffer
-
-" must install:
-" Shougo/vimfiler.vim
-cnoremap :vf VimFiler
-cnoremap ;vf VimFiler
-cnoremap :vfe VimFilerExplorer
-cnoremap ;vfe VimFilerExplorer
-
 " today date and time
 nmap <F6> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
 nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
