@@ -1,3 +1,5 @@
+let mapleader = ","
+
 if &compatible
     set nocompatible
 endif
@@ -25,6 +27,8 @@ elseif has('mac')
 	set backupdir=$HOME/tmp/backupfiles
 endif
 
+" Windows でもパスの区切り文字を / にする
+set shellslash
 
 "---------------------------------------------------------------------------
 "" Input
@@ -63,6 +67,7 @@ set mousehide
 " Use Default Shell
 if has('win32')
 "    set shell=PowerShell
+"    set shell=bash
 elseif has('mac')
     "  set guifont=Osaka－等幅:h14
 elseif has('xfontset')
@@ -72,7 +77,7 @@ endif
 "+++++++++++++++
 " python設定
 if has('win32')
-  let g:python3_host_prog = 'C:\Users\akakura-n\AppData\Local\Programs\Python\Python38-32\python.EXE'
+    let g:python3_host_prog = $HOME.'/AppData/Local/Programs/Python/Python39/python.exe'
 elseif has('mac')
   let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
   let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
