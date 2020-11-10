@@ -17,8 +17,8 @@ set fileencoding=utf-8
 "---------------------------------------------------------------------------
 "" UndoFiles
 if has('win32')
-	set undodir=$HOME/apps/vim/undofiles
-	set backupdir=$HOME/apps/vim/backupfiles
+	set undodir=$HOME/undofiles
+	set backupdir=$HOME/backupfiles
 elseif has('unix')
 	set undodir=$HOME/tmp/undofiles
 	set backupdir=$HOME/tmp/backupfiles
@@ -191,6 +191,9 @@ endif
 if dein#check_install()
     call dein#install()
 endif
+
+" ctags
+set tags=./tags;$HOME
 
 filetype plugin indent on
 syntax enable

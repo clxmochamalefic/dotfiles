@@ -1,16 +1,12 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
-repo = 'osyo-manga/vim-precious'
-depends = ['context_filetype.vim']
-
 [[plugins]] # カーソル位置のコンテキストのftを判定するライブラリ
 repo = 'Shougo/context_filetype.vim'
 
-[[plugins]] # toml syntax
-repo = 'cespare/vim-toml'
-on_ft = 'toml'
+[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
 
 [[plugins]]
 repo = 'roxma/nvim-yarp'
@@ -52,12 +48,6 @@ hook_add = '''
     nnoremap <silent><buffer><expr> <Space>
     \ denite#do_map('toggle_select').'j'
   endfunction
-'''
-
-[[plugins]]
-repo = 'scrooloose/nerdtree'
-hook_add = '''
-  let g:NERDTreeShowHidden = 1
 '''
 
 [[plugins]] # カラースキーマ
@@ -123,13 +113,18 @@ hook_add = '''
   let g:defx_icons_enable_syntax_highlight = 1
   let g:defx_icons_column_length = 2
 
-  cnoremap :dx Defx
-  cnoremap ;dx Defx
+  cnoremap :dx Defx ~
+  cnoremap ;dx Defx ~
 
-  cnoremap :xd :<C-u>Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
-  cnoremap :xc :<C-u>Defx<CR>
+  cnoremap :dxs Defx -split=vertical -winwidth=30 -direction=topleft -buffer-name='side-bar'
+  cnoremap ;dxs Defx -split=vertical -winwidth=30 -direction=topleft -buffer-name='side-bar'
 
-  nnoremap <Leader>df :Defx -split=vertical -winwidth=30 -direction=topleft<CR>
+  cnoremap :dxh Defx -split=vertical -winwidth=30 -direction=topleft -buffer-name='side-bar' ~ 
+  cnoremap ;dxh Defx -split=vertical -winwidth=30 -direction=topleft -buffer-name='side-bar' ~ 
+
+"  cnoremap :xd :<C-u>Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
+"  cnoremap :xc :<C-u>Defx<CR>
+
   
   autocmd FileType defx call s:defx_my_settings()
       function! s:defx_my_settings() abort
@@ -153,11 +148,11 @@ hook_add = '''
         " 【p】 ファイルを貼り付ける
         nnoremap <silent><buffer><expr> p
         \ defx#do_action('paste')
-        " 【n】 新しいファイルを作成する
-        nnoremap <silent><buffer><expr> n
+        " 【b】 新しいファイルを作成する
+        nnoremap <silent><buffer><expr> b
         \ defx#do_action('new_file')
-        " 【N】 新しいディレクトリを作成する
-        nnoremap <silent><buffer><expr> N
+        " 【B】 新しいディレクトリを作成する
+        nnoremap <silent><buffer><expr> B
         \ defx#do_action('new_directory')
         " 【d】 ファイルを削除する
         nnoremap <silent><buffer><expr> d
@@ -168,6 +163,12 @@ hook_add = '''
         " 【t】 ツリーを表示/非表示する
         nnoremap <silent><buffer><expr> t
         \ defx#do_action('open_or_close_tree')
+        " 【l】 ツリーを表示する
+        nnoremap <silent><buffer><expr> l
+        \ defx#do_action('open_tree')
+        " 【h】 ツリーを非表示する
+        nnoremap <silent><buffer><expr> h
+        \ defx#do_action('close_tree')
         " 【x】 ファイルを実行する
         nnoremap <silent><buffer><expr> x
         \ defx#do_action('execute_system')
@@ -177,17 +178,12 @@ hook_add = '''
         nnoremap <silent><buffer><expr> .
         " 【.】 隠しファイルを表示/非表示する
         \ defx#do_action('toggle_ignored_files')
-        nnoremap <silent><buffer><expr> ..
-        " 【..】 親ディレクトリに移動する
+        " 【<BS>】 親ディレクトリに移動する
+        nnoremap <silent><buffer><expr> <BS>
         \ defx#do_action('cd', ['..'])
         nnoremap <silent><buffer><expr> ~
         " 【~】 ホームディレクトリに移動する
         \ defx#do_action('cd')
-        " 【ESC】 / 【q】 defx.nvimを終了する
-        nnoremap <silent><buffer><expr> <Esc> 
-        \ defx#do_action('quit')
-        nnoremap <silent><buffer><expr> q
-        \ defx#do_action('quit')
         " 【j】 カーソルを下に移動する
         nnoremap <silent><buffer><expr> j
         \ line('.') == line('$') ? 'gg' : 'j'
@@ -197,11 +193,14 @@ hook_add = '''
         " 【cd】 Neovim上のカレントディレクトリを変更する
         nnoremap <silent><buffer><expr> cd
         \ defx#do_action('change_vim_cwd')
+        " nop
+        nnoremap <silent><buffer><expr> q
+        \ defx#do_action('')
   endfunction
 '''
 
 [[plugins]]
-repo = "shougo/deol.nvim"
+repo = "Shougo/deol.nvim"
 hook_add = '''
   " 【Ctrl + o】 float windowでターミナルを表示
   nnoremap <silent><C-o> :<C-u>Deol -split=floating<CR>
@@ -210,7 +209,13 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = "twitvim/twitvim"
-hook_add = '''
-    
-'''
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'szw/vim-tags'
