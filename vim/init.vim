@@ -44,6 +44,9 @@ set expandtab
 "" tab
 set backspace=indent,eol,start
 
+set list
+set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
 "---------------------------------------------------------------------------
 "" mouse
 "
@@ -67,7 +70,9 @@ set mousehide
 " Use Default Shell
 if has('win32')
 "    set shell=PowerShell
-"    set shell=bash
+  set shell=bash
+  set shellcmdflag=-c
+  set shellquote="
 elseif has('mac')
     "  set guifont=Osaka－等幅:h14
 elseif has('xfontset')

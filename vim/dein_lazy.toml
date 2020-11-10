@@ -6,3 +6,7 @@ on_ft = ['python']
 [[plugins]] # toml syntax
 repo = 'cespare/vim-toml'
 on_ft = 'toml'
+
+[[plugins]] # toml syntax
+repo = 'blueyed/smarty.vim'
+on_ft = 'smarty.php'
