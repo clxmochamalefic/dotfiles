@@ -103,6 +103,9 @@ hook_source = '''
 repo = 'Shougo/deoplete-nextword'
 
 [[plugins]]
+repo = 't9md/vim-choosewin'
+
+[[plugins]]
 repo = 'Shougo/defx.nvim'
 hook_add = '''
   call defx#custom#option('_', {
@@ -128,8 +131,10 @@ hook_add = '''
   
   autocmd FileType defx call s:defx_my_settings()
       function! s:defx_my_settings() abort
+        nnoremap <silent><buffer><expr><nowait> w
+        \ defx#do_action('open', 'choose')
         nnoremap <silent><buffer><expr> <CR>
-       \ defx#do_action('drop')
+        \ defx#do_action('open', 'choose')
         " 【o】 ファイルを開く
         nnoremap <silent><buffer><expr> o
         \ defx#do_action('drop')
@@ -219,3 +224,8 @@ repo = 'tpope/vim-fugitive'
 
 [[plugins]]
 repo = 'szw/vim-tags'
+
+#[[plugins]]
+#repo = 'nvim-treesitter/nvim-treesitter'
+#on_if = 'has("nvim")'
+#merged = '0'

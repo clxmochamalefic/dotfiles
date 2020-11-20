@@ -103,7 +103,7 @@ if has('win32')
     " Migu 2M こそ至高フォント。
     "
     " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    set guifont=Migu\ 2M:h10
+    set guifont=Migu\ 2M\ for\ Powerline:h10
     "set guifont=MS_Mincho:h12:cSHIFTJIS
     " 行間隔の設定
     set linespace=1
@@ -205,3 +205,15 @@ syntax enable
 
 
 call map(dein#check_clean(), "delete(v:val, 'rf')")
+
+" XML / HTML の閉じタグ自動入力
+augroup MyXML
+  autocmd!
+  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+augroup END
+
+" 閉じかっこの自動入力
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap [<Enter> []<Left><CR><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
