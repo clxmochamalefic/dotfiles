@@ -25,8 +25,8 @@ hook_add = '''
   cnoremap :db Denite buffer
   cnoremap ;db Denite buffer
   
-  cnoremap :df Denite file/rec
-  cnoremap ;df Denite file/rec
+  cnoremap :df Denite file
+  cnoremap ;df Denite file
   
   cnoremap :dh Denite help
   cnoremap ;dh Denite help
@@ -77,6 +77,7 @@ repo = 'vim-airline/vim-airline-themes'
 
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
+#build = 'make'
 hook_post_update = '''
   if dein#util#_is_windows()
       let cmd = 'tools\\update-dll-mingw'
