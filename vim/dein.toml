@@ -105,6 +105,10 @@ repo = 'Shougo/deoplete-nextword'
 
 [[plugins]]
 repo = 't9md/vim-choosewin'
+hook_add = '''
+  " invoke with '-'
+  nmap  -  <Plug>(choosewin)
+'''
 
 [[plugins]]
 repo = 'Shougo/defx.nvim'
@@ -230,3 +234,6 @@ repo = 'szw/vim-tags'
 #repo = 'nvim-treesitter/nvim-treesitter'
 #on_if = 'has("nvim")'
 #merged = '0'
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'

@@ -44,4 +44,16 @@ on_ft = 'toml'
 
 [[plugins]] # toml syntax
 repo = 'blueyed/smarty.vim'
-on_ft = 'smarty.php'
+on_ft = ['smarty', 'php']
+
+[[plugins]]
+repo = 'leafgarland/typescript-vim'
+on_ft = ['ts']
+
+[[plugins]]
+repo = 'peitalin/vim-jsx-typescript'
+on_ft = ['tsx']
+
+[[plugins]]
+repo = 'posva/vim-vue'
+on_ft = 'vue'
