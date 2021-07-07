@@ -17,8 +17,8 @@ set fileencoding=utf-8
 "---------------------------------------------------------------------------
 "" UndoFiles
 if has('win32')
-	set undodir=$HOME/undofiles
-	set backupdir=$HOME/backupfiles
+	set undodir=$HOME/tmp/undofiles
+	set backupdir=$HOME/tmp/backupfiles
 elseif has('unix')
 	set undodir=$HOME/tmp/undofiles
 	set backupdir=$HOME/tmp/backupfiles
@@ -103,7 +103,7 @@ if has('win32')
     " Migu 2M こそ至高フォント。
     "
     " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    set guifont=Migu\ 2M\ for\ Powerline:h10
+    set guifont=Migu\ 2M:h10
     "set guifont=MS_Mincho:h12:cSHIFTJIS
     " 行間隔の設定
     set linespace=1
