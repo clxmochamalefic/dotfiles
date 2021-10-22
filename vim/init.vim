@@ -16,16 +16,17 @@ set fileencoding=utf-8
 
 "---------------------------------------------------------------------------
 "" UndoFiles
-if has('win32')
-	set undodir=$HOME/tmp/undofiles
-	set backupdir=$HOME/tmp/backupfiles
-elseif has('unix')
-	set undodir=$HOME/tmp/undofiles
-	set backupdir=$HOME/tmp/backupfiles
-elseif has('mac')
-	set undodir=$HOME/tmp/undofiles
-	set backupdir=$HOME/tmp/backupfiles
+let s:home_tmp_dir = expand($HOME . '/tmp')
+
+" ~/tmp 以降のディレクトリがない場合は新規作成
+if !isdirectory(s:home_tmp_dir)
+    execute '!mkdir ' . s:home_tmp_dir
+    execute '!mkdir ' . expand(s:home_tmp_dir . '/undofiles')
+    execute '!mkdir ' . expand(s:home_tmp_dir . '/backupfiles')
 endif
+
+exe 'set undodir='   . expand(s:home_tmp_dir . '/undofiles')
+exe 'set backupdir=' . expand(s:home_tmp_dir . '/backupfiles')
 
 " Windows でもパスの区切り文字を / にする
 set shellslash
@@ -103,7 +104,7 @@ if has('win32')
     " Migu 2M こそ至高フォント。
     "
     " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    set guifont=Migu\ 2M:h10
+    set guifont=Migu\ 2M:h12
     "set guifont=MS_Mincho:h12:cSHIFTJIS
     " 行間隔の設定
     set linespace=1
@@ -112,7 +113,7 @@ if has('win32')
         set ambiwidth=auto
     endif
 elseif has('mac')
-    set guifont=Migu\ 2M:h10
+    set guifont=Migu\ 2M:h12
 elseif has('xfontset')
     " UNIX用 (xfontsetを使用)
     set guifontset=a14,r14,k14
