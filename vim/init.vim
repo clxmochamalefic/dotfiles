@@ -74,10 +74,6 @@ if has('win32')
   set shell=bash
   set shellcmdflag=-c
   set shellquote="
-elseif has('mac')
-    "  set guifont=Osaka－等幅:h14
-elseif has('xfontset')
-    " UNIX用 (xfontsetを使用)
 endif
 
 "+++++++++++++++

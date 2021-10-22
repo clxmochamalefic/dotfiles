@@ -51,13 +51,10 @@ hook_add = '''
 '''
 
 [[plugins]] # カラースキーマ
-repo = 'jonathanfilip/vim-lucius'
+repo = 'cocopon/iceberg.vim'
 hook_add = '''
   set background=dark
-  " colorscheme 設定は source 後に行う必要があるので VimEnter で行う。
-  " 但し Colorscheme イベントの発生が抑制されないよう nented を付ける。
-  "  au MyAutoCmd VimEnter * nested colorscheme hybrid
-    colorscheme lucius
+  colorscheme iceberg
 '''
 
 [[plugins]]
