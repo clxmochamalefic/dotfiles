@@ -88,17 +88,17 @@ hook_post_update = '''
       let g:dein#plugin.build = cmd
 '''
 
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-on_i = 1
-hook_source = '''
-  let g:deoplete#enable_at_startup = 1
-  call deoplete#custom#option('enable_smart_case', 1)
-  inoremap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
-'''
-
-[[plugins]]
-repo = 'Shougo/deoplete-nextword'
+# [[plugins]]
+# repo = 'Shougo/deoplete.nvim'
+# on_i = 1
+# hook_source = '''
+#   let g:deoplete#enable_at_startup = 1
+#   call deoplete#custom#option('enable_smart_case', 1)
+#   inoremap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
+# '''
+# 
+# [[plugins]]
+# repo = 'Shougo/deoplete-nextword'
 
 [[plugins]]
 repo = 't9md/vim-choosewin'
@@ -255,5 +255,3 @@ repo = 'szw/vim-tags'
 #on_if = 'has("nvim")'
 #merged = '0'
 
-[[plugins]]
-repo = 'neoclide/coc.nvim'

@@ -1,42 +1,180 @@
-[[plugins]]  # 自動補完
-repo = 'davidhalter/jedi-vim'
-on_ft = 'python'
+[[plugins]]
+repo = 'Shougo/ddc.vim'
 on_event = 'InsertEnter'
 hook_source = '''
-  " Ctrl + N で候補を表示
-  let g:jedi#completions_command = ""
+  inoremap <silent><expr> <TAB>
+       \ pumvisible() ? '<C-n>' :
+       \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+       \ '<TAB>' : ddc#manual_complete()
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-  " .を打つだけで候補を表示しない
-  let g:jedi#popup_on_dot = 1
+  call ddc#custom#patch_global('sources', ['nvim-lsp', 'around', 'vsnip', 'file'])
+  call ddc#custom#patch_global('sourceOptions', {
+       \ '_': {
+         \   'matchers': ['matcher_head'],
+         \   'sorters': ['sorter_rank'],
+         \ },
+         \ 'around': {'mark': 'A'},
+         \ 'file': {
+         \   'mark': 'F',
+         \   'isVolatile': v:true,
+         \   'forceCompletionPattern': '\S/\S*',
+         \ },
+         \ 'nvim-lsp': {
+         \ 'mark': 'LSP',
+         \ 'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+         \ },
+       \ })
 
-  " 関数の引数を表示
-  let g:jedi#show_call_signatures = 1
+  call ddc#custom#patch_global('sourceParams', {
+       \ 'around': {'maxSize': 500},
+       \ 'file': {'smartCase': v:true},
+       \ })
 
-  " 引数を表示するまでの時間(ms)
-  let g:jedi#show_call_signatures_delay = 100
+  call ddc#custom#patch_filetype(
+     \ ['ps1', 'dosbatch', 'autohotkey', 'registry'], {
+     \ 'sourceOptions': {
+     \   'file': {
+     \     'forceCompletionPattern': '\S\\\S*',
+     \   },
+     \ },
+     \ 'sourceParams': {
+     \   'file': {
+     \     'mode': 'win32',
+     \   },
+     \ }})
 
-  " 補完機能を有効化
-  let g:jedi#smart_auto_mappings = 1
-
-  " 別windowでhelpを表示しない
-  augroup my_group
-    au FileType python setlocal completeopt-=preview
-  augroup END
+  call ddc#enable()
 '''
 
 [[plugins]]
-repo = 'zchee/deoplete-jedi'
-depends = ['deoplete.nvim']
-on_ft = ['python']
-on_event = 'InsertEnter'
-hook_add = '''
-  let g:deoplete#sources#jedi#python_path = $PYENV_ROOT.'/versions/neovim3/bin/python'
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'LumaKernel/ddc-file'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+on_event = 'BufEnter'
+hook_source = '''
+  lua << EOF
+    local nvim_lsp = require('lspconfig')
+    local on_attach = function (client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+   
+    local opts = { noremap=true, silent=true }
+     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+     buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+     buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+     buf_set_keymap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+     buf_set_keymap('n', 'gx', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+     buf_set_keymap('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+     buf_set_keymap('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  end
+
+  require'lspconfig'.tsserver.setup{}
+  require'lspconfig'.solargraph.setup{}
+
+  require'lspinstall'.setup()
+  local servers = require'lspinstall'.installed_servers()
+  for _, server in pairs(servers) do
+    require'lspconfig'[server].setup{}
+  end
+EOF
 '''
 
-#[[plugins]]
-#repo  = 'phpactor/phpactor'
-#on_ft = ['php']
-#build = 'composer install'
+[[plugins]]
+repo = 'kabouzeid/nvim-lspinstall'
+on_source = 'nvim-lspconfig'
+hook_source = '''
+  lua require'lspinstall'.setup()
+'''
+
+[[plugins]]
+repo = 'matsui54/ddc-nvim-lsp-doc'
+on_source = 'ddc.vim'
+hook_source = '''
+  let g:ddc_nvim_lsp_doc_config = {
+       \ 'documentation': {
+       \   'enable': v:true,
+       \   'border': 'single',
+       \   'maxWidth': 60,
+       \   'maxHeight': 30,
+       \ },
+       \ 'signature': {
+       \   'maxHeight': 5,
+       \ },
+       \ }
+  call ddc_nvim_lsp_doc#enable()
+'''
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+on_source = 'ddc.vim'
+
+# [[plugins]]  # 自動補完
+# repo = 'davidhalter/jedi-vim'
+# on_ft = 'python'
+# on_event = 'InsertEnter'
+# hook_source = '''
+#   " Ctrl + N で候補を表示
+#   let g:jedi#completions_command = ""
+# 
+#   " .を打つだけで候補を表示しない
+#   let g:jedi#popup_on_dot = 1
+# 
+#   " 関数の引数を表示
+#   let g:jedi#show_call_signatures = 1
+# 
+#   " 引数を表示するまでの時間(ms)
+#   let g:jedi#show_call_signatures_delay = 100
+# 
+#   " 補完機能を有効化
+#   let g:jedi#smart_auto_mappings = 1
+# 
+#   " 別windowでhelpを表示しない
+#   augroup my_group
+#     au FileType python setlocal completeopt-=preview
+#   augroup END
+# '''
+
+# [[plugins]]
+# repo = 'zchee/deoplete-jedi'
+# depends = ['deoplete.nvim']
+# on_ft = ['python']
+# on_event = 'InsertEnter'
+# hook_add = '''
+#   let g:deoplete#sources#jedi#python_path = $PYENV_ROOT.'/versions/neovim3/bin/python'
+# '''
+
+# [[plugins]]
+# repo  = 'phpactor/phpactor'
+# on_ft = ['php']
+# build = 'composer install'
 
 [[plugins]] # toml syntax
 repo = 'cespare/vim-toml'
