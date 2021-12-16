@@ -269,16 +269,13 @@ hook_source = '''
   call ddc#custom#patch_global('sourceOptions', {
         \ '_': {
         \   'matchers': ['matcher_head'],
-        \   'sorters': ['sorter_rank']},
-        \ },
+        \   'sorters': ['sorter_rank']
+        \  },
+        \ 'around': {'mark': 'A'},
         \ 'nvim-lsp': {
         \   'mark': 'lsp',
-        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
-        \ })
-  
-  " Change source options
-  call ddc#custom#patch_global('sourceOptions', {
-        \ 'around': {'mark': 'A'},
+        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+        \ },
         \ })
   call ddc#custom#patch_global('sourceParams', {
         \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
@@ -325,7 +322,7 @@ hook_add = '''
 
 [[plugins]]
 repo = 'Shougo/ddc-around'
-on_source = 'ddc.vim'
+#on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-matcher_head'
@@ -341,22 +338,7 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-nvim-lsp'
-on_source = 'ddc.vim'
-hook_add = '''
-  call ddc#custom#patch_global('sources', ['nvim-lsp'])
-  call ddc#custom#patch_global('sourceOptions', {
-        \ '_': { 'matchers': ['matcher_head'] },
-        \ 'nvim-lsp': {
-        \   'mark': 'lsp',
-        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
-        \ })
-  
-  " Use Customized labels
-  call ddc#custom#patch_global('sourceParams', {
-        \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
-        \ })
-'''
-
+#on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip-integ'
