@@ -261,7 +261,7 @@ hook_source = '''
   " Customize global settings
   " Use around source.
   " https://github.com/Shougo/ddc-around
-  call ddc#custom#patch_global('sources', ['around'])
+  call ddc#custom#patch_global('sources', ['nvim-lsp', 'around'])
   
   " Use matcher_head and sorter_rank.
   " https://github.com/Shougo/ddc-matcher_head
@@ -270,6 +270,10 @@ hook_source = '''
         \ '_': {
         \   'matchers': ['matcher_head'],
         \   'sorters': ['sorter_rank']},
+        \ },
+        \ 'nvim-lsp': {
+        \   'mark': 'lsp',
+        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
         \ })
   
   " Change source options
@@ -277,6 +281,7 @@ hook_source = '''
         \ 'around': {'mark': 'A'},
         \ })
   call ddc#custom#patch_global('sourceParams', {
+        \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
         \ 'around': {'maxSize': 500},
         \ })
   
@@ -337,6 +342,21 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'Shougo/ddc-nvim-lsp'
 on_source = 'ddc.vim'
+hook_add = '''
+  call ddc#custom#patch_global('sources', ['nvim-lsp'])
+  call ddc#custom#patch_global('sourceOptions', {
+        \ '_': { 'matchers': ['matcher_head'] },
+        \ 'nvim-lsp': {
+        \   'mark': 'lsp',
+        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
+        \ })
+  
+  " Use Customized labels
+  call ddc#custom#patch_global('sourceParams', {
+        \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
+        \ })
+'''
+
 
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip-integ'
@@ -349,40 +369,114 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_event = 'BufEnter'
-hook_source = '''
-  lua << EOF
-    local nvim_lsp = require('lspconfig')
-    local on_attach = function (client, bufnr)
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-   
-    local opts = { noremap=true, silent=true }
-     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-     buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-     buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-     buf_set_keymap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-     buf_set_keymap('n', 'gx', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-     buf_set_keymap('n', 'g[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-     buf_set_keymap('n', 'g]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  end
-
-  require'lspconfig'.tsserver.setup{}
-  require'lspconfig'.solargraph.setup{}
-
-  require'lspinstall'.setup()
-  local servers = require'lspinstall'.installed_servers()
-  for _, server in pairs(servers) do
-    require'lspconfig'[server].setup{}
-  end
-EOF
-'''
+# hook_source = '''
+# lua << EOF
+# local nvim_lsp = require('lspconfig')
+# local on_attach = function (client, bufnr)
+#     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+#     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+# 
+# require'lspconfig'.tsserver.setup{}
+# require'lspconfig'.solargraph.setup{}
+# 
+# require'lspinstall'.setup()
+# local servers = require'lspinstall'.installed_servers()
+# for _, server in pairs(servers) do
+#     require'lspconfig'[server].setup{}
+# end
+# EOF
+# '''
 
 [[plugins]]
-repo = 'kabouzeid/nvim-lspinstall'
+repo = 'williamboman/nvim-lsp-installer'
 on_source = 'nvim-lspconfig'
 hook_source = '''
-  lua require'lspinstall'.setup()
+lua << EOF
+local lsp_installer = require("nvim-lsp-installer")
+
+-- lsp_installer setting
+lsp_installer.settings({
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗"
+        }
+    }
+})
+
+local servers = {
+	"tsserver",
+	"solargraph",
+	"omnisharp",
+	"dockerls",
+	"eslint",
+	"jsonls",
+	"kotlin-language-server",
+	"intelephense",
+	"powershell_es",
+	"sqlls",
+	"lemminx",
+	"yamlls",
+	"html",
+	"cssls",
+}
+
+-- Register a handler that will be called for all installed servers.
+-- Alternatively, you may also register handlers on specific server instances instead (see example below).
+lsp_installer.on_server_ready(function(server)
+	-- Specify the default options which we'll use for pyright and solargraph
+	-- Note: These are automatically setup from nvim-lspconfig.
+        -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+	local default_opts = {
+		on_attach = on_attach,
+		capabilities = capabilities,
+	}
+
+	-- Now we'll create a server_opts table where we'll specify our custom LSP server configuration
+	local server_opts = {
+		["efm"] = function()
+			default_opts.cmd = {
+				vim.fn.stdpath("data") .. "/lsp_servers/efm/efm-langserver",
+				"-c",
+				"/Users/Oli/.config/efm-langserver/config.yaml",
+			}
+			default_opts.flags = {
+				debounce_text_changes = 150,
+			}
+			default_opts.filetypes = {
+				"css",
+				"html",
+				"javascript",
+				"python",
+			}
+			default_opts.init_options = {
+				documentFormatting = true,
+			}
+
+			default_opts.on_attach = on_attach
+			default_opts.capabilities = capabilities
+
+			return default_opts
+		end,
+	}
+
+	-- We check to see if any custom server_opts exist for the LSP server, if so, load them, if not, use our default_opts
+	server:setup(server_opts[server.name] and server_opts[server.name]() or default_opts)
+	vim.cmd([[ do User LspAttachBuffers ]])
+end)
+
+for _, name in pairs(servers) do
+	local ok, server = lsp_installer.get_server(name)
+	-- Check that the server is supported in nvim-lsp-installer
+	if ok then
+		if not server:is_installed() then
+			print("Installing " .. name)
+			server:install()
+		end
+	end
+end
+EOF
 '''
 
 [[plugins]]
