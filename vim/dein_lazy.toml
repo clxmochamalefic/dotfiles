@@ -1,42 +1,42 @@
-[[plugins]]  # 自動補完
-repo = 'davidhalter/jedi-vim'
-on_ft = 'python'
-on_event = 'InsertEnter'
-hook_source = '''
-  " Ctrl + N で候補を表示
-  let g:jedi#completions_command = ""
+# [[plugins]]  # 自動補完
+# repo = 'davidhalter/jedi-vim'
+# on_ft = 'python'
+# on_event = 'InsertEnter'
+# hook_source = '''
+#   " Ctrl + N で候補を表示
+#   let g:jedi#completions_command = ""
+# 
+#   " .を打つだけで候補を表示しない
+#   let g:jedi#popup_on_dot = 1
+# 
+#   " 関数の引数を表示
+#   let g:jedi#show_call_signatures = 1
+# 
+#   " 引数を表示するまでの時間(ms)
+#   let g:jedi#show_call_signatures_delay = 100
+# 
+#   " 補完機能を有効化
+#   let g:jedi#smart_auto_mappings = 1
+# 
+#   " 別windowでhelpを表示しない
+#   augroup my_group
+#     au FileType python setlocal completeopt-=preview
+#   augroup END
+# '''
 
-  " .を打つだけで候補を表示しない
-  let g:jedi#popup_on_dot = 1
+# [[plugins]]
+# repo = 'zchee/deoplete-jedi'
+# depends = ['deoplete.nvim']
+# on_ft = ['python']
+# on_event = 'InsertEnter'
+# hook_add = '''
+#   let g:deoplete#sources#jedi#python_path = $PYENV_ROOT.'/versions/neovim3/bin/python'
+# '''
 
-  " 関数の引数を表示
-  let g:jedi#show_call_signatures = 1
-
-  " 引数を表示するまでの時間(ms)
-  let g:jedi#show_call_signatures_delay = 100
-
-  " 補完機能を有効化
-  let g:jedi#smart_auto_mappings = 1
-
-  " 別windowでhelpを表示しない
-  augroup my_group
-    au FileType python setlocal completeopt-=preview
-  augroup END
-'''
-
-[[plugins]]
-repo = 'zchee/deoplete-jedi'
-depends = ['deoplete.nvim']
-on_ft = ['python']
-on_event = 'InsertEnter'
-hook_add = '''
-  let g:deoplete#sources#jedi#python_path = $PYENV_ROOT.'/versions/neovim3/bin/python'
-'''
-
-#[[plugins]]
-#repo  = 'phpactor/phpactor'
-#on_ft = ['php']
-#build = 'composer install'
+# [[plugins]]
+# repo  = 'phpactor/phpactor'
+# on_ft = ['php']
+# build = 'composer install'
 
 [[plugins]] # toml syntax
 repo = 'cespare/vim-toml'
