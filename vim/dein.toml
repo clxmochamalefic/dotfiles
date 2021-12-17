@@ -127,6 +127,9 @@ hook_add = '''
   cnoremap :dxh Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~ 
   cnoremap ;dxh Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~ 
 
+  cnoremap :dxr Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~/repos 
+  cnoremap ;dxr Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~/repos 
+
 "  cnoremap :xd :<C-u>Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 "  cnoremap :xc :<C-u>Defx<CR>
 
@@ -364,10 +367,10 @@ hook_source = '''
   
   " Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
   " See https://github.com/hrsh7th/vim-vsnip/pull/50
-  nmap        s   <Plug>(vsnip-select-text)
-  xmap        s   <Plug>(vsnip-select-text)
-  nmap        S   <Plug>(vsnip-cut-text)
-  xmap        S   <Plug>(vsnip-cut-text)
+  "nmap        s   <Plug>(vsnip-select-text)
+  "xmap        s   <Plug>(vsnip-select-text)
+  "nmap        S   <Plug>(vsnip-cut-text)
+  "xmap        S   <Plug>(vsnip-cut-text)
   
   " If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
   let g:vsnip_filetypes = {}
