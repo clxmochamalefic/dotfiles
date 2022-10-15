@@ -1,96 +1,96 @@
 {
-	"$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-	"CreationDate" : "2022-10-15T07:11:21.793-00:00",
-	"Sources" : 
-	[
-		{
-			"Packages" : 
-			[
-				{
-					"PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
-				},
-				{
-					"PackageIdentifier" : "Google.AndroidStudio"
-				},
-				{
-					"PackageIdentifier" : "Canonical.Ubuntu.2204"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.AzureStorageEmulator"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.5"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.HostingBundle.5"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.SDK.6"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.DotNet.HostingBundle.6"
-				},
-				{
-					"PackageIdentifier" : "EclipseAdoptium.Temurin.8.JDK"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.WebDeploy"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.OpenJDK.11"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.WindowsSDK"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
-				},
-				{
-					"PackageIdentifier" : "icsharpcode.ILSpy"
-				},
-				{
-					"PackageIdentifier" : "Oracle.JDK.18"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
-				},
-				{
-					"PackageIdentifier" : "Unity.UnityHub"
-				},
-				{
-					"PackageIdentifier" : "Microsoft.PowerShell"
-				},
-				{
-				    "PackageIdentifier" : "Python.Python.3.10"
-				},
-				{
-				    "PackageIdentifier" : "Volta.Volta"
-				},
-				{
-				    "PackageIdentifier" : "suse.RancherDesktop"
-				},
-				{
-				    "PackageIdentifier" : "GitHub.cli"
-				},
-				{
-				    "PackageIdentifier" : "dbeaver.dbeaver"
-				}
-			],
-			"SourceDetails" : 
-			{
-				"Argument" : "https://cdn.winget.microsoft.com/cache",
-				"Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
-				"Name" : "winget",
-				"Type" : "Microsoft.PreIndexed.Package"
-			}
-		}
-	],
-	"WinGetVersion" : "1.3.2691"
+  "$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
+  "CreationDate" : "2022-10-15T07:11:21.793-00:00",
+  "Sources" : 
+  [
+    {
+      "Packages" : 
+      [
+        {
+          "PackageIdentifier" : "Microsoft.VisualStudio.2022.Community"
+        },
+        {
+          "PackageIdentifier" : "Google.AndroidStudio"
+        },
+        {
+          "PackageIdentifier" : "Canonical.Ubuntu.2204"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.AzureStorageEmulator"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.DotNet.SDK.5"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.DotNet.AspNetCore.5"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.DotNet.HostingBundle.5"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.DotNet.SDK.6"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.DotNet.AspNetCore.6"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.DotNet.HostingBundle.6"
+        },
+        {
+          "PackageIdentifier" : "EclipseAdoptium.Temurin.8.JDK"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.WebDeploy"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.OpenJDK.11"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.WindowsSDK"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.CLRTypesSQLServer.2019"
+        },
+        {
+          "PackageIdentifier" : "icsharpcode.ILSpy"
+        },
+        {
+          "PackageIdentifier" : "Oracle.JDK.18"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
+        },
+        {
+          "PackageIdentifier" : "Unity.UnityHub"
+        },
+        {
+          "PackageIdentifier" : "Microsoft.PowerShell"
+        },
+        {
+            "PackageIdentifier" : "Python.Python.3.10"
+        },
+        {
+            "PackageIdentifier" : "Volta.Volta"
+        },
+        {
+            "PackageIdentifier" : "suse.RancherDesktop"
+        },
+        {
+            "PackageIdentifier" : "GitHub.cli"
+        },
+        {
+            "PackageIdentifier" : "dbeaver.dbeaver"
+        }
+      ],
+      "SourceDetails" : 
+      {
+        "Argument" : "https://cdn.winget.microsoft.com/cache",
+        "Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "Name" : "winget",
+        "Type" : "Microsoft.PreIndexed.Package"
+      }
+    }
+  ],
+  "WinGetVersion" : "1.3.2691"
 }
 
