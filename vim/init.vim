@@ -16,11 +16,11 @@ set fileencoding=utf-8
 
 "---------------------------------------------------------------------------
 "" UndoFiles
-let s:home_tmp_dir = expand($HOME . '/tmp')
+let s:home_tmp_dir = expand($HOME . '/.cache/nvim')
 
 " ~/tmp 以降のディレクトリがない場合は新規作成
 if !isdirectory(s:home_tmp_dir)
-    execute '!mkdir ' . s:home_tmp_dir
+    execute '!mkdir -p ' . s:home_tmp_dir
     execute '!mkdir ' . expand(s:home_tmp_dir . '/undofiles')
     execute '!mkdir ' . expand(s:home_tmp_dir . '/backupfiles')
 endif
@@ -100,7 +100,7 @@ if has('win32')
     " install from msi
     "let g:python3_host_prog = 'C:/Python39/python.exe'
     " install from winget
-    let g:python3_host_prog = 'C:/Users/cocoalix/AppData/Local/Programs/Python/Python310/python.exe'
+    let g:python3_host_prog = $HOME.'/AppData/Local/Programs/Python/Python310/python.exe'
 elseif has('mac')
   let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
   let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'

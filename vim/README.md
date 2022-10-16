@@ -1,14 +1,22 @@
 # Neovim installation-guide
 
-## 1. get python3
+## create referenceable preference file for windows10 and later versions
+
+plz exec it
+
+```pwsh
+PS> .\win.init.ps1
+```
+
+## get python3
 
 ### Windows
 
-1. get from [official](https://www.python.org/)
+1. `winget install Python.Python.3.10`
 
-1. exec this
-  ```bash
-  pip install pynvim
+2. exec this
+  ```pwsh
+  PS> pip install pynvim
   ```
 
 ### Mac
@@ -20,7 +28,7 @@ brew install pyenv
 brew install pyenv-virtualenv
 ```
 
-1. write `.zprofile`
+2. write `.zprofile`
 
 ```.zprofile
 export PYENV_ROOT="$HOME/.pyenv"
@@ -29,7 +37,7 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ```
 
-1. exec this
+3. exec this
 
 ```zsh
 # check installable python version
@@ -52,26 +60,34 @@ pip install neovim
 pyenv which python
 ```
 
-## 2. get neovim
+## get neovim
 
 ### Windows
 
-get from [official](https://github.com/neovim/neovim/releases)
+```pwsh
+PS> winget install Neovim.Neovim
+```
+
+if u need nightly build
+
+```pwsh
+PS> winget install Neovim.Neovim.Nightly
+```
 
 ### Mac
 
 ```zsh
-brew install neovim
+% brew install neovim
 ```
 
-## 3. attach my init.vim
+## attach my init.vim
 
 ### Windows
 
-```bash
-mkdir -p ~/AppData/Local/nvim
-cp ./init.vim ~/AppData/Local/nvim/init.vim
-cp ./*.vim ~/AppData/Local/nvim/
+```pwsh
+PS> mkdir -p ~/AppData/Local/nvim
+PS> cp ./init.vim ~/AppData/Local/nvim/init.vim
+PS> cp ./*.vim ~/AppData/Local/nvim/
 ```
 
 ### Mac
@@ -82,16 +98,16 @@ cp ./init.vim ~/.config/nvim/init.vim
 cp ./*.vim ~/.config/nvim/
 ```
 
-## 4. REPLACE g:python3_host_prog
+## REPLACE g:python3_host_prog
 
 1. exec `:checkhealth` on nvim
 
-1. copy `INFO: Executable:` row in  `Python 3 provider`
+2. copy `INFO: Executable:` row in  `Python 3 provider`
 
-1. paste to `g:python3_host_prog`
+3. paste to `g:python3_host_prog`
 
-1. exec `:echo has('python3')` on nvim for check useable python3
+4. exec `:echo has('python3')` on nvim for check useable python3
 
-## 5. exec nvim
+## exec nvim
 
 1. auto install dein and plugins
