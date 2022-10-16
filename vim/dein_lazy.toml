@@ -57,3 +57,11 @@ on_ft = ['tsx']
 [[plugins]]
 repo = 'posva/vim-vue'
 on_ft = 'vue'
+
+[[plugins]]
+repo = 'pantharshit00/vim-prisma'
+on_ft = 'prisma'
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = 'rs'

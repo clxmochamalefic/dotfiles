@@ -43,10 +43,20 @@ set expandtab
 
 augroup fileTypeIndent
     autocmd!
-    autocmd BufNewFile,BufRead *.js  setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.ts  setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.tsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.html   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.css    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+    autocmd BufNewFile,BufRead *.js     setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.jsx    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+    autocmd BufNewFile,BufRead *.ts     setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.tsx    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+    autocmd BufNewFile,BufRead *.css    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.sass   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.scss   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+    autocmd BufNewFile,BufRead *.prisma setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
 "+++++++++++++++
@@ -78,7 +88,7 @@ set mousehide
 "---------------------------------------------------------------------------
 " Use Default Shell
 if has('win32')
-"    set shell=PowerShell
+"  set shell=PowerShell
   set shell=bash
   set shellcmdflag=-c
   set shellquote="
@@ -87,7 +97,10 @@ endif
 "+++++++++++++++
 " python設定
 if has('win32')
-    let g:python3_host_prog = $HOME.'/AppData/Local/Programs/Python/Python39/python.exe'
+    " install from msi
+    "let g:python3_host_prog = 'C:/Python39/python.exe'
+    " install from winget
+    let g:python3_host_prog = 'C:/Users/cocoalix/AppData/Local/Programs/Python/Python310/python.exe'
 elseif has('mac')
   let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
   let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
