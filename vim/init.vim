@@ -43,20 +43,31 @@ set expandtab
 
 augroup fileTypeIndent
     autocmd!
-    autocmd BufNewFile,BufRead *.html   setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.css    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.html       setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.phtml      setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.blade.php  setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-    autocmd BufNewFile,BufRead *.js     setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.jsx    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.js         setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.jsx        setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-    autocmd BufNewFile,BufRead *.ts     setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.tsx    setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.ts         setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.tsx        setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-    autocmd BufNewFile,BufRead *.css    setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.sass   setlocal tabstop=2 softtabstop=2 shiftwidth=2
-    autocmd BufNewFile,BufRead *.scss   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.css        setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.sass       setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.scss       setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-    autocmd BufNewFile,BufRead *.prisma setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.prisma     setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+    autocmd BufNewFile,BufRead *.vim        setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.yaml       setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.yml        setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.toml       setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.tml        setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.lua        setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+    autocmd BufNewFile,BufRead *.md         setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.markdown   setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
 "+++++++++++++++
@@ -88,11 +99,17 @@ set mousehide
 "---------------------------------------------------------------------------
 " Use Default Shell
 if has('win32')
-"  set shell=PowerShell
-  set shell=bash
+  set shell=pwsh
   set shellcmdflag=-c
   set shellquote="
+
+  " terminal
+  cnoremap :tp terminal
+  cnoremap ;tp terminal
+  cnoremap :tw call termopen("powershell wsl")
+  cnoremap ;tw call termopen("powershell wsl")
 endif
+
 
 "+++++++++++++++
 " python設定
@@ -169,9 +186,19 @@ nnoremap ; :
 " tag jump
 nnoremap <C-J> <C-]>
 
+" terminal alias
+command! -nargs=* T split | wincmd j | resize 20 | terminal <args>
+
 " today date and time
 nmap <F6> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
 nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
+
+augroup Terminal
+  autocmd!
+  autocmd TermOpen * startinsert
+  "autocmd!
+  "autocmd VimEnter * ++nested split term://sh
+augroup END
 
 " use colorschema
 set termguicolors
@@ -227,11 +254,29 @@ call map(dein#check_clean(), "delete(v:val, 'rf')")
 " XML / HTML の閉じタグ自動入力
 augroup MyXML
   autocmd!
-  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
-  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype xml        inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype html       inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype phtml      inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype blade.php  inoremap <buffer> </ </<C-x><C-o>
 augroup END
 
 " 閉じかっこの自動入力
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap [<Enter> []<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
+
+let s:initvim_fp = s:initvim_path . '/init.vim'
+let s:deintoml_fp = s:initvim_path . '/dein.toml'
+let s:deinlazytoml_fp = s:initvim_path . '/dein_lazy.toml'
+
+" init.vim 自動オープン
+command! Preferences execute 'e ' . s:initvim_path . '/init.vim'
+
+" dein.toml 自動オープン
+command! Plugins execute 'e ' . s:deintoml_fp
+
+" dein_lazy.toml 自動オープン
+command! Lplugins execute 'e ' . s:deinlazytoml_fp
+
+" init.vim 再読み込み
+command! Reload execute 'source ' . s:initvim_fp

@@ -118,11 +118,13 @@ hook_add = '''
   let g:defx_icons_enable_syntax_highlight = 1
   let g:defx_icons_column_length = 2
 
-  cnoremap :dx Defx ~
-  cnoremap ;dx Defx ~
+  " defx open on window all
+  cnoremap :dxa Defx ~
+  cnoremap ;dxa Defx ~
 
-  cnoremap :dxs Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar'
-  cnoremap ;dxs Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar'
+  " defx open on current dir
+  cnoremap :dx Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar'
+  cnoremap ;dx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar'
 
   cnoremap :dxh Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~ 
   cnoremap ;dxh Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~ 
@@ -315,8 +317,8 @@ repo = 'Shougo/pum.vim'
 hook_add = '''
 "  inoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
 "  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+"  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+"  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
   inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
   inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
   inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
@@ -415,19 +417,24 @@ local on_attach = function (client, bufnr)
 end
 
 local servers = {
-	"tsserver",
-	"prismals",
-	"omnisharp",
-	"dockerls",
-	"eslint",
-	"jsonls",
-	"intelephense",
-	"powershell_es",
-	"sqlls",
-	"lemminx",
-	"yamlls",
-	"html",
-	"cssls",
+  "tsserver",
+  "prismals",
+  "omnisharp",
+  "dockerls",
+  "eslint",
+  "jsonls",
+  "intelephense",
+  "powershell_es",
+  "sqlls",
+  "lemminx",
+  "yamlls",
+  "html",
+  "cssls",
+  "marksman",
+  "clangd",
+  "vimls",
+  "taplo",
+  "sumneko_lua",
 }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
