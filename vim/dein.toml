@@ -119,22 +119,22 @@ hook_add = '''
   let g:defx_icons_column_length = 2
 
   " defx open on window all
-  cnoremap :dxa Defx ~
-  cnoremap ;dxa Defx ~
+  cnoremap :da Da
+  cnoremap ;da Da
 
   " defx open on current dir
-  cnoremap :dx Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar'
-  cnoremap ;dx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar'
+  cnoremap :dx Dx
+  cnoremap ;dx Dx
 
-  cnoremap :dxh Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~ 
-  cnoremap ;dxh Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~ 
+  cnoremap :dxr Dr
+  cnoremap ;dxr Dr
 
-  cnoremap :dxr Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~/repos 
-  cnoremap ;dxr Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~/repos 
+  command! Da execute "Defx ~"
+  command! Dx execute "Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~"
+  command! Dr execute "Defx -split=vertical -winwidth=40 -direction=topleft -buffer-name='side-bar' ~/repos"
 
 "  cnoremap :xd :<C-u>Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 "  cnoremap :xc :<C-u>Defx<CR>
-
   
   autocmd FileType defx call s:defx_my_settings()
       function! s:defx_my_settings() abort
@@ -237,8 +237,20 @@ hook_add = '''
 [[plugins]]
 repo = "Shougo/deol.nvim"
 hook_add = '''
+  let g:deol#floating_border = "rounded"
+
+  "let s:window_width  = system('columns')
+  "let s:window_height = system('lines')
+
+  "let s:width  = system('columns') - 10
+  "let s:height = system('lines') - 30
+
+  "let s:width = s:window_width - 10
+  "let s:height = s:window_height - 30
+
   " 【Ctrl + o】 float windowでターミナルを表示
-  nnoremap <silent><C-o> :<C-u>Deol -split=floating<CR>
+  "nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating" . " -winwidth=" . system('columns') - 10 . " -winheight=" . system('lines') - 30<CR>
+  nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating"<CR>
   " 【ESC】 ターミナルモードから抜ける
   tnoremap <ESC>   <C-\><C-n>
 '''
@@ -299,14 +311,14 @@ hook_source = '''
   " Mappings
   
   " <TAB>: completion.
-"  inoremap <silent><expr> <TAB>
-"  \ pumvisible() ? '<C-n>' :
-"  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
-"  \ '<TAB>' : ddc#map#manual_complete()
-  inoremap <silent><expr> <TAB> pumvisible() ? '<C-n>' : '<TAB>'
+  inoremap <silent><expr> <C-n>
+  \ pumvisible() ? '<C-n>' :
+  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+  \ '<TAB>' : ddc#map#manual_complete()
+  inoremap <silent><expr> <C-n> pumvisible() ? '<C-n>' : '<C-n>'
   
   " <S-TAB>: completion back.
-  inoremap <expr><S-TAB>  pumvisible() ? '<C-p>' : '<C-h>'
+  inoremap <expr><C-p>  pumvisible() ? '<C-p>' : '<C-p>'
   
   " Use ddc.
   call ddc#enable()
@@ -315,10 +327,10 @@ hook_source = '''
 [[plugins]]
 repo = 'Shougo/pum.vim'
 hook_add = '''
-"  inoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
-"  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-"  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-"  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  "inoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  "inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+  "inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  "inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
   inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
   inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
   inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
@@ -366,6 +378,11 @@ hook_source = '''
 "  smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 "  imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 "  smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+  "imap <expr> <C-n> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-n>'
+  "smap <expr> <C-n> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-n>'
+  "imap <expr> <C-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-p>'
+  "smap <expr> <C-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-p>'
   
   " Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
   " See https://github.com/hrsh7th/vim-vsnip/pull/50

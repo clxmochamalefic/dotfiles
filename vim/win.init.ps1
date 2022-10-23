@@ -1,4 +1,4 @@
-echo "make dir: ~/.config/nvim"
+Write-Output "make dir: ~/.config/nvim"
 
 if (!(Test-Path '~/.config')) {
     mkdir ~/.config
@@ -8,38 +8,37 @@ if (!(Test-Path '~/.config/nvim')) {
     mkdir ~/.config/nvim
 }
 
-echo "make dir: ~/AppData/Local/nvim"
+Write-Output "make dir: ~/AppData/Local/nvim"
 
 if (!(Test-Path '~/AppData/Local/nvim')) {
     mkdir ~/.config
 }
 
-echo "remove nvim preference files what already exists"
+Write-Output "remove nvim preference files what already exists"
 
 if (Test-Path '~/.config/nvim/init.vim') {
-    rm ~/.config/nvim/init.vim
+    Remove-Item ~/.config/nvim/init.vim
 }
 if (Test-Path '~/.config/nvim/ginit.vim') {
-    rm ~/.config/nvim/ginit.vim
+    Remove-Item ~/.config/nvim/ginit.vim
 }
 
 if (Test-Path '~/AppData/Local/nvim/init.vim') {
-    rm ~/AppData/Local/nvim/init.vim
+    Remove-Item ~/AppData/Local/nvim/init.vim
 }
 
 if (Test-Path '~/AppData/Local/nvim/ginit.vim') {
-    rm ~/AppData/Local/nvim/ginit.vim
+    Remove-Item ~/AppData/Local/nvim/ginit.vim
 }
 
-echo "write reference preference"
+Write-Output "write reference preference"
 
-$preferencePath = (Join-Path $PSScriptRoot .. | Resolve-Path)
-$preferencePathStr = $preferencePath.ToString()
+$preferencePathStr = $PSScriptRoot.ToString()
 
 $preferencePathStr = $preferencePathStr.Replace($HOME, '$HOME')
 $preferencePathStr = $preferencePathStr.Replace('\', '/' )
 
-echo $preferencePathStr
+Write-Output $preferencePathStr
 
 
 Set-Content -Path ~/.config/nvim/init.vim  -Value "source ${preferencePathStr}/init.vim"  -Encoding UTF8
@@ -48,5 +47,7 @@ Set-Content -Path ~/.config/nvim/ginit.vim -Value "source ${preferencePathStr}/g
 Set-Content -Path ~/AppData/Local/nvim/init.vim  -Value "source ${preferencePathStr}/init.vim"  -Encoding UTF8
 Set-Content -Path ~/AppData/Local/nvim/ginit.vim -Value "source ${preferencePathStr}/ginit.vim" -Encoding UTF8
 
-echo "finished and all correct"
+Write-Output "finished and all correct"
 
+New-Item -type File -Force $profile
+Write-Output 'function nq() { nvim-qt ~ }' >> $profile
