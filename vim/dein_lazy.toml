@@ -1,67 +1,229 @@
-# [[plugins]]  # 自動補完
-# repo = 'davidhalter/jedi-vim'
-# on_ft = 'python'
-# on_event = 'InsertEnter'
-# hook_source = '''
-#   " Ctrl + N で候補を表示
-#   let g:jedi#completions_command = ""
-# 
-#   " .を打つだけで候補を表示しない
-#   let g:jedi#popup_on_dot = 1
-# 
-#   " 関数の引数を表示
-#   let g:jedi#show_call_signatures = 1
-# 
-#   " 引数を表示するまでの時間(ms)
-#   let g:jedi#show_call_signatures_delay = 100
-# 
-#   " 補完機能を有効化
-#   let g:jedi#smart_auto_mappings = 1
-# 
-#   " 別windowでhelpを表示しない
-#   augroup my_group
-#     au FileType python setlocal completeopt-=preview
-#   augroup END
-# '''
+[[plugins]]
+repo = 'Shougo/ddu.vim'
+on_source = ['denops.vim']
+hook_add = '''
+  call ddu#custom#patch_global({
+      \ 'ui': 'ff',
+      \ 'sources': [{'name': 'file_rec', 'params': {}},
+      \             {'name': 'file'},
+      \             {'name': 'colorscheme'},
+      \             {'name': 'buffer'},
+      \             {'name': 'emoji'}],
+      \ })
 
-# [[plugins]]
-# repo = 'zchee/deoplete-jedi'
-# depends = ['deoplete.nvim']
-# on_ft = ['python']
-# on_event = 'InsertEnter'
-# hook_add = '''
-#   let g:deoplete#sources#jedi#python_path = $PYENV_ROOT.'/versions/neovim3/bin/python'
-# '''
+  " Use matcher_substring filter.
+  call ddu#custom#patch_global({
+      \   'sourceOptions': {
+      \     '_': {
+      \       'matchers': ['matcher_substring'],
+      \     },
+      \   }
+      \ })
 
-# [[plugins]]
-# repo  = 'phpactor/phpactor'
-# on_ft = ['php']
-# build = 'composer install'
+  " Enable highlight matched text
+  " Note: It is slow
+  call ddu#custom#patch_global({
+      \   'filterParams': {
+      \     'matcher_substring': {
+      \       'highlightMatched': 'Search',
+      \     },
+      \   }
+      \ })
 
-[[plugins]] # toml syntax
-repo = 'cespare/vim-toml'
-on_ft = 'toml'
-
-[[plugins]] # toml syntax
-repo = 'blueyed/smarty.vim'
-on_ft = ['smarty', 'php']
+  call ddu#custom#patch_global({
+      \   'kindOptions': {
+      \     'file': {
+      \       'defaultAction': 'open',
+      \     },
+      \     'colorscheme': {
+      \       'defaultAction': 'set',
+      \     },
+      \     'word': {
+      \       'defaultAction': 'append',
+      \     },
+      \   }
+      \ })
+'''
 
 [[plugins]]
-repo = 'leafgarland/typescript-vim'
-on_ft = ['ts']
+repo = 'Shougo/ddu-ui-ff'
+on_source = ['ddu.vim']
+hook_add = '''
+  if has('macunix')
+    command "brew install desktop-file-utils"
+  endif
+
+  autocmd FileType ddu-ff call s:ddu_my_settings()
+  function! s:ddu_my_settings() abort
+    nnoremap <buffer><silent> <CR>
+          \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+    nnoremap <buffer><silent> <Space>
+          \ <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+    nnoremap <buffer><silent> i
+          \ <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+    nnoremap <buffer><silent> q
+          \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  endfunction
+
+  autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+  function! s:ddu_filter_my_settings() abort
+    inoremap <buffer><silent> <CR>
+    \ <Esc><Cmd>close<CR>
+    nnoremap <buffer><silent> <CR>
+    \ <Cmd>close<CR>
+    nnoremap <buffer><silent> q
+    \ <Cmd>close<CR>
+  endfunction
+'''
 
 [[plugins]]
-repo = 'peitalin/vim-jsx-typescript'
-on_ft = ['tsx']
+repo = 'Shougo/ddu-ui-filer'
+on_source = ['ddu.vim', 'ddu-ui-ff']
+hook_add = '''
+  call ddu#custom#patch_local('filer', {
+  \   'ui': 'filer',
+  \   'sources': [
+  \     {
+  \       'name': 'file',
+  \       'params': {},
+  \     },
+  \   ],
+  \   'sourceOptions': {
+  \     '_': {
+  \       'columns': ['filename'],
+  \     },
+  \   },
+  \   'kindOptions': {
+  \     'file': {
+  \       'defaultAction': 'open',
+  \     },
+  \   },
+  \   'uiParams': {
+  \     'filer': {
+  \       'winWidth': 40,
+  \       'split': 'vertical',
+  \       'splitDirection': 'topleft',
+  \     }
+  \   },
+  \ })
+
+  autocmd TabEnter,CursorHold,FocusGained <buffer>
+    \ call ddu#ui#filer#do_action('checkItems')
+
+  autocmd FileType ddu-filer call s:ddu_filer_my_settings()
+  function! s:ddu_filer_my_settings() abort
+    "nnoremap <buffer><silent><expr> <CR>
+    "  \ ddu#ui#filer#is_directory() ?
+    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'choosewin'}})<CR>"
+    nnoremap <buffer><silent><expr> <CR>
+      \ ddu#ui#filer#is_directory() ?
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
+
+    nnoremap <buffer><silent> q
+      \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
+
+    nnoremap <buffer><silent> <BS>
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow', 'params': {'path': '..'}})<CR>
+
+    nnoremap <buffer><silent> c
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'copy'})<CR>
+
+    nnoremap <buffer><silent> x
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'cut'})<CR>
+
+    nnoremap <buffer><silent> p
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'paste'})<CR>
+
+    nnoremap <buffer><silent> d
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'delete'})<CR>
+
+    nnoremap <buffer><silent> r
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'rename'})<CR>
+
+    nnoremap <buffer><silent> R
+      \ <Cmd>call ddu#ui#filer#do_action('checkItems')<CR>
+
+
+    nnoremap <buffer><silent> m
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'move'})<CR>
+
+    nnoremap <buffer><silent> b
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'newFile'})<CR>
+
+    nnoremap <buffer><silent> B
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'newDirectory'})<CR>
+
+    nnoremap <buffer><silent> yy
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'yank'})<CR>
+
+    nnoremap <buffer><silent> h
+      \ <Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>
+
+    nnoremap <buffer><silent> l
+      \ <Cmd>call ddu#ui#filer#do_action('expandItem')<CR>
+
+    nnoremap <buffer><silent> <TAB>
+      \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>
+
+  endfunction
+
+  command! Dfiler call ddu#start({
+  \   'name': 'filer',
+  \   'uiParams': {'filer': {'search': expand('%:p')}},
+  \ })
+'''
 
 [[plugins]]
-repo = 'posva/vim-vue'
-on_ft = 'vue'
+repo = 'Shougo/ddu-source-action'
+on_source = ['ddu.vim']
+hook_add = '''
+  call ddu#custom#patch_global({
+      \   'kindOptions': {
+      \     'action': {
+      \       'defaultAction': 'do',
+      \     },
+      \   }
+      \ })
+'''
 
 [[plugins]]
-repo = 'pantharshit00/vim-prisma'
-on_ft = 'prisma'
+repo = 'Shougo/ddu-source-file_rec'
+on_source = ['ddu.vim']
 
 [[plugins]]
-repo = 'rust-lang/rust.vim'
-on_ft = 'rs'
+repo = 'Shougo/ddu-filter-matcher_substring'
+on_source = ['ddu.vim']
+
+[[plugins]]
+repo = 'Shougo/ddu-kind-file'
+on_source = ['ddu.vim']
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file'
+on_source = ['ddu.vim', 'ddu-kind-file']
+
+[[plugins]]
+repo = 'Shougo/ddu-column-filename'
+on_source = ['ddu.vim']
+hook_add = '''
+  call ddu#custom#patch_global({
+      \   'columns': ['filename'],
+      \ })
+'''
+
+[[plugins]]
+repo = 'ryota2357/ddu-column-icon_filename'
+on_source = ['ddu.vim']
+hook_add = '''
+  call ddu#custom#patch_global({
+      \   'columns': ['icon_filename'],
+      \ })
+'''
+
+[[plugins]]
+repo = '4513ECHO/ddu-source-emoji'
+hook_add = '''
+  command! Emoji call ddu#start({'sources': [{'name': 'emoji'}]})
+'''
