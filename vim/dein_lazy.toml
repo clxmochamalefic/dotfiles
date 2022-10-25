@@ -1,12 +1,12 @@
 [[plugins]]
 repo = 'Shougo/ddu.vim'
+depends = 'denops.vim'
 on_source = ['denops.vim']
 hook_add = '''
   call ddu#custom#patch_global({
       \ 'ui': 'ff',
       \ 'sources': [{'name': 'file_rec', 'params': {}},
       \             {'name': 'file'},
-      \             {'name': 'colorscheme'},
       \             {'name': 'buffer'},
       \             {'name': 'emoji'}],
       \ })
@@ -34,9 +34,6 @@ hook_add = '''
       \   'kindOptions': {
       \     'file': {
       \       'defaultAction': 'open',
-      \     },
-      \     'colorscheme': {
-      \       'defaultAction': 'set',
       \     },
       \     'word': {
       \       'defaultAction': 'append',
@@ -78,7 +75,7 @@ hook_add = '''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-filer'
-on_source = ['ddu.vim', 'ddu-ui-ff']
+on_source = ['ddu.vim']
 hook_add = '''
   call ddu#custom#patch_local('filer', {
   \   'ui': 'filer',
@@ -90,7 +87,7 @@ hook_add = '''
   \   ],
   \   'sourceOptions': {
   \     '_': {
-  \       'columns': ['filename'],
+  \       'columns': ['icon_filename', 'filename'],
   \     },
   \   },
   \   'kindOptions': {
@@ -101,9 +98,16 @@ hook_add = '''
   \   'uiParams': {
   \     'filer': {
   \       'winWidth': 40,
-  \       'split': 'vertical',
-  \       'splitDirection': 'topleft',
+  \       'split': 'floating',
+  \       'filterFloatingPosition': 'top',
+  \       'filterSplitDirection': 'floating',
+  \       'floatingBorder': 'rounded',
   \     }
+  \   },
+  \   'actionOptions': {
+  \     'narrow': {
+  \       'quit': v:false,
+  \     },
   \   },
   \ })
 
@@ -116,10 +120,14 @@ hook_add = '''
     "  \ ddu#ui#filer#is_directory() ?
     "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
     "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'choosewin'}})<CR>"
+    "nnoremap <buffer><silent><expr> <CR>
+    "  \ ddu#ui#filer#is_directory() ?
+    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
     nnoremap <buffer><silent><expr> <CR>
       \ ddu#ui#filer#is_directory() ?
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open'})<CR>"
 
     nnoremap <buffer><silent> q
       \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
@@ -169,10 +177,10 @@ hook_add = '''
 
   endfunction
 
-  command! Dfiler call ddu#start({
+  nmap  ^  :<C-u>call ddu#start({
   \   'name': 'filer',
   \   'uiParams': {'filer': {'search': expand('%:p')}},
-  \ })
+  \ })<CR>
 '''
 
 [[plugins]]
@@ -208,18 +216,12 @@ on_source = ['ddu.vim', 'ddu-kind-file']
 repo = 'Shougo/ddu-column-filename'
 on_source = ['ddu.vim']
 hook_add = '''
-  call ddu#custom#patch_global({
-      \   'columns': ['filename'],
-      \ })
 '''
 
 [[plugins]]
 repo = 'ryota2357/ddu-column-icon_filename'
 on_source = ['ddu.vim']
 hook_add = '''
-  call ddu#custom#patch_global({
-      \   'columns': ['icon_filename'],
-      \ })
 '''
 
 [[plugins]]
@@ -227,3 +229,4 @@ repo = '4513ECHO/ddu-source-emoji'
 hook_add = '''
   command! Emoji call ddu#start({'sources': [{'name': 'emoji'}]})
 '''
+
