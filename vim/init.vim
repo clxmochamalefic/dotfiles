@@ -43,6 +43,7 @@ set expandtab
 
 augroup fileTypeIndent
   autocmd!
+
   autocmd BufNewFile,BufRead *.html       setlocal tabstop=2 softtabstop=2 shiftwidth=2
   autocmd BufNewFile,BufRead *.phtml      setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
@@ -68,8 +69,14 @@ augroup fileTypeIndent
   autocmd BufNewFile,BufRead *.md         setlocal tabstop=2 softtabstop=2 shiftwidth=2
   autocmd BufNewFile,BufRead *.markdown   setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-  autocmd BufNewFile,BufRead *.blade.php set syntax=html
-  autocmd BufNewFile,BufRead *.blade.php set filetype=html
+  "autocmd BufNewFile,BufRead *.blade.php  setlocal syntax=html
+  "autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html
+  "autocmd BufNewFile,BufRead *.blade.php  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  "autocmd BufNewFile,BufRead *.blade      setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
+  autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=blade
+  autocmd FileType blade                  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+
 augroup END
 
 "+++++++++++++++
@@ -256,10 +263,10 @@ call map(dein#check_clean(), "delete(v:val, 'rf')")
 " XML / HTML の閉じタグ自動入力
 augroup MyXML
   autocmd!
-  autocmd Filetype xml        inoremap <buffer> </ </<C-x><C-o>
-  autocmd Filetype html       inoremap <buffer> </ </<C-x><C-o>
-  autocmd Filetype phtml      inoremap <buffer> </ </<C-x><C-o>
-  autocmd Filetype blade.php  inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType xml        inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType html       inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType phtml      inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType blade.php  inoremap <buffer> </ </<C-x><C-o>
 augroup END
 
 " 閉じかっこの自動入力
@@ -284,5 +291,13 @@ command! Pl Plugins
 command! Lplugins execute 'e ' . s:deinlazytoml_fp
 command! Lp Lplugins
 
+if !exists('*s:reload_all')
+  let &stl.='%{s:reload_all}'
+  function! s:reload_all()
+    execute 'source ' . s:initvim_fp
+    execute 'call dein#call_hook("add")'
+  endfunction
+endif
+
 " init.vim 再読み込み
-command! Reload execute 'source ' . s:initvim_fp
+command! Reload execute s:reload_all()
