@@ -3,7 +3,7 @@ call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 let s:fontsize = 14
 function! AdjustFontSize(amount)
   let s:fontsize = s:fontsize+a:amount
-  :execute "GuiFont! Consolas:h" . s:fontsize
+  :execute "GuiFont! Migu\ 2M\ for\ Powerline:h" . s:fontsize
 endfunction
 
 noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>

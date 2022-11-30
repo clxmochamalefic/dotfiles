@@ -29,10 +29,44 @@ depends = ['vim-airline-themes']
 hook_add = '''   
   set laststatus=2
   let g:airline_theme = 'deus'
+  let g:airline_experimental = 1
+  let g:airline_detect_spell=1
   let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#buffer_idx_mode = 1
   let g:airline#extensions#virtualenv#enabled = 1
+
+  " Get powerline-compatible font(s):
+  "     https://github.com/powerline/fonts
+  set guifont=Migu\ 2M\ for\ Powerline:h12
+
+  if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+  endif
+
+  " From: https://vi.stackexchange.com/a/3363
+  " unicode symbols
+  let g:airline_left_sep = '»'
+  let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '«'
+  let g:airline_right_sep = '◀'
+  let g:airline_symbols.linenr = '␊'
+  let g:airline_symbols.linenr = '␤'
+  let g:airline_symbols.linenr = '¶'
+  let g:airline_symbols.branch = '⎇'
+  let g:airline_symbols.paste = 'ρ'
+  let g:airline_symbols.paste = 'Þ'
+  let g:airline_symbols.paste = '∥'
+  let g:airline_symbols.whitespace = 'Ξ'
+
+  " airline symbols
+  let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
 '''
 
 [[plugins]]
@@ -54,18 +88,6 @@ hook_post_update = '''
       let g:dein#plugin.build = cmd
 '''
 
-# [[plugins]]
-# repo = 'Shougo/deoplete.nvim'
-# on_i = 1
-# hook_source = '''
-#   let g:deoplete#enable_at_startup = 1
-#   call deoplete#custom#option('enable_smart_case', 1)
-#   inoremap <expr><TAB> pumvisible() ? "\<C-N>" : "\<TAB>"
-# '''
-# 
-# [[plugins]]
-# repo = 'Shougo/deoplete-nextword'
-
 [[plugins]]
 repo = 't9md/vim-choosewin'
 hook_add = '''
@@ -78,8 +100,8 @@ repo = "Shougo/deol.nvim"
 hook_add = '''
   let g:deol#floating_border = "rounded"
 
-  "let s:window_width  = system('columns')
-  "let s:window_height = system('lines')
+  let s:window_width  = system('columns')
+  let s:window_height = system('lines')
 
   "let s:width  = system('columns') - 10
   "let s:height = system('lines') - 30
@@ -88,7 +110,7 @@ hook_add = '''
   "let s:height = s:window_height - 30
 
   " 【Ctrl + o】 float windowでターミナルを表示
-  "nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating" . " -winwidth=" . system('columns') - 10 . " -winheight=" . system('lines') - 30<CR>
+  "nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating" . " -winwidth=" . "100" . " -winheight=" . s:height<CR>
   nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating"<CR>
   " 【ESC】 ターミナルモードから抜ける
   tnoremap <ESC>   <C-\><C-n>
@@ -106,35 +128,66 @@ repo = 'tpope/vim-fugitive'
 [[plugins]]
 repo = 'szw/vim-tags'
 
-#[[plugins]]
-#repo = 'nvim-treesitter/nvim-treesitter'
-#on_if = 'has("nvim")'
-#merged = '0'
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+on_source = ['ddc.vim', 'ddu.vim']
+hook_add = '''
+  let g:denops#deno = "deno"
+  " denoのプロジェクト作るときにこれ設定入れないとだめだよ
+  " command "deno run -A --no-check ./denops/@denops-private/cli.ts"
+  " let g:denops_server_addr = '127.0.0.1:32123'
+'''
+
+[[plugins]]
+repo = 'Shougo/pum.vim'
+hook_source = '''
+  call pum#set_option('max_width', 80)
+  call pum#set_option('use_complete', v:true)
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-pum'
+depends = 'pum.vim'
+on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc.vim'
+depends = ['denops.vim', 'pum.vim']
+on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
 hook_source = '''
+  call ddc#custom#patch_global('ui', 'pum')
   " Customize global settings
   " Use around source.
   " https://github.com/Shougo/ddc-around
   call ddc#custom#patch_global('sources', ['nvim-lsp', 'around'])
+  call ddc#custom#patch_global('cmdlineSources', ['cmdline', 'cmdline-history', 'around'])
   
   " Use matcher_head and sorter_rank.
   " https://github.com/Shougo/ddc-matcher_head
   " https://github.com/Shougo/ddc-sorter_rank
   call ddc#custom#patch_global('sourceOptions', {
-        \ '_': {
-        \   'matchers': ['matcher_head'],
-        \   'sorters': ['sorter_rank']
-        \  },
-        \ 'around': {'mark': 'A'},
-        \ 'nvim-lsp': {
-        \   'mark': 'lsp',
-        \   'forceCompletionPattern': '\.\w*|:\w*|->\w*',
-        \ },
+        \   '_': {
+        \     'ignoreCase': v:true,
+        \     'matchers': ['matcher_fuzzy'],
+        \     'sorters': ['sorter_fuzzy'],
+        \     'converters': ['converter_fuzzy'],
+        \   },
+        \   'around': {'mark': 'A'},
+        \   'nvim-lsp': {
+        \     'mark': 'lsp',
+        \     'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+        \   },
+        \   'cmdline': {
+        \     'ignoreCase': v:false,
+        \     'mark': '| cmd',
+        \     'forceCompletionPattern': '\S/\S*',
+        \   },
+        \   'cmdline-history': {
+        \     'mark': '| history',
+        \   },
         \ })
   call ddc#custom#patch_global('sourceParams', {
-        \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
+        \ 'nvim-lsp': { 'kindLabels': { 'Class': '[class]', 'Method': '[method]', 'Function': '[func]', 'Variable': '[var]' } },
         \ 'around': {'maxSize': 500},
         \ })
   
@@ -149,31 +202,34 @@ hook_source = '''
   
   " Mappings
   
-  " <TAB>: completion.
+  " Use pum.vim
+  call ddc#custom#patch_global('autoCompleteEvents', [
+    \ 'InsertEnter', 'TextChangedI', 'TextChangedP',
+    \ 'CmdlineEnter', 'CmdlineChanged', 'TermOutput',
+    \ ])
+  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+  " For insert mode completion
+  inoremap <silent><expr> <TAB>
+   \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :
+   \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+   \ '<TAB>' : ddc#map#manual_complete()
   inoremap <silent><expr> <C-n>
-  \ pumvisible() ? '<C-n>' :
-  \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
-  \ '<TAB>' : ddc#map#manual_complete()
-  inoremap <silent><expr> <C-n> pumvisible() ? '<C-n>' : '<C-n>'
-  
-  " <S-TAB>: completion back.
-  inoremap <expr><C-p>  pumvisible() ? '<C-p>' : '<C-p>'
+   \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : '<C-n>'
+
+  inoremap <silent><expr> <CR>
+   \ pum#visible() ? ddc#map#manual_complete() : '<CR>'
+
+  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+  inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
+
+  inoremap <silent><expr> <C-l>   ddc#map#extend()
+  inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
   
   " Use ddc.
   call ddc#enable()
-'''
-
-[[plugins]]
-repo = 'Shougo/pum.vim'
-hook_add = '''
-  "inoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  "inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-  "inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  "inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
-  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-  inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
-  inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
-  inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
 '''
 
 [[plugins]]
@@ -193,48 +249,11 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'nvim-lspconfig'
 
 [[plugins]]
-repo = 'hrsh7th/vim-vsnip-integ'
+repo = 'tani/ddc-fuzzy'
 on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip'
-on_source = 'ddc.vim'
-hook_source = '''
-" NOTE: You can use other key to expand snippet.
-
-" Expand
-  imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-  smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-  
-  " Expand or jump
-  imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-  smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-  
-  " Jump forward or backward
-"  imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-"  smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-"  imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-"  smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-  "imap <expr> <C-n> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-n>'
-  "smap <expr> <C-n> vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-n>'
-  "imap <expr> <C-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-p>'
-  "smap <expr> <C-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-p>'
-  
-  " Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
-  " See https://github.com/hrsh7th/vim-vsnip/pull/50
-  "nmap        s   <Plug>(vsnip-select-text)
-  "xmap        s   <Plug>(vsnip-select-text)
-  "nmap        S   <Plug>(vsnip-cut-text)
-  "xmap        S   <Plug>(vsnip-cut-text)
-  
-  " If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
-  let g:vsnip_filetypes = {}
-  let g:vsnip_filetypes.javascriptreact = ['javascript']
-  let g:vsnip_filetypes.typescriptreact = ['typescript']
-'''
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
@@ -416,116 +435,16 @@ EOF
 '''
 
 [[plugins]]
-repo = 'matsui54/ddc-nvim-lsp-doc'
-on_source = 'ddc.vim'
+repo = 'matsui54/denops-popup-preview.vim'
+depends = ['denops.vim', 'pum', 'ddc.vim', 'ddc-nvim-lsp']
 hook_source = '''
-  let g:ddc_nvim_lsp_doc_config = {
-       \ 'documentation': {
-       \   'enable': v:true,
-       \   'border': 'single',
-       \   'maxWidth': 60,
-       \   'maxHeight': 30,
-       \ },
-       \ 'signature': {
-       \   'maxHeight': 5,
-       \ },
-       \ }
-  call ddc_nvim_lsp_doc#enable()
+  call popup_preview#enable()
 '''
 
 [[plugins]]
-repo = 'vim-denops/denops.vim'
-on_source = ['ddc.vim', 'ddu.vim']
-hook_add = '''
-  let g:denops#deno = "deno"
-  " denoのプロジェクト作るときにこれ設定入れないとだめだよ
-  " command "deno run -A --no-check ./denops/@denops-private/cli.ts"
-  " let g:denops_server_addr = '127.0.0.1:32123'
-'''
-
-[[plugins]]
-repo = 'hrsh7th/cmp-nvim-lsp'
+repo = 'matsui54/denops-signature_help'
+depends = ['denops.vim', 'pum', 'ddc.vim', 'ddc-nvim-lsp']
 hook_source = '''
-lua << EOF
-require'cmp'.setup {
-  sources = {
-    { name = 'nvim_lsp' }
-  }
-}
-
--- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- The following example advertise capabilities to `clangd`.
--- require'lspconfig'.clangd.setup {
---   capabilities = capabilities,
--- }
-EOF
+  call signature_help#enable()
 '''
 
-[[plugins]]
-repo = 'hrsh7th/nvim-cmp'
-hook_source = '''
-lua << EOF
-  -- Setup nvim-cmp.
-  local cmp = require'cmp'
-
-  cmp.setup({
-    snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      end,
-    },
-    mapping = {
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      -- Accept currently selected item. If none selected, `select` first item.
-      -- Set `select` to `false` to only confirm explicitly selected items.
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      -- { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
-    }, {
-      { name = 'buffer' },
-    })
-  })
-
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['tsserver'].setup {
-    capabilities = capabilities
-  }
-EOF
-'''

@@ -2,6 +2,13 @@
 repo = 'Shougo/ddu.vim'
 depends = 'denops.vim'
 on_source = ['denops.vim']
+hook_source = '''
+  if has('win32')
+    !pwsh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
+  else
+    !sh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
+  endif
+'''
 hook_add = '''
   call ddu#custom#patch_global({
       \ 'ui': 'ff',
@@ -124,15 +131,15 @@ hook_add = '''
   autocmd FileType ddu-filer call s:ddu_filer_my_settings()
   function! s:ddu_filer_my_settings() abort
     "nnoremap <buffer><silent><expr> <CR>
-    "  \ ddu#ui#filer#is_directory() ?
+    "  \ ddu#ui#filer#is_tree() ?
     "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
     "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'choosewin'}})<CR>"
     "nnoremap <buffer><silent><expr> <CR>
-    "  \ ddu#ui#filer#is_directory() ?
+    "  \ ddu#ui#filer#is_tree() ?
     "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
     "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
     nnoremap <buffer><silent><expr> <CR>
-      \ ddu#ui#filer#is_directory() ?
+      \ ddu#ui#filer#is_tree() ?
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open'})<CR>"
 
@@ -237,3 +244,13 @@ hook_add = '''
   command! Emoji call ddu#start({'sources': [{'name': 'emoji'}]})
 '''
 
+[[plugins]]
+repo = 'iamcco/markdown-preview.nvim'
+on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
+hook_source = '''
+  if has('win32')
+    !pwsh -c 'cd app && yarn install'
+  else
+    !sh -c 'cd app && yarn install'
+  endif
+'''
