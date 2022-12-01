@@ -47,6 +47,15 @@ hook_add = '''
       \     },
       \   }
       \ })
+
+  function! s:RunDenopsServer() abort
+    if has('win32')
+      !pwsh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
+    else
+      !sh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
+    endif
+  endfunction
+  command! RunDenopsServer execute s:RunDenopsServer()
 '''
 
 [[plugins]]
@@ -111,11 +120,6 @@ hook_add = '''
   \   },
   \   'uiParams': {
   \     'filer': {
-  \       'winWidth': 40,
-  \       'split': 'floating',
-  \       'filterFloatingPosition': 'top',
-  \       'filterSplitDirection': 'floating',
-  \       'floatingBorder': 'rounded',
   \     }
   \   },
   \   'actionOptions': {
@@ -143,9 +147,16 @@ hook_add = '''
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open'})<CR>"
 
+    nnoremap <buffer><silent><expr> t
+      \ ddu#ui#filer#is_tree() ?
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'tabnew'}})<CR>"
+
     nnoremap <buffer><silent> q
       \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
 
+    nnoremap <buffer><silent> ~
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow', 'params': {'path': $HOME}})<CR>
     nnoremap <buffer><silent> <BS>
       \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow', 'params': {'path': '..'}})<CR>
 
@@ -247,7 +258,7 @@ hook_add = '''
 [[plugins]]
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
-hook_source = '''
+hook_add = '''
   if has('win32')
     !pwsh -c 'cd app && yarn install'
   else

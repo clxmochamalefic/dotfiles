@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 let mapleader = ","
 
 if &compatible
@@ -9,10 +11,12 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-
-scriptencoding utf-8
+" encoding preference 
 set encoding=utf-8
 set fileencoding=utf-8
+
+" variable
+let s:initvim_path = fnamemodify(expand('<sfile>'), ':h')
 
 "---------------------------------------------------------------------------
 "" UndoFiles
@@ -66,9 +70,6 @@ augroup fileTypeIndent
   autocmd BufNewFile,BufRead *.tml        setlocal tabstop=2 softtabstop=2 shiftwidth=2
   autocmd BufNewFile,BufRead *.lua        setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-  autocmd BufNewFile,BufRead *.md         setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd BufNewFile,BufRead *.markdown   setlocal tabstop=2 softtabstop=2 shiftwidth=2
-
   "autocmd BufNewFile,BufRead *.blade.php  setlocal syntax=html
   "autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html
   "autocmd BufNewFile,BufRead *.blade.php  setlocal tabstop=2 softtabstop=2 shiftwidth=2
@@ -78,6 +79,20 @@ augroup fileTypeIndent
   autocmd FileType blade                  setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 augroup END
+
+" XML / HTML の閉じタグ自動入力
+augroup MyXML
+  autocmd!
+  autocmd FileType xml        inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType html       inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType phtml      inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType blade.php  inoremap <buffer> </ </<C-x><C-o>
+augroup END
+
+" 閉じかっこの自動入力
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap [<Enter> []<Left><CR><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
 "+++++++++++++++
 "" tab
@@ -106,63 +121,6 @@ set mousehide
 "set guioptions+=a
 
 "---------------------------------------------------------------------------
-" Use Default Shell
-if has('win32')
-  set shell=pwsh
-  set shellcmdflag=-c
-  set shellquote="
-
-  " terminal
-  cnoremap :tp terminal
-  cnoremap ;tp terminal
-  cnoremap :tw call termopen("powershell wsl")
-  cnoremap ;tw call termopen("powershell wsl")
-endif
-
-
-"+++++++++++++++
-" python設定
-if has('win32')
-    " install from msi
-    "let g:python3_host_prog = 'C:/Python39/python.exe'
-    " install from winget
-    let g:python3_host_prog = $HOME.'/AppData/Local/Programs/Python/Python310/python.exe'
-elseif has('mac')
-  let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
-  let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
-endif
-
-set number
-
-"+++++++++++++++
-" 行番号色変更
-autocmd ColorScheme * hi LineNr ctermbg=46 ctermfg=0
-autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
-set cursorline
-
-"+++++++++++++++
-" font:
-if has('win32')
-    " Windows用
-    " Migu 2M こそ至高フォント。
-    "
-    " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    set guifont=Migu\ 2M\ for\ Powerline:h12
-    "set guifont=MS_Mincho:h12:cSHIFTJIS
-    " 行間隔の設定
-    set linespace=1
-    " 一部のUCS文字の幅を自動計測して決める
-    if has('kaoriya')
-        set ambiwidth=auto
-    endif
-elseif has('mac')
-    set guifont=Migu\ 2M:h12
-elseif has('xfontset')
-    " UNIX用 (xfontsetを使用)
-    set guifontset=a14,r14,k14
-endif
-
-"---------------------------------------------------------------------------
 " 日本語入力に関する設定:
 "
 if has('multi_byte_ime') || has('xim')
@@ -178,15 +136,6 @@ if has('multi_byte_ime') || has('xim')
     " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
     "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 endif
-
-"---------------------------------------------------------------------------
-" Window
-set wildmenu
-" コマンドライン補完設定
-set wildmode=list:full,full
-set hidden
-" 編集中ファイルがあっても別画面に切り替え可能に
-set noequalalways
 
 "---------------------------------------------------------------------------
 " Mapping
@@ -209,20 +158,49 @@ augroup Terminal
   "autocmd VimEnter * ++nested split term://sh
 augroup END
 
-" use colorschema
-set termguicolors
-
 " use clipboard ------------------------------------------------------------------
 set nopaste
 noremap! <S-Insert> <C-R>+
 set clipboard=unnamed
 
 " Dein ---------------------------------------------------------------------------
+
+let g:dein#install_progress_type = 'floating'
+
+if !exists('*LoadPlugins')
+  let &stl.='%{LoadPlugins}'
+
+  ""
+  " プラグイン設定をロードする
+  "
+  " @param string a:dein_dir deinのインストールパス
+  " @param string a:initvim_path init.vimのパス
+  ""
+  function! LoadPlugins(dein_dir, initvim_path)
+    call dein#clear_state()
+    call dein#begin(a:dein_dir)
+
+    " 管理するプラグインを記述したファイルを全て読み込む
+    " プラグインの追加・削除やtomlファイルの設定を変更した後は
+    " 適宜 call dein#update や call dein#clear_state を呼んでください。
+    " そもそもキャッシュしなくて良いならload_state/save_stateを呼ばないようにしてください。
+    let l:filelist =  expand(a:initvim_path . "/plugins/*.toml")
+    let l:splitted = split(l:filelist, "\n")
+    for l:file in l:splitted
+      " .lazy.toml の場合は lazy load にする
+      let l:is_lazy = stridx(l:file, '.lazy.toml') > -1
+      call dein#load_toml(expand(l:file), {'lazy': l:is_lazy})
+    endfor
+
+    call dein#end()
+    call dein#save_state()
+  endfunction
+endif
+
 " dein.vimのディレクトリ
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-let s:initvim_path = fnamemodify(expand('<sfile>'), ':h')
+let s:plugin_preferences_dir = s:initvim_path . '/plugins'
 
 " なければgit clone
 if !isdirectory(s:dein_repo_dir)
@@ -231,25 +209,65 @@ endif
 execute 'set runtimepath+=' . s:dein_repo_dir
 
 if dein#load_state(s:dein_dir)
-    call dein#begin(s:dein_dir)
-
-    " 管理するプラグインを記述したファイル
-    let s:toml = s:initvim_path . '/dein.toml'
-    let s:lazy_toml = s:initvim_path . '/dein_lazy.toml'
-    call dein#load_toml(s:toml, {'lazy': 0})
-    call dein#load_toml(s:lazy_toml, {'lazy': 1})
-
-    call dein#end()
-    call dein#save_state()
+    execute LoadPlugins(s:dein_dir, s:initvim_path)
 endif
-" プラグインの追加・削除やtomlファイルの設定を変更した後は
-" 適宜 call dein#update や call dein#clear_state を呼んでください。
-" そもそもキャッシュしなくて良いならload_state/save_stateを呼ばないようにしてください。
 
 " その他インストールしていないものはこちらに入れる
 if dein#check_install()
     call dein#install()
 endif
+
+"---------------------------------------------------------------------------
+"" Display
+
+"+++++++++++++++
+" use colorschema
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+set termguicolors
+set background=dark
+colorscheme onehalfdark
+let g:airline_theme = 'onehalfdark'
+
+"+++++++++++++++
+" linenumber
+
+" show
+set number
+
+"+++++++++++++++
+" linenumber
+
+" modify color for linenumber
+augroup LineNumberColor
+  autocmd!
+  autocmd ColorScheme * hi LineNr ctermbg=46 ctermfg=0
+  autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
+augroup END
+
+"+++++++++++++++
+" floating window
+
+" floating window color
+hi MyDarkColorTheme guibg=232 guifg=7 ctermbg=232 ctermfg=7
+set winhighlight=Normal:MyDarkColorTheme
+
+" modify color for current cursor line linenumber
+set cursorline
+
+"+++++++++++++++
+" Window
+set wildmenu
+" コマンドライン補完設定
+set wildmode=list:full,full
+set hidden
+" 編集中ファイルがあっても別画面に切り替え可能に
+set noequalalways
+
+"---------------------------------------------------------------------------
+" general
 
 " ctags
 set tags=./tags;$HOME
@@ -257,26 +275,11 @@ set tags=./tags;$HOME
 filetype plugin indent on
 syntax enable
 
-
 call map(dein#check_clean(), "delete(v:val, 'rf')")
 
-" XML / HTML の閉じタグ自動入力
-augroup MyXML
-  autocmd!
-  autocmd FileType xml        inoremap <buffer> </ </<C-x><C-o>
-  autocmd FileType html       inoremap <buffer> </ </<C-x><C-o>
-  autocmd FileType phtml      inoremap <buffer> </ </<C-x><C-o>
-  autocmd FileType blade.php  inoremap <buffer> </ </<C-x><C-o>
-augroup END
-
-" 閉じかっこの自動入力
-inoremap {<Enter> {}<Left><CR><ESC><S-o>
-inoremap [<Enter> []<Left><CR><ESC><S-o>
-inoremap (<Enter> ()<Left><CR><ESC><S-o>
-
 let s:initvim_fp = s:initvim_path . '/init.vim'
-let s:deintoml_fp = s:initvim_path . '/dein.toml'
-let s:deinlazytoml_fp = s:initvim_path . '/dein_lazy.toml'
+let s:deintoml_fp = s:initvim_path . '/plugins/dein.toml'
+let s:deinlazytoml_fp = s:initvim_path . '/plugins/dein.lazy.toml'
 
 " init.vim 自動オープン
 command! Preferences execute 'e ' . s:initvim_path . '/init.vim'
@@ -291,13 +294,28 @@ command! Pl Plugins
 command! Lplugins execute 'e ' . s:deinlazytoml_fp
 command! Lp Lplugins
 
-if !exists('*s:reload_all')
-  let &stl.='%{s:reload_all}'
-  function! s:reload_all()
+if !exists('*ReloadAll')
+  let &stl.='%{ReloadAll}'
+
+  function! ReloadAll()
     execute 'source ' . s:initvim_fp
-    execute 'call dein#call_hook("add")'
+    execute LoadPlugins(s:dein_dir, s:initvim_path)
   endfunction
 endif
 
 " init.vim 再読み込み
-command! Reload execute s:reload_all()
+command! Reload execute ReloadAll()
+
+"---------------------------------------------------------------------------
+" env preferences
+if has('win32')
+    execute 'source ' . s:initvim_path . '/env/win.vim'
+elseif has('mac')
+    execute 'source ' . s:initvim_path . '/env/unix.vim'
+elseif has('macunix')
+    execute 'source ' . s:initvim_path . '/env/unix.vim'
+elseif has('xfontset')
+    execute 'source ' . s:initvim_path . '/env/linux.vim'
+else
+    execute 'source ' . s:initvim_path . '/env/linux.vim'
+endif

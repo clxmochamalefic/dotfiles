@@ -1,0 +1,19 @@
+# colorschemes
+
+[[plugins]] 
+repo = 'cocopon/iceberg.vim'
+merged = 0
+
+[[plugins]] 
+repo = 'jdkanani/vim-material-theme'
+merged = 0
+
+[[plugins]] 
+repo = 'sonph/onehalf'
+rtp = 'vim'
+merged = 0
+
+[[plugins]] 
+repo = 'ciaranm/inkpot'
+merged = 0
+
