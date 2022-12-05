@@ -1,0 +1,17 @@
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+hook_add = '''
+  let g:denops#deno = "deno"
+'''
+hook_post_source = '''
+  function! s:RunDenopsServer() abort
+    if has('win32')
+      !pwsh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
+    else
+      !sh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
+    endif
+  endfunction
+  command! RunDenopsServer execute s:RunDenopsServer()
+  let g:denops_server_addr = '127.0.0.1:32123'
+'''
+

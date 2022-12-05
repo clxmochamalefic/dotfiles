@@ -1,15 +1,6 @@
 [[plugins]]
-repo = 'vim-denops/denops.vim'
-on_source = ['ddc.vim', 'ddu.vim']
-hook_add = '''
-  let g:denops#deno = "deno"
-  " denoのプロジェクト作るときにこれ設定入れないとだめだよ
-  " command "deno run -A --no-check ./denops/@denops-private/cli.ts"
-  " let g:denops_server_addr = '127.0.0.1:32123'
-'''
-
-[[plugins]]
 repo = 'Shougo/pum.vim'
+on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
 hook_source = '''
   call pum#set_option('max_width', 80)
   call pum#set_option('use_complete', v:true)
@@ -19,13 +10,8 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'Shougo/ddc-ui-pum'
-depends = 'pum.vim'
-on_source = 'ddc.vim'
-
-[[plugins]]
 repo = 'Shougo/ddc.vim'
-depends = ['denops.vim', 'pum.vim']
+on_source = ['denops.vim', 'pum.vim']
 on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
 hook_source = '''
   call ddc#custom#patch_global('ui', 'pum')
@@ -106,23 +92,28 @@ hook_source = '''
 '''
 
 [[plugins]]
+repo = 'Shougo/ddc-ui-pum'
+on_source = ['ddc.vim', 'pum.vim']
+
+[[plugins]]
 repo = 'Shougo/ddc-around'
+on_source = ['ddc.vim', 'pum.vim']
 
 [[plugins]]
 repo = 'Shougo/ddc-matcher_head'
-on_source = 'ddc.vim'
+on_source = ['ddc.vim', 'pum.vim']
 
 [[plugins]]
 repo = 'Shougo/ddc-sorter_rank'
-on_source = 'ddc.vim'
+on_source = ['ddc.vim', 'pum.vim']
 
 [[plugins]]
 repo = 'LumaKernel/ddc-file'
-on_source = 'ddc.vim'
+on_source = ['ddc.vim', 'pum.vim']
 
 [[plugins]]
 repo = 'Shougo/ddc-nvim-lsp'
-on_source = 'nvim-lspconfig'
+on_source = ['ddc.vim', 'pum.vim']
 
 [[plugins]]
 repo = 'tani/ddc-fuzzy'
@@ -130,14 +121,14 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
-depends = ['denops.vim', 'pum', 'ddc.vim', 'ddc-nvim-lsp']
+on_source = ['denops.vim', 'pum.vim', 'ddc.vim', 'ddc-nvim-lsp']
 hook_source = '''
   call popup_preview#enable()
 '''
 
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
-depends = ['denops.vim', 'pum', 'ddc.vim', 'ddc-nvim-lsp']
+on_source = ['denops.vim', 'pum.vim', 'ddc.vim', 'ddc-nvim-lsp']
 hook_source = '''
   call signature_help#enable()
 '''

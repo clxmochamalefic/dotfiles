@@ -167,6 +167,16 @@ set clipboard=unnamed
 
 let g:dein#install_progress_type = 'floating'
 
+let s:plugin_preference_list = [
+ \  'dein.toml',
+ \  'denops.toml',
+ \  'airline.toml',
+ \  'themes.toml',
+ \  'dein.lazy.toml',
+ \  'ddc.lazy.toml',
+ \  'ddu.lazy.toml',
+ \ ]
+
 if !exists('*LoadPlugins')
   let &stl.='%{LoadPlugins}'
 
@@ -184,12 +194,10 @@ if !exists('*LoadPlugins')
     " プラグインの追加・削除やtomlファイルの設定を変更した後は
     " 適宜 call dein#update や call dein#clear_state を呼んでください。
     " そもそもキャッシュしなくて良いならload_state/save_stateを呼ばないようにしてください。
-    let l:filelist =  expand(a:initvim_path . "/plugins/*.toml")
-    let l:splitted = split(l:filelist, "\n")
-    for l:file in l:splitted
+    for l:plugin_preference_name in s:plugin_preference_list
+      let l:file =  expand(a:initvim_path . "/plugins/" . l:plugin_preference_name)
       " .lazy.toml の場合は lazy load にする
-      let l:is_lazy = stridx(l:file, '.lazy.toml') > -1
-      call dein#load_toml(expand(l:file), {'lazy': l:is_lazy})
+      call dein#load_toml(l:file, {'lazy': stridx(l:file, '.lazy.toml') > -1})
     endfor
 
     call dein#end()

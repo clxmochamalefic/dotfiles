@@ -1,10 +1,5 @@
-
-[[plugins]]
-repo = 'vim-airline/vim-airline-themes'
-
 [[plugins]]
 repo = 'vim-airline/vim-airline'
-depends = ['vim-airline-themes']
 hook_add = '''   
   set laststatus=2
   let g:airline_experimental = 1
@@ -46,4 +41,7 @@ hook_add = '''
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 '''
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
 
