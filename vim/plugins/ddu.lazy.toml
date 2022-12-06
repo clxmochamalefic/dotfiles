@@ -1,14 +1,18 @@
 [[plugins]]
 repo = 'Shougo/ddu.vim'
-on_func = 'ddu#start()'
-on_source = [
-  'denops.vim',
-  'ddu-ui-ff',
-  'ddu-ui-filer',
-  'ddu-source-buffer',
-]
-hook_source = '''
-  " define functions
+on_source = ['denops.vim']
+hook_add = '''
+  " env executes
+  if has('macunix')
+    command "brew install desktop-file-utils"
+  endif
+
+'''
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-ff'
+on_source = ['denops.vim', 'ddu.vim']
+hook_add = '''
   function! s:ddu_my_settings() abort
     nnoremap <buffer><silent> <CR>
           \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
@@ -29,6 +33,45 @@ hook_source = '''
     \ <Cmd>close<CR>
   endfunction
 
+  augroup ddu_ui_ff_loading
+    autocmd!
+    autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+    autocmd FileType ddu-ff call s:ddu_my_settings()
+  augroup END
+
+  call ddu#custom#patch_global({
+\   'ui': 'ff',
+\   'sources': [
+\       {'name': 'file_rec', 'params': {}},
+\       {'name': 'file'},
+\       {'name': 'buffer'},
+\       {'name': 'emoji'},
+\   ],
+\   'sourceOptions': {
+\     '_': {
+\       'matchers': ['matcher_substring'],
+\     },
+\   },
+\   'filterParams': {
+\     'matcher_substring': {
+\       'highlightMatched': 'Search',
+\     },
+\   },
+\   'kindOptions': {
+\     'file': {
+\       'defaultAction': 'open',
+\     },
+\     'word': {
+\       'defaultAction': 'append',
+\     },
+\   }
+\ })
+'''
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-filer'
+on_source = ['denops.vim', 'ddu.vim', 'ddu-source-file']
+hook_add = '''
   function! s:ddu_filer_my_settings() abort
     "nnoremap <buffer><silent><expr> <CR>
     "  \ ddu#ui#filer#is_tree() ?
@@ -97,49 +140,11 @@ hook_source = '''
       \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>
   endfunction
 
-  " env executes
-  if has('macunix')
-    command "brew install desktop-file-utils"
-  endif
-
-  " define autocmds
-  augroup ddu_vim_loading
+  augroup ddu_ui_filer_loading
     autocmd!
-
-    autocmd FileType ddu-ff call s:ddu_my_settings()
-    autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
     autocmd FileType ddu-filer call s:ddu_filer_my_settings()
-
     autocmd TabEnter,CursorHold,FocusGained <buffer> call ddu#ui#filer#do_action('checkItems')
   augroup END
-
-  call ddu#custom#patch_global({
-\   'ui': 'ff',
-\   'sources': [
-\       {'name': 'file_rec', 'params': {}},
-\       {'name': 'file'},
-\       {'name': 'buffer'},
-\       {'name': 'emoji'},
-\   ],
-\   'sourceOptions': {
-\     '_': {
-\       'matchers': ['matcher_substring'],
-\     },
-\   },
-\   'filterParams': {
-\     'matcher_substring': {
-\       'highlightMatched': 'Search',
-\     },
-\   },
-\   'kindOptions': {
-\     'file': {
-\       'defaultAction': 'open',
-\     },
-\     'word': {
-\       'defaultAction': 'append',
-\     },
-\   }
-\ })
 
   call ddu#custom#patch_local('filer', {
 \   'ui': 'filer',
@@ -170,22 +175,15 @@ hook_source = '''
 \   },
 \ })
 
-  " normal mapping
   nmap  ^  :<C-u>call ddu#start({ 'name': 'filer', 'uiParams': { 'filer': {'search': expand('%:p')} }, })<CR>
-  nmap  \  :<C-u>call ddu#start({ 'sources': [{ 'name': 'buffer' }] })<CR>
 '''
-
-[[plugins]]
-repo = 'Shougo/ddu-ui-ff'
-on_source = ['denops.vim', 'ddu.vim']
-
-[[plugins]]
-repo = 'Shougo/ddu-ui-filer'
-on_source = ['denops.vim', 'ddu.vim']
 
 [[plugins]]
 repo = 'shun/ddu-source-buffer'
 on_source = ['denops.vim', 'ddu.vim']
+hook_add = '''
+  nmap  \  :<C-u>call ddu#start({ 'sources': [{ 'name': 'buffer' }] })<CR>
+'''
 
 [[plugins]]
 repo = 'Shougo/ddu-source-action'
