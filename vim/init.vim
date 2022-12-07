@@ -66,9 +66,6 @@ augroup fileTypeIndent
   autocmd BufNewFile,BufRead *.tml        setlocal tabstop=2 softtabstop=2 shiftwidth=2
   autocmd BufNewFile,BufRead *.lua        setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-  autocmd BufNewFile,BufRead *.md         setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd BufNewFile,BufRead *.markdown   setlocal tabstop=2 softtabstop=2 shiftwidth=2
-
   "autocmd BufNewFile,BufRead *.blade.php  setlocal syntax=html
   "autocmd BufNewFile,BufRead *.blade.php  setlocal filetype=html
   "autocmd BufNewFile,BufRead *.blade.php  setlocal tabstop=2 softtabstop=2 shiftwidth=2
@@ -147,7 +144,11 @@ if has('win32')
     " Migu 2M こそ至高フォント。
     "
     " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    set guifont=Migu\ 2M\ for\ Powerline:h12
+    " set guifont=Migu\ 2M:h12
+    "
+    " Cicaもいいぞ
+    " https://github.com/miiton/Cica
+    set guifont=Cica:h12
     "set guifont=MS_Mincho:h12:cSHIFTJIS
     " 行間隔の設定
     set linespace=1

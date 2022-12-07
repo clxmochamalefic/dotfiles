@@ -2,14 +2,7 @@
 repo = 'Shougo/ddu.vim'
 depends = 'denops.vim'
 on_source = ['denops.vim']
-hook_source = '''
-  if has('win32')
-    !pwsh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
-  else
-    !sh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts'
-  endif
-'''
-hook_add = '''
+hook_post_source = '''
   call ddu#custom#patch_global({
       \ 'ui': 'ff',
       \ 'sources': [{'name': 'file_rec', 'params': {}},
@@ -84,8 +77,37 @@ hook_add = '''
 repo = 'shun/ddu-source-buffer'
 on_source = 'ddu.vim'
 hook_add = '''
-  nmap  \  :<C-u>call ddu#start({ 'sources': [{ 'name': 'buffer' }] })<CR>
+  call ddu#custom#patch_local('buffer', {
+  \   'ui': 'ff',
+  \   'sources': [
+  \     {
+  \       'name': 'buffer',
+  \       'params': {},
+  \     },
+  \   ],
+  \ })
+  nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
+  command! DduBuffer call ddu#start({ 'name': 'buffer' })
 '''
+#[plugins.ftplugin]
+#ddu-ff = '''
+#  let s:diff_buffer_source = '';
+#
+#  function! DduFfBufferSplit() abort
+#    if s:diff_buffer_source = ''
+#
+#    endif
+#  endfunction
+#
+#  function! ddu_source_buffer_ddu_ff_my_settings() abort
+#    nnoremap <buffer><silent> c <Cmd>close<CR>
+#  endfunction
+#
+#  augroup ddu_source_buffer_ddu_ff_executed
+#    autocmd!
+#    autocmd FileType ddu-ff-filter call s:ddu_source_buffer_ddu_ff_my_settings()
+#  augroup END
+#'''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-filer'
@@ -108,15 +130,6 @@ hook_add = '''
   \     'file': {
   \       'defaultAction': 'open',
   \     },
-  \   },
-  \   'uiParams': {
-  \     'filer': {
-  \       'winWidth': 40,
-  \       'split': 'floating',
-  \       'filterFloatingPosition': 'top',
-  \       'filterSplitDirection': 'floating',
-  \       'floatingBorder': 'rounded',
-  \     }
   \   },
   \   'actionOptions': {
   \     'narrow': {
@@ -191,10 +204,7 @@ hook_add = '''
 
   endfunction
 
-  nmap  ^  :<C-u>call ddu#start({
-  \   'name': 'filer',
-  \   'uiParams': {'filer': {'search': expand('%:p')}},
-  \ })<CR>
+  nnoremap  ^  :<C-u>call ddu#start({ 'name': 'filer', 'uiParams': { 'filer': { 'search': expand('%:p') } } })<CR>
 '''
 
 [[plugins]]
@@ -235,22 +245,15 @@ hook_add = '''
 [[plugins]]
 repo = 'ryota2357/ddu-column-icon_filename'
 on_source = ['ddu.vim']
-hook_add = '''
-'''
 
 [[plugins]]
 repo = '4513ECHO/ddu-source-emoji'
+on_source = ['ddu.vim']
 hook_add = '''
-  command! Emoji call ddu#start({'sources': [{'name': 'emoji'}]})
+  command! DduEmoji call ddu#start({'sources': [{'name': 'emoji'}]})
 '''
 
 [[plugins]]
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
-hook_source = '''
-  if has('win32')
-    !pwsh -c 'cd app && yarn install'
-  else
-    !sh -c 'cd app && yarn install'
-  endif
-'''
+build = 'sh -c "cd app && yarn install"'

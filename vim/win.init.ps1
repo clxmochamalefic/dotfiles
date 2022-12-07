@@ -48,6 +48,3 @@ Set-Content -Path ~/AppData/Local/nvim/init.vim  -Value "source ${preferencePath
 Set-Content -Path ~/AppData/Local/nvim/ginit.vim -Value "source ${preferencePathStr}/ginit.vim" -Encoding UTF8
 
 Write-Output "finished and all correct"
-
-New-Item -type File -Force $profile
-Write-Output 'function nq() { nvim-qt ~ }' >> $profile
