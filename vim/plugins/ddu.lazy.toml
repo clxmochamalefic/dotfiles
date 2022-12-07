@@ -2,55 +2,17 @@
 repo = 'Shougo/ddu.vim'
 depends = 'denops.vim'
 on_source = ['denops.vim']
-hook_post_source = '''
-  call ddu#custom#patch_global({
-      \ 'ui': 'ff',
-      \ 'sources': [{'name': 'file_rec', 'params': {}},
-      \             {'name': 'file'},
-      \             {'name': 'buffer'},
-      \             {'name': 'emoji'}],
-      \ })
-
-  " Use matcher_substring filter.
-  call ddu#custom#patch_global({
-      \   'sourceOptions': {
-      \     '_': {
-      \       'matchers': ['matcher_substring'],
-      \     },
-      \   }
-      \ })
-
-  " Enable highlight matched text
-  " Note: It is slow
-  call ddu#custom#patch_global({
-      \   'filterParams': {
-      \     'matcher_substring': {
-      \       'highlightMatched': 'Search',
-      \     },
-      \   }
-      \ })
-
-  call ddu#custom#patch_global({
-      \   'kindOptions': {
-      \     'file': {
-      \       'defaultAction': 'open',
-      \     },
-      \     'word': {
-      \       'defaultAction': 'append',
-      \     },
-      \   }
-      \ })
+hook_add = '''
+  " env executes
+  if has('macunix')
+    command "brew install desktop-file-utils"
+  endif
 '''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-ff'
-on_source = ['ddu.vim']
+on_source = ['denops.vim', 'ddu.vim']
 hook_add = '''
-  if has('macunix')
-    command "brew install desktop-file-utils"
-  endif
-
-  autocmd FileType ddu-ff call s:ddu_my_settings()
   function! s:ddu_my_settings() abort
     nnoremap <buffer><silent> <CR>
           \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
@@ -62,7 +24,6 @@ hook_add = '''
           \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
   endfunction
 
-  autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
   function! s:ddu_filter_my_settings() abort
     inoremap <buffer><silent> <CR>
     \ <Esc><Cmd>close<CR>
@@ -71,23 +32,41 @@ hook_add = '''
     nnoremap <buffer><silent> q
     \ <Cmd>close<CR>
   endfunction
-'''
 
-[[plugins]]
-repo = 'shun/ddu-source-buffer'
-on_source = 'ddu.vim'
-hook_add = '''
-  call ddu#custom#patch_local('buffer', {
-  \   'ui': 'ff',
-  \   'sources': [
-  \     {
-  \       'name': 'buffer',
-  \       'params': {},
-  \     },
-  \   ],
-  \ })
-  nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
-  command! DduBuffer call ddu#start({ 'name': 'buffer' })
+  augroup ddu_ui_ff_loading
+    autocmd!
+    autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+    autocmd FileType ddu-ff call s:ddu_my_settings()
+  augroup END
+'''
+hook_post_source = '''
+  call ddu#custom#patch_global({
+\   'ui': 'ff',
+\   'sources': [
+\       {'name': 'file_rec', 'params': {}},
+\       {'name': 'file'},
+\       {'name': 'buffer'},
+\       {'name': 'emoji'},
+\   ],
+\   'sourceOptions': {
+\     '_': {
+\       'matchers': ['matcher_substring'],
+\     },
+\   },
+\   'filterParams': {
+\     'matcher_substring': {
+\       'highlightMatched': 'Search',
+\     },
+\   },
+\   'kindOptions': {
+\     'file': {
+\       'defaultAction': 'open',
+\     },
+\     'word': {
+\       'defaultAction': 'append',
+\     },
+\   }
+\ })
 '''
 #[plugins.ftplugin]
 #ddu-ff = '''
@@ -108,6 +87,23 @@ hook_add = '''
 #    autocmd FileType ddu-ff-filter call s:ddu_source_buffer_ddu_ff_my_settings()
 #  augroup END
 #'''
+
+[[plugins]]
+repo = 'shun/ddu-source-buffer'
+on_source = 'ddu.vim'
+hook_add = '''
+  call ddu#custom#patch_local('buffer', {
+  \   'ui': 'ff',
+  \   'sources': [
+  \     {
+  \       'name': 'buffer',
+  \       'params': {},
+  \     },
+  \   ],
+  \ })
+  nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
+  command! DduBuffer call ddu#start({ 'name': 'buffer' })
+'''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-filer'
@@ -138,27 +134,30 @@ hook_add = '''
   \   },
   \ })
 
-  autocmd TabEnter,CursorHold,FocusGained <buffer>
-    \ call ddu#ui#filer#do_action('checkItems')
-
-  autocmd FileType ddu-filer call s:ddu_filer_my_settings()
   function! s:ddu_filer_my_settings() abort
-    "nnoremap <buffer><silent><expr> <CR>
-    "  \ ddu#ui#filer#is_tree() ?
-    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'choosewin'}})<CR>"
-    "nnoremap <buffer><silent><expr> <CR>
-    "  \ ddu#ui#filer#is_tree() ?
-    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-    "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
+#    nnoremap <buffer><silent><expr> <CR>
+#      \ ddu#ui#filer#is_tree() ?
+#      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+#      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'choosewin'}})<CR>"
+#    nnoremap <buffer><silent><expr> <CR>
+#      \ ddu#ui#filer#is_tree() ?
+#      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+#      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
     nnoremap <buffer><silent><expr> <CR>
       \ ddu#ui#filer#is_tree() ?
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
       \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open'})<CR>"
 
+    nnoremap <buffer><silent><expr> t
+      \ ddu#ui#filer#is_tree() ?
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+      \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'tabnew'}})<CR>"
+
     nnoremap <buffer><silent> q
       \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
 
+    nnoremap <buffer><silent> ~
+      \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow', 'params': {'path': $HOME}})<CR>
     nnoremap <buffer><silent> <BS>
       \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow', 'params': {'path': '..'}})<CR>
 
@@ -201,9 +200,15 @@ hook_add = '''
 
     nnoremap <buffer><silent> <TAB>
       \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>
-
   endfunction
 
+  augroup ddu_ui_filer_loading
+    autocmd!
+    autocmd FileType ddu-filer call s:ddu_filer_my_settings()
+    autocmd TabEnter,CursorHold,FocusGained <buffer> call ddu#ui#filer#do_action('checkItems')
+  augroup END
+
+  
   nnoremap  ^  :<C-u>call ddu#start({ 'name': 'filer', 'uiParams': { 'filer': { 'search': expand('%:p') } } })<CR>
 '''
 
@@ -222,7 +227,7 @@ hook_add = '''
 
 [[plugins]]
 repo = 'Shougo/ddu-source-file_rec'
-on_source = ['ddu.vim']
+on_source = ['ddu.vim', 'ddu-kind-file']
 
 [[plugins]]
 repo = 'Shougo/ddu-filter-matcher_substring'
@@ -233,14 +238,16 @@ repo = 'Shougo/ddu-kind-file'
 on_source = ['ddu.vim']
 
 [[plugins]]
+repo = 'Shougo/ddu-kind-word'
+on_source = ['ddu.vim']
+
+[[plugins]]
 repo = 'Shougo/ddu-source-file'
-on_source = ['ddu.vim', 'ddu-kind-file']
+on_source = ['ddu.vim']
 
 [[plugins]]
 repo = 'Shougo/ddu-column-filename'
-on_source = ['ddu.vim']
-hook_add = '''
-'''
+on_source = ['ddu.vim', 'ddu-kind-file']
 
 [[plugins]]
 repo = 'ryota2357/ddu-column-icon_filename'
@@ -253,7 +260,3 @@ hook_add = '''
   command! DduEmoji call ddu#start({'sources': [{'name': 'emoji'}]})
 '''
 
-[[plugins]]
-repo = 'iamcco/markdown-preview.nvim'
-on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
-build = 'sh -c "cd app && yarn install"'

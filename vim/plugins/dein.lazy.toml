@@ -1,0 +1,10 @@
+[[plugins]]
+repo = 'iamcco/markdown-preview.nvim'
+on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
+hook_add = '''
+  if has('win32')
+    !pwsh -c 'cd app && yarn install'
+  else
+    !sh -c 'cd app && yarn install'
+  endif
+'''
