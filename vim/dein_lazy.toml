@@ -113,27 +113,34 @@ hook_add = '''
 repo = 'Shougo/ddu-ui-filer'
 on_source = ['ddu.vim']
 hook_add = '''
-  call ddu#custom#patch_local('filer', {
-  \   'ui': 'filer',
-  \   'sources': [
-  \     {
-  \       'name': 'file',
-  \       'params': {},
+  call ddu#custom#patch_local('filer', #{
+  \   ui: 'filer',
+  \   sources: [
+  \     #{
+  \       name: 'file',
+  \       params: #{},
   \     },
   \   ],
-  \   'sourceOptions': {
-  \     '_': {
-  \       'columns': ['icon_filename', 'filename'],
+  \   sourceOptions: #{
+  \     _: #{
+  \       columns: ['icon_filename'],
   \     },
   \   },
-  \   'kindOptions': {
-  \     'file': {
-  \       'defaultAction': 'open',
+  \   kindOptions: #{
+  \     file: #{
+  \       defaultAction: 'open',
   \     },
   \   },
-  \   'actionOptions': {
-  \     'narrow': {
-  \       'quit': v:false,
+  \   actionOptions: #{
+  \     narrow: #{
+  \       quit: v:false,
+  \     },
+  \   },
+  \   uiParams: #{
+  \     filer: #{
+  \       search: expand('%:p'),
+  \       sort: 'filename',
+  \       sortTreesFirst: v:true,
   \     },
   \   },
   \ })
@@ -204,7 +211,11 @@ hook_add = '''
 
   endfunction
 
-  nnoremap  ^  :<C-u>call ddu#start({ 'name': 'filer', 'uiParams': { 'filer': { 'search': expand('%:p') } } })<CR>
+  command! DduFiler     call ddu#start({ 'name': 'filer', 'uiParams': {} })
+  command! DduFilerHome call ddu#start({ 'name': 'filer', 'uiParams': { 'filer': { 'search': expand($HOME) } } })
+
+  nnoremap  ^  :<C-u>DduFiler<CR>
+  nnoremap  ~  :<C-u>DduFilerHome<CR>
 '''
 
 [[plugins]]
@@ -237,6 +248,10 @@ repo = 'Shougo/ddu-source-file'
 on_source = ['ddu.vim', 'ddu-kind-file']
 
 [[plugins]]
+repo = 'Shougo/ddu-kind-word'
+on_source = ['ddu.vim']
+
+[[plugins]]
 repo = 'Shougo/ddu-column-filename'
 on_source = ['ddu.vim']
 hook_add = '''
@@ -248,9 +263,23 @@ on_source = ['ddu.vim']
 
 [[plugins]]
 repo = '4513ECHO/ddu-source-emoji'
-on_source = ['ddu.vim']
+on_source = ['ddu.vim', 'ddu-kind-emoji']
 hook_add = '''
-  command! DduEmoji call ddu#start({'sources': [{'name': 'emoji'}]})
+  call ddu#custom#patch_local('emoji', {
+  \   'sources': [
+  \     {
+  \       'name': 'emoji',
+  \       'params': {},
+  \     },
+  \   ],
+  \   'kindOptions': {
+  \     'word': {
+  \       'defaultAction': 'append',
+  \     },
+  \   },
+  \ })
+  command! DduEmoji call ddu#start({ 'name': 'emoji' })
+"  command! DduEmoji call ddu#start({ 'sources': [{ 'name': 'emoji' }] })
 '''
 
 [[plugins]]

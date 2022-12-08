@@ -137,32 +137,6 @@ autocmd ColorScheme * hi LineNr ctermbg=46 ctermfg=0
 autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
 set cursorline
 
-"+++++++++++++++
-" font:
-if has('win32')
-    " Windows用
-    " Migu 2M こそ至高フォント。
-    "
-    " https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-    " set guifont=Migu\ 2M:h12
-    "
-    " Cicaもいいぞ
-    " https://github.com/miiton/Cica
-    set guifont=Cica:h12
-    "set guifont=MS_Mincho:h12:cSHIFTJIS
-    " 行間隔の設定
-    set linespace=1
-    " 一部のUCS文字の幅を自動計測して決める
-    if has('kaoriya')
-        set ambiwidth=auto
-    endif
-elseif has('mac')
-    set guifont=Migu\ 2M:h12
-elseif has('xfontset')
-    " UNIX用 (xfontsetを使用)
-    set guifontset=a14,r14,k14
-endif
-
 "---------------------------------------------------------------------------
 " 日本語入力に関する設定:
 "

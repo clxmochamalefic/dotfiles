@@ -159,8 +159,9 @@ hook_source = '''
   " Customize global settings
   " Use around source.
   " https://github.com/Shougo/ddc-around
-  call ddc#custom#patch_global('sources', ['nvim-lsp', 'around'])
+  call ddc#custom#patch_global('sources', ['nvim-lsp', 'around', 'emoji'])
   call ddc#custom#patch_global('cmdlineSources', ['cmdline', 'cmdline-history', 'around'])
+  ;;
   
   " Use matcher_head and sorter_rank.
   " https://github.com/Shougo/ddc-matcher_head
@@ -185,19 +186,20 @@ hook_source = '''
         \   'cmdline-history': {
         \     'mark': '| history',
         \   },
+        \   'emoji': {
+        \	    'mark': 'emoji',
+        \	    'matchers': ['emoji'],
+        \     'forceCompletionPattern': '[a-zA-Z_:]\w*',
+        \	    'sorters': [],
+        \	  },
         \ })
+
+  " Add matching patterns
+  call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
+
   call ddc#custom#patch_global('sourceParams', {
         \ 'nvim-lsp': { 'kindLabels': { 'Class': '[class]', 'Method': '[method]', 'Function': '[func]', 'Variable': '[var]' } },
-        \ 'around': {'maxSize': 500},
-        \ })
-  
-  " Customize settings on a filetype
-  call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
-  call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', {
-        \ 'clangd': {'mark': 'C'},
-        \ })
-  call ddc#custom#patch_filetype('markdown', 'sourceParams', {
-        \ 'around': {'maxSize': 100},
+        \ 'around': { 'maxSize': 500 },
         \ })
   
   " Mappings
@@ -245,6 +247,10 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'LumaKernel/ddc-file'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'gamoutatsumi/ddc-emoji'
 on_source = 'ddc.vim'
 
 [[plugins]]
