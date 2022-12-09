@@ -249,14 +249,20 @@ inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap [<Enter> []<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
+let s:ginitvim_fp = s:initvim_path . '/ginit.vim'
 let s:initvim_fp = s:initvim_path . '/init.vim'
 let s:deintoml_fp = s:initvim_path . '/dein.toml'
 let s:deinlazytoml_fp = s:initvim_path . '/dein_lazy.toml'
 
 " init.vim 自動オープン
-command! Preferences execute 'e ' . s:initvim_path . '/init.vim'
+command! Preferences execute 'e ' . s:initvim_fp
 command! Pref Preferences
 command! Pr Preferences
+
+" ginit.vim 自動オープン
+command! PreferencesGui execute 'e ' . s:ginitvim_fp
+command! PrefGui Preferences
+command! Pg PreferencesGui
 
 " dein.toml 自動オープン
 command! Plugins execute 'e ' . s:deintoml_fp
@@ -270,6 +276,7 @@ if !exists('*s:reload_all')
   let &stl.='%{s:reload_all}'
   function! s:reload_all()
     execute 'source ' . s:initvim_fp
+    execute 'source ' . s:ginitvim_fp
     execute 'call dein#call_hook("add")'
   endfunction
 endif

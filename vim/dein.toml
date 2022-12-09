@@ -36,10 +36,6 @@ hook_add = '''
   let g:airline#extensions#tabline#buffer_idx_mode = 1
   let g:airline#extensions#virtualenv#enabled = 1
 
-  " Get powerline-compatible font(s):
-  "     https://github.com/powerline/fonts
-  set guifont=Migu\ 2M\ for\ Powerline:h12
-
   if !exists('g:airline_symbols')
       let g:airline_symbols = {}
   endif
@@ -263,180 +259,73 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = 'BufEnter'
-hook_source = '''
-lua << EOF
-local nvim_lsp = require('lspconfig')
-local on_attach = function (client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  -- Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
-
-local servers = {
-  { name="tsserver", root_pattern={ "package.json" } },
-  { name="denols", root_pattern={ "deno.json", "deno.jsonc" } },
-  { name="prismals" },
-  { name="omnisharp" },
-  { name="dockerls" },
-  { name="eslint" },
-  { name="jsonls" },
-  { name="intelephense" },
-  { name="powershell_es" },
-  { name="sqlls" },
-  { name="lemminx" },
-  { name="yamlls" },
-  { name="html" },
-  { name="cssls" },
-  { name="marksman" },
-  { name="clangd" },
-  { name="vimls" },
-  { name="sumneko_lua" },
-  { name="sqls" },
-}
-
-for _, server in ipairs(servers) do
-  nvim_lsp[server["name"]].setup {
-    on_attach = on_attach,
-    root_dir = nvim_lsp.util.root_pattern(server["root_pattern"]) or root_dir,
-    autostart = true,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 150,
-    }
-  }
-end
-
-nvim_lsp.denols.setup {
-  on_attach = on_attach,
-  root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-}
-
-nvim_lsp.tsserver.setup {
-  on_attach = on_attach,
-  root_dir = nvim_lsp.util.root_pattern(),
-}
-
--- require'lspinstall'.setup()
--- local servers = require'lspinstall'.installed_servers()
--- for _, server in pairs(servers) do
---     require'lspconfig'[server].setup{}
--- end
-EOF
-'''
 
 [[plugins]]
-repo = 'williamboman/nvim-lsp-installer'
-on_source = 'nvim-lspconfig'
+repo = 'williamboman/mason.nvim'
+on_source = ['nvim-lspconfig']
+
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
+on_source = ['nvim-lspconfig', 'mason.nvim']
 hook_source = '''
 lua << EOF
-local lsp_installer = require("nvim-lsp-installer")
+local mason = require('mason')
 
--- lsp_installer setting
-lsp_installer.settings({
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
+-- mason setting
+mason.setup({
+  ui = {
+    icons = {
+      package_installed   = "✓",
+      package_pending     = "➜",
+      package_uninstalled = "✗"
     }
+  }
 })
 
 local servers = {
-	"tsserver",
-	"prismals",
-	"omnisharp",
-	"dockerls",
-	"eslint",
-	"jsonls",
-	"intelephense",
-	"powershell_es",
-	"sqlls",
-	"lemminx",
-	"yamlls",
-	"html",
-	"cssls",
+  "tsserver",
+  "denols",
+  "prismals",
+  "omnisharp",
+  "dockerls",
+  "eslint",
+  "jsonls",
+  "intelephense",
+  "powershell_es",
+  "sqlls",
+  "lemminx",
+  "yamlls",
+  "html",
+  "cssls",
+  "marksman",
+  "clangd",
+  "vimls",
+  "sumneko_lua",
+  "sqls",
 }
 
--- Register a handler that will be called for all installed servers.
--- Alternatively, you may also register handlers on specific server instances instead (see example below).
-lsp_installer.on_server_ready(function(server)
-	-- Specify the default options which we'll use for pyright and solargraph
-	-- Note: These are automatically setup from nvim-lspconfig.
-        -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-	local default_opts = {
-		on_attach = on_attach,
-		capabilities = capabilities,
-	}
+local nvim_lsp = require('lspconfig')
+local mason_lspconfig = require('mason-lspconfig')
 
-	-- Now we'll create a server_opts table where we'll specify our custom LSP server configuration
-	local server_opts = {
-		["efm"] = function()
-			default_opts.cmd = {
-				vim.fn.stdpath("data") .. "/lsp_servers/efm/efm-langserver",
-				"-c",
-				"/Users/Oli/.config/efm-langserver/config.yaml",
-			}
-			default_opts.flags = {
-				debounce_text_changes = 150,
-			}
-			default_opts.filetypes = {
-				"css",
-				"html",
-				"javascript",
-				"python",
-			}
-			default_opts.init_options = {
-				documentFormatting = true,
-			}
+mason_lspconfig.setup({
+  ensure_installed = servers
+})
+mason_lspconfig.setup_handlers({
+  function(server_name)
+    local opts = {}
+    opts.on_attach = function(_, bufnr)
+      local bufopts = { silent = true, buffer = bufnr }
 
-			default_opts.on_attach = on_attach
-			default_opts.capabilities = capabilities
+      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+      vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
+      vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
+      vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
+    end
 
-			return default_opts
-		end,
-	}
+    nvim_lsp[server_name].setup(opts)
+  end
+})
 
-	-- We check to see if any custom server_opts exist for the LSP server, if so, load them, if not, use our default_opts
-	server:setup(server_opts[server.name] and server_opts[server.name]() or default_opts)
-	vim.cmd([[ do User LspAttachBuffers ]])
-end)
-
-for _, name in pairs(servers) do
-	local ok, server = lsp_installer.get_server(name)
-	-- Check that the server is supported in nvim-lsp-installer
-	if ok then
-		if not server:is_installed() then
-			print("Installing " .. name)
-			server:install()
-		end
-	end
-end
 EOF
 '''
 

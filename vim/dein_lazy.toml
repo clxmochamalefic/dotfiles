@@ -140,7 +140,11 @@ hook_add = '''
   \     filer: #{
   \       search: expand('%:p'),
   \       sort: 'filename',
+  \       span: 2,
   \       sortTreesFirst: v:true,
+  \     },
+  \     icon_filename: #{
+  \       span: 2,
   \     },
   \   },
   \ })
