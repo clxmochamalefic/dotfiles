@@ -226,6 +226,9 @@ if dein#check_install()
     call dein#install()
 endif
 
+command! DeinProgress echo dein#get_progress()
+command! Dp DeinProgress
+
 " ctags
 set tags=./tags;$HOME
 
@@ -244,10 +247,16 @@ augroup MyXML
   autocmd FileType blade.php  inoremap <buffer> </ </<C-x><C-o>
 augroup END
 
+" Help画面でのqだけでのヘルプ終了
+augroup QuitHelp
+  autocmd!
+  autocmd FileType help       nnoremap q :quit<CR>
+augroup END
+
 " 閉じかっこの自動入力
-inoremap {<Enter> {}<Left><CR><ESC><S-o>
-inoremap [<Enter> []<Left><CR><ESC><S-o>
-inoremap (<Enter> ()<Left><CR><ESC><S-o>
+inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
+inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
 
 let s:ginitvim_fp = s:initvim_path . '/ginit.vim'
 let s:initvim_fp = s:initvim_path . '/init.vim'

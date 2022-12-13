@@ -343,3 +343,17 @@ hook_source = '''
   call signature_help#enable()
 '''
 
+[[plugins]]
+repo = 'LeafCage/vimhelpgenerator'
+
+[[plugins]]
+repo = 'cocoalix/quotecmp.vim'
+hook_add = '''
+  command! InsertQuoteBack    call quotecmp#completion_quote('`')
+  command! InsertQuoteSingle  call quotecmp#completion_quote("'")
+  command! InsertQuoteDouble  call quotecmp#completion_quote('"')
+
+  inoremap `` <Esc>:InsertQuoteBack<CR>
+  inoremap '' <Esc>:InsertQuoteSingle<CR>
+  inoremap "" <Esc>:InsertQuoteDouble<CR>
+'''
