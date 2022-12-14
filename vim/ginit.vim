@@ -1,3 +1,6 @@
+" this init.vim is using utf-8
+scriptencoding utf-8
+
 call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
 
 " Migu 2M

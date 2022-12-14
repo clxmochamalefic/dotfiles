@@ -1,5 +1,10 @@
-let mapleader = ","
+"---------------------------------------------------------------------------
+"" initialize
 
+" this init.vim is using utf-8
+scriptencoding utf-8
+
+" disable `vi` compatible
 if &compatible
     set nocompatible
 endif
@@ -9,14 +14,17 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
-
-scriptencoding utf-8
+" define default file encoding and fileformat
 set encoding=utf-8
 set fileencoding=utf-8
+set ff=dos
+
+" get preference file path
+let s:initvim_path = fnamemodify(expand('<sfile>'), ':h')
 
 "---------------------------------------------------------------------------
 "" UndoFiles
-let s:home_tmp_dir = expand($HOME . '/.cache/nvim')
+let s:home_tmp_dir = expand($HOME . '/.cache/vim_tmp')
 
 " ~/tmp 以降のディレクトリがない場合は新規作成
 if !isdirectory(s:home_tmp_dir)
@@ -28,19 +36,90 @@ endif
 exe 'set undodir='   . expand(s:home_tmp_dir . '/undofiles')
 exe 'set backupdir=' . expand(s:home_tmp_dir . '/backupfiles')
 
+
+"---------------------------------------------------------------------------
+"" display
+
+" define colorscheme load function for lazyload
+if !exists('*s:isEndSemicolon')
+  let &stl.='%{s:isEndSemicolon}'
+  function! s:load_colorscheme()
+    " background color
+    set background=dark
+    " using colorscheme
+    colorscheme iceberg
+  endfunction
+endif
+
+" use gui color preference on terminal
+set termguicolors
+
+" show whitespace characters
+set list
+set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
 " Windows でもパスの区切り文字を / にする
 set shellslash
 
+"+++++++++++++++
+"" display - line number
+
+" display line number
+set number
+
+" modify line number col color
+autocmd ColorScheme * hi LineNr ctermbg=46 ctermfg=0
+autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
+set cursorline
+
+
 "---------------------------------------------------------------------------
-"" Input
+" Window
+set wildmenu
+" コマンドライン補完設定
+set wildmode=list:full,full
+set hidden
+" 編集中ファイルがあっても別画面に切り替え可能に
+set noequalalways
+
+
+"---------------------------------------------------------------------------
+"" sound
+
+" enable mute
+set t_vb=
+set visualbell
+set noerrorbells
+
+
+"---------------------------------------------------------------------------
+"" I/O
+
+" use clipboard
+set nopaste
+noremap! <S-Insert> <C-R>+
+set clipboard=unnamed
+
+
+"---------------------------------------------------------------------------
+"" input (key)
 
 "+++++++++++++++
-"" tab
+" define mapleader character
+" (`mapleader` is preference of combination prefix character
+let mapleader = ","
+
+"+++++++++++++++
+" tab and tabstop
+
+" disable use tabcharacter and define tabstop
 set tabstop=4
 set smartindent
 set shiftwidth=4
 set expandtab
+set backspace=indent,eol,start
 
+" define tabstop by filetype
 augroup fileTypeIndent
   autocmd!
 
@@ -76,15 +155,117 @@ augroup fileTypeIndent
 
 augroup END
 
-"+++++++++++++++
-"" tab
-set backspace=indent,eol,start
+" XML / HTML の閉じタグ自動入力
+augroup MyXML
+  autocmd!
+  autocmd FileType xml        inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType html       inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType phtml      inoremap <buffer> </ </<C-x><C-o>
+  autocmd FileType blade.php  inoremap <buffer> </ </<C-x><C-o>
+augroup END
 
-set list
-set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
+" 閉じかっこの自動入力
+inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
+inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
+
 
 "---------------------------------------------------------------------------
-"" mouse
+" input (key_mapping)
+nnoremap ; :
+
+" tag jump
+nnoremap <C-J> <C-]>
+
+" terminal alias
+command! -nargs=* T split | wincmd j | resize 20 | terminal <args>
+
+" today date and time
+nmap <C-;> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
+nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
+
+" auto insert semicolon to after last character in current line
+if !exists('*s:isEndSemicolon')
+  let &stl.='%{s:isEndSemicolon}'
+  function! s:isEndSemicolon()
+    return getline(".")[col("$")-2] != ';'
+  endfunction
+endif
+
+inoremap <expr>;; s:isEndSemicolon() ?  "<C-O>$;<CR>"  :  "<C-O>$<CR>"
+
+" Help画面でのqだけでのヘルプ終了
+augroup QuitHelp
+  autocmd!
+  autocmd FileType help nnoremap q :quit<CR>
+augroup END
+
+" preference file open mapping
+let s:ginitvim_fp = s:initvim_path . '/ginit.vim'
+let s:initvim_fp = s:initvim_path . '/init.vim'
+let s:deintoml_fp = s:initvim_path . '/dein.toml'
+let s:deinlazytoml_fp = s:initvim_path . '/dein_lazy.toml'
+
+" init.vim open
+command! Preferences execute 'e ' . s:initvim_fp
+command! Pref Preferences
+command! Pr Preferences
+
+" ginit.vim open
+command! PreferencesGui execute 'e ' . s:ginitvim_fp
+command! PrefGui Preferences
+command! Pg PreferencesGui
+
+" dein.toml open
+command! Plugins execute 'e ' . s:deintoml_fp
+command! Plu Plugins
+
+" dein_lazy.toml open
+command! PluginsLazy execute 'e ' . s:deinlazytoml_fp
+command! Pll PluginsLazy
+
+" dein_lazy.toml open
+command! PluginsLazy execute 'e ' . s:deinlazytoml_fp
+command! Pll PluginsLazy
+
+" init.vim reload
+if !exists('*s:reload_all')
+  let &stl.='%{s:reload_all}'
+  function! s:reload_all()
+    execute 'source ' . s:initvim_fp
+
+    if has("gui_running")
+      execute 'source ' . s:ginitvim_fp
+    endif
+
+    execute 'call dein#call_hook("add")'
+  endfunction
+endif
+command! Reload execute s:reload_all()
+
+
+"---------------------------------------------------------------------------
+" input (IME)
+
+" 日本語入力に関する設定:
+if has('multi_byte_ime') || has('xim')
+    " IME ON時のカーソルの色を設定(設定例:紫)
+    highlight CursorIM guibg=Purple guifg=NONE
+    " 挿入モード・検索モードでのデフォルトのIME状態設定
+    set iminsert=0 imsearch=0
+    if has('xim') && has('GUI_GTK')
+        " XIMの入力開始キーを設定:
+        " 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
+        "set imactivatekey=s-space
+    endif
+    " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
+    "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+endif
+
+
+"---------------------------------------------------------------------------
+"" input (mouse)
 "
 "" 解説:
 " mousefocusは幾つか問題(一例:ウィンドウを分割しているラインにカーソルがあっ
@@ -101,9 +282,10 @@ set nomousefocus
 set mousehide
 " ビジュアル選択(D&D他)を自動的にクリップボードへ (:help guioptions_a)
 "set guioptions+=a
+"
 
 "---------------------------------------------------------------------------
-" Use Default Shell
+" terminal
 if has('win32')
   set shell=pwsh
   set shellcmdflag=-c
@@ -116,67 +298,6 @@ if has('win32')
   cnoremap ;tw call termopen("powershell wsl")
 endif
 
-
-"+++++++++++++++
-" python設定
-if has('win32')
-    " install from msi
-    "let g:python3_host_prog = 'C:/Python39/python.exe'
-    " install from winget
-    let g:python3_host_prog = $HOME.'/AppData/Local/Programs/Python/Python310/python.exe'
-elseif has('mac')
-  let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
-  let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
-endif
-
-set number
-
-"+++++++++++++++
-" 行番号色変更
-autocmd ColorScheme * hi LineNr ctermbg=46 ctermfg=0
-autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
-set cursorline
-
-"---------------------------------------------------------------------------
-" 日本語入力に関する設定:
-"
-if has('multi_byte_ime') || has('xim')
-    " IME ON時のカーソルの色を設定(設定例:紫)
-    highlight CursorIM guibg=Purple guifg=NONE
-    " 挿入モード・検索モードでのデフォルトのIME状態設定
-    set iminsert=0 imsearch=0
-    if has('xim') && has('GUI_GTK')
-        " XIMの入力開始キーを設定:
-        " 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
-        "set imactivatekey=s-space
-    endif
-    " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
-    "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
-endif
-
-"---------------------------------------------------------------------------
-" Window
-set wildmenu
-" コマンドライン補完設定
-set wildmode=list:full,full
-set hidden
-" 編集中ファイルがあっても別画面に切り替え可能に
-set noequalalways
-
-"---------------------------------------------------------------------------
-" Mapping
-nnoremap ; :
-
-" tag jump
-nnoremap <C-J> <C-]>
-
-" terminal alias
-command! -nargs=* T split | wincmd j | resize 20 | terminal <args>
-
-" today date and time
-nmap <F6> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
-nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
-
 augroup Terminal
   autocmd!
   autocmd TermOpen * startinsert
@@ -184,34 +305,50 @@ augroup Terminal
   "autocmd VimEnter * ++nested split term://sh
 augroup END
 
-" use colorschema
-set termguicolors
 
-" use clipboard ------------------------------------------------------------------
-set nopaste
-noremap! <S-Insert> <C-R>+
-set clipboard=unnamed
+"---------------------------------------------------------------------------
+" path
 
-" Dein ---------------------------------------------------------------------------
+" python path
+if has('win32')
+  " install from msi
+  "let g:python3_host_prog = 'C:/Python39/python.exe'
+  " install from winget
+  let g:python3_host_prog = $HOME.'/AppData/Local/Programs/Python/Python310/python.exe'
+elseif has('mac')
+  let g:python_host_prog = $PYENV_ROOT.'/versions/neovim2/bin/python'
+  let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
+endif
+
+" ctags path
+set tags=./tags;$HOME
+
+"---------------------------------------------------------------------------
+" plugin installation
+" using dein.vim
+
 " dein.vimのディレクトリ
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-let s:initvim_path = fnamemodify(expand('<sfile>'), ':h')
 
 " なければgit clone
 if !isdirectory(s:dein_repo_dir)
     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
 endif
+
+" add dein repo dir path to runtimepath
 execute 'set runtimepath+=' . s:dein_repo_dir
 
+" load plugins
 if dein#load_state(s:dein_dir)
     call dein#begin(s:dein_dir)
 
     " 管理するプラグインを記述したファイル
-    let s:toml = s:initvim_path . '/dein.toml'
+    let s:basic_plugin_path = s:initvim_path . '/dein.toml'
+    let s:colorscheme_path = s:initvim_path . '/themes.toml'
     let s:lazy_toml = s:initvim_path . '/dein_lazy.toml'
-    call dein#load_toml(s:toml, {'lazy': 0})
+    call dein#load_toml(s:basic_plugin_path, {'lazy': 0})
+    call dein#load_toml(s:colorscheme_path, {'lazy': 0})
     call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
     call dein#end()
@@ -226,69 +363,18 @@ if dein#check_install()
     call dein#install()
 endif
 
+" remove plugin on toml undefined 
+call map(dein#check_clean(), "delete(v:val, 'rf')")
+
+" load colorscheme (after loaded plugins)
+call s:load_colorscheme()
+
+" show dein.vim install and update progress
 command! DeinProgress echo dein#get_progress()
 command! Dp DeinProgress
 
-" ctags
-set tags=./tags;$HOME
 
+" init.vim is load finished
 filetype plugin indent on
 syntax enable
 
-
-call map(dein#check_clean(), "delete(v:val, 'rf')")
-
-" XML / HTML の閉じタグ自動入力
-augroup MyXML
-  autocmd!
-  autocmd FileType xml        inoremap <buffer> </ </<C-x><C-o>
-  autocmd FileType html       inoremap <buffer> </ </<C-x><C-o>
-  autocmd FileType phtml      inoremap <buffer> </ </<C-x><C-o>
-  autocmd FileType blade.php  inoremap <buffer> </ </<C-x><C-o>
-augroup END
-
-" Help画面でのqだけでのヘルプ終了
-augroup QuitHelp
-  autocmd!
-  autocmd FileType help       nnoremap q :quit<CR>
-augroup END
-
-" 閉じかっこの自動入力
-inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
-inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
-inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
-
-let s:ginitvim_fp = s:initvim_path . '/ginit.vim'
-let s:initvim_fp = s:initvim_path . '/init.vim'
-let s:deintoml_fp = s:initvim_path . '/dein.toml'
-let s:deinlazytoml_fp = s:initvim_path . '/dein_lazy.toml'
-
-" init.vim 自動オープン
-command! Preferences execute 'e ' . s:initvim_fp
-command! Pref Preferences
-command! Pr Preferences
-
-" ginit.vim 自動オープン
-command! PreferencesGui execute 'e ' . s:ginitvim_fp
-command! PrefGui Preferences
-command! Pg PreferencesGui
-
-" dein.toml 自動オープン
-command! Plugins execute 'e ' . s:deintoml_fp
-command! Pl Plugins
-
-" dein_lazy.toml 自動オープン
-command! Lplugins execute 'e ' . s:deinlazytoml_fp
-command! Lp Lplugins
-
-if !exists('*s:reload_all')
-  let &stl.='%{s:reload_all}'
-  function! s:reload_all()
-    execute 'source ' . s:initvim_fp
-    execute 'source ' . s:ginitvim_fp
-    execute 'call dein#call_hook("add")'
-  endfunction
-endif
-
-" init.vim 再読み込み
-command! Reload execute s:reload_all()

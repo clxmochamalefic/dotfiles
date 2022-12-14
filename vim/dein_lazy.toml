@@ -267,7 +267,7 @@ on_source = ['ddu.vim']
 
 [[plugins]]
 repo = '4513ECHO/ddu-source-emoji'
-on_source = ['ddu.vim', 'ddu-kind-emoji']
+on_source = ['ddu.vim', 'ddu-kind-word']
 hook_add = '''
   call ddu#custom#patch_local('emoji', {
   \   'sources': [
@@ -283,7 +283,9 @@ hook_add = '''
   \   },
   \ })
   command! DduEmoji call ddu#start({ 'name': 'emoji' })
-"  command! DduEmoji call ddu#start({ 'sources': [{ 'name': 'emoji' }] })
+
+  " Insert emoji mapping.
+  inoremap <C-x><C-e> <Cmd>call ddu#start({'sources': [{'name': 'emoji'}]})<CR>
 '''
 
 [[plugins]]
