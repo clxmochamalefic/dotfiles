@@ -47,7 +47,9 @@ if !exists('*s:isEndSemicolon')
     " background color
     set background=dark
     " using colorscheme
-    colorscheme iceberg
+    colorscheme onehalfdark
+    " using airline colorscheme
+    let g:airline_theme = 'onehalfdark'
   endfunction
 endif
 

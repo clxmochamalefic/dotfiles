@@ -23,8 +23,6 @@ depends = ['vim-airline-themes']
 hook_add = '''   
   set laststatus=2
 
-  let g:airline_theme = 'deus'
-
   let g:airline_experimental = 1
   let g:airline_detect_spell=1
   let g:airline_powerline_fonts = 1
