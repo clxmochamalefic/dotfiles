@@ -43,7 +43,7 @@ exe 'set backupdir=' . expand(s:home_tmp_dir . '/backupfiles')
 " define colorscheme load function for lazyload
 if !exists('*s:isEndSemicolon')
   let &stl.='%{s:isEndSemicolon}'
-  function! s:load_colorscheme()
+  function! s:load_colorscheme() abort
     " background color
     set background=dark
     " using colorscheme
@@ -188,7 +188,7 @@ nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
 " auto insert semicolon to after last character in current line
 if !exists('*s:isEndSemicolon')
   let &stl.='%{s:isEndSemicolon}'
-  function! s:isEndSemicolon()
+  function! s:isEndSemicolon() abort
     return getline(".")[col("$")-2] != ';'
   endfunction
 endif
@@ -202,47 +202,58 @@ augroup QuitHelp
 augroup END
 
 " preference file open mapping
-let s:ginitvim_fp = s:initvim_path . '/ginit.vim'
-let s:initvim_fp = s:initvim_path . '/init.vim'
-let s:deintoml_fp = s:initvim_path . '/dein.toml'
-let s:deinlazytoml_fp = s:initvim_path . '/dein_lazy.toml'
+let s:ginitvim_filepath = s:initvim_path . '/ginit.vim'
+let s:initvim_filepath  = s:initvim_path . '/init.vim'
+
+" plugin preference file open mapping
+let s:basic_plugin_filepath     = s:initvim_path . '/dein.toml'
+let s:theme_plugin_filepath     = s:initvim_path . '/themes.toml'
+let s:lazy_load_plugin_filepath = s:initvim_path . '/dein.lazy.toml'
+
+" plugin list
+let s:dein_plugins = [s:basic_plugin_filepath, s:theme_plugin_filepath, s:lazy_load_plugin_filepath]
 
 " init.vim open
-command! Preferences execute 'e ' . s:initvim_fp
+command! Preferences execute 'e ' . s:initvim_filepath
 command! Pref Preferences
 command! Pr Preferences
 
 " ginit.vim open
-command! PreferencesGui execute 'e ' . s:ginitvim_fp
+command! PreferencesGui execute 'e ' . s:ginitvim_filepath
 command! PrefGui Preferences
 command! Pg PreferencesGui
 
 " dein.toml open
-command! Plugins execute 'e ' . s:deintoml_fp
+command! Plugins execute 'e ' . s:basic_plugin_filepath
 command! Plu Plugins
 
 " dein_lazy.toml open
-command! PluginsLazy execute 'e ' . s:deinlazytoml_fp
+command! PluginsLazy execute 'e ' . s:lazy_load_plugin_filepath
 command! Pll PluginsLazy
 
-" dein_lazy.toml open
-command! PluginsLazy execute 'e ' . s:deinlazytoml_fp
-command! Pll PluginsLazy
+" themes.toml open
+command! PluginsTheme execute 'e ' . s:theme_plugin_filepath
+command! Pt PluginsTheme
 
 " init.vim reload
-if !exists('*s:reload_all')
-  let &stl.='%{s:reload_all}'
-  function! s:reload_all()
-    execute 'source ' . s:initvim_fp
-
+if !exists('*reload_functions')
+  let &stl.='%{reload_functions}'
+  function! s:reload_preference() abort
     if has("gui_running")
-      execute 'source ' . s:ginitvim_fp
+      execute 'source ' . s:ginitvim_filepath
     endif
-
     execute 'call dein#call_hook("add")'
   endfunction
+  function! s:reload_all() abort
+    call s:reload_preference()
+    call s:reload_plugin_hard(s:dein_plugins)
+  endfunction
 endif
-command! Reload execute s:reload_all()
+
+command! ReloadPreference execute s:reload_preference()
+command! Rer ReloadPreference
+command! ReloadAll execute s:reload_all()
+command! Rea ReloadAll
 
 
 "---------------------------------------------------------------------------
@@ -340,31 +351,43 @@ endif
 execute 'set runtimepath+=' . s:dein_repo_dir
 
 " load plugins
-if dein#load_state(s:dein_dir)
-    call dein#begin(s:dein_dir)
+if !exists('*reload_plugin_functions')
+  let &stl.='%{reload_plugin_functions}'
+  function! s:reload_plugin(tomls) abort
+    if dein#load_state(s:dein_dir)
+      call dein#begin(s:dein_dir)
 
-    " 管理するプラグインを記述したファイル
-    let s:basic_plugin_path = s:initvim_path . '/dein.toml'
-    let s:colorscheme_path = s:initvim_path . '/themes.toml'
-    let s:lazy_toml = s:initvim_path . '/dein_lazy.toml'
-    call dein#load_toml(s:basic_plugin_path, {'lazy': 0})
-    call dein#load_toml(s:colorscheme_path, {'lazy': 0})
-    call dein#load_toml(s:lazy_toml, {'lazy': 1})
+      for toml in a:tomls
+        let l:is_lazy = stridx(toml, '.lazy.toml') > -1 ? 1 : 0
+        call dein#load_toml(toml, {'lazy': l:is_lazy})
+      endfor
 
-    call dein#end()
-    call dein#save_state()
+      call dein#end()
+      call dein#save_state()
+    endif
+
+    " その他インストールしていないものはこちらに入れる
+    if dein#check_install()
+      call dein#install()
+    endif
+
+    " remove plugin on toml undefined 
+    call map(dein#check_clean(), "delete(v:val, 'rf')")
+  endfunction
+
+  function! s:reload_plugin_hard(tomls) abort
+    call dein#clear_state()
+    call s:reload_plugin(a:tomls)
+  endfunction
 endif
+
+command! ReloadPluginHard execute s:reload_plugin_hard(s:dein_plugins)
+command! Rel ReloadPluginHard
+
 " プラグインの追加・削除やtomlファイルの設定を変更した後は
 " 適宜 call dein#update や call dein#clear_state を呼んでください。
 " そもそもキャッシュしなくて良いならload_state/save_stateを呼ばないようにしてください。
-
-" その他インストールしていないものはこちらに入れる
-if dein#check_install()
-    call dein#install()
-endif
-
-" remove plugin on toml undefined 
-call map(dein#check_clean(), "delete(v:val, 'rf')")
+call s:reload_plugin(s:dein_plugins)
 
 " load colorscheme (after loaded plugins)
 call s:load_colorscheme()
