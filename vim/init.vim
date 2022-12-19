@@ -48,6 +48,7 @@ if !exists('*s:isEndSemicolon')
     set background=dark
     " using colorscheme
     colorscheme onehalfdark
+
     " using airline colorscheme
     let g:airline_theme = 'onehalfdark'
   endfunction
@@ -70,8 +71,13 @@ set shellslash
 set number
 
 " modify line number col color
-autocmd ColorScheme * hi LineNr ctermbg=46 ctermfg=0
-autocmd ColorScheme * hi CursorLineNr ctermbg=239 ctermfg=46
+augroup MyColorSchemeOnePointModify
+  autocmd!
+
+"  autocmd ColorScheme *pwsh*  hi
+  autocmd ColorScheme *       hi LineNr       ctermbg=46  ctermfg=0
+  autocmd ColorScheme *       hi CursorLineNr ctermbg=239 ctermfg=46
+augroup END
 set cursorline
 
 
@@ -122,7 +128,7 @@ set expandtab
 set backspace=indent,eol,start
 
 " define tabstop by filetype
-augroup fileTypeIndent
+augroup FileTypeIndent
   autocmd!
 
   autocmd BufNewFile,BufRead *.html       setlocal tabstop=2 softtabstop=2 shiftwidth=2

@@ -1,8 +1,7 @@
-[[plugins]]
-repo = 'Shougo/ddu.vim'
-depends = 'denops.vim'
-on_source = ['denops.vim']
-hook_post_source = '''
+[[multiple_plugins]]
+plugins = ['ddu.vim', 'ddu-ui-ff', 'ddu-ui-filer', 'ddu-source-buffer', 'ddu-source-action', 'ddu-source-file_old', 'ddu-source-emoji']
+hook_add = '''
+  " ddu.vim
   call ddu#custom#patch_global({
       \ 'ui': 'ff',
       \ 'sources': [{'name': 'file_rec', 'params': {}},
@@ -40,12 +39,11 @@ hook_post_source = '''
       \     },
       \   }
       \ })
-'''
 
-[[plugins]]
-repo = 'Shougo/ddu-ui-ff'
-on_source = ['ddu.vim']
-hook_add = '''
+
+  " ddu-ui --------------------
+
+  " ddu-ui-ff
   if has('macunix')
     command "brew install desktop-file-utils"
   endif
@@ -71,48 +69,9 @@ hook_add = '''
     nnoremap <buffer><silent> q
     \ <Cmd>close<CR>
   endfunction
-'''
 
-[[plugins]]
-repo = 'shun/ddu-source-buffer'
-on_source = 'ddu.vim'
-hook_add = '''
-  call ddu#custom#patch_local('buffer', {
-  \   'ui': 'ff',
-  \   'sources': [
-  \     {
-  \       'name': 'buffer',
-  \       'params': {},
-  \     },
-  \   ],
-  \ })
-  nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
-  command! DduBuffer call ddu#start({ 'name': 'buffer' })
-'''
-#[plugins.ftplugin]
-#ddu-ff = '''
-#  let s:diff_buffer_source = '';
-#
-#  function! DduFfBufferSplit() abort
-#    if s:diff_buffer_source = ''
-#
-#    endif
-#  endfunction
-#
-#  function! ddu_source_buffer_ddu_ff_my_settings() abort
-#    nnoremap <buffer><silent> c <Cmd>close<CR>
-#  endfunction
-#
-#  augroup ddu_source_buffer_ddu_ff_executed
-#    autocmd!
-#    autocmd FileType ddu-ff-filter call s:ddu_source_buffer_ddu_ff_my_settings()
-#  augroup END
-#'''
 
-[[plugins]]
-repo = 'Shougo/ddu-ui-filer'
-on_source = ['ddu.vim']
-hook_add = '''
+  " ddu-ui-filer
   call ddu#custom#patch_local('filer', #{
   \   ui: 'filer',
   \   sources: [
@@ -220,12 +179,12 @@ hook_add = '''
 
   nnoremap  ^  :<C-u>DduFiler<CR>
   nnoremap  ~  :<C-u>DduFilerHome<CR>
-'''
 
-[[plugins]]
-repo = 'Shougo/ddu-source-action'
-on_source = ['ddu.vim']
-hook_add = '''
+
+  " ddu-source --------------------
+
+
+  " ddu-source-action
   call ddu#custom#patch_global({
       \   'kindOptions': {
       \     'action': {
@@ -233,7 +192,86 @@ hook_add = '''
       \     },
       \   }
       \ })
+
+
+  " ddu-source-buffer
+  call ddu#custom#patch_local('buffer', {
+  \   'ui': 'ff',
+  \   'sources': [
+  \     {
+  \       'name': 'buffer',
+  \       'params': {},
+  \     },
+  \   ],
+  \ })
+
+  nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
+  command! DduBuffer call ddu#start({ 'name': 'buffer' })
+
+
+  " ddu-source-file_old
+  command! DduFileOld call ddu#start(#{ sources: [#{ name: 'file_old' }] })
+  nnoremap  \|  :<C-u>DduFileOld<CR>
+
+
+  " ddu-source-emoji
+  call ddu#custom#patch_local('emoji', {
+  \   'sources': [
+  \     {
+  \       'name': 'emoji',
+  \       'params': {},
+  \     },
+  \   ],
+  \   'kindOptions': {
+  \     'word': {
+  \       'defaultAction': 'append',
+  \     },
+  \   },
+  \ })
+
+  command! DduEmoji call ddu#start({ 'name': 'emoji' })
+
+  " Insert emoji mapping.
+  inoremap <C-x><C-e> <Cmd>call ddu#start({'sources': [{'name': 'emoji'}]})<CR>
 '''
+
+[[plugins]]
+repo = 'Shougo/ddu.vim'
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-ff'
+on_source = ['ddu.vim']
+
+[[plugins]]
+repo = 'shun/ddu-source-buffer'
+on_source = 'ddu.vim'
+#[plugins.ftplugin]
+#ddu-ff = '''
+#  let s:diff_buffer_source = '';
+#
+#  function! DduFfBufferSplit() abort
+#    if s:diff_buffer_source = ''
+#
+#    endif
+#  endfunction
+#
+#  function! ddu_source_buffer_ddu_ff_my_settings() abort
+#    nnoremap <buffer><silent> c <Cmd>close<CR>
+#  endfunction
+#
+#  augroup ddu_source_buffer_ddu_ff_executed
+#    autocmd!
+#    autocmd FileType ddu-ff-filter call s:ddu_source_buffer_ddu_ff_my_settings()
+#  augroup END
+#'''
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-filer'
+on_source = ['ddu.vim']
+
+[[plugins]]
+repo = 'Shougo/ddu-source-action'
+on_source = ['ddu.vim']
 
 [[plugins]]
 repo = 'Shougo/ddu-source-file_rec'
@@ -252,14 +290,16 @@ repo = 'Shougo/ddu-source-file'
 on_source = ['ddu.vim', 'ddu-kind-file']
 
 [[plugins]]
+repo = 'Shougo/ddu-source-file_old'
+on_source = ['ddu.vim', 'ddu-kind-file']
+
+[[plugins]]
 repo = 'Shougo/ddu-kind-word'
 on_source = ['ddu.vim']
 
 [[plugins]]
 repo = 'Shougo/ddu-column-filename'
 on_source = ['ddu.vim']
-hook_add = '''
-'''
 
 [[plugins]]
 repo = 'ryota2357/ddu-column-icon_filename'
@@ -268,25 +308,6 @@ on_source = ['ddu.vim']
 [[plugins]]
 repo = '4513ECHO/ddu-source-emoji'
 on_source = ['ddu.vim', 'ddu-kind-word']
-hook_add = '''
-  call ddu#custom#patch_local('emoji', {
-  \   'sources': [
-  \     {
-  \       'name': 'emoji',
-  \       'params': {},
-  \     },
-  \   ],
-  \   'kindOptions': {
-  \     'word': {
-  \       'defaultAction': 'append',
-  \     },
-  \   },
-  \ })
-  command! DduEmoji call ddu#start({ 'name': 'emoji' })
-
-  " Insert emoji mapping.
-  inoremap <C-x><C-e> <Cmd>call ddu#start({'sources': [{'name': 'emoji'}]})<CR>
-'''
 
 [[plugins]]
 repo = 'iamcco/markdown-preview.nvim'

@@ -74,7 +74,7 @@ repo = 'szw/vim-tags'
 
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-on_source = ['ddc.vim', 'ddu.vim']
+on_source = ['pum.vim', 'ddc.vim', 'ddu.vim']
 hook_add = '''
   let g:denops#deno = "deno"
 
