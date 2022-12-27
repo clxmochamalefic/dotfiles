@@ -209,6 +209,21 @@ augroup QuitHelp
   autocmd FileType help nnoremap q :quit<CR>
 augroup END
 
+
+"+++++++++++++++
+" define command
+
+" jq command
+" if cannot use
+"   windows       : > pwsh -command "Start-Process -verb runas pwsh" "'-command winget install stedolan.jq'"
+"   brew on macOS : % brew install jq
+"   linux (debian): $ sudo apt -y update
+"                   $ sudo apt -y install jq
+"   linux (RHEL)  : $ sudo yum -y install epel-release
+"                   $ sudo yum -y install jq
+command! Jqf !jq '.'
+command! Jq !jq '%:p'
+
 " preference file open mapping
 let s:ginitvim_filepath = s:initvim_path . '/ginit.vim'
 let s:initvim_filepath  = s:initvim_path . '/init.vim'
@@ -349,6 +364,8 @@ set tags=./tags;$HOME
 " dein.vimのディレクトリ
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+let g:dein#install_progress_type = 'floating'
 
 " なければgit clone
 if !isdirectory(s:dein_repo_dir)
