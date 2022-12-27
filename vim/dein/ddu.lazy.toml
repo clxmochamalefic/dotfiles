@@ -309,7 +309,3 @@ on_source = ['ddu.vim']
 repo = '4513ECHO/ddu-source-emoji'
 on_source = ['ddu.vim', 'ddu-kind-word']
 
-[[plugins]]
-repo = 'iamcco/markdown-preview.nvim'
-on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
-build = 'sh -c "cd app && yarn install"'

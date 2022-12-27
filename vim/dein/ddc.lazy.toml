@@ -1,0 +1,125 @@
+[[plugins]]
+repo = 'Shougo/ddc-ui-pum'
+depends = ['pum.vim']
+
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+depends = ['denops.vim', 'pum.vim', 'ddc.vim']
+on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
+hook_source = '''
+  call ddc#custom#patch_global('ui', 'pum')
+  " Customize global settings
+  " Use around source.
+  " https://github.com/Shougo/ddc-around
+  call ddc#custom#patch_global('sources', ['nvim-lsp', 'around', 'emoji'])
+  call ddc#custom#patch_global('cmdlineSources', ['cmdline', 'cmdline-history', 'around'])
+  ;;
+  
+  " Use matcher_head and sorter_rank.
+  " https://github.com/Shougo/ddc-matcher_head
+  " https://github.com/Shougo/ddc-sorter_rank
+  call ddc#custom#patch_global('sourceOptions', {
+        \   '_': {
+        \     'ignoreCase': v:true,
+        \     'matchers': ['matcher_fuzzy'],
+        \     'sorters': ['sorter_fuzzy'],
+        \     'converters': ['converter_fuzzy'],
+        \   },
+        \   'around': {'mark': 'A'},
+        \   'nvim-lsp': {
+        \     'mark': 'lsp',
+        \     'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+        \   },
+        \   'cmdline': {
+        \     'ignoreCase': v:false,
+        \     'mark': '| cmd',
+        \     'forceCompletionPattern': '\S/\S*',
+        \   },
+        \   'cmdline-history': {
+        \     'mark': '| history',
+        \   },
+        \   'emoji': {
+        \	    'mark': 'emoji',
+        \	    'matchers': ['emoji'],
+        \     'forceCompletionPattern': '[a-zA-Z_:]\w*',
+        \	    'sorters': [],
+        \	  },
+        \ })
+
+  " Add matching patterns
+  call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
+
+  call ddc#custom#patch_global('sourceParams', {
+        \ 'nvim-lsp': { 'kindLabels': { 'Class': '[class]', 'Method': '[method]', 'Function': '[func]', 'Variable': '[var]' } },
+        \ 'around': { 'maxSize': 500 },
+        \ })
+  
+  " Mappings
+  
+  " Use pum.vim
+  call ddc#custom#patch_global('autoCompleteEvents', [
+    \ 'InsertEnter', 'TextChangedI', 'TextChangedP',
+    \ 'CmdlineEnter', 'CmdlineChanged', 'TermOutput',
+    \ ])
+  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+  " For insert mode completion
+  inoremap <silent><expr> <TAB>
+   \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :
+   \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
+   \ '<TAB>' : ddc#map#manual_complete()
+  inoremap <silent><expr> <C-n>
+   \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : '<C-n>'
+
+  inoremap <silent><expr> <CR>
+   \ pum#visible() ? ddc#map#manual_complete() : '<CR>'
+
+  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+  inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
+
+  inoremap <silent><expr> <C-l>   ddc#map#extend()
+  inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
+  
+  " Use ddc.
+  call ddc#enable()
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc-around'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'LumaKernel/ddc-file'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'gamoutatsumi/ddc-emoji'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'tani/ddc-fuzzy'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+depends = ['denops.vim', 'pum', 'ddc.vim', 'ddc-nvim-lsp']
+hook_source = '''
+  call popup_preview#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help'
+depends = ['denops.vim', 'pum', 'ddc.vim', 'ddc-nvim-lsp']
+hook_source = '''
+  call signature_help#enable()
+'''
+
