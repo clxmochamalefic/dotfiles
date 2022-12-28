@@ -2,16 +2,19 @@ Write-Output "make dir: ~/.config/nvim"
 
 if (!(Test-Path '~/.config')) {
     mkdir ~/.config
+    echo "success mkdir ~/.config"
 }
 
 if (!(Test-Path '~/.config/nvim')) {
     mkdir ~/.config/nvim
+    echo "success mkdir ~/.config"
 }
 
 Write-Output "make dir: ~/AppData/Local/nvim"
 
 if (!(Test-Path '~/AppData/Local/nvim')) {
-    mkdir ~/.config
+    mkdir ~/AppData/Local/nvim
+    echo "success mkdir ~/AppData/Local/nvim"
 }
 
 Write-Output "remove nvim preference files what already exists"
