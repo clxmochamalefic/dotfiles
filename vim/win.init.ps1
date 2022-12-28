@@ -41,10 +41,14 @@ $preferencePathStr = $preferencePathStr.Replace('\', '/' )
 Write-Output $preferencePathStr
 
 
-Set-Content -Path ~/.config/nvim/init.vim  -Value "source ${preferencePathStr}/init.vim"  -Encoding UTF8
+Set-Content -Path ~/.config/nvim/init.vim  -Value "set runtimepath+=${preferencePathStr}"  -Encoding UTF8
+Add-Content -Path ~/.config/nvim/init.vim  -Value "let g:preference_path = expand('${preferencePathStr}')"  -Encoding UTF8
+Add-Content -Path ~/.config/nvim/init.vim  -Value "source ${preferencePathStr}/init.vim"  -Encoding UTF8
 Set-Content -Path ~/.config/nvim/ginit.vim -Value "source ${preferencePathStr}/ginit.vim" -Encoding UTF8
 
-Set-Content -Path ~/AppData/Local/nvim/init.vim  -Value "source ${preferencePathStr}/init.vim"  -Encoding UTF8
+Set-Content -Path ~/AppData/Local/nvim/init.vim  -Value "set runtimepath+=${preferencePathStr}"  -Encoding UTF8
+Add-Content -Path ~/AppData/Local/nvim/init.vim  -Value "let g:preference_path = expand('${preferencePathStr}')"  -Encoding UTF8
+Add-Content -Path ~/AppData/Local/nvim/init.vim  -Value "source ${preferencePathStr}/init.vim"  -Encoding UTF8
 Set-Content -Path ~/AppData/Local/nvim/ginit.vim -Value "source ${preferencePathStr}/ginit.vim" -Encoding UTF8
 
 Write-Output "finished and all correct"
