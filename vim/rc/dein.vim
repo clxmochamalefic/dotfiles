@@ -43,48 +43,46 @@ endif
 execute 'set runtimepath+=' . s:dein_repo_dir
 
 " load plugins
-if !exists('*reload_plugin_functions')
-  let &stl.='%{reload_plugin_functions}'
-  function! s:dein_add_wrapper(toml) abort
-    if g:is_enable_my_debug
-      echo "load " . a:toml
-    endif
-    let l:is_lazy = stridx(a:toml, '.lazy.toml') > -1 ? 1 : 0
-    call dein#load_toml(a:toml, {'lazy': l:is_lazy})
-  endfunction
-  function! s:reload_plugin(tomls) abort
-    if dein#load_state(s:dein_dir)
-      call dein#begin(s:dein_dir)
+function! s:dein_add_wrapper(toml) abort
+  if g:is_enable_my_debug
+    echo "load " . a:toml
+  endif
+  let l:is_lazy = stridx(a:toml, '.lazy.toml') > -1 ? 1 : 0
+  call dein#load_toml(a:toml, {'lazy': l:is_lazy})
+endfunction
 
-      "for toml in a:tomls
-      "  let l:is_lazy = stridx(toml, '.lazy.toml') > -1 ? 1 : 0
-      "  call dein#load_toml(toml, {'lazy': l:is_lazy})
-      "endfor
-      call s:dein_add_wrapper(g:dein_toml_filepath)
-      call s:dein_add_wrapper(g:colorscheme_filepath)
-      call s:dein_add_wrapper(g:dein_lazy_toml_filepath)
-      call s:dein_add_wrapper(g:ddc_lazy_toml_filepath)
-      call s:dein_add_wrapper(g:ddu_lazy_toml_filepath)
-      call s:dein_add_wrapper(g:lsp_lazy_toml_filepath)
+function! s:reload_plugin(tomls) abort
+  if dein#load_state(s:dein_dir)
+    call dein#begin(s:dein_dir)
 
-      call dein#end()
-      call dein#save_state()
-    endif
+    "for toml in a:tomls
+    "  let l:is_lazy = stridx(toml, '.lazy.toml') > -1 ? 1 : 0
+    "  call dein#load_toml(toml, {'lazy': l:is_lazy})
+    "endfor
+    call s:dein_add_wrapper(g:dein_toml_filepath)
+    call s:dein_add_wrapper(g:colorscheme_filepath)
+    call s:dein_add_wrapper(g:dein_lazy_toml_filepath)
+    call s:dein_add_wrapper(g:ddc_lazy_toml_filepath)
+    call s:dein_add_wrapper(g:ddu_lazy_toml_filepath)
+    call s:dein_add_wrapper(g:lsp_lazy_toml_filepath)
 
-    " その他インストールしていないものはこちらに入れる
-    if dein#check_install()
-      call dein#install()
-    endif
+    call dein#end()
+    call dein#save_state()
+  endif
 
-    " remove plugin on toml undefined 
-    call map(dein#check_clean(), "delete(v:val, 'rf')")
-  endfunction
+  " その他インストールしていないものはこちらに入れる
+  "if dein#check_install()
+  "  call dein#install()
+  "endif
 
-  function! s:reload_plugin_hard(tomls) abort
-    call dein#clear_state()
-    call s:reload_plugin(a:tomls)
-  endfunction
-endif
+  " remove plugin on toml undefined 
+  call map(dein#check_clean(), "delete(v:val, 'rf')")
+endfunction
+
+function! s:reload_plugin_hard(tomls) abort
+  call dein#clear_state()
+  call s:reload_plugin(a:tomls)
+endfunction
 
 command! ReloadPluginHard execute s:reload_plugin_hard(g:dein_plugins)
 command! Rel ReloadPluginHard

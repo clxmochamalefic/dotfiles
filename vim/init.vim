@@ -11,16 +11,21 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
+" debug mode
+let g:is_enable_my_debug = v:false
+
 " get preference file path
 "let g:my_initvim_path = expand('%:p:h')
 let g:my_initvim_path = expand(g:preference_path)
 
-" debug mode
-let g:is_enable_my_debug = v:true
+function! DebugEcho(mes) abort
+  if g:is_enable_my_debug
+    echo 'begin ' . g:my_initvim_path . ' load'
+  endif
+endfunction
 
-if g:is_enable_my_debug
-  echo 'begin ' . g:my_initvim_path . ' load'
-endif
+
+call DebugEcho('begin ' . g:my_initvim_path . ' load')
 
 " python path
 if has('win32')
@@ -33,7 +38,8 @@ elseif has('mac')
   let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
 endif
 
-echo 'load rc'
+
+call DebugEcho('load rc')
 
 runtime /rc/base.vim
 runtime /rc/dein.vim
@@ -42,9 +48,8 @@ runtime /rc/mapping.vim
 runtime /rc/color.vim
 runtime /rc/command.vim
 
-if g:is_enable_my_debug
-  echo 'end ' . expand('%') . ' load'
-endif
+call DebugEcho('end ' . g:my_initvim_path . ' load')
+
 
 " init.vim is load finished
 filetype plugin indent on
