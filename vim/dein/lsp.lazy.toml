@@ -1,16 +1,7 @@
 [[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
-on_source = 'nvim-lspconfig'
-
-[[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['mason.nvim', 'mason-lspconfig.nvim', 'lspsaga.nvim', 'ddc.vim']
-
-[[plugins]]
-repo = 'williamboman/mason.nvim'
-
-[[plugins]]
-repo = 'williamboman/mason-lspconfig.nvim'
+depends = ['mason.nvim', 'mason-lspconfig.nvim', 'lspsaga.nvim', 'ddc.vim' 'ddc-nvim-lsp']
+on_event = ['BufRead', 'InsertEnter']
 hook_source = '''
 lua << EOF
 local mason = require('mason')
@@ -71,6 +62,15 @@ mason_lspconfig.setup_handlers({
 
 EOF
 '''
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+
+[[plugins]]
+repo = 'williamboman/mason.nvim'
+
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
 
 [[plugins]]
 repo = 'glepnir/lspsaga.nvim'
