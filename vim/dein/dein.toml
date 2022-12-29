@@ -91,16 +91,17 @@ hook_post_source = '''
 
 [[plugins]]
 repo = 'Shougo/pum.vim'
-hook_source = '''
+hook_add = '''
   call pum#set_option('max_width', 80)
   call pum#set_option('use_complete', v:true)
+  call pum#set_option('border', 'rounded')
 '''
 
 [[plugins]]
 repo = 'LeafCage/vimhelpgenerator'
 
 [[plugins]]
-repo = '~/.repos/cocoalix/quotecmp.vim'
+repo = 'cocoalix/quotecmp.vim'
 hook_add = '''
   command! InsertQuoteBack    call quotecmp#completion_quote('`')
   command! InsertQuoteSingle  call quotecmp#completion_quote("'")

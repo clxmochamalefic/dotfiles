@@ -1,10 +1,5 @@
-[[plugins]]
-repo = 'Shougo/ddc-ui-pum'
-depends = ['pum.vim']
-
-[[plugins]]
-repo = 'Shougo/ddc.vim'
-depends = ['denops.vim', 'pum.vim', 'ddc.vim']
+[[multiple_plugins]]
+plugins = ['ddc.vim', 'ddc-nvim-lsp', 'ddc-around', 'ddc-sorter_rank', 'ddc-matcher_head', 'ddc-source-cmdline-history', 'ddc-ui-pum', 'pum.vim']
 on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
 hook_source = '''
   call ddc#custom#patch_global('ui', 'pum')
@@ -87,6 +82,14 @@ hook_source = '''
 '''
 
 [[plugins]]
+repo = 'Shougo/ddc.vim'
+depends = ['denops.vim', 'pum.vim', 'ddc.vim', 'ddc-ui-pum']
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-pum'
+depends = ['pum.vim']
+
+[[plugins]]
 repo = 'Shougo/ddc-around'
 
 [[plugins]]
@@ -98,6 +101,9 @@ repo = 'Shougo/ddc-sorter_rank'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+
+[[plugins]]
 repo = 'LumaKernel/ddc-file'
 on_source = 'ddc.vim'
 
@@ -107,6 +113,10 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'tani/ddc-fuzzy'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo='Shougo/ddc-source-cmdline-history'
 on_source = 'ddc.vim'
 
 [[plugins]]

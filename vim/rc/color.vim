@@ -2,6 +2,7 @@
 " COLORSCHEME PREFERENCE
 
 let s:colorscheme = 'onehalfdark'
+let s:airline_theme = 'bubblegum'
 
 " define colorscheme load function for lazyload
 if !exists('*s:isEndSemicolon')
