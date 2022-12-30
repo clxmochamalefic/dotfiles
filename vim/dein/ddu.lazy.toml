@@ -1,44 +1,54 @@
 [[multiple_plugins]]
-plugins = ['ddu.vim', 'ddu-ui-ff', 'ddu-ui-filer', 'ddu-source-buffer', 'ddu-source-action', 'ddu-source-file_old', 'ddu-source-emoji']
+plugins = ['ddu.vim', 'ddu-ui-ff', 'ddu-ui-filer', 'ddu-source-buffer', 'ddu-source-action', 'ddu-source-file_old', 'ddu-source-emoji', 'ddu-source-dein_update', 'ddu-source-custom-list']
 hook_add = '''
   " ddu.vim
   call ddu#custom#patch_global({
-      \ 'ui': 'ff',
-      \ 'sources': [{'name': 'file_rec', 'params': {}},
-      \             {'name': 'file'},
-      \             {'name': 'buffer'},
-      \             {'name': 'emoji'}],
-      \ })
-
-  " Use matcher_substring filter.
-  call ddu#custom#patch_global({
-      \   'sourceOptions': {
-      \     '_': {
-      \       'matchers': ['matcher_substring'],
-      \     },
-      \   }
-      \ })
-
-  " Enable highlight matched text
-  " Note: It is slow
-  call ddu#custom#patch_global({
-      \   'filterParams': {
-      \     'matcher_substring': {
-      \       'highlightMatched': 'Search',
-      \     },
-      \   }
-      \ })
-
-  call ddu#custom#patch_global({
-      \   'kindOptions': {
-      \     'file': {
-      \       'defaultAction': 'open',
-      \     },
-      \     'word': {
-      \       'defaultAction': 'append',
-      \     },
-      \   }
-      \ })
+    \   'ui': 'ff',
+    \   'sources': [
+    \     {'name': 'file_rec', 'params': {}},
+    \     {'name': 'file'},
+    \     {'name': 'buffer'},
+    \     {'name': 'emoji'},
+    \   ],
+    \   'sourceOptions': {
+    \     '_': {
+    \       'matchers': ['matcher_substring'],
+    \     },
+    \     'dein_update': {
+    \       'matchers': ['matcher_dein_update'],
+    \     },
+    \   },
+    \   'filterParams': {
+    \     'matcher_substring': {
+    \       'highlightMatched': 'Search',
+    \     },
+    \   },
+    \   'kindOptions': {
+    \     'file': {
+    \       'defaultAction': 'open',
+    \     },
+    \     'action': {
+    \       'defaultAction': 'do',
+    \     },
+    \     'word': {
+    \       'defaultAction': 'append',
+    \     },
+    \     'dein_update': {
+    \       'defaultAction': 'viewDiff',
+    \     },
+    \     'custom-list': {
+    \       'defaultAction': 'callback',
+    \     },
+    \   },
+    \   'actionOptions': {
+    \     'echo': {
+    \       'quit': v:false,
+    \     },
+    \     'echoDiff': {
+    \       'quit': v:false,
+    \     },
+    \   },
+    \ })
 
 
   " ddu-ui --------------------
@@ -183,27 +193,16 @@ hook_add = '''
 
   " ddu-source --------------------
 
-
-  " ddu-source-action
-  call ddu#custom#patch_global({
-      \   'kindOptions': {
-      \     'action': {
-      \       'defaultAction': 'do',
-      \     },
-      \   }
-      \ })
-
-
   " ddu-source-buffer
   call ddu#custom#patch_local('buffer', {
-  \   'ui': 'ff',
-  \   'sources': [
-  \     {
-  \       'name': 'buffer',
-  \       'params': {},
-  \     },
-  \   ],
-  \ })
+    \   'ui': 'ff',
+    \   'sources': [
+    \     {
+    \       'name': 'buffer',
+    \       'params': {},
+    \     },
+    \   ],
+    \ })
 
   nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
   command! DduBuffer call ddu#start({ 'name': 'buffer' })
@@ -233,6 +232,24 @@ hook_add = '''
 
   " Insert emoji mapping.
   inoremap <C-x><C-e> <Cmd>call ddu#start({'sources': [{'name': 'emoji'}]})<CR>
+
+
+  " ddu-source-custom-list
+  let s:id = denops#callback#register(
+    \   { s -> execute(printf('echom "%s"', s), '') },
+    \   #{ once: v:true }
+    \ )
+  call ddu#custom#patch_local('custom-list', {
+    \   'sources': [#{
+    \     name: 'custom-list',
+    \     params: #{
+    \       texts: ['hello', 'world'],
+    \       callbackId: s:id,
+    \     }
+    \   }
+    \ ]})
+
+  command! DduCmd call ddu#start(#{ name: 'custom_list' })
 '''
 
 [[plugins]]
@@ -276,6 +293,12 @@ on_source = ['ddu.vim']
 [[plugins]]
 repo = 'Shougo/ddu-source-file_rec'
 on_source = ['ddu.vim']
+
+[[plugins]]
+repo='matsui54/ddu-source-dein_update'
+
+[[plugins]]
+repo='liquidz/ddu-source-custom-list'
 
 [[plugins]]
 repo = 'Shougo/ddu-filter-matcher_substring'

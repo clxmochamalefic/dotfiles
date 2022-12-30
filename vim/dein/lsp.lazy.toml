@@ -7,9 +7,6 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
-
-[[plugins]]
 repo = 'williamboman/mason.nvim'
 
 [[plugins]]
