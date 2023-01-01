@@ -11,6 +11,7 @@ let g:colorscheme_filepath      = s:dein_toml_path . 'colorscheme.toml'
 let g:dein_lazy_toml_filepath   = s:dein_toml_path . 'dein.lazy.toml'
 let g:ddc_lazy_toml_filepath    = s:dein_toml_path . 'ddc.lazy.toml'
 let g:ddu_lazy_toml_filepath    = s:dein_toml_path . 'ddu.lazy.toml'
+let g:git_lazy_toml_filepath    = s:dein_toml_path . 'git.lazy.toml'
 let g:lsp_lazy_toml_filepath    = s:dein_toml_path . 'lsp.lazy.toml'
 
 " plugin list
@@ -20,6 +21,7 @@ let g:dein_plugins = [
   \ expand(g:dein_lazy_toml_filepath),
   \ expand(g:ddc_lazy_toml_filepath),
   \ expand(g:ddu_lazy_toml_filepath),
+  \ expand(g:git_lazy_toml_filepath),
   \ expand(g:lsp_lazy_toml_filepath),
   \ ]
 
@@ -64,6 +66,7 @@ function! s:reload_plugin(tomls) abort
     call s:dein_add_wrapper(g:dein_lazy_toml_filepath)
     call s:dein_add_wrapper(g:ddc_lazy_toml_filepath)
     call s:dein_add_wrapper(g:ddu_lazy_toml_filepath)
+    call s:dein_add_wrapper(g:git_lazy_toml_filepath)
     call s:dein_add_wrapper(g:lsp_lazy_toml_filepath)
 
     call dein#end()
@@ -71,9 +74,9 @@ function! s:reload_plugin(tomls) abort
   endif
 
   " その他インストールしていないものはこちらに入れる
-  "if dein#check_install()
-  "  call dein#install()
-  "endif
+  if dein#check_install()
+    call dein#install()
+  endif
 
   " remove plugin on toml undefined 
   call map(dein#check_clean(), "delete(v:val, 'rf')")

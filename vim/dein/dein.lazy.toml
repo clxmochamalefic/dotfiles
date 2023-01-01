@@ -2,3 +2,85 @@
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
 build = 'sh -c "cd app && yarn install"'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+on_if = '!has("nvim")'
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+on_if = '!has("nvim")'
+build = 'pip install -r requirements.txt'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+on_event = ['BufEnter']
+
+[[plugins]] # カーソル位置のコンテキストのftを判定するライブラリ
+repo = 'Shougo/context_filetype.vim'
+on_event = ['BufEnter']
+
+[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+on_event = ['BufEnter']
+
+[[plugins]]
+repo = "Shougo/deol.nvim"
+depends = ['pum.vim', 'ddc.vim']
+on_event = ['BufEnter']
+hook_source = '''
+  let g:deol#floating_border = "rounded"
+  let g:deol#enable_ddc_completion = v:true
+
+  let s:margin_width    = 30
+  let s:margin_height   = 30
+
+  function! s:get_vim_width() abort
+    let l:vim_width = &columns
+    let l:width = l:vim_width - s:margin_width
+    if l:width < 0
+      let l:width = l:vim_width
+    endif
+    return l:width
+  endfunction
+
+  function! s:get_vim_height() abort
+    let l:vim_height = &lines
+    let l:height = l:vim_height - s:margin_height
+    if l:height < 0
+      let l:height = l:vim_height
+    endif
+    return l:height
+  endfunction
+
+  "let s:width  = system('columns') - 10
+  let g:my_vim_width = s:get_vim_width()
+
+  "let s:width = s:window_width - 10
+  let g:my_vim_height = s:get_vim_height()
+
+  " 【Ctrl + o】 float windowでターミナルを表示
+  nnoremap <silent><C-o> :<C-u>execute 'Deol' '-cwd=' . fnamemodify(expand('%'), ':h') . ' -split=floating' . ' -winwidth=' . g:my_vim_width . ' -winheight=' . g:my_vim_height<CR>
+  "nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating"<CR>
+  " 【ESC】 ターミナルモードから抜ける
+  tnoremap <ESC>   <C-\><C-n>
+'''
+
+[[plugins]]
+repo = 'LeafCage/vimhelpgenerator'
+on_ft = ['vimscript', 'lua', 'typescript']
+
+[[plugins]]
+repo = 'cocoalix/quotecmp.vim'
+on_event = ['BufEnter']
+hook_add = '''
+  command! InsertQuoteBack    call quotecmp#completion_quote('`')
+  command! InsertQuoteSingle  call quotecmp#completion_quote("'")
+  command! InsertQuoteDouble  call quotecmp#completion_quote('"')
+
+  inoremap `` <Esc>:InsertQuoteBack<CR>
+  inoremap '' <Esc>:InsertQuoteSingle<CR>
+  inoremap "" <Esc>:InsertQuoteDouble<CR>
+'''
+

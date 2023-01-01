@@ -1,73 +1,5 @@
-[[plugins]] # カーソル位置のコンテキストのftを判定するライブラリ
-repo = 'Shougo/context_filetype.vim'
-
-[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
-repo = 'osyo-manga/vim-precious'
-depends = ['context_filetype.vim']
-
-[[plugins]]
-repo = 'roxma/nvim-yarp'
-on_if = '!has("nvim")'
-
-[[plugins]]
-repo = 'roxma/vim-hug-neovim-rpc'
-on_if = '!has("nvim")'
-
-[[plugins]]
-repo = 'Shougo/vimproc.vim'
-#build = 'make'
-hook_post_update = '''
-  if dein#util#_is_windows()
-      let cmd = 'tools\\update-dll-mingw'
-  elseif dein#util#_is_cygwin()
-      let cmd = 'make -f make_cygwin.mak'
-      elseif executable('gmake')
-      let cmd = 'gmake'
-      else
-      let cmd = 'make'
-      endif
-      let g:dein#plugin.build = cmd
-'''
-
-[[plugins]]
-repo = 't9md/vim-choosewin'
-hook_add = '''
-  " invoke with '-'
-  nmap  -  <Plug>(choosewin)
-'''
-
-[[plugins]]
-repo = "Shougo/deol.nvim"
-hook_add = '''
-  let g:deol#floating_border = "rounded"
-
-  let s:window_width  = system('columns')
-  let s:window_height = system('lines')
-
-  "let s:width  = system('columns') - 10
-  "let s:height = system('lines') - 30
-
-  "let s:width = s:window_width - 10
-  "let s:height = s:window_height - 30
-
-  " 【Ctrl + o】 float windowでターミナルを表示
-  "nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating" . " -winwidth=" . "100" . " -winheight=" . s:height<CR>
-  nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating"<CR>
-  " 【ESC】 ターミナルモードから抜ける
-  tnoremap <ESC>   <C-\><C-n>
-'''
-
-[[plugins]]
-repo = 'tpope/vim-surround'
-
-[[plugins]]
-repo = 'airblade/vim-gitgutter'
-
-[[plugins]]
-repo = 'tpope/vim-fugitive'
-
-[[plugins]]
-repo = 'szw/vim-tags'
+[[plugins]] # dein.vimをdein自身で更新させる
+repo = 'Shougo/dein.vim'
 
 [[plugins]]
 repo = 'vim-denops/denops.vim'
@@ -98,16 +30,25 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'LeafCage/vimhelpgenerator'
+repo = 'Shougo/vimproc.vim'
+#build = 'make'
+hook_post_update = '''
+  if dein#util#_is_windows()
+      let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+      let cmd = 'make -f make_cygwin.mak'
+      elseif executable('gmake')
+      let cmd = 'gmake'
+      else
+      let cmd = 'make'
+      endif
+      let g:dein#plugin.build = cmd
+'''
 
 [[plugins]]
-repo = 'cocoalix/quotecmp.vim'
+repo = 't9md/vim-choosewin'
 hook_add = '''
-  command! InsertQuoteBack    call quotecmp#completion_quote('`')
-  command! InsertQuoteSingle  call quotecmp#completion_quote("'")
-  command! InsertQuoteDouble  call quotecmp#completion_quote('"')
-
-  inoremap `` <Esc>:InsertQuoteBack<CR>
-  inoremap '' <Esc>:InsertQuoteSingle<CR>
-  inoremap "" <Esc>:InsertQuoteDouble<CR>
+  " invoke with '-'
+  nmap  -  <Plug>(choosewin)
 '''
+
