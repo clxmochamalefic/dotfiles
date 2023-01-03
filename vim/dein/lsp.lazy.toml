@@ -1,9 +1,9 @@
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['mason.nvim', 'mason-lspconfig.nvim', 'lspsaga.nvim', 'ddc.vim' 'ddc-nvim-lsp', 'denops-popup-preview.vim', 'denops-signature_help']
+depends = ['mason.nvim', 'mason-lspconfig.nvim', 'lspsaga.nvim', 'ddc.vim', 'ddc-nvim-lsp', 'denops-popup-preview.vim', 'denops-signature_help']
 on_event = ['BufRead', 'InsertEnter']
 hook_source = '''
-  execute "source " . g:my_initvim_path . "/plugins/lsp.lua"
+  execute "source " . g:my_initvim_path . "/plugins/lsp.vim"
 '''
 
 [[plugins]]
@@ -18,14 +18,6 @@ repo = 'glepnir/lspsaga.nvim'
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
-depends = ['denops.vim', 'pum.vim', 'ddc.vim', 'ddc-nvim-lsp']
-hook_source = '''
-  call popup_preview#enable()
-'''
 
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
-depends = ['denops.vim', 'pum.vim', 'ddc.vim', 'ddc-nvim-lsp']
-hook_source = '''
-  call signature_help#enable()
-'''

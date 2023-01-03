@@ -15,7 +15,7 @@ let s:fav_font_map = #{
       \ }
 
 let s:fontsize = 13
-function! AdjustFontSize(amount)
+function! AdjustFontSize(amount) abort
   let s:fontsize = s:fontsize + a:amount
   execute 'set guifont=' . s:fav_font_map['Cica'] . ':h' . s:fontsize
 endfunction
@@ -24,5 +24,3 @@ noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>
 noremap <C-ScrollWheelDown> :call AdjustFontSize(-1)<CR>
 inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
 inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
-
-call AdjustFontSize(0)

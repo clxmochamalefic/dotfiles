@@ -31,31 +31,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 -- You will likely want to reduce updatetime which affects CursorHold
 -- note: this setting is global and should be set only once
 vim.o.updatetime = 100
--- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
-
-function PrintDiagnostics(opts, bufnr, line_nr)
-  opts = opts or {}
-
-  bufnr = bufnr or 0
-  line_nr = line_nr or (vim.api.nvim_win_get_cursor(0)[1] - 1)
-  local line_diagnostics = vim.diagnostic.get(bufnr, { lnum = line_nr })
-  if vim.tbl_isempty(line_diagnostics) then return end
-
-  for _, diagnostic in ipairs(line_diagnostics) do
-    local output = string.format("[%s] %s [%s]",
-      diagnostic.source or "",
-      diagnostic.message or "",
-      vim.diagnostic.severity[diagnostic.severity] or ""
-    )
-    if #output > 140 then
-      output = string.sub(output, 0, 140) .. '...'
-    end
-    vim.api.nvim_echo({ { output } }, false, {})
-    break
-  end
-end
-
-vim.cmd [[ autocmd CursorHold * lua PrintDiagnostics() ]]
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
 local mason = require "mason"
 mason.setup {}
@@ -102,3 +78,4 @@ mason_lspconfig.setup_handlers({
     lspconfig[server_name].setup(opts)
   end
 })
+
