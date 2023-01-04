@@ -23,9 +23,6 @@ repo = 'ryanoasis/vim-devicons'
 [[plugins]]
 repo = 'vim-airline/vim-airline'
 depends = ['vim-airline-themes']
-hook_source = '''   
-  execute "source " . g:my_initvim_path . "/plugins/colorscheme.vim"
-'''
 
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
