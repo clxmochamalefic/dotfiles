@@ -12,7 +12,7 @@ augroup MyAutoCmd
 augroup END
 
 " debug mode
-let g:is_enable_my_debug = v:false
+let g:is_enable_my_debug = v:true
 
 " get preference file path
 "let g:my_initvim_path = expand('%:p:h')
@@ -20,7 +20,7 @@ let g:my_initvim_path = expand(g:preference_path)
 
 function! DebugEcho(mes) abort
   if g:is_enable_my_debug
-    echo 'begin ' . g:my_initvim_path . ' load'
+    echo 'begin ' . a:mes . ' load'
   endif
 endfunction
 

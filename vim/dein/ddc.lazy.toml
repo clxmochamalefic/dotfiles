@@ -1,13 +1,23 @@
-[[multiple_plugins]]
-plugins = ['ddc.vim', 'ddc-nvim-lsp', 'ddc-around', 'ddc-sorter_rank', 'ddc-matcher_head', 'ddc-source-cmdline-history', 'ddc-shell-history', 'ddc-ui-pum', 'pum.vim']
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+depends = [
+  'denops.vim',
+  'pum.vim',
+  'ddc-ui-pum'
+  'ddc-nvim-lsp',
+  'ddc-around',
+  'ddc-file',
+  'ddc-emoji',
+  'ddc-fuzzy',
+  'ddc-source-cmdline-history',
+  'ddc-shell-history',
+  'ddc-matcher_head',
+  'ddc-sorter_rank',
+]
 on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
 hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/ddc.vim"
 '''
-
-[[plugins]]
-repo = 'Shougo/ddc.vim'
-depends = ['denops.vim', 'pum.vim', 'ddc.vim', 'ddc-ui-pum']
 
 # UI ####################
 

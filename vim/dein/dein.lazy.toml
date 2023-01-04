@@ -33,7 +33,7 @@ hook_source = '''
   let g:deol#floating_border = "rounded"
   let g:deol#enable_ddc_completion = v:true
 
-  let s:margin_width    = 30
+  let s:margin_width    = 25 * 2
   let s:margin_height   = 30
 
   function! s:get_vim_width() abort

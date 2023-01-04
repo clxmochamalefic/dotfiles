@@ -1,3 +1,5 @@
+echo "begin /plugins/ddu.vim load"
+
 " ddu.vim
 call ddu#custom#patch_global({
       \   'ui': 'ff',
@@ -247,4 +249,6 @@ call ddu#custom#patch_local('custom-list', {
       \ ]})
 
 command! DduCmd call ddu#start(#{ name: 'custom_list' })
+
+echo "begin /plugins/ddu.vim end"
 
