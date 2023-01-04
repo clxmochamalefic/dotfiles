@@ -1,73 +1,90 @@
+# ddu ------------------------------
 [[plugins]]
 repo = 'Shougo/ddu.vim'
 depends = [
+  'denops.vim',
+
   'ddu-ui-ff',
   'ddu-ui-filer',
-  'ddu-source-buffer',
+
   'ddu-source-action',
-  'ddu-source-file_old',
-  'ddu-source-emoji',
-  'ddu-source-dein_update',
+  'ddu-source-buffer',
   'ddu-source-custom-list',
-  'ddu-filter-matcher_substring',
-  'ddu-kind-file',
+  'ddu-source-dein_update',
+  'ddu-source-emoji',
   'ddu-source-file',
   'ddu-source-file_old',
+  'ddu-source-file_rec',
+
+  'ddu-filter-matcher_substring',
+
+  'ddu-kind-file',
   'ddu-kind-word',
+
   'ddu-column-filename',
-  'ddu-column-icon_filename'
+  'ddu-column-icon_filename',
 ]
-on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
-hook_source = '''
-  echo "aaaaa"
+on_event = ['VimEnter']
+hook_post_source = '''
   execute "source " . expand(g:my_initvim_path . "/plugins/ddu.vim")
 '''
 
-[[plugins]]
-repo = 'Shougo/ddu-ui-ff'
-on_source = ['ddu.vim']
+
+# ddu-ui ------------------------------
 
 [[plugins]]
-repo = 'shun/ddu-source-buffer'
-on_source = 'ddu.vim'
+repo = 'Shougo/ddu-ui-ff'
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-filer'
-on_source = ['ddu.vim']
+
+
+# ddu-source ------------------------------
 
 [[plugins]]
 repo = 'Shougo/ddu-source-action'
-on_source = ['ddu.vim']
 
 [[plugins]]
-repo = 'Shougo/ddu-source-file_rec'
-on_source = ['ddu.vim']
-
-[[plugins]]
-repo='matsui54/ddu-source-dein_update'
+repo = 'shun/ddu-source-buffer'
 
 [[plugins]]
 repo='liquidz/ddu-source-custom-list'
 
 [[plugins]]
+repo='matsui54/ddu-source-dein_update'
+
+[[plugins]]
+repo = '4513ECHO/ddu-source-emoji'
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file'
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file_old'
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file_rec'
+
+
+# ddu-filter ------------------------------
+
+[[plugins]]
 repo = 'Shougo/ddu-filter-matcher_substring'
 on_source = ['ddu.vim']
+
+
+# ddu-kind ------------------------------
 
 [[plugins]]
 repo = 'Shougo/ddu-kind-file'
 on_source = ['ddu.vim']
 
 [[plugins]]
-repo = 'Shougo/ddu-source-file'
-on_source = ['ddu.vim', 'ddu-kind-file']
-
-[[plugins]]
-repo = 'Shougo/ddu-source-file_old'
-on_source = ['ddu.vim', 'ddu-kind-file']
-
-[[plugins]]
 repo = 'Shougo/ddu-kind-word'
 on_source = ['ddu.vim']
+
+
+# ddu-column ------------------------------
 
 [[plugins]]
 repo = 'Shougo/ddu-column-filename'
@@ -76,8 +93,4 @@ on_source = ['ddu.vim']
 [[plugins]]
 repo = 'ryota2357/ddu-column-icon_filename'
 on_source = ['ddu.vim']
-
-[[plugins]]
-repo = '4513ECHO/ddu-source-emoji'
-on_source = ['ddu.vim', 'ddu-kind-word']
 

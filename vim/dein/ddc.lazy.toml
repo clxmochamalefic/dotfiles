@@ -14,8 +14,8 @@ depends = [
   'ddc-matcher_head',
   'ddc-sorter_rank',
 ]
-on_event = ['InsertEnter', 'CursorHold', 'CmdlineEnter']
-hook_source = '''
+on_event = ['VimEnter']
+hook_post_source = '''
   execute "source " . g:my_initvim_path . "/plugins/ddc.vim"
 '''
 

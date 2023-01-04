@@ -62,7 +62,7 @@ set clipboard=unnamed
 "+++++++++++++++
 " define mapleader character
 " (`mapleader` is preference of combination prefix character
-let mapleader = ","
+let mapleader = " "
 
 "+++++++++++++++
 " tab and tabstop

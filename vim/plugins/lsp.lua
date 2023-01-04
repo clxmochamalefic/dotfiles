@@ -2,7 +2,7 @@ local saga = require "lspsaga"
 saga.init_lsp_saga()
 
 vim.api.nvim_set_keymap('n', '[lsp]', '<Nop>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Leader>l', '[lsp]', { noremap = false })
+vim.api.nvim_set_keymap('n', '<Leader>l', '[lsp]', { noremap = true })
 vim.api.nvim_set_keymap('n', '[lsp]a', ':Lspsaga code_action<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '[lsp]c', ':lua vim.lsp.buf.declaration()<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '[lsp]dp', ':Lspsaga peek_definition<CR>', { noremap = true })

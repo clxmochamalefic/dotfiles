@@ -13,12 +13,9 @@ nmap <C-;> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
 nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
 
 " auto insert semicolon to after last character in current line
-if !exists('*s:isEndSemicolon')
-  let &stl.='%{s:isEndSemicolon}'
-  function! s:isEndSemicolon() abort
-    return getline(".")[col("$")-2] != ';'
-  endfunction
-endif
+function! s:isEndSemicolon() abort
+  return getline(".")[col("$")-2] != ';'
+endfunction
 
 inoremap <expr>;; s:isEndSemicolon() ?  "<C-O>$;<CR>"  :  "<C-O>$<CR>"
 

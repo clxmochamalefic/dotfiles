@@ -238,17 +238,120 @@ let s:id = denops#callback#register(
       \   { s -> execute(printf('echom "%s"', s), '') },
       \   #{ once: v:true }
       \ )
-call ddu#custom#patch_local('custom-list', {
-      \   'sources': [#{
-      \     name: 'custom-list',
-      \     params: #{
-      \       texts: ['hello', 'world'],
-      \       callbackId: s:id,
-      \     }
-      \   }
-      \ ]})
+call ddu#custom#patch_local('custom_list', #{
+      \   sources: [#{
+      \       name: 'custom-list',
+      \       params: #{
+      \         texts: ['hello', 'world'],
+      \         callbackId: s:id,
+      \       }
+      \     },
+      \   ],
+      \   kindOptions: #{ defaultAction: 'callback' },
+      \ })
 
 command! DduCmd call ddu#start(#{ name: 'custom_list' })
+
+let s:lsp_actions = {
+      \   'code_action': #{
+      \     name: 'code_action',
+      \     depend: 'Lspsaga',
+      \     command: 'code_action',
+      \   },
+      \   'vim.lsp.buf.declaration()': #{
+      \     name: 'vim.lsp.buf.declaration()',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.declaration()',
+      \   },
+      \   'peek_definition': #{
+      \     name: 'peek_definition',
+      \     depend: 'Lspsaga',
+      \     command: 'peek_definition',
+      \   },
+      \   'vim.lsp.buf.definition()': #{
+      \     name: 'vim.lsp.buf.definition()',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.definition()',
+      \   },
+      \   'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}': #{
+      \     name: 'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}',
+      \   },
+      \   'hover_doc': #{
+      \     name: 'hover_doc',
+      \     depend: 'Lspsaga',
+      \     command: 'hover_doc',
+      \   },
+      \   'vim.lsp.buf.implementation()': #{
+      \     name: 'vim.lsp.buf.implementation()',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.implementation()',
+      \   },
+      \   'vim.lsp.buf.references()': #{
+      \     name: 'vim.lsp.buf.references()',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.references()',
+      \   },
+      \   'rename': #{
+      \     name: 'rename',
+      \     depend: 'Lspsaga',
+      \     command: 'rename',
+      \   },
+      \   'vim.lsp.buf.type_definition()': #{
+      \     name: 'vim.lsp.buf.type_definition()',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.type_definition()',
+      \   },
+      \   'show_line_diagnostics': #{
+      \     name: 'show_line_diagnostics',
+      \     depend: 'Lspsaga',
+      \     command: 'show_line_diagnostics',
+      \   },
+      \   'diagnostic_jump_next': #{
+      \     name: 'diagnostic_jump_next',
+      \     depend: 'Lspsaga',
+      \     command: 'diagnostic_jump_next',
+      \   },
+      \   'diagnostic_jump_prev': #{
+      \     name: 'diagnostic_jump_prev',
+      \     depend: 'Lspsaga',
+      \     command: 'diagnostic_jump_prev',
+      \   },
+      \   'vim.lsp.buf.signature_help()': #{
+      \     name: 'vim.lsp.buf.signature_help()',
+      \     depend: 'lua',
+      \     command: 'vim.lsp.buf.signature_help()',
+      \   },
+      \ }
+
+let s:lsp_action_keys = keys(s:lsp_actions)
+
+function! s:get_evaluated_command(key) abort
+  let l:lsp_action = s:lsp_actions[a:key]
+  return l:lsp_action.depend . " " . l:lsp_action.command
+endfunction
+
+let s:lsp_action_callback_id = denops#callback#register(
+      \   { key -> execute(s:get_evaluated_command(key)) },
+      \   #{ once: v:true }
+      \ )
+
+call ddu#custom#patch_local('lsp_actions', #{
+      \   sources: [#{
+      \       name: 'custom-list',
+      \       params: #{
+      \         texts: s:lsp_action_keys,
+      \         callbackId: s:lsp_action_callback_id,
+      \       }
+      \     },
+      \   ],
+      \   kindOptions: #{ defaultAction: 'callback' },
+      \ })
+
+command! LspActions call ddu#start(#{ name: 'lsp_actions' })
+
+
 
 echo "begin /plugins/ddu.vim end"
 

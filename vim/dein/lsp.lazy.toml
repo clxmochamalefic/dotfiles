@@ -1,7 +1,7 @@
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 depends = ['mason.nvim', 'mason-lspconfig.nvim', 'lspsaga.nvim', 'ddc.vim', 'ddc-nvim-lsp', 'denops-popup-preview.vim', 'denops-signature_help']
-on_event = ['BufRead', 'InsertEnter']
+on_event = ['VimEnter']
 hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/lsp.vim"
 '''

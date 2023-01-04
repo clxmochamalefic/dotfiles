@@ -1,6 +1,8 @@
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
+on_event = ['BufEnter']
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
+on_event = ['BufEnter']
 

@@ -5,18 +5,15 @@ let s:colorscheme = 'onehalfdark'
 let s:airline_theme = 'bubblegum'
 
 " define colorscheme load function for lazyload
-if !exists('*s:isEndSemicolon')
-  let &stl.='%{s:isEndSemicolon}'
-  function! s:load_colorscheme() abort
-    " background color
-    set background=dark
-    " using colorscheme
-    execute "colorscheme " . s:colorscheme
+function! s:load_colorscheme() abort
+  " background color
+  set background=dark
+  " using colorscheme
+  execute "colorscheme " . s:colorscheme
 
-    " using airline colorscheme
-    let g:airline_theme = s:airline_theme
-  endfunction
-endif
+  " using airline colorscheme
+  let g:airline_theme = s:airline_theme
+endfunction
 
 " modify line number col color
 augroup MyColorSchemeOnePointModify
