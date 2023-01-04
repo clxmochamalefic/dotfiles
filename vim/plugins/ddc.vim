@@ -20,14 +20,14 @@ call ddc#custom#patch_global('cmdlineSources', [
 " https://github.com/Shougo/ddc-sorter_rank
 call ddc#custom#patch_global('sourceOptions', #{
       \   _: #{
-      \     mark: '| VIM',
+      \     mark: '| vim',
       \     ignoreCase: v:true,
       \     matchers: ['matcher_fuzzy'],
       \     sorters: ['sorter_fuzzy'],
       \     converters: ['converter_fuzzy'],
       \   },
       \   around: #{
-      \     mark: '| ARD'
+      \     mark: '| Around'
       \   },
       \   nvim-lsp: #{
       \     mark: '| LSP',
@@ -35,20 +35,20 @@ call ddc#custom#patch_global('sourceOptions', #{
       \   },
       \   cmdline: #{
       \     ignoreCase: v:false,
-      \     mark: '| CMD',
+      \     mark: '| Cmdline',
       \     forceCompletionPattern: '\S/\S*',
       \   },
       \   cmdline-history: #{
-      \     mark: '| CMH',
+      \     mark: '| CmdlineHistory',
       \   },
       \   emoji: #{
-      \	    mark: '| EMJ',
+      \	    mark: '| Emoji',
       \	    matchers: ['emoji'],
       \     forceCompletionPattern: '[a-zA-Z_:]\w*',
       \	    sorters: [],
       \	  },
       \   shell-history: #{
-      \     mark: '| SHH',
+      \     mark: '| ShellHistory',
       \     minKeywordLength: 4,
       \     maxKeywordLength: 50,
       \   },
