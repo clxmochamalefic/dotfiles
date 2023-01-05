@@ -1,3 +1,7 @@
+if g:is_enable_my_debug
+  echo "begin /plugins/ddc.vim load"
+endif
+
 call ddc#custom#patch_global('ui', 'pum')
 " Customize global settings
 " Use around source.
@@ -98,4 +102,9 @@ inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
 
 " Use ddc.
 call ddc#enable()
+
+
+if g:is_enable_my_debug
+  echo "end /plugins/ddc.vim load"
+endif
 
