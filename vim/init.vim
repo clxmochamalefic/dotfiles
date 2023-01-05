@@ -12,7 +12,7 @@ augroup MyAutoCmd
 augroup END
 
 " debug mode
-let g:is_enable_my_debug = v:true
+let g:is_enable_my_debug = v:false
 
 " get preference file path
 "let g:my_initvim_path = expand('%:p:h')

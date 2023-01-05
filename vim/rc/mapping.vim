@@ -40,3 +40,7 @@ inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
 inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
 
+
+" call LspAction ------------------------------
+
+nnoremap <Leader><Space> :LspAction<CR>
