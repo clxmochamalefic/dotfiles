@@ -239,6 +239,11 @@ call ddu#custom#patch_local('buffer', #{
       \       params: #{},
       \     },
       \   ],
+      \   kindOptions: #{
+      \     buffer: #{
+      \       defaultAction: 'open',
+      \     },
+      \   },
       \   uiParams: #{
       \     _: #{
       \       span: 2,
@@ -246,12 +251,32 @@ call ddu#custom#patch_local('buffer', #{
       \   }
       \ })
 
-nnoremap  \  :<C-u>call ddu#start({ 'name': 'buffer' })<CR>
 command! DduBuffer call ddu#start({ 'name': 'buffer' })
+nnoremap  \  :<C-u>DduBuffer<CR>
 
 
 " ddu-source-file_old
-command! DduFileOld call ddu#start(#{ sources: [#{ name: 'file_old', uiParams: #{_: #{span: 2 }} }] })
+call ddu#custom#patch_local('file_old', #{
+      \   ui: 'ff',
+      \   sources: [
+      \     #{
+      \       name: 'file_old',
+      \       params: #{},
+      \     },
+      \   ],
+      \   kindOptions: #{
+      \     buffer: #{
+      \       defaultAction: 'open',
+      \     },
+      \   },
+      \   uiParams: #{
+      \     _: #{
+      \       span: 2,
+      \     },
+      \   }
+      \ })
+
+command! DduFileOld call ddu#start(#{ name: 'file_old' })
 nnoremap  \|  :<C-u>DduFileOld<CR>
 
 
@@ -264,6 +289,9 @@ call ddu#custom#patch_local('emoji', #{
       \     },
       \   ],
       \   kindOptions: #{
+      \     emoji: {
+      \       'defaultAction': 'append',
+      \     },
       \     word: {
       \       'defaultAction': 'append',
       \     },

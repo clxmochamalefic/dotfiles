@@ -45,6 +45,13 @@ hi TermCursor       ctermbg=249 ctermfg=46 guibg=#610B5E guifg=#F2F2F2
 hi TermCursorNC     ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
 
 
+" modify color by colorscheme
+if s:colorscheme == 'onehalfdark'
+  let g:terminal_color_0 = '#565F70'
+  let g:terminal_color_8 = '#717C91'
+endif
+
+
 " vim-airline
 set laststatus=2
 
