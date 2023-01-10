@@ -1,4 +1,9 @@
 [[plugins]]
+repo = 'wsdjeg/dein-ui.vim'
+depends = ['dein.vim']
+on_event = ['BufEnter']
+
+[[plugins]]
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
 build = 'sh -c "cd app && yarn install"'
@@ -12,6 +17,7 @@ repo = 'roxma/nvim-yarp'
 on_if = '!has("nvim")'
 build = 'pip install -r requirements.txt'
 
+# completion by [{()}]
 [[plugins]]
 repo = 'tpope/vim-surround'
 on_event = ['BufEnter']
@@ -74,7 +80,7 @@ on_ft = ['vimscript', 'lua', 'typescript']
 [[plugins]]
 repo = 'cocoalix/quotecmp.vim'
 on_event = ['BufEnter']
-hook_add = '''
+hook_source = '''
   command! InsertQuoteBack    call quotecmp#completion_quote('`')
   command! InsertQuoteSingle  call quotecmp#completion_quote("'")
   command! InsertQuoteDouble  call quotecmp#completion_quote('"')
@@ -83,4 +89,46 @@ hook_add = '''
   inoremap '' <Esc>:InsertQuoteSingle<CR>
   inoremap "" <Esc>:InsertQuoteDouble<CR>
 '''
+
+# DB access
+[[plugins]]
+repo = 'tpope/vim-dadbod'
+depends = ['vim-dotenv', 'vim-dadbod-ui']
+on_event = ['VimEnter', 'BufEnter']
+hook_source = '''
+  " TOML FORMAT
+  " [local]
+  " connection_string = "mysql://xxxx"
+  " port = "3306"
+  " user =  "LOCAL"
+  " password =  "PASSWD"
+  " [local.ssh]
+  " address = "localhost"
+  " port = "22"
+  " user = "LOCAL"
+  " password = "PASSWD"
+  " identifier = ""
+  echo "begin vim-dad"
+  let s:db_toml_dir = expand($HOME . '/.cache/vim_dadbod')
+  let g:dbs = {}
+
+  if !isdirectory(s:db_toml_dir)
+    execute '!mkdir' . s:db_toml_dir
+  endif
+
+  let s:filelist =  expand(s:db_toml_dir . "/*.toml")
+  let s:splitted = split(s:filelist, "\n")
+  for s:file in s:splitted
+    let s:read = dein#toml#parse_file(expand(s:file))
+    for s:prefix in keys(s:read)
+      let g:dbs[fnamemodify(s:file, ':t') . "_" . s:prefix] = s:read[s:prefix]['connection_string']
+    endfor
+  endfor
+'''
+
+[[plugins]]
+repo = 'tpope/vim-dotenv'
+
+[[plugins]]
+repo = 'kristijanhusak/vim-dadbod-ui'
 

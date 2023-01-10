@@ -28,6 +28,12 @@ call ddu#custom#patch_global(#{
       \     file: #{
       \       defaultAction: 'open',
       \     },
+      \     file_old: #{
+      \       defaultAction: 'open',
+      \     },
+      \     file_rec: #{
+      \       defaultAction: 'open',
+      \     },
       \     action: #{
       \       defaultAction: 'do',
       \     },
@@ -121,7 +127,7 @@ let s:ddu_filer_ui_params = #{
       \     },
       \   }
 
-call ddu#custom#patch_local('filer_current', #{
+call ddu#custom#patch_local('filer', #{
       \   ui: 'filer',
       \   sources: s:ddu_filer_sources,
       \   sourceOptions: s:ddu_filer_source_options,
@@ -130,31 +136,10 @@ call ddu#custom#patch_local('filer_current', #{
       \   uiParams: s:ddu_filer_ui_params,
       \ })
 
-call ddu#custom#patch_local('filer_home', #{
-      \   ui: 'filer',
-      \   sources: s:ddu_filer_sources,
-      \   sourceOptions: s:ddu_filer_source_options,
-      \   kindOptions: s:ddu_filer_kind_options,
-      \   actionOptions: s:ddu_filer_action_options,
-      \   uiParams: #{
-      \     filer: #{
-      \       search: expand($HOME),
-      \       sort: 'filename',
-      \       span: 2,
-      \       sortTreesFirst: v:true,
-      \     },
-      \     icon_filename: #{
-      \       span: 2,
-      \     },
-      \   },
-      \ })
-
 autocmd TabEnter,CursorHold,FocusGained <buffer>
       \ call ddu#ui#filer#do_action('checkItems')
 
 autocmd FileType ddu-filer          call s:ddu_filer_my_settings()
-autocmd FileType ddu-filer_current  call s:ddu_filer_my_settings()
-autocmd FileType ddu-filer_home     call s:ddu_filer_my_settings()
 
 function! s:ddu_filer_my_settings() abort
   "nnoremap <buffer><silent><expr> <CR>
@@ -172,6 +157,8 @@ function! s:ddu_filer_my_settings() abort
 
   nnoremap <buffer><silent> ~
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME)} })<CR>
+  nnoremap <buffer><silent> ^
+        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand(g:my_initvim_path)} })<CR>
 
   nnoremap <buffer><silent> q
         \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
@@ -195,8 +182,13 @@ function! s:ddu_filer_my_settings() abort
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'rename'})<CR>
 
   nnoremap <buffer><silent> R
-        \ <Cmd>call ddu#ui#filer#do_action('checkItems')<CR>
+        \ <Cmd>call ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
 
+  nnoremap <buffer><silent> a
+        \ <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+
+  nnoremap <buffer><silent> A
+        \ <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'ChooseWin' })<CR>
 
   nnoremap <buffer><silent> m
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'move'})<CR>
@@ -221,11 +213,9 @@ function! s:ddu_filer_my_settings() abort
 
 endfunction
 
-command! DduFiler     call ddu#start({ 'name': 'filer_current' })
-command! DduFilerHome call ddu#start({ 'name': 'filer_home' })
+command! DduFiler     call ddu#start({ 'name': 'filer' })
 
 nnoremap  ^  :<C-u>DduFiler<CR>
-nnoremap  ~  :<C-u>DduFilerHome<CR>
 
 
 " ddu-source --------------------
@@ -236,7 +226,7 @@ call ddu#custom#patch_local('buffer', #{
       \   sources: [
       \     #{
       \       name: 'buffer',
-      \       params: #{},
+      \       params: #{path: $HOME},
       \     },
       \   ],
       \   kindOptions: #{
@@ -245,7 +235,7 @@ call ddu#custom#patch_local('buffer', #{
       \     },
       \   },
       \   uiParams: #{
-      \     _: #{
+      \     buffer: #{
       \       span: 2,
       \     },
       \   }
@@ -265,12 +255,13 @@ call ddu#custom#patch_local('file_old', #{
       \     },
       \   ],
       \   kindOptions: #{
-      \     buffer: #{
+      \     file_old: #{
       \       defaultAction: 'open',
       \     },
       \   },
       \   uiParams: #{
-      \     _: #{
+      \     file_old: #{
+      \       search: expand($HOME),
       \       span: 2,
       \     },
       \   }
@@ -297,7 +288,7 @@ call ddu#custom#patch_local('emoji', #{
       \     },
       \   },
       \   uiParams: #{
-      \     _: #{
+      \     emoji: #{
       \       span: 2,
       \     },
       \   }
@@ -313,8 +304,8 @@ inoremap <C-x><C-e> <Cmd>call ddu#start({'sources': [{'name': 'emoji'}]})<CR>
 
 " LspAction ====================
 let s:lsp_actions = {
-      \   'code_action': #{
-      \     name: 'code_action',
+      \   'SHOW REFACTOR code actions': #{
+      \     name: 'SHOW REFACTOR code actions',
       \     depend: 'Lspsaga',
       \     command: 'code_action',
       \   },
@@ -323,13 +314,13 @@ let s:lsp_actions = {
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.declaration()',
       \   },
-      \   'peek_definition': #{
-      \     name: 'peek_definition',
+      \   'SHOW defined source on floating window': #{
+      \     name: 'SHOW defined source on floating window',
       \     depend: 'Lspsaga',
       \     command: 'peek_definition',
       \   },
-      \   'vim.lsp.buf.definition()': #{
-      \     name: 'vim.lsp.buf.definition()',
+      \   'JUMP cursor to defined line FOR PROPERTY': #{
+      \     name: 'JUMP cursor to defined line FOR PROPERTY',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.definition()',
       \   },
@@ -338,43 +329,43 @@ let s:lsp_actions = {
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}',
       \   },
-      \   'hover_doc': #{
-      \     name: 'hover_doc',
+      \   'SHOW definition on floating window': #{
+      \     name: 'SHOW definition on floating window',
       \     depend: 'Lspsaga',
       \     command: 'hover_doc',
       \   },
-      \   'vim.lsp.buf.implementation()': #{
-      \     name: 'vim.lsp.buf.implementation()',
+      \   'SHOW implementation source on this BUFFER': #{
+      \     name: 'SHOW implementation source on this BUFFER',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.implementation()',
       \   },
-      \   'vim.lsp.buf.references()': #{
-      \     name: 'vim.lsp.buf.references()',
+      \   'SHOW reference': #{
+      \     name: 'SHOW reference',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.references()',
       \   },
-      \   'rename': #{
-      \     name: 'rename',
+      \   'EXEC rename by floating window': #{
+      \     name: 'EXEC rename by floating window',
       \     depend: 'Lspsaga',
       \     command: 'rename',
       \   },
-      \   'vim.lsp.buf.type_definition()': #{
-      \     name: 'vim.lsp.buf.type_definition()',
+      \   'JUMP cursor to defined line FOR TYPE': #{
+      \     name: 'JUMP cursor to defined line FOR TYPE',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.type_definition()',
       \   },
-      \   'show_line_diagnostics': #{
-      \     name: 'show_line_diagnostics',
+      \   'SHOW diagnostics this line on floating window': #{
+      \     name: 'SHOW diagnostics this line on floating window',
       \     depend: 'Lspsaga',
       \     command: 'show_line_diagnostics',
       \   },
-      \   'diagnostic_jump_next': #{
-      \     name: 'diagnostic_jump_next',
+      \   'JUMP DIAGNOSTICS line NEXT': #{
+      \     name: 'JUMP DIAGNOSTICS line NEXT',
       \     depend: 'Lspsaga',
       \     command: 'diagnostic_jump_next',
       \   },
-      \   'diagnostic_jump_prev': #{
-      \     name: 'diagnostic_jump_prev',
+      \   'JUMP DIAGNOSTICS line PREV': #{
+      \     name: 'JUMP DIAGNOSTICS line PREV',
       \     depend: 'Lspsaga',
       \     command: 'diagnostic_jump_prev',
       \   },
@@ -394,7 +385,7 @@ endfunction
 
 let s:lsp_action_callback_id = denops#callback#register(
       \   { key -> execute(s:get_evaluated_command(key)) },
-      \   #{ once: v:true }
+      \   #{ once: v:false }
       \ )
 
 call ddu#custom#patch_local('lsp_actions', #{
@@ -411,7 +402,7 @@ call ddu#custom#patch_local('lsp_actions', #{
 
 command! LspActions call ddu#start(#{ name: 'lsp_actions' })
 
-
+" tpope/vim-dadbod
 
 if g:is_enable_my_debug
   echo "begin /plugins/ddu.vim end"
