@@ -121,7 +121,9 @@ hook_source = '''
   for s:file in s:splitted
     let s:read = dein#toml#parse_file(expand(s:file))
     for s:prefix in keys(s:read)
-      let g:dbs[fnamemodify(s:file, ':t') . "_" . s:prefix] = s:read[s:prefix]['connection_string']
+      let s:preference = s:read[s:prefix]
+      let s:conn_str = s:preference['type'] . "://" . s:preference['user'] . ":" . s:preference['password'] . "@" . s:preference['host'] . ":" . s:preference['port']
+      let g:dbs[fnamemodify(s:file, ':t') . "." . s:prefix] = s:conn_str
     endfor
   endfor
 '''
@@ -132,3 +134,6 @@ repo = 'tpope/vim-dotenv'
 [[plugins]]
 repo = 'kristijanhusak/vim-dadbod-ui'
 
+[[plugins]]
+repo = 'Milly/windows-clipboard-history.vim'
+on_if = 'has("win32")'

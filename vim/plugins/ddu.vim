@@ -136,10 +136,10 @@ call ddu#custom#patch_local('filer', #{
       \   uiParams: s:ddu_filer_ui_params,
       \ })
 
-autocmd TabEnter,CursorHold,FocusGained <buffer>
-      \ call ddu#ui#filer#do_action('checkItems')
+autocmd TabEnter,WinEnter,CursorHold,FocusGained * call ddu#ui#filer#do_action('checkItems')
 
-autocmd FileType ddu-filer          call s:ddu_filer_my_settings()
+autocmd FileType ddu-filer call s:ddu_filer_my_settings()
+
 
 function! s:ddu_filer_my_settings() abort
   "nnoremap <buffer><silent><expr> <CR>
@@ -168,6 +168,9 @@ function! s:ddu_filer_my_settings() abort
 
   nnoremap <buffer><silent> c
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'copy'})<CR>
+
+  nnoremap <buffer><silent> C
+        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'cd' })<CR>
 
   nnoremap <buffer><silent> x
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'cut'})<CR>
@@ -268,7 +271,7 @@ call ddu#custom#patch_local('file_old', #{
       \ })
 
 command! DduFileOld call ddu#start(#{ name: 'file_old' })
-nnoremap  \|  :<C-u>DduFileOld<CR>
+"nnoremap  \|  :<C-u>DduFileOld<CR>
 
 
 " ddu-source-emoji
@@ -300,11 +303,80 @@ command! DduEmoji call ddu#start({ 'name': 'emoji' })
 inoremap <C-x><C-e> <Cmd>call ddu#start({'sources': [{'name': 'emoji'}]})<CR>
 
 
+" ddu-source-mrw
+let mrw_source = #{
+      \   name: 'mr',
+      \   params: #{ kind: 'mrw' },
+      \ }
+call ddu#custom#patch_local('mrw', #{
+      \   ui: 'ff',
+      \   sources: [
+      \     mrw_source,
+      \   ],
+      \   kindOptions: #{
+      \     mrw: #{
+      \       defaultAction: 'open',
+      \     },
+      \   },
+      \ })
+
+command! DduMrw call ddu#start({ 'name': 'mrw' })
+
+" Insert emoji mapping.
+nnoremap  \|  :<C-u>DduMrw<CR>
+
+let mrw_source = #{
+      \   name: 'mr',
+      \   params: #{ kind: 'mrw', current: v:true },
+      \ }
+call ddu#custom#patch_local('mrw_current', #{
+      \   ui: 'ff',
+      \   sources: [
+      \     mrw_source,
+      \   ],
+      \   kindOptions: #{
+      \     mrw: #{
+      \       defaultAction: 'open',
+      \     },
+      \   },
+      \ })
+
+command! DduMrwCurrent call ddu#start({ 'name': 'mrw_current' })
+
+" Insert emoji mapping.
+nnoremap  ~  :<C-u>DduMrwCurrent<CR>
+
+
+" windows-clipboard-history
+
+if has('win32')
+  call ddu#custom#patch_local('clip-history', #{
+        \   ui: 'ff',
+        \   sources: [
+        \     #{
+        \       name: 'windows-clipboard-history',
+        \       params: #{ prefix: 'Clip:' },
+        \     }
+        \   ],
+        \   kindOptions: #{
+        \     mrw: #{
+        \       defaultAction: 'open',
+        \     },
+        \   },
+        \})
+
+  command! DduClip call ddu#start({ 'name': 'clip-history' })
+
+  " Insert emoji mapping.
+  nnoremap  .  :<C-u>DduClip<CR>
+endif
+
+
 " ddu-source-custom-list
 
 " LspAction ====================
 let s:lsp_actions = {
-      \   'SHOW REFACTOR code actions': #{
+      \   'SHOW   REFACTOR code actions': #{
       \     name: 'SHOW REFACTOR code actions',
       \     depend: 'Lspsaga',
       \     command: 'code_action',
@@ -314,12 +386,12 @@ let s:lsp_actions = {
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.declaration()',
       \   },
-      \   'SHOW defined source on floating window': #{
-      \     name: 'SHOW defined source on floating window',
+      \   'SHOW  defined source on floating window': #{
+      \     name: 'SHOW  defined source on floating window',
       \     depend: 'Lspsaga',
       \     command: 'peek_definition',
       \   },
-      \   'JUMP cursor to defined line FOR PROPERTY': #{
+      \   'JUMP  cursor to defined line FOR PROPERTY': #{
       \     name: 'JUMP cursor to defined line FOR PROPERTY',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.definition()',
@@ -329,42 +401,42 @@ let s:lsp_actions = {
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}',
       \   },
-      \   'SHOW definition on floating window': #{
+      \   'SHOW   definition on floating window': #{
       \     name: 'SHOW definition on floating window',
       \     depend: 'Lspsaga',
       \     command: 'hover_doc',
       \   },
-      \   'SHOW implementation source on this BUFFER': #{
+      \   'SHOW   implementation source on this BUFFER': #{
       \     name: 'SHOW implementation source on this BUFFER',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.implementation()',
       \   },
-      \   'SHOW reference': #{
+      \   'SHOW   reference': #{
       \     name: 'SHOW reference',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.references()',
       \   },
-      \   'EXEC rename by floating window': #{
+      \   'RENAME on floating window': #{
       \     name: 'EXEC rename by floating window',
       \     depend: 'Lspsaga',
       \     command: 'rename',
       \   },
-      \   'JUMP cursor to defined line FOR TYPE': #{
+      \   'JUMP   cursor to defined line FOR TYPE': #{
       \     name: 'JUMP cursor to defined line FOR TYPE',
       \     depend: 'lua',
       \     command: 'vim.lsp.buf.type_definition()',
       \   },
-      \   'SHOW diagnostics this line on floating window': #{
-      \     name: 'SHOW diagnostics this line on floating window',
+      \   'SHOW   diagnostics this line on floating window': #{
+      \     name: 'SHOW  diagnostics this line on floating window',
       \     depend: 'Lspsaga',
       \     command: 'show_line_diagnostics',
       \   },
-      \   'JUMP DIAGNOSTICS line NEXT': #{
+      \   'JUMP   DIAGNOSTICS line NEXT': #{
       \     name: 'JUMP DIAGNOSTICS line NEXT',
       \     depend: 'Lspsaga',
       \     command: 'diagnostic_jump_next',
       \   },
-      \   'JUMP DIAGNOSTICS line PREV': #{
+      \   'JUMP   DIAGNOSTICS line PREV': #{
       \     name: 'JUMP DIAGNOSTICS line PREV',
       \     depend: 'Lspsaga',
       \     command: 'diagnostic_jump_prev',

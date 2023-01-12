@@ -13,6 +13,8 @@ depends = [
   'ddc-shell-history',
   'ddc-matcher_head',
   'ddc-sorter_rank',
+
+  'windows-clipboard-history.vim',
 ]
 on_event = ['VimEnter']
 hook_post_source = '''

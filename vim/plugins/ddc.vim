@@ -6,12 +6,17 @@ call ddc#custom#patch_global('ui', 'pum')
 " Customize global settings
 " Use around source.
 " https://github.com/Shougo/ddc-around
-call ddc#custom#patch_global('sources', [
+let s:sources = [
       \   'nvim-lsp',
       \   'around',
       \   'emoji',
       \   'shell-history',
-      \ ])
+      \ ]
+
+if has('win32')
+  let s:sources = add(s:sources, 'windows-clipboard-history')
+endif
+call ddc#custom#patch_global('sources', s:sources)
 
 call ddc#custom#patch_global('cmdlineSources', [
       \   'cmdline',
@@ -22,7 +27,7 @@ call ddc#custom#patch_global('cmdlineSources', [
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
 " https://github.com/Shougo/ddc-sorter_rank
-call ddc#custom#patch_global('sourceOptions', #{
+let s:source_options = #{
       \   _: #{
       \     mark: '| vim',
       \     ignoreCase: v:true,
@@ -56,7 +61,19 @@ call ddc#custom#patch_global('sourceOptions', #{
       \     minKeywordLength: 4,
       \     maxKeywordLength: 50,
       \   },
-      \ })
+      \ }
+
+if has('win32')
+  let s:source_options["windows-clipboard-history"] = #{ mark: 'Clip', }
+endif
+call ddc#custom#patch_global('sourceOptions', s:source_options)
+
+let s:source_params = #{}
+if has('win32')
+  let s:source_params["windows-clipboard-history"] = #{ maxAbbrWidth: 100 }
+endif
+
+call ddc#custom#patch_global('sourceParms', s:source_params)
 
 " Add matching patterns
 call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
