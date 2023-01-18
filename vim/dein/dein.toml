@@ -3,16 +3,17 @@ repo = 'Shougo/dein.vim'
 
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-hook_post_source = '''
+on_event = ['VimEnter']
+hook_source = '''
   let g:denops#deno = "deno"
   function! s:run_deno_server() abort
     !sh -c 'deno run -A --no-check ./denops/@denops-private/cli.ts --hostname=0.0.0.0 --port 32123'
+    let g:denops_server_addr = '127.0.0.1:32123'
   endfunction
 
   command! RunDenoServer call s:run_deno_server()
   command! Rds RunDenoServer
   execute "Rds"
-  let g:denops_server_addr = '127.0.0.1:32123'
 '''
 
 [[plugins]]

@@ -202,11 +202,11 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent> yy
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'yank'})<CR>
 
-  nnoremap <buffer><silent> h
-        \ <Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>
+  nnoremap <buffer><silent><expr> h
+        \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>" : "<Cmd>echoe 'cannot close this item'<CR>"
 
-  nnoremap <buffer><silent> l
-        \ <Cmd>call ddu#ui#filer#do_action('expandItem')<CR>
+  nnoremap <buffer><silent><expr> l
+        \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" : "<Cmd>echoe 'cannot open this item'<CR>"
 
   nnoremap <buffer><silent> <TAB>
         \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>

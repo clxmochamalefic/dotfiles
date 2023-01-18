@@ -9,7 +9,6 @@ call ddc#custom#patch_global('ui', 'pum')
 call ddc#custom#patch_global('sources', [
       \   'nvim-lsp',
       \   'around',
-      \   'emoji',
       \   'shell-history',
       \ ])
 
@@ -45,12 +44,6 @@ call ddc#custom#patch_global('sourceOptions', #{
       \   cmdline-history: #{
       \     mark: '| CmdlineHistory',
       \   },
-      \   emoji: #{
-      \	    mark: '| Emoji',
-      \	    matchers: ['emoji'],
-      \     forceCompletionPattern: '[a-zA-Z_:]\w*',
-      \	    sorters: [],
-      \	  },
       \   shell-history: #{
       \     mark: '| ShellHistory',
       \     minKeywordLength: 4,

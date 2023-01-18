@@ -7,7 +7,6 @@ depends = [
   'ddc-nvim-lsp',
   'ddc-around',
   'ddc-file',
-  'ddc-emoji',
   'ddc-fuzzy',
   'ddc-source-cmdline-history',
   'ddc-shell-history',
@@ -15,7 +14,7 @@ depends = [
   'ddc-sorter_rank',
 ]
 on_event = ['VimEnter']
-hook_post_source = '''
+hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/ddc.vim"
 '''
 
@@ -35,10 +34,6 @@ repo = 'Shougo/ddc-nvim-lsp'
 
 [[plugins]]
 repo = 'LumaKernel/ddc-file'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'gamoutatsumi/ddc-emoji'
 on_source = 'ddc.vim'
 
 [[plugins]]

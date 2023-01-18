@@ -94,8 +94,8 @@ hook_source = '''
 [[plugins]]
 repo = 'tpope/vim-dadbod'
 depends = ['vim-dotenv', 'vim-dadbod-ui']
-on_event = ['VimEnter', 'BufEnter']
-hook_source = '''
+on_event = ['VimEnter']
+hook_post_source = '''
   " TOML FORMAT
   " [local]
   " connection_string = "mysql://xxxx"

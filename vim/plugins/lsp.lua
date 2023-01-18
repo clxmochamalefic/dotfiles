@@ -1,40 +1,102 @@
-local saga = require "lspsaga"
-saga.init_lsp_saga()
+-- null-ls.nvim
+-- https://github.com/jose-elias-alvarez/null-ls.nvim
+local null_ls = require("null-ls")
 
-vim.api.nvim_set_keymap('n', '[lsp]', '<Nop>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Leader>l', '[lsp]', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]a', ':Lspsaga code_action<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]c', ':lua vim.lsp.buf.declaration()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]dp', ':Lspsaga peek_definition<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]dd', ':lua vim.lsp.buf.definition()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]f', ':lua vim.lsp.buf.formatting{timeout_ms = 5000, async = true}<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]h', ':Lspsaga hover_doc<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]i', ':lua vim.lsp.buf.implementation()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]x', ':lua vim.lsp.buf.references()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]r', ':Lspsaga rename<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]t', ':lua vim.lsp.buf.type_definition()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]e', ':Lspsaga show_line_diagnostics<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]n', ':Lspsaga diagnostic_jump_next<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]p', ':Lspsaga diagnostic_jump_prev<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '[lsp]s', ':lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-s>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
+local code_actions = null_ls.builtins.code_actions
+local completion = null_ls.builtins.completion
+local diagnostics = null_ls.builtins.diagnostics
+local formatting = null_ls.builtins.formatting
+--local hover = null_ls.builtins.hover
 
--- general settings
-vim.diagnostic.config({
-  float = {
-    source = "always", -- Or "if_many"
-  },
+local sources = {
+  code_actions.gitsigns,
+  completion.vsnip,
+  formatting.stylua,
+  formatting.taplo,
+  diagnostics.textlint.with({
+    filetypes = { 'markdown' },
+    prefer_local = 'node_modules/.bin',
+  }),
+  formatting.textlint.with({
+    filetypes = { 'markdown' },
+    prefer_local = 'node_modules/.bin',
+  }),
+}
+
+null_ls.setup({
+  border = 'single',
+  diagnostics_format = '#{m} (#{s}: #{c})',
+  sources = sources,
 })
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
-)
+-- null_ls.setup({
+--   sources = {
+--     null_ls.builtins.formatting.stylua,
+--     null_ls.builtins.diagnostics.eslint,
+--     null_ls.builtins.completion.spell,
+--   },
+--   diagnostics_format = "#{m} (#{s}: #{c})",
+-- })
+
+--
+-- general settings
+-- vim.diagnostic.config({
+--   float = {
+--     source = "always", -- Or "if_many"
+--   },
+-- })
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+--   vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = true }
+-- )
 -- You will likely want to reduce updatetime which affects CursorHold
 -- note: this setting is global and should be set only once
+-- vim.o.updatetime = 100
+-- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    virtual_text = false,
+    focus = false,
+    border = "solid",
+  }
+)
+
+---- You will likely want to reduce updatetime which affects CursorHold
+---- note: this setting is global and should be set only once
 vim.o.updatetime = 100
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.hover()]]
 
 local mason = require "mason"
-mason.setup {}
+mason.setup({
+  ui = {
+    check_outdated_packages_on_open = true,
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗"
+    },
+    keymaps = {
+      -- Keymap to expand a package
+      toggle_package_expand = "<CR>",
+      -- Keymap to install the package under the current cursor position
+      install_package = "i",
+      -- Keymap to reinstall/update the package under the current cursor position
+      update_package = "u",
+      -- Keymap to check for new version for the package under the current cursor position
+      check_package_version = "c",
+      -- Keymap to update all installed packages
+      update_all_packages = "U",
+      -- Keymap to check which installed packages are outdated
+      check_outdated_packages = "C",
+      -- Keymap to uninstall a package
+      uninstall_package = "X",
+      -- Keymap to cancel a package installation
+      cancel_installation = "<C-c>",
+      -- Keymap to apply language filter
+      apply_language_filter = "<C-f>",
+    },
+  },
+})
 
 local servers = {
   "tsserver",
