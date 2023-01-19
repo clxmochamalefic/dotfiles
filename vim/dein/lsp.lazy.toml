@@ -3,6 +3,7 @@
 repo = 'neovim/nvim-lspconfig'
 depends = [
   'denops.vim',
+  'neodev.nvim',
   'mason.nvim',
   'mason-lspconfig.nvim',
   'nvim-dap',

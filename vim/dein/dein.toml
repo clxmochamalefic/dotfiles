@@ -21,7 +21,7 @@ repo = 'Shougo/pum.vim'
 hook_add = '''
   call pum#set_option('max_width', 80)
   call pum#set_option('use_complete', v:true)
-  call pum#set_option('border', 'rounded')
+  call pum#set_option('border', 'solid')
 '''
 
 [[plugins]]

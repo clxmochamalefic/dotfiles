@@ -159,6 +159,8 @@ function! s:ddu_filer_my_settings() abort
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME)} })<CR>
   nnoremap <buffer><silent> ^
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand(g:my_initvim_path)} })<CR>
+  nnoremap <buffer><silent> =
+        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME . "/repos")} })<CR>
 
   nnoremap <buffer><silent> q
         \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
