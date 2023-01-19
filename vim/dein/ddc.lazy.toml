@@ -62,3 +62,20 @@ on_source = 'ddc.vim'
 repo = 'Shougo/ddc-sorter_rank'
 on_source = 'ddc.vim'
 
+
+# SNIPPET ####################
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+depends = ['vim-vsnip-integ', 'friendly-snippets']
+on_event = ['InsertEnter']
+hook_add = '''
+  execute "source " . g:my_initvim_path . "/plugins/ddc.snippets.vim"
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
+

@@ -32,108 +32,28 @@ depends = ['context_filetype.vim']
 on_event = ['BufEnter']
 
 [[plugins]]
-repo = "Shougo/deol.nvim"
-depends = ['pum.vim', 'ddc.vim']
-on_event = ['BufEnter']
-hook_source = '''
-  let g:deol#floating_border = "rounded"
-  let g:deol#enable_ddc_completion = v:true
+repo = 'LeafCage/vimhelpgenerator'
+on_ft = ['vimscript', 'lua', 'typescript']
 
-  let s:margin_width    = 25 * 2
-  let s:margin_height   = 30
+# ddc.vim / ddu.vim ------------------------------
+[[plugins]]
+repo = 'Milly/windows-clipboard-history.vim'
+on_if = 'has("win32")'
 
-  function! s:get_vim_width() abort
-    let l:vim_width = &columns
-    let l:width = l:vim_width - s:margin_width
-    if l:width < 0
-      let l:width = l:vim_width
-    endif
-    return l:width
-  endfunction
 
-  function! s:get_vim_height() abort
-    let l:vim_height = &lines
-    let l:height = l:vim_height - s:margin_height
-    if l:height < 0
-      let l:height = l:vim_height
-    endif
-    return l:height
-  endfunction
-
-  "let s:width  = system('columns') - 10
-  let g:my_vim_width = s:get_vim_width()
-
-  "let s:width = s:window_width - 10
-  let g:my_vim_height = s:get_vim_height()
-
-  " 【Ctrl + o】 float windowでターミナルを表示
-  nnoremap <silent><C-o> :<C-u>execute 'Deol' '-cwd=' . fnamemodify(expand('%'), ':h') . ' -split=floating' . ' -winwidth=' . g:my_vim_width . ' -winheight=' . g:my_vim_height<CR>
-  "nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating"<CR>
-  " 【ESC】 ターミナルモードから抜ける
-  tnoremap <ESC>   <C-\><C-n>
+# hook_source ------------------------------
+[[multiple_plugins]]
+plugins = [ 'deol.nvim', 'quotecmp.vim', ]
+hook_add = '''
+  execute "source " . g:my_initvim_path . "/plugins/lazy.source.vim"
 '''
 
 [[plugins]]
-repo = 'LeafCage/vimhelpgenerator'
-on_ft = ['vimscript', 'lua', 'typescript']
+repo = "Shougo/deol.nvim"
+depends = ['pum.vim', 'ddc.vim']
+on_event = ['BufEnter']
 
 [[plugins]]
 repo = 'cocoalix/quotecmp.vim'
 on_event = ['BufEnter']
-hook_source = '''
-  command! InsertQuoteBack    call quotecmp#completion_quote('`')
-  command! InsertQuoteSingle  call quotecmp#completion_quote("'")
-  command! InsertQuoteDouble  call quotecmp#completion_quote('"')
 
-  inoremap `` <Esc>:InsertQuoteBack<CR>
-  inoremap '' <Esc>:InsertQuoteSingle<CR>
-  inoremap "" <Esc>:InsertQuoteDouble<CR>
-'''
-
-# DB access
-[[plugins]]
-repo = 'tpope/vim-dadbod'
-depends = ['vim-dotenv', 'vim-dadbod-ui']
-on_event = ['VimEnter']
-hook_post_source = '''
-  " TOML FORMAT
-  " [local]
-  " connection_string = "mysql://xxxx"
-  " port = "3306"
-  " user =  "LOCAL"
-  " password =  "PASSWD"
-  " [local.ssh]
-  " address = "localhost"
-  " port = "22"
-  " user = "LOCAL"
-  " password = "PASSWD"
-  " identifier = ""
-  echo "begin vim-dad"
-  let s:db_toml_dir = expand($HOME . '/.cache/vim_dadbod')
-  let g:dbs = {}
-
-  if !isdirectory(s:db_toml_dir)
-    execute '!mkdir' . s:db_toml_dir
-  endif
-
-  let s:filelist =  expand(s:db_toml_dir . "/*.toml")
-  let s:splitted = split(s:filelist, "\n")
-  for s:file in s:splitted
-    let s:read = dein#toml#parse_file(expand(s:file))
-    for s:prefix in keys(s:read)
-      let s:preference = s:read[s:prefix]
-      let s:conn_str = s:preference['type'] . "://" . s:preference['user'] . ":" . s:preference['password'] . "@" . s:preference['host'] . ":" . s:preference['port']
-      let g:dbs[fnamemodify(s:file, ':t') . "." . s:prefix] = s:conn_str
-    endfor
-  endfor
-'''
-
-[[plugins]]
-repo = 'tpope/vim-dotenv'
-
-[[plugins]]
-repo = 'kristijanhusak/vim-dadbod-ui'
-
-[[plugins]]
-repo = 'Milly/windows-clipboard-history.vim'
-on_if = 'has("win32")'

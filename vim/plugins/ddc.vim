@@ -7,9 +7,11 @@ call ddc#custom#patch_global('ui', 'pum')
 " Use around source.
 " https://github.com/Shougo/ddc-around
 let s:sources = [
-      \   'nvim-lsp',
       \   'around',
+      \   'cmdline-history',
+      \   'nvim-lsp',
       \   'shell-history',
+      \   'vsnip',
       \ ]
 
 if has('win32')
@@ -18,38 +20,33 @@ endif
 call ddc#custom#patch_global('sources', s:sources)
 
 call ddc#custom#patch_global('cmdlineSources', [
-      \   'cmdline',
-      \   'cmdline-history',
       \   'around',
+      \   'cmdline-history',
+      \   'shell-history',
       \ ])
 
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
 " https://github.com/Shougo/ddc-sorter_rank
-let s:source_options = #{
-      \   _: #{
+let s:source_options = {
+      \   "_": #{
       \     mark: '| vim',
       \     ignoreCase: v:true,
       \     matchers: ['matcher_fuzzy'],
       \     sorters: ['sorter_fuzzy'],
       \     converters: ['converter_fuzzy'],
       \   },
-      \   around: #{
+      \   "around": #{
       \     mark: '| Around'
       \   },
-      \   nvim-lsp: #{
+      \   "nvim-lsp": #{
       \     mark: '| LSP',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
       \   },
-      \   cmdline: #{
-      \     ignoreCase: v:false,
-      \     mark: '| Cmdline',
-      \     forceCompletionPattern: '\S/\S*',
-      \   },
-      \   cmdline-history: #{
+      \   "cmdline-history": #{
       \     mark: '| CmdlineHistory',
       \   },
-      \   shell-history: #{
+      \   "shell-history": #{
       \     mark: '| ShellHistory',
       \     minKeywordLength: 4,
       \     maxKeywordLength: 50,

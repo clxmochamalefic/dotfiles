@@ -64,7 +64,10 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 ---- You will likely want to reduce updatetime which affects CursorHold
 ---- note: this setting is global and should be set only once
 vim.o.updatetime = 100
+-- vim.cmd [[autocmd CursorMoved,CursorMovedI,CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
 vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+-- vim.cmd [[autocmd LspAttach * silent lua vim.lsp.buf.hover()]]
+-- vim.cmd [[autocmd BufReadPost * silent lua vim.lsp.buf.hover()]]
 
 local mason = require "mason"
 mason.setup({
@@ -100,7 +103,6 @@ mason.setup({
 
 local servers = {
   "tsserver",
-  "denols",
   "prismals",
   "omnisharp",
   "dockerls",
@@ -116,7 +118,6 @@ local servers = {
   "marksman",
   "clangd",
   "vimls",
-  "sumneko_lua",
 }
 
 local lspconfig = require "lspconfig"
