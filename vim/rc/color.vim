@@ -32,17 +32,18 @@ set cursorline
 " load colorscheme (after loaded plugins)
 call s:load_colorscheme()
 
-hi RegistersWindow  ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
+hi! RegistersWindow ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
 
-hi Pmenu            ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
-hi PmenuSel         ctermbg=249 ctermfg=46 guibg=#610B5E guifg=#F2F2F2
-hi PmenuSbar        ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
-hi PmenuThumb       ctermbg=249 ctermfg=46 guibg=#610B5E guifg=#F2F2F2
+hi! Pmenu           ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
+hi! PmenuSel        ctermbg=249 ctermfg=46 guibg=#610B5E guifg=#F2F2F2
+hi! PmenuSbar       ctermbg=249 ctermfg=46 guibg=#FEB2FC guifg=#D8D8D8
+hi! PmenuThumb      ctermbg=249 ctermfg=46 guibg=#dc92ff guifg=#F2F2F2
 
-hi NormalFloat      ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
+hi! NormalFloat     ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
+hi! FloatBorder     ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
 
-hi TermCursor       ctermbg=249 ctermfg=46 guibg=#610B5E guifg=#F2F2F2
-hi TermCursorNC     ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
+hi! TermCursor      ctermbg=249 ctermfg=46 guibg=#610B5E guifg=#F2F2F2
+hi! TermCursorNC    ctermbg=249 ctermfg=46 guibg=#2F0B3A guifg=#D8D8D8
 
 
 " modify color by colorscheme

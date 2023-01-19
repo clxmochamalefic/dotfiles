@@ -213,6 +213,16 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent><expr> l
         \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" : "<Cmd>echoe 'cannot open this item'<CR>"
 
+  nnoremap <buffer><silent><expr> L
+        \ ddu#ui#filer#is_tree() ?
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
+
+  nnoremap <buffer><silent><expr> O
+        \ ddu#ui#filer#is_tree() ?
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'vsplit'}})<CR>"
+
   nnoremap <buffer><silent> <TAB>
         \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>
 
