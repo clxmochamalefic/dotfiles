@@ -2,6 +2,11 @@ if g:is_enable_my_debug
   echo "begin /plugins/ddu.vim load"
 endif
 
+let s:ddu_float_window_col = 8
+let s:ddu_float_window_row = 1
+let s:ddu_float_window_width = &columns - (s:ddu_float_window_col * 2)
+let s:ddu_float_window_height = 30
+
 " ddu.vim ------------------------------
 call ddu#custom#patch_global(#{
       \   ui: 'ff',
@@ -50,6 +55,14 @@ call ddu#custom#patch_global(#{
       \   uiParams: #{
       \     _: #{
       \       span: 2,
+      \
+      \       split: 'floating',
+      \       winRow: s:ddu_float_window_row,
+      \       winCol: s:ddu_float_window_col,
+      \       winWidth: s:ddu_float_window_width,
+      \       winHeight: s:ddu_float_window_height,
+      \
+      \       floatingBorder: 'rounded',
       \     },
       \   },
       \   actionOptions: #{
@@ -116,19 +129,42 @@ let s:ddu_filer_action_options = #{
       \   },
       \ }
 let s:ddu_filer_ui_params = #{
+      \     _: #{
+      \       span: 2,
+      \
+      \       split: 'floating',
+      \       winRow: s:ddu_float_window_row,
+      \       winCol: s:ddu_float_window_col,
+      \       winWidth: s:ddu_float_window_width,
+      \       winHeight: s:ddu_float_window_height,
+      \
+      \       floatingBorder: 'rounded',
+      \     },
       \     filer: #{
       \       search: expand('%:p'),
       \       sort: 'filename',
       \       span: 2,
       \       sortTreesFirst: v:true,
+      \
+      \       split: 'floating',
+      \       winRow: s:ddu_float_window_row,
+      \       winCol: s:ddu_float_window_col,
+      \       winWidth: s:ddu_float_window_width,
+      \       winHeight: s:ddu_float_window_height,
+      \
+      \       filterFloatingPosition: 'top',
+      \       filterSplitDirection: 'floating',
+      \       floatingBorder: 'rounded',
       \     },
       \     icon_filename: #{
       \       span: 2,
+      \       sort: 'filename',
+      \       sortTreesFirst: v:true,
       \     },
       \   }
 
-call ddu#custom#patch_local('filer', #{
-      \   ui: 'filer',
+call ddu#custom#patch_local('ff_filer', #{
+      \   ui: 'ff',
       \   sources: s:ddu_filer_sources,
       \   sourceOptions: s:ddu_filer_source_options,
       \   kindOptions: s:ddu_filer_kind_options,
@@ -139,6 +175,7 @@ call ddu#custom#patch_local('filer', #{
 autocmd TabEnter,WinEnter,CursorHold,FocusGained * call ddu#ui#filer#do_action('checkItems')
 
 autocmd FileType ddu-filer call s:ddu_filer_my_settings()
+autocmd FileType ddu-ff_filer call s:ddu_filer_my_settings()
 
 
 function! s:ddu_filer_my_settings() abort
@@ -190,10 +227,11 @@ function! s:ddu_filer_my_settings() abort
         \ <Cmd>call ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
 
   nnoremap <buffer><silent> a
-        \ <Cmd>call ddu#ui#ff#do_action('chooseAction')<CR>
+        \ <Cmd>call ddu#ui#filer#do_action('chooseAction')<CR>
 
   nnoremap <buffer><silent> A
-        \ <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'ChooseWin' })<CR>
+        \ <Cmd>call ddu#ui#filer#do_action('itemAction', #{ name: 'ChooseWin' })<CR>
+" nnoremap <buffer><silent> A <Cmd>call ddu#custom#action('kind', 'file', 'test', { args -> execute('let g:foo = 1') })
 
   nnoremap <buffer><silent> m
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'move'})<CR>
@@ -228,7 +266,7 @@ function! s:ddu_filer_my_settings() abort
 
 endfunction
 
-command! DduFiler     call ddu#start({ 'name': 'filer' })
+command! DduFiler     call ddu#start({ 'name': 'ff_filer' })
 
 nnoremap  ^  :<C-u>DduFiler<CR>
 
