@@ -20,10 +20,3 @@ merged = 0
 [[plugins]] 
 repo = 'ryanoasis/vim-devicons'
 
-[[plugins]]
-repo = 'vim-airline/vim-airline'
-depends = ['vim-airline-themes']
-
-[[plugins]]
-repo = 'vim-airline/vim-airline-themes'
-

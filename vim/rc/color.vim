@@ -2,7 +2,6 @@
 " COLORSCHEME PREFERENCE
 
 let s:colorscheme = 'onehalfdark'
-let s:airline_theme = 'bubblegum'
 
 " define colorscheme load function for lazyload
 function! s:load_colorscheme() abort
@@ -10,9 +9,6 @@ function! s:load_colorscheme() abort
   set background=dark
   " using colorscheme
   execute "colorscheme " . s:colorscheme
-
-  " using airline colorscheme
-  let g:airline_theme = s:airline_theme
 endfunction
 
 " modify line number col color
@@ -51,33 +47,4 @@ if s:colorscheme == 'onehalfdark'
   let g:terminal_color_0 = '#565F70'
   let g:terminal_color_8 = '#717C91'
 endif
-
-
-" vim-airline
-set laststatus=2
-
-let g:airline_experimental = 1
-let g:airline_detect_spell=1
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#virtualenv#enabled = 1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.linenr = ' :'
-let g:airline_symbols.maxlinenr = '☰ '
-let g:airline_symbols.dirty='⚡'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.colnr = ' ℅:'
-let g:airline_symbols.crypt = '🔒'
 

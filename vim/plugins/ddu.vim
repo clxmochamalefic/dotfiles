@@ -164,7 +164,7 @@ let s:ddu_filer_ui_params = #{
       \   }
 
 call ddu#custom#patch_local('ff_filer', #{
-      \   ui: 'ff',
+      \   ui: 'filer',
       \   sources: s:ddu_filer_sources,
       \   sourceOptions: s:ddu_filer_source_options,
       \   kindOptions: s:ddu_filer_kind_options,

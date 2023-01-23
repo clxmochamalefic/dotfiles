@@ -57,7 +57,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, {
     virtual_text = false,
     focus = false,
-    border = "solid",
+    border = "rounded",
   }
 )
 
@@ -65,9 +65,23 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 ---- note: this setting is global and should be set only once
 vim.o.updatetime = 100
 -- vim.cmd [[autocmd CursorMoved,CursorMovedI,CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+-- vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
 -- vim.cmd [[autocmd LspAttach * silent lua vim.lsp.buf.hover()]]
 -- vim.cmd [[autocmd BufReadPost * silent lua vim.lsp.buf.hover()]]
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client.server_capabilities.completionProvider then
+      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+    end
+    if client.server_capabilities.definitionProvider then
+      vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
+    end
+  end,
+})
 
 local mason = require "mason"
 mason.setup({

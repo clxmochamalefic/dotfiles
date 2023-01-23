@@ -54,19 +54,17 @@ command! PluginsTheme execute 'e ' . s:theme_plugin_filepath
 command! Pt PluginsTheme
 
 " init.vim reload
-if !exists('*reload_functions')
-  let &stl.='%{reload_functions}'
-  function! s:reload_preference() abort
-    if has("gui_running")
-      execute 'source ' . s:ginitvim_filepath
-    endif
-    execute 'call dein#call_hook("add")'
-  endfunction
-  function! s:reload_all() abort
-    call s:reload_preference()
-    call s:reload_plugin_hard(g:dein_plugins)
-  endfunction
-endif
+function! s:reload_preference() abort
+  if has("gui_running")
+    execute 'source ' . s:ginitvim_filepath
+  endif
+  execute 'call dein#call_hook("add")'
+endfunction
+
+function! s:reload_all() abort
+  call s:reload_preference()
+  call s:reload_plugin_hard(g:dein_plugins)
+endfunction
 
 command! ReloadPreference execute s:reload_preference()
 command! Rer ReloadPreference
