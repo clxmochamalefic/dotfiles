@@ -69,9 +69,21 @@ vim.o.updatetime = 100
 -- vim.cmd [[autocmd LspAttach * silent lua vim.lsp.buf.hover()]]
 -- vim.cmd [[autocmd BufReadPost * silent lua vim.lsp.buf.hover()]]
 
+function IsActiveLspOnCurrentBuffer(bufNumber)
+  local isLoadLsp = false;
+  vim.lsp.for_each_buffer_client(bufNumber, function(client, client_id, bufnr)
+    if client.name ~= "null-ls" then
+      isLoadLsp = true
+    end
+  end)
+
+  return isLoadLsp
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
-    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+    vim.cmd [[autocmd CursorHold,CursorHoldI * silent! lua vim.lsp.buf.hover()]]
+
     local bufnr = args.buf
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client.server_capabilities.completionProvider then
