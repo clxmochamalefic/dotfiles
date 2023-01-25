@@ -6,6 +6,8 @@ depends = [
   'ddc-ui-pum'
   'ddc-nvim-lsp',
   'ddc-around',
+  'ddc-buffer',
+  'ddc-dictionary',
   'ddc-file',
   'ddc-fuzzy',
   'ddc-source-cmdline-history',
@@ -50,6 +52,14 @@ on_source = 'ddc.vim'
 repo='delphinus/ddc-shell-history'
 on_source = 'ddc.vim'
 
+[[plugins]]
+repo = 'matsui54/ddc-dictionary'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'matsui54/ddc-buffer'
+on_source = 'ddc.vim'
+
 # MATCHER ####################
 
 [[plugins]]
@@ -68,14 +78,16 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip'
 depends = ['vim-vsnip-integ', 'friendly-snippets']
-on_event = ['InsertEnter']
-hook_add = '''
+on_source = 'ddc.vim'
+hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/ddc.snippets.vim"
 '''
 
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip-integ'
+on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'rafamadriz/friendly-snippets'
+on_source = 'ddc.vim'
 

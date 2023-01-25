@@ -8,7 +8,10 @@ call ddc#custom#patch_global('ui', 'pum')
 " https://github.com/Shougo/ddc-around
 let s:sources = [
       \   'around',
+      \   'buffer',
       \   'cmdline-history',
+      \   'dictionary',
+      \   'file',
       \   'nvim-lsp',
       \   'shell-history',
       \   'vsnip',
@@ -19,37 +22,67 @@ if has('win32')
 endif
 call ddc#custom#patch_global('sources', s:sources)
 
-call ddc#custom#patch_global('cmdlineSources', [
-      \   'around',
-      \   'cmdline-history',
-      \   'shell-history',
-      \ ])
+call ddc#custom#patch_global('cmdlineSources', {
+      \   ':': ['cmdline-history', 'cmdline', 'around'],
+      \   '@': ['cmdline-history', 'input', 'file', 'around'],
+      \   '>': ['cmdline-history', 'input', 'file', 'around'],
+      \   '/': ['around', 'line'],
+      \   '?': ['around', 'line'],
+      \   '-': ['around', 'line'],
+      \   '=': ['input'],
+      \ })
 
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
 " https://github.com/Shougo/ddc-sorter_rank
 let s:source_options = {
       \   "_": #{
-      \     mark: '| vim',
+      \     mark: '| V |',
       \     ignoreCase: v:true,
       \     matchers: ['matcher_fuzzy'],
       \     sorters: ['sorter_fuzzy'],
       \     converters: ['converter_fuzzy'],
       \   },
       \   "around": #{
-      \     mark: '| Around'
+      \     mark: '| A |'
       \   },
       \   "nvim-lsp": #{
-      \     mark: '| LSP',
+      \     mark: '| L |',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
       \   },
       \   "cmdline-history": #{
-      \     mark: '| CmdlineHistory',
+      \     mark: '| C |',
       \   },
       \   "shell-history": #{
-      \     mark: '| ShellHistory',
+      \     mark: '| S |',
       \     minKeywordLength: 4,
       \     maxKeywordLength: 50,
+      \   },
+      \   'vsnip': {
+      \     'matchers': ['matcher_head', 'matcher_fuzzy'],
+      \     'sorters': ['sorter_rank', 'sorter_fuzzy'],
+      \     'mark': '| S |',
+      \   },
+      \   'buffer': {
+      \     'matchers': ['matcher_head', 'matcher_fuzzy'],
+      \     'sorters': ['sorter_rank', 'sorter_fuzzy'],
+      \     'mark': '| B |',
+      \   },
+      \   'file': {
+      \     'matchers': ['matcher_fuzzy'],
+      \     'sorters': ['sorter_fuzzy'],
+      \     'converters': ['converter_fuzzy'],
+      \     'maxCandidates': 16, 
+      \     'mark': '| D |', 
+      \     'minAutoCompleteLength': 3,
+      \   },
+      \   'dictionary': {
+      \     'matchers': ['matcher_fuzzy'],
+      \     'sorters': ['sorter_fuzzy'],
+      \     'converters': ['converter_fuzzy'],
+      \     'maxCandidates': 16, 
+      \     'mark': '| D |', 
+      \     'minAutoCompleteLength': 3,
       \   },
       \ }
 
@@ -58,7 +91,25 @@ if has('win32')
 endif
 call ddc#custom#patch_global('sourceOptions', s:source_options)
 
-let s:source_params = #{}
+let s:source_params = {
+    \   'vim-lsp': {
+    \     'maxSize': 100,
+    \   },
+    \   'around': {
+    \     'maxSize': 100,
+    \   },
+    \   'buffer': {
+    \     'requireSameFiletype': v:false,
+    \     'limitBytes': 5000000,
+    \     'fromAltBuf': v:true,
+    \     'forceCollect': v:true,
+    \   },
+    \   'dictionary': {
+    \     'dictPaths': ['/usr/share/dict/words'],
+    \     'smartCase': v:true,
+    \     'showMenu': v:false
+    \   },
+    \ }
 if has('win32')
   let s:source_params["windows-clipboard-history"] = #{ maxAbbrWidth: 100 }
 endif
