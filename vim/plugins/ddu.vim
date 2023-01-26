@@ -2,10 +2,32 @@ if g:is_enable_my_debug
   echo "begin /plugins/ddu.vim load"
 endif
 
-let s:ddu_float_window_col = 8
-let s:ddu_float_window_row = 1
-let s:ddu_float_window_width = &columns - (s:ddu_float_window_col * 2)
-let s:ddu_float_window_height = 30
+let s:ddu_float_window_col = g:float_window_col
+let s:ddu_float_window_row = g:float_window_row
+let s:ddu_float_window_width = g:float_window_width
+let s:ddu_float_window_height = g:float_window_height
+let s:ddu_float_window_preview_width = 120
+let s:ddu_float_window_preview_col = 0
+let s:ddu_float_window_preview_height = s:ddu_float_window_height
+
+let s:floating_ddu_ui_params = #{
+      \   span: 2,
+      \
+      \   split: 'floating',
+      \   floatingBorder: 'rounded',
+      \   winRow: s:ddu_float_window_row,
+      \   winCol: s:ddu_float_window_col,
+      \   winWidth: s:ddu_float_window_width,
+      \   winHeight: s:ddu_float_window_height,
+      \
+      \   previewFloating: v:true,
+      \   previewVertical: v:true,
+      \   previewFloatingBorder: 'rounded',
+      \   previewFloatingZindex: 10000,
+      \   previewCol: s:ddu_float_window_preview_col,
+      \   previewWidth: s:ddu_float_window_preview_width,
+      \   previewHeight: s:ddu_float_window_preview_height,
+      \ }
 
 " ddu.vim ------------------------------
 call ddu#custom#patch_global(#{
@@ -18,6 +40,7 @@ call ddu#custom#patch_global(#{
       \   ],
       \   sourceOptions: #{
       \     _: #{
+      \       columns: ['icon_filename'],
       \       matchers: ['matcher_substring'],
       \     },
       \     dein_update: #{
@@ -53,17 +76,7 @@ call ddu#custom#patch_global(#{
       \     },
       \   },
       \   uiParams: #{
-      \     _: #{
-      \       span: 2,
-      \
-      \       split: 'floating',
-      \       winRow: s:ddu_float_window_row,
-      \       winCol: s:ddu_float_window_col,
-      \       winWidth: s:ddu_float_window_width,
-      \       winHeight: s:ddu_float_window_height,
-      \
-      \       floatingBorder: 'rounded',
-      \     },
+      \     _: s:floating_ddu_ui_params,
       \   },
       \   actionOptions: #{
       \     echo: #{
@@ -157,6 +170,9 @@ let s:ddu_filer_ui_params = #{
       \     },
       \     icon_filename: #{
       \       span: 2,
+      \       padding: 2,
+      \       iconWidth: 2,
+      \       useLinkIcon: "grayout",
       \       sort: 'filename',
       \       sortTreesFirst: v:true,
       \     },
@@ -287,9 +303,7 @@ call ddu#custom#patch_local('buffer', #{
       \     },
       \   },
       \   uiParams: #{
-      \     buffer: #{
-      \       span: 2,
-      \     },
+      \     buffer: s:floating_ddu_ui_params,
       \   }
       \ })
 
@@ -312,10 +326,7 @@ call ddu#custom#patch_local('file_old', #{
       \     },
       \   },
       \   uiParams: #{
-      \     file_old: #{
-      \       search: expand($HOME),
-      \       span: 2,
-      \     },
+      \     file_old: s:floating_ddu_ui_params,
       \   }
       \ })
 
@@ -340,9 +351,7 @@ call ddu#custom#patch_local('emoji', #{
       \     },
       \   },
       \   uiParams: #{
-      \     emoji: #{
-      \       span: 2,
-      \     },
+      \     emoji: s:floating_ddu_ui_params,
       \   }
       \ })
 

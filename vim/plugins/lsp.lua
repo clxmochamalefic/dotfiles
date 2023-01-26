@@ -1,33 +1,34 @@
 -- null-ls.nvim
 -- https://github.com/jose-elias-alvarez/null-ls.nvim
-local null_ls = require("null-ls")
-
-local code_actions = null_ls.builtins.code_actions
-local completion = null_ls.builtins.completion
-local diagnostics = null_ls.builtins.diagnostics
-local formatting = null_ls.builtins.formatting
---local hover = null_ls.builtins.hover
-
-local sources = {
-  code_actions.gitsigns,
-  completion.vsnip,
-  formatting.stylua,
-  formatting.taplo,
-  diagnostics.textlint.with({
-    filetypes = { 'markdown' },
-    prefer_local = 'node_modules/.bin',
-  }),
-  formatting.textlint.with({
-    filetypes = { 'markdown' },
-    prefer_local = 'node_modules/.bin',
-  }),
-}
-
-null_ls.setup({
-  border = 'single',
-  diagnostics_format = '#{m} (#{s}: #{c})',
-  sources = sources,
-})
+-- local null_ls = require("null-ls")
+-- 
+-- local code_actions = null_ls.builtins.code_actions
+-- local completion = null_ls.builtins.completion
+-- local diagnostics = null_ls.builtins.diagnostics
+-- local formatting = null_ls.builtins.formatting
+-- --local hover = null_ls.builtins.hover
+-- 
+-- local sources = {
+--   code_actions.gitsigns,
+--   completion.vsnip,
+--   formatting.stylua,
+--   formatting.taplo,
+--   diagnostics.textlint.with({
+--     filetypes = { 'markdown' },
+--     prefer_local = 'node_modules/.bin',
+--   }),
+--   formatting.textlint.with({
+--     filetypes = { 'markdown' },
+--     prefer_local = 'node_modules/.bin',
+--   }),
+--   diagnostics.textlint.credo,
+-- }
+-- 
+-- null_ls.setup({
+--   border = 'single',
+--   diagnostics_format = '#{m} (#{s}: #{c})',
+--   sources = sources,
+-- })
 -- null_ls.setup({
 --   sources = {
 --     null_ls.builtins.formatting.stylua,
@@ -63,7 +64,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 
 ---- You will likely want to reduce updatetime which affects CursorHold
 ---- note: this setting is global and should be set only once
-vim.o.updatetime = 100
+vim.o.updatetime = 500
 -- vim.cmd [[autocmd CursorMoved,CursorMovedI,CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
 -- vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
 -- vim.cmd [[autocmd LspAttach * silent lua vim.lsp.buf.hover()]]
@@ -127,6 +128,9 @@ mason.setup({
   },
 })
 
+
+-- LSP load ------------------------------
+
 local servers = {
   "tsserver",
   "prismals",
@@ -146,6 +150,9 @@ local servers = {
   "vimls",
 }
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local lspconfig = require "lspconfig"
 
 local mason_lspconfig = require "mason-lspconfig"
@@ -158,11 +165,12 @@ mason_lspconfig.setup_handlers({
     opts.on_attach = function(_, bufnr)
       local bufopts = { silent = true, buffer = bufnr }
 
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-      vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
-      vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
-      vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
+      -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+      -- vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
+      -- vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
+      -- vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
     end
+    opts.capabilities = capabilities
 
     lspconfig[server_name].setup(opts)
   end

@@ -144,3 +144,9 @@ augroup Terminal
   "autocmd!
   "autocmd VimEnter * ++nested split term://sh
 augroup END
+
+
+let g:float_window_col = 8
+let g:float_window_row = 1
+let g:float_window_width = &columns - (g:float_window_col * 2)
+let g:float_window_height = 40
