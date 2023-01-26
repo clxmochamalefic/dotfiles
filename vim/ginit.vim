@@ -12,6 +12,7 @@ let s:fav_font_map = #{
       \   Migu2M: 'Migu 2M',
       \   Migu2MPL: 'Migu 2M for Powerline',
       \   Cica: 'Cica',
+      \   Hack: 'Hack',
       \ }
 
 let s:fontsize = 13

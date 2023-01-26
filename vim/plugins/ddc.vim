@@ -37,74 +37,89 @@ call ddc#custom#patch_global('cmdlineSources', {
 " https://github.com/Shougo/ddc-sorter_rank
 let s:source_options = {
       \   "_": #{
-      \     mark: '| V |',
+      \     mark: '  ',
       \     ignoreCase: v:true,
       \     matchers: ['matcher_fuzzy'],
       \     sorters: ['sorter_fuzzy'],
       \     converters: ['converter_fuzzy'],
       \   },
       \   "around": #{
-      \     mark: '| A |'
+      \     mark: '  '
       \   },
       \   "nvim-lsp": #{
-      \     mark: '| L |',
+      \     mark: '  ',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
-      \   },
-      \   "cmdline-history": #{
-      \     mark: '| C |',
-      \   },
-      \   "shell-history": #{
-      \     mark: '| S |',
-      \     minKeywordLength: 4,
+      \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
-      \   'vsnip': {
-      \     'matchers': ['matcher_head', 'matcher_fuzzy'],
-      \     'sorters': ['sorter_rank', 'sorter_fuzzy'],
-      \     'mark': '| S |',
+      \   "cmdline-history": #{
+      \     mark: '  ',
+      \     minKeywordLength: 1,
+      \     maxKeywordLength: 50,
       \   },
-      \   'buffer': {
-      \     'matchers': ['matcher_head', 'matcher_fuzzy'],
-      \     'sorters': ['sorter_rank', 'sorter_fuzzy'],
-      \     'mark': '| B |',
+      \   "shell-history": #{
+      \     mark: '  ',
+      \     minKeywordLength: 1,
+      \     maxKeywordLength: 50,
       \   },
-      \   'file': {
-      \     'matchers': ['matcher_fuzzy'],
-      \     'sorters': ['sorter_fuzzy'],
-      \     'converters': ['converter_fuzzy'],
-      \     'maxCandidates': 16, 
-      \     'mark': '| D |', 
-      \     'minAutoCompleteLength': 3,
+      \   'vsnip': #{
+      \     mark: '  ',
+      \     matchers: ['matcher_head', 'matcher_fuzzy'],
+      \     sorters: ['sorter_rank', 'sorter_fuzzy'],
+      \     minKeywordLength: 1,
+      \     maxKeywordLength: 50,
       \   },
-      \   'dictionary': {
-      \     'matchers': ['matcher_fuzzy'],
-      \     'sorters': ['sorter_fuzzy'],
-      \     'converters': ['converter_fuzzy'],
-      \     'maxCandidates': 16, 
-      \     'mark': '| D |', 
-      \     'minAutoCompleteLength': 3,
+      \   'buffer': #{
+      \     mark: '  ',
+      \     matchers: ['matcher_head', 'matcher_fuzzy'],
+      \     sorters: ['sorter_rank', 'sorter_fuzzy'],
+      \     minKeywordLength: 1,
+      \     maxKeywordLength: 50,
+      \   },
+      \   'file': #{
+      \     mark: '  ',
+      \     matchers: ['matcher_fuzzy'],
+      \     sorters: ['sorter_fuzzy'],
+      \     converters: ['converter_fuzzy'],
+      \     maxCandidates: 16, 
+      \     minKeywordLength: 1,
+      \     maxKeywordLength: 50,
+      \   },
+      \   'dictionary': #{
+      \     mark: '  ',
+      \     matchers: ['matcher_fuzzy'],
+      \     sorters: ['sorter_fuzzy'],
+      \     converters: ['converter_fuzzy'],
+      \     maxCandidates: 16, 
+      \     minKeywordLength: 1,
+      \     maxKeywordLength: 50,
       \   },
       \ }
 
 if has('win32')
-  let s:source_options["windows-clipboard-history"] = #{ mark: 'Clip', }
+  let s:source_options["windows-clipboard-history"] = #{ mark: '', }
 endif
 call ddc#custom#patch_global('sourceOptions', s:source_options)
 
 let s:source_params = {
-    \   'vim-lsp': {
+    \   '_': {
     \     'maxSize': 100,
     \   },
     \   'around': {
+    \     'maxSize': 100
+    \   },
+    \   'vim-lsp': {
     \     'maxSize': 100,
     \   },
     \   'buffer': {
+    \     'maxSize': 100,
     \     'requireSameFiletype': v:false,
     \     'limitBytes': 5000000,
     \     'fromAltBuf': v:true,
     \     'forceCollect': v:true,
     \   },
     \   'dictionary': {
+    \     'maxSize': 100,
     \     'dictPaths': ['/usr/share/dict/words'],
     \     'smartCase': v:true,
     \     'showMenu': v:false
@@ -119,11 +134,6 @@ call ddc#custom#patch_global('sourceParms', s:source_params)
 " Add matching patterns
 call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
 
-call ddc#custom#patch_global('sourceParams', #{
-      \   around: #{
-      \     maxSize: 500
-      \   },
-      \ })
 
 " Mappings
 

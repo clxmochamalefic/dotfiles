@@ -15,6 +15,8 @@ let s:floating_ddu_ui_params = #{
       \
       \   split: 'floating',
       \   floatingBorder: 'rounded',
+      \   filterFloatingPosition: 'top',
+      \   filterSplitDirection: 'floating',
       \   winRow: s:ddu_float_window_row,
       \   winCol: s:ddu_float_window_col,
       \   winWidth: s:ddu_float_window_width,
@@ -112,7 +114,7 @@ function! s:ddu_ff_my_settings() abort
         \ <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
   nnoremap <buffer><silent> i
         \ <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> p     <Cmd>call ddu#ui#ff#do_action('preview')<CR>
+  nnoremap <buffer><silent> P     <Cmd>call ddu#ui#ff#do_action('preview')<CR>
   nnoremap <buffer><silent> q
         \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
 endfunction
@@ -140,43 +142,23 @@ let s:ddu_filer_action_options = #{
       \     quit: v:false,
       \   },
       \ }
+
 let s:ddu_filer_ui_params = #{
-      \     _: #{
-      \       span: 2,
-      \
-      \       split: 'floating',
-      \       winRow: s:ddu_float_window_row,
-      \       winCol: s:ddu_float_window_col,
-      \       winWidth: s:ddu_float_window_width,
-      \       winHeight: s:ddu_float_window_height,
-      \
-      \       floatingBorder: 'rounded',
-      \     },
-      \     filer: #{
-      \       search: expand('%:p'),
-      \       sort: 'filename',
-      \       span: 2,
-      \       sortTreesFirst: v:true,
-      \
-      \       split: 'floating',
-      \       winRow: s:ddu_float_window_row,
-      \       winCol: s:ddu_float_window_col,
-      \       winWidth: s:ddu_float_window_width,
-      \       winHeight: s:ddu_float_window_height,
-      \
-      \       filterFloatingPosition: 'top',
-      \       filterSplitDirection: 'floating',
-      \       floatingBorder: 'rounded',
-      \     },
-      \     icon_filename: #{
-      \       span: 2,
-      \       padding: 2,
-      \       iconWidth: 2,
-      \       useLinkIcon: "grayout",
-      \       sort: 'filename',
-      \       sortTreesFirst: v:true,
-      \     },
+      \   _: s:floating_ddu_ui_params,
+      \   filer: s:floating_ddu_ui_params,
+      \   icon_filename: #{
+      \     span: 2,
+      \     padding: 2,
+      \     iconWidth: 2,
+      \     useLinkIcon: "grayout",
+      \     sort: 'filename',
+      \     sortTreesFirst: v:true,
       \   }
+      \ }
+let s:ddu_filer_ui_params.filer.search = expand('%:p')
+let s:ddu_filer_ui_params.filer.sort = 'filename'
+let s:ddu_filer_ui_params._.search = expand('%:p')
+let s:ddu_filer_ui_params._.sort = 'filename'
 
 call ddu#custom#patch_local('ff_filer', #{
       \   ui: 'filer',
@@ -231,6 +213,8 @@ function! s:ddu_filer_my_settings() abort
 
   nnoremap <buffer><silent> p
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'paste'})<CR>
+  nnoremap <buffer><silent> P
+        \ <Cmd>call ddu#ui#filer#do_action('preview')<CR>
 
   nnoremap <buffer><silent> d
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'delete'})<CR>
