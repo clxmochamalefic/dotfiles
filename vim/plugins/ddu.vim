@@ -143,9 +143,15 @@ let s:ddu_filer_action_options = #{
       \   },
       \ }
 
+let s:floating_ddu_ui_params_default = s:floating_ddu_ui_params
+let s:floating_ddu_ui_params_default.search = expand('%:p')
+let s:floating_ddu_ui_params_default.sort = 'filename'
+let s:floating_ddu_ui_params_default.sortTreesFirst = v:true
+let s:floating_ddu_ui_params_default.splitDirection = "topleft"
+
 let s:ddu_filer_ui_params = #{
-      \   _: s:floating_ddu_ui_params,
-      \   filer: s:floating_ddu_ui_params,
+      \   _: s:floating_ddu_ui_params_default,
+      \   filer: s:floating_ddu_ui_params_default,
       \   icon_filename: #{
       \     span: 2,
       \     padding: 2,
@@ -155,10 +161,6 @@ let s:ddu_filer_ui_params = #{
       \     sortTreesFirst: v:true,
       \   }
       \ }
-let s:ddu_filer_ui_params.filer.search = expand('%:p')
-let s:ddu_filer_ui_params.filer.sort = 'filename'
-let s:ddu_filer_ui_params._.search = expand('%:p')
-let s:ddu_filer_ui_params._.sort = 'filename'
 
 call ddu#custom#patch_local('ff_filer', #{
       \   ui: 'filer',
