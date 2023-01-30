@@ -126,7 +126,10 @@ let s:source_params = {
     \   },
     \ }
 if has('win32')
-  let s:source_params["windows-clipboard-history"] = #{ maxAbbrWidth: 100 }
+  let s:source_params["windows-clipboard-history"] = #{
+    \   maxSize: 100,
+    \   maxAbbrWidth: 100,
+    \ }
 endif
 
 call ddc#custom#patch_global('sourceParms', s:source_params)

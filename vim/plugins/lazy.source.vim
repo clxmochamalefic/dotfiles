@@ -34,10 +34,23 @@ let g:my_vim_width = s:get_vim_width()
 "let s:width = s:window_width - 10
 let g:my_vim_height = s:get_vim_height()
 
+let g:deol#custom_map = {
+      \   'edit': 'e',
+      \   'start_insert': 'i',
+      \   'start_insert_first': 'I',
+      \   'start_append': 'a',
+      \   'start_append_last': 'A',
+      \   'execute_line': '<CR>',
+      \   'previous_prompt': '<C-p>',
+      \   'next_prompt': '<C-n>',
+      \   'paste_prompt': '<C-y>',
+      \   'bg': '<C-z>',
+      \   'quit': 'q',
+      \ }
+
 " 【Ctrl + o】 float windowでターミナルを表示
-" nnoremap <silent><C-o> :<C-u>execute 'Deol' '-cwd=' . fnamemodify(expand('%'), ':h') . ' -split=floating' . '-winRow=' . g:deol_float_window_row . '-winCol=' . g:deol_float_window_col . ' -winwidth=' . g:my_vim_width . ' -winheight=' . g:my_vim_height<CR>
-nnoremap <silent><C-o> :<C-u>execute 'Deol' '-cwd=' . fnamemodify(expand('%'), ':h') . ' -split=floating' . ' -winrow=' . g:deol_float_window_row . ' -wincol=' . g:deol_float_window_col . ' -winwidth=' . g:deol_float_window_width . ' -winheight=' . g:deol_float_window_height<CR>
-"nnoremap <silent><C-o> :<C-u>execute "Deol" "-cwd=" . fnamemodify(expand('%'), ":h") . " -split=floating"<CR>
+nnoremap <silent><C-o> :<C-u>execute 'Deol' '-cwd=' . fnamemodify(expand('%'), ':h') . ' -split=floating' . ' -winrow=' . g:deol_float_window_row . ' -wincol=' . g:deol_float_window_col . ' -winwidth=' . g:deol_float_window_width . ' -winheight=' . g:deol_float_window_height . ' -auto-cd=' .v:true<CR>
+
 " 【ESC】 ターミナルモードから抜ける
 tnoremap <ESC>   <C-\><C-n>
 

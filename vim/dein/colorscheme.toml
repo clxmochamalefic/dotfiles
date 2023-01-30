@@ -19,4 +19,5 @@ merged = 0
 
 [[plugins]] 
 repo = 'ryanoasis/vim-devicons'
+merged = 0
 

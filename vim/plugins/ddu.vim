@@ -2,12 +2,12 @@ if g:is_enable_my_debug
   echo "begin /plugins/ddu.vim load"
 endif
 
-let s:ddu_float_window_col = g:float_window_col
-let s:ddu_float_window_row = g:float_window_row
-let s:ddu_float_window_width = g:float_window_width
-let s:ddu_float_window_height = g:float_window_height
-let s:ddu_float_window_preview_width = 120
-let s:ddu_float_window_preview_col = 0
+let s:ddu_float_window_col            = g:float_window_col
+let s:ddu_float_window_row            = g:float_window_row
+let s:ddu_float_window_width          = g:float_window_width
+let s:ddu_float_window_height         = g:float_window_height
+let s:ddu_float_window_preview_width  = 120
+let s:ddu_float_window_preview_col    = 0
 let s:ddu_float_window_preview_height = s:ddu_float_window_height
 
 let s:floating_ddu_ui_params = #{
@@ -117,6 +117,11 @@ function! s:ddu_ff_my_settings() abort
   nnoremap <buffer><silent> P     <Cmd>call ddu#ui#ff#do_action('preview')<CR>
   nnoremap <buffer><silent> q
         \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+
+  nnoremap <buffer><silent> -
+        \ <Cmd>call ddu#ui#ff#do_action(
+        \     'itemAction', #{ name: 'mychoosewin', quit: v:true }
+        \ )<CR>
 endfunction
 
 
@@ -144,6 +149,7 @@ let s:ddu_filer_action_options = #{
       \ }
 
 let s:floating_ddu_ui_params_default = s:floating_ddu_ui_params
+let s:floating_ddu_ui_params_default.border = "rounded"
 let s:floating_ddu_ui_params_default.search = expand('%:p')
 let s:floating_ddu_ui_params_default.sort = 'filename'
 let s:floating_ddu_ui_params_default.sortTreesFirst = v:true
@@ -170,6 +176,19 @@ call ddu#custom#patch_local('ff_filer', #{
       \   actionOptions: s:ddu_filer_action_options,
       \   uiParams: s:ddu_filer_ui_params,
       \ })
+
+
+function! s:win_all()
+  return range(1, winnr('$'))
+endfunction
+
+function! MyDduChooseWin(args) abort
+  let l:path = a:args.items[0].action.path
+  call choosewin#start(s:win_all(), {'auto_choose': v:true, 'hook_enable': v:false})
+  execute 'edit ' . l:path
+endfunction
+
+call ddu#custom#action('kind', 'file', 'mychoosewin', { args -> MyDduChooseWin(args) })
 
 autocmd TabEnter,WinEnter,CursorHold,FocusGained * call ddu#ui#filer#do_action('checkItems')
 
@@ -230,9 +249,10 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent> a
         \ <Cmd>call ddu#ui#filer#do_action('chooseAction')<CR>
 
-  nnoremap <buffer><silent> A
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', #{ name: 'ChooseWin' })<CR>
-" nnoremap <buffer><silent> A <Cmd>call ddu#custom#action('kind', 'file', 'test', { args -> execute('let g:foo = 1') })
+  nnoremap <buffer><silent> -
+        \ <Cmd>call ddu#ui#filer#do_action(
+        \     'itemAction', #{ name: 'mychoosewin', quit: v:true }
+        \ )<CR>
 
   nnoremap <buffer><silent> m
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'move'})<CR>

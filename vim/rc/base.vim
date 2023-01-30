@@ -92,6 +92,10 @@ set shellslash
 
 " display line number
 set number
+
+" display linespace(lineheight)
+set linespace=2
+
 "---------------------------------------------------------------------------
 " input (IME)
 
