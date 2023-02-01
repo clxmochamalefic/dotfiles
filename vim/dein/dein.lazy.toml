@@ -54,6 +54,10 @@ depends = ['pum.vim', 'ddc.vim']
 on_event = ['BufEnter']
 
 [[plugins]]
-repo = 'cocoalix/quotecmp.vim'
-on_event = ['BufEnter']
-
+repo = 'cohama/lexima.vim'
+on_event = ['InsertChange']
+hook_add = '''
+  g:lexima_enable_basic_rules = 1
+  g:lexima_enable_newline_rules = 1
+  g:lexima_enable_endwise_rules = 1
+'''
