@@ -53,13 +53,3 @@ nnoremap <silent><C-o> :<C-u>execute 'Deol' '-cwd=' . fnamemodify(expand('%'), '
 
 " 【ESC】 ターミナルモードから抜ける
 tnoremap <ESC>   <C-\><C-n>
-
-
-" quotecmp.vim ------------------------------
-command! InsertQuoteBack    call quotecmp#completion_quote('`')
-command! InsertQuoteSingle  call quotecmp#completion_quote("'")
-command! InsertQuoteDouble  call quotecmp#completion_quote('"')
-
-inoremap `` <Esc>:InsertQuoteBack<CR>
-inoremap '' <Esc>:InsertQuoteSingle<CR>
-inoremap "" <Esc>:InsertQuoteDouble<CR>

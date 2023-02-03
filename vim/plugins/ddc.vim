@@ -2,7 +2,6 @@ if g:is_enable_my_debug
   echo "begin /plugins/ddc.vim load"
 endif
 
-call ddc#custom#patch_global('ui', 'pum')
 " Customize global settings
 " Use around source.
 " https://github.com/Shougo/ddc-around
@@ -17,9 +16,9 @@ let s:sources = [
       \   'vsnip',
       \ ]
 
-if has('win32')
-  let s:sources = add(s:sources, 'windows-clipboard-history')
-endif
+"if has('win32')
+"  let s:sources = add(s:sources, 'windows-clipboard-history')
+"endif
 call ddc#custom#patch_global('sources', s:sources)
 
 call ddc#custom#patch_global('cmdlineSources', {
@@ -44,21 +43,25 @@ let s:source_options = {
       \     converters: ['converter_fuzzy'],
       \   },
       \   "around": #{
-      \     mark: '  '
+      \     mark: '  ',
+      \     sorters: ['sorter_fuzzy'],
       \   },
       \   "nvim-lsp": #{
       \     mark: '  ',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
+      \     sorters: ['sorter_fuzzy'],
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
       \   "cmdline-history": #{
       \     mark: '  ',
+      \     sorters: ['sorter_fuzzy'],
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
       \   "shell-history": #{
       \     mark: '  ',
+      \     sorters: ['sorter_fuzzy'],
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
@@ -81,7 +84,6 @@ let s:source_options = {
       \     matchers: ['matcher_fuzzy'],
       \     sorters: ['sorter_fuzzy'],
       \     converters: ['converter_fuzzy'],
-      \     maxCandidates: 16, 
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
@@ -90,15 +92,14 @@ let s:source_options = {
       \     matchers: ['matcher_fuzzy'],
       \     sorters: ['sorter_fuzzy'],
       \     converters: ['converter_fuzzy'],
-      \     maxCandidates: 16, 
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
       \ }
 
-if has('win32')
-  let s:source_options["windows-clipboard-history"] = #{ mark: '', }
-endif
+"if has('win32')
+"  let s:source_options["windows-clipboard-history"] = #{ mark: '', }
+"endif
 call ddc#custom#patch_global('sourceOptions', s:source_options)
 
 let s:source_params = {
@@ -125,12 +126,12 @@ let s:source_params = {
     \     'showMenu': v:false
     \   },
     \ }
-if has('win32')
-  let s:source_params["windows-clipboard-history"] = #{
-    \   maxSize: 100,
-    \   maxAbbrWidth: 100,
-    \ }
-endif
+"if has('win32')
+"  let s:source_params["windows-clipboard-history"] = #{
+"    \   maxSize: 100,
+"    \   maxAbbrWidth: 100,
+"    \ }
+"endif
 
 call ddc#custom#patch_global('sourceParms', s:source_params)
 
@@ -141,6 +142,7 @@ call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
 " Mappings
 
 " Use pum.vim
+call ddc#custom#patch_global('ui', 'pum')
 call ddc#custom#patch_global('autoCompleteEvents', [
       \   'InsertEnter',
       \   'TextChangedI',
@@ -149,7 +151,6 @@ call ddc#custom#patch_global('autoCompleteEvents', [
       \   'CmdlineChanged',
       \   'TermOutput',
       \ ])
-call ddc#custom#patch_global('completionMenu', 'pum.vim')
 
 " For insert mode completion
 inoremap <silent><expr> <TAB>
@@ -170,6 +171,47 @@ inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
 
 inoremap <silent><expr> <C-l>   ddc#map#extend()
 inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
+
+
+nnoremap :       <Cmd>call CommandlinePre()<CR>:
+
+function! CommandlinePre() abort
+  cnoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+  cnoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  cnoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+  cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+  cnoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
+
+  " Overwrite sources
+  if !exists('b:prev_buffer_config')
+    let b:prev_buffer_config = ddc#custom#get_buffer()
+  endif
+  call ddc#custom#patch_buffer('cmdlineSources',
+        \ ['necovim', 'around'])
+
+  autocmd User DDCCmdlineLeave ++once call CommandlinePost()
+  autocmd InsertEnter <buffer> ++once call CommandlinePost()
+
+  " Enable command line completion
+  call ddc#enable_cmdline_completion()
+endfunction
+function! CommandlinePost() abort
+  silent! cunmap <Tab>
+  silent! cunmap <S-Tab>
+  silent! cunmap <C-n>
+  silent! cunmap <C-p>
+  silent! cunmap <C-y>
+  silent! cunmap <C-e>
+
+  " Restore sources
+  if exists('b:prev_buffer_config')
+    call ddc#custom#set_buffer(b:prev_buffer_config)
+    unlet b:prev_buffer_config
+  else
+    call ddc#custom#set_buffer({})
+  endif
+endfunction
 
 " Use ddc.
 call ddc#enable()
