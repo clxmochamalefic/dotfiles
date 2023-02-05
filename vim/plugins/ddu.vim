@@ -15,7 +15,7 @@ let s:floating_ddu_ui_params = #{
       \
       \   split: 'floating',
       \   floatingBorder: 'rounded',
-      \   filterFloatingPosition: 'top',
+      \   filterFloatingPosition: 'bottom',
       \   filterSplitDirection: 'floating',
       \   winRow: s:ddu_float_window_row,
       \   winCol: s:ddu_float_window_col,
