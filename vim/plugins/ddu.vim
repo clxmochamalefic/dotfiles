@@ -108,20 +108,12 @@ autocmd FileType ddu-ff-clip_history  call s:ddu_ff_my_settings()
 autocmd FileType ddu-ff-emoji         call s:ddu_ff_my_settings()
 
 function! s:ddu_ff_my_settings() abort
-  nnoremap <buffer><silent> <CR>
-        \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> <Space>
-        \ <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
-  nnoremap <buffer><silent> i
-        \ <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> P     <Cmd>call ddu#ui#ff#do_action('preview')<CR>
-  nnoremap <buffer><silent> q
-        \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-
-  nnoremap <buffer><silent> -
-        \ <Cmd>call ddu#ui#ff#do_action(
-        \     'itemAction', #{ name: 'mychoosewin', quit: v:true }
-        \ )<CR>
+  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'mychoosewin', quit: v:true })<CR>
+  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+  nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+  nnoremap <buffer><silent> P       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
+  nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  nnoremap <buffer><silent> -       <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'mychoosewin', quit: v:true })<CR>
 endfunction
 
 
@@ -168,7 +160,7 @@ let s:ddu_filer_ui_params = #{
       \   }
       \ }
 
-call ddu#custom#patch_local('ff_filer', #{
+call ddu#custom#patch_local('filer', #{
       \   ui: 'filer',
       \   sources: s:ddu_filer_sources,
       \   sourceOptions: s:ddu_filer_source_options,
@@ -177,6 +169,17 @@ call ddu#custom#patch_local('ff_filer', #{
       \   uiParams: s:ddu_filer_ui_params,
       \ })
 
+let s:floating_ddu_ui_params_4preference = s:floating_ddu_ui_params_default
+let s:floating_ddu_ui_params_4preference.search = expand(g:my_initvim_path)
+
+call ddu#custom#patch_local('filer_preference', #{
+      \   ui: 'filer',
+      \   sources: s:ddu_filer_sources,
+      \   sourceOptions: s:ddu_filer_source_options,
+      \   kindOptions: s:ddu_filer_kind_options,
+      \   actionOptions: s:ddu_filer_action_options,
+      \   uiParams: s:floating_ddu_ui_params_4preference,
+      \ })
 
 function! s:win_all()
   return range(1, winnr('$'))
@@ -193,22 +196,14 @@ call ddu#custom#action('kind', 'file', 'mychoosewin', { args -> MyDduChooseWin(a
 autocmd TabEnter,WinEnter,CursorHold,FocusGained * call ddu#ui#filer#do_action('checkItems')
 
 autocmd FileType ddu-filer call s:ddu_filer_my_settings()
-autocmd FileType ddu-ff_filer call s:ddu_filer_my_settings()
+autocmd FileType ddu-filer_preference call s:ddu_filer_my_settings()
 
 
 function! s:ddu_filer_my_settings() abort
-  "nnoremap <buffer><silent><expr> <CR>
-  "  \ ddu#ui#filer#is_tree() ?
-  "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-  "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'choose'}})<CR>"
-  "nnoremap <buffer><silent><expr> <CR>
-  "  \ ddu#ui#filer#is_tree() ?
-  "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-  "  \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
   nnoremap <buffer><silent><expr> <CR>
         \ ddu#ui#filer#is_tree() ?
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open'})<CR>"
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', #{ name: 'mychoosewin', quit: v:true })<CR>"
 
   nnoremap <buffer><silent> ~
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME)} })<CR>
@@ -249,11 +244,6 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent> a
         \ <Cmd>call ddu#ui#filer#do_action('chooseAction')<CR>
 
-  nnoremap <buffer><silent> -
-        \ <Cmd>call ddu#ui#filer#do_action(
-        \     'itemAction', #{ name: 'mychoosewin', quit: v:true }
-        \ )<CR>
-
   nnoremap <buffer><silent> m
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'move'})<CR>
 
@@ -287,9 +277,11 @@ function! s:ddu_filer_my_settings() abort
 
 endfunction
 
-command! DduFiler     call ddu#start({ 'name': 'ff_filer' })
+command! DduFiler call ddu#start({ 'name': 'filer' })
+nnoremap ^       :<C-u>DduFiler<CR>
 
-nnoremap  ^  :<C-u>DduFiler<CR>
+command! DduPreference  call ddu#start({ 'name': 'filer_preference' })
+nnoremap <BS>           :<C-u>DduPreference<CR>
 
 
 " ddu-source --------------------

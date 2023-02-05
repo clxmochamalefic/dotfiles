@@ -41,17 +41,13 @@ repo = 'Milly/windows-clipboard-history.vim'
 on_if = 'has("win32")'
 
 
-# hook_source ------------------------------
-[[multiple_plugins]]
-plugins = [ 'deol.nvim', 'quotecmp.vim', ]
-hook_add = '''
-  execute "source " . g:my_initvim_path . "/plugins/lazy.source.vim"
-'''
-
 [[plugins]]
 repo = "Shougo/deol.nvim"
 depends = ['pum.vim', 'ddc.vim']
 on_event = ['BufEnter']
+hook_add = '''
+  execute "source " . g:my_initvim_path . "/plugins/lazy.source.vim"
+'''
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
