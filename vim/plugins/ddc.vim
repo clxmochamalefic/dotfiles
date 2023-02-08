@@ -133,7 +133,7 @@ let s:source_params = {
 "    \ }
 "endif
 
-call ddc#custom#patch_global('sourceParms', s:source_params)
+call ddc#custom#patch_global('sourceParams', s:source_params)
 
 " Add matching patterns
 call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
