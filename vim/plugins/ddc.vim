@@ -2,6 +2,18 @@ if g:is_enable_my_debug
   echo "begin /plugins/ddc.vim load"
 endif
 
+" Use pum.vim
+call ddc#custom#patch_global('ui', 'pum')
+
+call ddc#custom#patch_global('autoCompleteEvents', [
+      \   'InsertEnter',
+      \   'TextChangedI',
+      \   'TextChangedP',
+      \   'CmdlineEnter',
+      \   'CmdlineChanged',
+      \   'TermOutput',
+      \ ])
+
 " Customize global settings
 " Use around source.
 " https://github.com/Shougo/ddc-around
@@ -9,7 +21,6 @@ let s:sources = [
       \   'around',
       \   'buffer',
       \   'cmdline-history',
-      \   'dictionary',
       \   'file',
       \   'nvim-lsp',
       \   'shell-history',
@@ -38,62 +49,35 @@ let s:source_options = {
       \   "_": #{
       \     mark: '  ',
       \     ignoreCase: v:true,
-      \     matchers: ['matcher_fuzzy'],
-      \     sorters: ['sorter_fuzzy'],
-      \     converters: ['converter_fuzzy'],
       \   },
       \   "around": #{
       \     mark: '  ',
-      \     sorters: ['sorter_fuzzy'],
       \   },
       \   "nvim-lsp": #{
       \     mark: '  ',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
-      \     sorters: ['sorter_fuzzy'],
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
       \   },
       \   "cmdline-history": #{
       \     mark: '  ',
-      \     sorters: ['sorter_fuzzy'],
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
       \   },
       \   "shell-history": #{
       \     mark: '  ',
-      \     sorters: ['sorter_fuzzy'],
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
       \   'vsnip': #{
       \     mark: '  ',
-      \     matchers: ['matcher_head', 'matcher_fuzzy'],
-      \     sorters: ['sorter_rank', 'sorter_fuzzy'],
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
+      \     matchers: ['matcher_head'],
+      \     sorters: ['sorter_rank'],
       \   },
       \   'buffer': #{
       \     mark: '  ',
-      \     matchers: ['matcher_head', 'matcher_fuzzy'],
-      \     sorters: ['sorter_rank', 'sorter_fuzzy'],
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
+      \     matchers: ['matcher_head'],
+      \     sorters: ['sorter_rank'],
       \   },
       \   'file': #{
       \     mark: '  ',
-      \     matchers: ['matcher_fuzzy'],
-      \     sorters: ['sorter_fuzzy'],
-      \     converters: ['converter_fuzzy'],
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
-      \   },
-      \   'dictionary': #{
-      \     mark: '  ',
-      \     matchers: ['matcher_fuzzy'],
-      \     sorters: ['sorter_fuzzy'],
-      \     converters: ['converter_fuzzy'],
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
+      \     minAutoCompleteLength: 1,
       \   },
       \ }
 
@@ -103,27 +87,17 @@ let s:source_options = {
 call ddc#custom#patch_global('sourceOptions', s:source_options)
 
 let s:source_params = {
-    \   '_': {
+    \   'vim-lsp': {
     \     'maxSize': 100,
     \   },
     \   'around': {
     \     'maxSize': 100
     \   },
-    \   'vim-lsp': {
-    \     'maxSize': 100,
-    \   },
     \   'buffer': {
-    \     'maxSize': 100,
     \     'requireSameFiletype': v:false,
     \     'limitBytes': 5000000,
     \     'fromAltBuf': v:true,
     \     'forceCollect': v:true,
-    \   },
-    \   'dictionary': {
-    \     'maxSize': 100,
-    \     'dictPaths': ['/usr/share/dict/words'],
-    \     'smartCase': v:true,
-    \     'showMenu': v:false
     \   },
     \ }
 "if has('win32')
@@ -135,22 +109,23 @@ let s:source_params = {
 
 call ddc#custom#patch_global('sourceParams', s:source_params)
 
+"call ddc#custom#patch_global('filterParams', {
+"  \   'matcher_fuzzy': {
+"  \     'splitMode': 'word'
+"  \   }
+"  \ })
+"
+"call ddc#custom#patch_global('filterParams', {
+"  \   'converter_fuzzy': {
+"  \     'hlGroup': 'SpellBad'
+"  \   }
+"  \ })
+
 " Add matching patterns
 call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
 
 
 " Mappings
-
-" Use pum.vim
-call ddc#custom#patch_global('ui', 'pum')
-call ddc#custom#patch_global('autoCompleteEvents', [
-      \   'InsertEnter',
-      \   'TextChangedI',
-      \   'TextChangedP',
-      \   'CmdlineEnter',
-      \   'CmdlineChanged',
-      \   'TermOutput',
-      \ ])
 
 " For insert mode completion
 inoremap <silent><expr> <TAB>
@@ -173,45 +148,45 @@ inoremap <silent><expr> <C-l>   ddc#map#extend()
 inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
 
 
-nnoremap :       <Cmd>call CommandlinePre()<CR>:
-
-function! CommandlinePre() abort
-  cnoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-  cnoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-  cnoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
-  cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-  cnoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
-
-  " Overwrite sources
-  if !exists('b:prev_buffer_config')
-    let b:prev_buffer_config = ddc#custom#get_buffer()
-  endif
-  call ddc#custom#patch_buffer('cmdlineSources',
-        \ ['necovim', 'around'])
-
-  autocmd User DDCCmdlineLeave ++once call CommandlinePost()
-  autocmd InsertEnter <buffer> ++once call CommandlinePost()
-
-  " Enable command line completion
-  call ddc#enable_cmdline_completion()
-endfunction
-function! CommandlinePost() abort
-  silent! cunmap <Tab>
-  silent! cunmap <S-Tab>
-  silent! cunmap <C-n>
-  silent! cunmap <C-p>
-  silent! cunmap <C-y>
-  silent! cunmap <C-e>
-
-  " Restore sources
-  if exists('b:prev_buffer_config')
-    call ddc#custom#set_buffer(b:prev_buffer_config)
-    unlet b:prev_buffer_config
-  else
-    call ddc#custom#set_buffer({})
-  endif
-endfunction
+"nnoremap :       <Cmd>call CommandlinePre()<CR>:
+"
+"function! CommandlinePre() abort
+"  cnoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
+"  cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+"  cnoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+"  cnoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
+"  cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+"  cnoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
+"
+"  " Overwrite sources
+"  if !exists('b:prev_buffer_config')
+"    let b:prev_buffer_config = ddc#custom#get_buffer()
+"  endif
+"  call ddc#custom#patch_buffer('cmdlineSources',
+"        \ ['necovim', 'around'])
+"
+"  autocmd User DDCCmdlineLeave ++once call CommandlinePost()
+"  autocmd InsertEnter <buffer> ++once call CommandlinePost()
+"
+"  " Enable command line completion
+"  call ddc#enable_cmdline_completion()
+"endfunction
+"function! CommandlinePost() abort
+"  silent! cunmap <Tab>
+"  silent! cunmap <S-Tab>
+"  silent! cunmap <C-n>
+"  silent! cunmap <C-p>
+"  silent! cunmap <C-y>
+"  silent! cunmap <C-e>
+"
+"  " Restore sources
+"  if exists('b:prev_buffer_config')
+"    call ddc#custom#set_buffer(b:prev_buffer_config)
+"    unlet b:prev_buffer_config
+"  else
+"    call ddc#custom#set_buffer({})
+"  endif
+"endfunction
 
 " Use ddc.
 call ddc#enable()
