@@ -7,7 +7,7 @@ depends = [
   'ddc-nvim-lsp',
   'ddc-around',
   'ddc-buffer',
-  'ddc-dictionary',
+#  'ddc-dictionary',
   'ddc-file',
   'ddc-fuzzy',
   'ddc-source-cmdline-history',
@@ -54,9 +54,9 @@ on_source = 'ddc.vim'
 repo='delphinus/ddc-shell-history'
 on_source = 'ddc.vim'
 
-[[plugins]]
-repo = 'matsui54/ddc-dictionary'
-on_source = 'ddc.vim'
+#[[plugins]]
+#repo = 'matsui54/ddc-dictionary'
+#on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'matsui54/ddc-buffer'

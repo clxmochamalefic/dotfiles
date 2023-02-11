@@ -154,9 +154,9 @@ function! s:resize_float_window() abort
   let g:float_window_col = 8
   let g:float_window_height = 30
 
-  let g:float_window_row = &lines - g:float_window_height - 10
+  let g:float_window_row = &lines - g:float_window_height - 8
   let g:float_window_width = &columns - (g:float_window_col * 2)
 endfunction
 call s:resize_float_window()
 
-autocmd! VimResized * s:resize_float_window()
+autocmd! VimResized s:resize_float_window()
