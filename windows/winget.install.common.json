@@ -70,22 +70,25 @@
           "PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
         },
         {
-            "PackageIdentifier" : "Git.Git"
+          "PackageIdentifier" : "Git.Git"
         },
         {
-            "PackageIdentifier" : "GitHub.GitLFS"
+          "PackageIdentifier" : "GitHub.GitLFS"
         },
         {
-            "PackageIdentifier" : "Microsoft.VisualStudioCode"
+          "PackageIdentifier" : "Microsoft.VisualStudioCode"
         },
         {
-            "PackageIdentifier" : "Neovim.Neovim"
+          "PackageIdentifier" : "Neovim.Neovim"
         },
         {
-            "PackageIdentifier" : "Microsoft.WindowsTerminal"
+          "PackageIdentifier" : "Microsoft.WindowsTerminal"
         },
         {
-            "PackageIdentifier" : "Microsoft.WindowsTerminal.Preview"
+          "PackageIdentifier" : "Microsoft.WindowsTerminal.Preview"
+        },
+        {
+          "PackageIdentifier" : "JanDeDobbeleer.OhMyPosh"
         }
       ],
       "SourceDetails" : 

@@ -4,4 +4,4 @@ if ([System.IO.Directory]::Exists($profilePath) -eq $false) {
 }
 Get-Content "${PSScriptRoot}\common_profile.ps1" > "${profilePath}Microsoft.PowerShell_profile.ps1"
 
-.$profile
+. $PROFILE
