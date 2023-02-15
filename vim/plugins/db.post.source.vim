@@ -19,7 +19,8 @@ let s:db_toml_dir = expand($HOME . '/.cache/vim_dadbod')
 let g:dbs = {}
 
 if !isdirectory(s:db_toml_dir)
-  execute '!mkdir' . s:db_toml_dir
+  let s:mkdir_cmd = '!mkdir ' . s:db_toml_dir
+  silent exec s:mkdir_cmd
 endif
 
 let s:filelist =  expand(s:db_toml_dir . "/*.toml")

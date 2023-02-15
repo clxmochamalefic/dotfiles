@@ -1,7 +1,3 @@
-[[multiple_plugins]]
-plugins = [ 'vim-dadbod',  'vim-dotenv',  'vim-dadbod-ui', ]
-on_event = ['VimEnter']
-
 [[plugins]]
 repo = 'tpope/vim-dadbod'
 depends = ['vim-dotenv', 'vim-dadbod-ui']

@@ -98,22 +98,36 @@ if has('macunix')
   command "brew install desktop-file-utils"
 endif
 
-autocmd FileType ddu-ff               call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-buffer        call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-mrw           call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-mrw_current   call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-file_old      call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-filter        call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-clip_history  call s:ddu_ff_my_settings()
-autocmd FileType ddu-ff-emoji         call s:ddu_ff_my_settings()
+function! MyDduChooseWin(src, args)
 
+  try
+    let l:path = a:args.items[0].action.path
+    call choosewin#start(s:win_all(), {'auto_choose': v:true, 'hook_enable': v:false})
+    execute 'edit ' . l:path
+  catch /.*/
+    if a:src == 0
+      "call ddu#ui#ff#do_action('itemAction')
+      call ddu#ui#ff#do_action('itemAction', args)
+    else
+      "call ddu#ui#filer#do_action('itemAction')
+      call ddu#ui#filer#do_action('itemAction', args)
+    endif
+  endtry
+
+endfunction
+
+call ddu#custom#action('kind', 'file', 'ff_mychoosewin', { args -> MyDduChooseWin(0, args) })
+
+autocmd FileType ddu-ff               call s:ddu_ff_my_settings()
 function! s:ddu_ff_my_settings() abort
-  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'mychoosewin', quit: v:true })<CR>
+  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'ff_mychoosewin', quit: v:true })<CR>
   nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
   nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
   nnoremap <buffer><silent> P       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
   nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer><silent> -       <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'mychoosewin', quit: v:true })<CR>
+  nnoremap <buffer><silent><expr> l <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'open', params: #{ command: 'vsplit'}, quit: v:true })<CR>
+  nnoremap <buffer><silent><expr> L <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'open', params: #{ command: 'split'},  quit: v:true })<CR>
+  nnoremap <buffer><silent> d       <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'delete'})<CR>
 endfunction
 
 
@@ -184,14 +198,7 @@ call ddu#custom#patch_local('filer_preference', #{
 function! s:win_all()
   return range(1, winnr('$'))
 endfunction
-
-function! MyDduChooseWin(args) abort
-  let l:path = a:args.items[0].action.path
-  call choosewin#start(s:win_all(), {'auto_choose': v:true, 'hook_enable': v:false})
-  execute 'edit ' . l:path
-endfunction
-
-call ddu#custom#action('kind', 'file', 'mychoosewin', { args -> MyDduChooseWin(args) })
+call ddu#custom#action('kind', 'file', 'filer_mychoosewin', { args -> MyDduChooseWin(1, args) })
 
 autocmd TabEnter,WinEnter,CursorHold,FocusGained * call ddu#ui#filer#do_action('checkItems')
 
@@ -203,7 +210,7 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent><expr> <CR>
         \ ddu#ui#filer#is_tree() ?
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', #{ name: 'mychoosewin', quit: v:true })<CR>"
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', #{ name: 'filer_mychoosewin', quit: v:true })<CR>"
 
   nnoremap <buffer><silent> ~
         \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME)} })<CR>
@@ -260,17 +267,12 @@ function! s:ddu_filer_my_settings() abort
         \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>" : "<Cmd>echoe 'cannot close this item'<CR>"
 
   nnoremap <buffer><silent><expr> l
-        \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" : "<Cmd>echoe 'cannot open this item'<CR>"
+        \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" : "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'vsplit'}})<CR>"
 
   nnoremap <buffer><silent><expr> L
         \ ddu#ui#filer#is_tree() ?
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
+        \ "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" :
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
-
-  nnoremap <buffer><silent><expr> O
-        \ ddu#ui#filer#is_tree() ?
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'vsplit'}})<CR>"
 
   nnoremap <buffer><silent> <TAB>
         \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>
@@ -292,7 +294,7 @@ call ddu#custom#patch_local('buffer', #{
       \   sources: [
       \     #{
       \       name: 'buffer',
-      \       params: #{path: $HOME},
+      \       params: #{ path: $HOME },
       \     },
       \   ],
       \   kindOptions: #{
@@ -426,109 +428,6 @@ if has('win32')
   " Insert emoji mapping.
   nnoremap  .  :<C-u>DduClip<CR>
 endif
-
-
-" ddu-source-custom-list
-
-" LspAction ====================
-let s:lsp_actions = {
-      \   'SHOW   REFACTOR code actions': #{
-      \     name: 'SHOW REFACTOR code actions',
-      \     depend: 'Lspsaga',
-      \     command: 'code_action',
-      \   },
-      \   'vim.lsp.buf.declaration()': #{
-      \     name: 'vim.lsp.buf.declaration()',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.declaration()',
-      \   },
-      \   'SHOW  defined source on floating window': #{
-      \     name: 'SHOW  defined source on floating window',
-      \     depend: 'Lspsaga',
-      \     command: 'peek_definition',
-      \   },
-      \   'JUMP  cursor to defined line FOR PROPERTY': #{
-      \     name: 'JUMP cursor to defined line FOR PROPERTY',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.definition()',
-      \   },
-      \   'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}': #{
-      \     name: 'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.formatting{timeout_ms = 5000, async = true}',
-      \   },
-      \   'SHOW   definition on floating window': #{
-      \     name: 'SHOW definition on floating window',
-      \     depend: 'Lspsaga',
-      \     command: 'hover_doc',
-      \   },
-      \   'SHOW   implementation source on this BUFFER': #{
-      \     name: 'SHOW implementation source on this BUFFER',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.implementation()',
-      \   },
-      \   'SHOW   reference': #{
-      \     name: 'SHOW reference',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.references()',
-      \   },
-      \   'RENAME on floating window': #{
-      \     name: 'EXEC rename by floating window',
-      \     depend: 'Lspsaga',
-      \     command: 'rename',
-      \   },
-      \   'JUMP   cursor to defined line FOR TYPE': #{
-      \     name: 'JUMP cursor to defined line FOR TYPE',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.type_definition()',
-      \   },
-      \   'SHOW   diagnostics this line on floating window': #{
-      \     name: 'SHOW  diagnostics this line on floating window',
-      \     depend: 'Lspsaga',
-      \     command: 'show_line_diagnostics',
-      \   },
-      \   'JUMP   DIAGNOSTICS line NEXT': #{
-      \     name: 'JUMP DIAGNOSTICS line NEXT',
-      \     depend: 'Lspsaga',
-      \     command: 'diagnostic_jump_next',
-      \   },
-      \   'JUMP   DIAGNOSTICS line PREV': #{
-      \     name: 'JUMP DIAGNOSTICS line PREV',
-      \     depend: 'Lspsaga',
-      \     command: 'diagnostic_jump_prev',
-      \   },
-      \   'vim.lsp.buf.signature_help()': #{
-      \     name: 'vim.lsp.buf.signature_help()',
-      \     depend: 'lua',
-      \     command: 'vim.lsp.buf.signature_help()',
-      \   },
-      \ }
-
-let s:lsp_action_keys = keys(s:lsp_actions)
-
-function! s:get_evaluated_command(key) abort
-  let l:lsp_action = s:lsp_actions[a:key]
-  return l:lsp_action.depend . " " . l:lsp_action.command
-endfunction
-
-let s:lsp_action_callback_id = denops#callback#register(
-      \   { key -> execute(s:get_evaluated_command(key)) },
-      \   #{ once: v:false }
-      \ )
-
-call ddu#custom#patch_local('lsp_actions', #{
-      \   sources: [#{
-      \       name: 'custom-list',
-      \       params: #{
-      \         texts: s:lsp_action_keys,
-      \         callbackId: s:lsp_action_callback_id,
-      \       }
-      \     },
-      \   ],
-      \   kindOptions: #{ defaultAction: 'callback' },
-      \ })
-
-command! LspActions call ddu#start(#{ name: 'lsp_actions' })
 
 " tpope/vim-dadbod
 

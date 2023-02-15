@@ -36,11 +36,7 @@ augroup QuitHelp
 augroup END
 
 " 閉じかっこの自動入力
-inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
-inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
-inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
+"inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
+"inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
+"inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
 
-
-" call LspAction ------------------------------
-
-nnoremap <Leader><Space> :LspAction<CR>

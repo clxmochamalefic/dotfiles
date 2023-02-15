@@ -20,10 +20,8 @@ call ddc#custom#patch_global('autoCompleteEvents', [
 let s:sources = [
       \   'around',
       \   'buffer',
-      \   'cmdline-history',
       \   'file',
       \   'nvim-lsp',
-      \   'shell-history',
       \   'vsnip',
       \ ]
 
@@ -47,36 +45,36 @@ call ddc#custom#patch_global('cmdlineSources', {
 " https://github.com/Shougo/ddc-sorter_rank
 let s:source_options = {
       \   "_": #{
-      \     mark: '  ',
+      \     mark: '   ',
       \     ignoreCase: v:true,
       \   },
       \   "around": #{
-      \     mark: '  ',
+      \     mark: '   ',
       \   },
       \   "nvim-lsp": #{
-      \     mark: '  ',
+      \     mark: '   ',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
       \   },
       \   "cmdline-history": #{
-      \     mark: '  ',
+      \     mark: '   ',
       \   },
       \   "shell-history": #{
-      \     mark: '  ',
+      \     mark: '   ',
       \     minKeywordLength: 1,
       \     maxKeywordLength: 50,
       \   },
       \   'vsnip': #{
-      \     mark: '  ',
+      \     mark: '   ',
       \     matchers: ['matcher_head'],
       \     sorters: ['sorter_rank'],
       \   },
       \   'buffer': #{
-      \     mark: '  ',
+      \     mark: '   ',
       \     matchers: ['matcher_head'],
       \     sorters: ['sorter_rank'],
       \   },
       \   'file': #{
-      \     mark: '  ',
+      \     mark: '   ',
       \     minAutoCompleteLength: 1,
       \   },
       \ }
@@ -133,7 +131,9 @@ inoremap <silent><expr> <TAB>
       \ (col('.') <= 1 <Bar><Bar> getline('.')[col('.') - 2] =~# '\s') ?
       \ '<TAB>' : ddc#map#manual_complete()
 inoremap <silent><expr> <C-n>
-      \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : '<C-n>'
+      \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' : '<TAB>'
+inoremap <silent><expr> <C-p>
+      \ pum#visible() ? '<Cmd>call pum#map#insert_relative(-1)<CR>' : '<TAB>'
 
 inoremap <silent><expr> <CR>
       \ pum#visible() ? ddc#map#manual_complete() : '<CR>'

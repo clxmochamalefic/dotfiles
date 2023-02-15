@@ -1,3 +1,63 @@
+-- Lspsaga --------------------------------------------------
+
+-- nvim-treesitter
+-- local treesitter_config = require('nvim-treesitter.configs')
+-- treesitter_config.setup({
+--   highlight = {
+--     enable = true,
+--     disable = {},
+--   },
+--   indent = {
+--     enable = false,
+--   },
+--   yati = {
+--     enable = true,
+--     default_lazy = true,
+--     default_fallback = "auto"
+--   },
+--   ensure_installed = {
+--     "bash",
+--     "vim",
+--     "regex",
+--     "lua",
+--     "julia",
+--     "typescript",
+--     "tsx",
+--     "jsdoc",
+--     "json",
+--     "yaml",
+--     "toml",
+--     "markdown",
+--     "html",
+--     "css",
+--     "sql",
+--     "gitattributes",
+--   },
+-- })
+
+-- Lspsaga
+-- TODO: これやりたい => https://github.com/flrgh/.dotfiles/blob/49e29b798759d51a26aad234fde162258e1a94bc/home/.config/nvim/lua/local/config/lsp.lua
+local lspsaga = require("lspsaga")
+lspsaga.setup({
+  border_style = "single",
+  symbol_in_winbar = {
+    enable = true,
+  },
+  code_action_lightbulb = {
+    enable = true,
+  },
+  show_outline = {
+    win_width = 50,
+    auto_preview = false,
+  },
+})
+
+local codeaction = require("lspsaga.codeaction")
+vim.keymap.set("n", "<leader>,", function() codeaction:code_action() end, { silent = true })
+vim.keymap.set("n", "<leader>d", "<Cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
+vim.keymap.set("n", "<leader>h", function() vim.lsp.buf.hover() end, { silent = true })
+
+
 -- null-ls.nvim
 -- https://github.com/jose-elias-alvarez/null-ls.nvim
 -- local null_ls = require("null-ls")
@@ -81,20 +141,21 @@ function IsActiveLspOnCurrentBuffer(bufNumber)
   return isLoadLsp
 end
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    vim.cmd [[autocmd CursorHold,CursorHoldI * silent! lua vim.lsp.buf.hover()]]
-
-    local bufnr = args.buf
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client.server_capabilities.completionProvider then
-      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-    end
-    if client.server_capabilities.definitionProvider then
-      vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
-    end
-  end,
-})
+--vim.api.nvim_create_autocmd("LspAttach", {
+--  callback = function(args)
+----    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+--    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+--
+----    local bufnr = args.buf
+----    local client = vim.lsp.get_client_by_id(args.data.client_id)
+----    if client.server_capabilities.completionProvider then
+----      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+----    end
+----    if client.server_capabilities.definitionProvider then
+----      vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
+----    end
+--  end,
+--})
 
 local mason = require "mason"
 mason.setup({
