@@ -1,8 +1,16 @@
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
-on_event = ['BufEnter']
+repo = 'lewis6991/gitsigns.nvim'
+depends = ['vim-fugitive', 'git.nvim']
+on_event = ['BufRead']
+hook_source = '''
+  execute "source " . g:my_initvim_path . "/plugins/git.lua"
+'''
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
-on_event = ['BufEnter']
+on_event = ['BufRead']
+
+[[plugins]]
+repo = 'dinhhuy258/git.nvim'
+on_event = ['BufRead']
 
