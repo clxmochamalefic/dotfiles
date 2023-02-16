@@ -98,6 +98,10 @@ if has('macunix')
   command "brew install desktop-file-utils"
 endif
 
+function! s:win_all()
+  return range(1, winnr('$'))
+endfunction
+
 function! MyDduChooseWin(src, args)
 
   try
@@ -118,20 +122,91 @@ endfunction
 
 call ddu#custom#action('kind', 'file', 'ff_mychoosewin', { args -> MyDduChooseWin(0, args) })
 
+
 autocmd FileType ddu-ff               call s:ddu_ff_my_settings()
 function! s:ddu_ff_my_settings() abort
-  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'ff_mychoosewin', quit: v:true })<CR>
+  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'ff_mychoosewin', 'quit': v:true })<CR>
   nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
   nnoremap <buffer><silent> i       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
   nnoremap <buffer><silent> P       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
   nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer><silent><expr> l <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'open', params: #{ command: 'vsplit'}, quit: v:true })<CR>
-  nnoremap <buffer><silent><expr> L <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'open', params: #{ command: 'split'},  quit: v:true })<CR>
-  nnoremap <buffer><silent> d       <Cmd>call ddu#ui#ff#do_action('itemAction', #{ name: 'delete'})<CR>
+  nnoremap <buffer><silent><expr> l <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open', 'params': { 'command': 'vsplit'}, 'quit': v:true })<CR>
+  nnoremap <buffer><silent><expr> L <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'open', 'params': { 'command': 'split'},  'quit': v:true })<CR>
+  nnoremap <buffer><silent> d       <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'delete' })<CR>
 endfunction
 
-
 " ddu-ui-filer
+let s:current_filer = 0
+
+let s:filers = ['filer_1', 'filer_2', 'filer_3', 'filer_4', ]
+function! OpenDduFiler(window_id) abort
+  let s:current_filer = a:window_id
+  let l:name = s:filers[a:window_id]
+  call ddu#start({ 'name': l:name })
+endfunction
+"
+call ddu#custom#action('kind', 'file', 'open_filer1', { args -> OpenDduFiler(0) })
+call ddu#custom#action('kind', 'file', 'open_filer2', { args -> OpenDduFiler(1) })
+call ddu#custom#action('kind', 'file', 'open_filer3', { args -> OpenDduFiler(2) })
+call ddu#custom#action('kind', 'file', 'open_filer4', { args -> OpenDduFiler(3) })
+
+function! s:ddu_filer_my_settings() abort
+  " basic actions
+  nnoremap <buffer><silent> q     <Cmd>call ddu#ui#filer#do_action('quit')<CR>
+  nnoremap <buffer><silent> R     <Cmd>call ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
+  nnoremap <buffer><silent> a     <Cmd>call ddu#ui#filer#do_action('chooseAction')<CR>
+  nnoremap <buffer><silent> P     <Cmd>call ddu#ui#filer#do_action('preview')<CR>
+
+  nnoremap <buffer><silent> <F1>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer1', 'params': { 'id': 0 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F2>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer2', 'params': { 'id': 1 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F3>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer3', 'params': { 'id': 2 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F4>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer4', 'params': { 'id': 3 }, 'quit': v:true })<CR>
+  "nnoremap <buffer><silent> <F1>  <Cmd>call OpenDduFiler(0)<CR>
+  "nnoremap <buffer><silent> <F2>  <Cmd>call OpenDduFiler(1)<CR>
+  "nnoremap <buffer><silent> <F3>  <Cmd>call OpenDduFiler(2)<CR>
+  "nnoremap <buffer><silent> <F4>  <Cmd>call OpenDduFiler(3)<CR>
+
+
+  " change directory (path)
+  nnoremap <buffer><silent><expr> <CR>
+        \ ddu#ui#filer#is_tree() ?
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow'})<CR>" :
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'filer_mychoosewin', 'quit': v:true })<CR>"
+
+  nnoremap <buffer><silent><expr> h
+        \ ddu#ui#filer#is_tree() ?
+        \ "<Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>" :
+        \ "<Cmd>echoe 'cannot close this item'<CR>"
+
+  nnoremap <buffer><silent><expr> l
+        \ ddu#ui#filer#is_tree() ?
+        \ "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" :
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open', params: { 'command': 'vsplit' } })<CR>"
+
+  nnoremap <buffer><silent><expr> L
+        \ ddu#ui#filer#is_tree() ?
+        \ "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" :
+        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open', params: { 'command': 'split' } })<CR>"
+
+  " change directory aliases
+  nnoremap <buffer><silent> ~     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME) } })<CR>
+  nnoremap <buffer><silent> ^     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand(g:my_initvim_path) } })<CR>
+  nnoremap <buffer><silent> =     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME . "/repos") } })<CR>
+  nnoremap <buffer><silent> <BS>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': '..' } })<CR>
+  nnoremap <buffer><silent> C     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'cd' })<CR>
+
+  nnoremap <buffer><silent> c     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'copy' })<CR>
+  nnoremap <buffer><silent> x     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'cut' })<CR>
+  nnoremap <buffer><silent> p     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'paste' })<CR>
+
+  nnoremap <buffer><silent> m     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'move' })<CR>
+  nnoremap <buffer><silent> b     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'newFile' })<CR>
+  nnoremap <buffer><silent> B     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'newDirectory' })<CR>
+  nnoremap <buffer><silent> yy    <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'yank' })<CR>
+  nnoremap <buffer><silent> d     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'delete' })<CR>
+  nnoremap <buffer><silent> r     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'rename' })<CR>
+endfunction
+
 let s:ddu_filer_sources = [
       \   #{
       \     name: 'file',
@@ -174,8 +249,45 @@ let s:ddu_filer_ui_params = #{
       \   }
       \ }
 
-call ddu#custom#patch_local('filer', #{
+let s:ddu_filer_params = #{
       \   ui: 'filer',
+      \   sources: s:ddu_filer_sources,
+      \   sourceOptions: s:ddu_filer_source_options,
+      \   kindOptions: s:ddu_filer_kind_options,
+      \   actionOptions: s:ddu_filer_action_options,
+      \   uiParams: s:ddu_filer_ui_params,
+      \ }
+
+call ddu#custom#patch_local('filer_1', #{
+      \   ui: 'filer',
+      \   name: 'filer_1',
+      \   sources: s:ddu_filer_sources,
+      \   sourceOptions: s:ddu_filer_source_options,
+      \   kindOptions: s:ddu_filer_kind_options,
+      \   actionOptions: s:ddu_filer_action_options,
+      \   uiParams: s:ddu_filer_ui_params,
+      \ })
+call ddu#custom#patch_local('filer_2', #{
+      \   ui: 'filer',
+      \   name: 'filer_2',
+      \   sources: s:ddu_filer_sources,
+      \   sourceOptions: s:ddu_filer_source_options,
+      \   kindOptions: s:ddu_filer_kind_options,
+      \   actionOptions: s:ddu_filer_action_options,
+      \   uiParams: s:ddu_filer_ui_params,
+      \ })
+call ddu#custom#patch_local('filer_3', #{
+      \   ui: 'filer',
+      \   name: 'filer_3',
+      \   sources: s:ddu_filer_sources,
+      \   sourceOptions: s:ddu_filer_source_options,
+      \   kindOptions: s:ddu_filer_kind_options,
+      \   actionOptions: s:ddu_filer_action_options,
+      \   uiParams: s:ddu_filer_ui_params,
+      \ })
+call ddu#custom#patch_local('filer_4', #{
+      \   ui: 'filer',
+      \   name: 'filer_4',
       \   sources: s:ddu_filer_sources,
       \   sourceOptions: s:ddu_filer_source_options,
       \   kindOptions: s:ddu_filer_kind_options,
@@ -185,105 +297,15 @@ call ddu#custom#patch_local('filer', #{
 
 let s:floating_ddu_ui_params_4preference = s:floating_ddu_ui_params_default
 let s:floating_ddu_ui_params_4preference.search = expand(g:my_initvim_path)
-
-call ddu#custom#patch_local('filer_preference', #{
-      \   ui: 'filer',
-      \   sources: s:ddu_filer_sources,
-      \   sourceOptions: s:ddu_filer_source_options,
-      \   kindOptions: s:ddu_filer_kind_options,
-      \   actionOptions: s:ddu_filer_action_options,
-      \   uiParams: s:floating_ddu_ui_params_4preference,
-      \ })
-
-function! s:win_all()
-  return range(1, winnr('$'))
-endfunction
+"
 call ddu#custom#action('kind', 'file', 'filer_mychoosewin', { args -> MyDduChooseWin(1, args) })
 
 autocmd TabEnter,WinEnter,CursorHold,FocusGained * call ddu#ui#filer#do_action('checkItems')
 
 autocmd FileType ddu-filer call s:ddu_filer_my_settings()
-autocmd FileType ddu-filer_preference call s:ddu_filer_my_settings()
 
-
-function! s:ddu_filer_my_settings() abort
-  nnoremap <buffer><silent><expr> <CR>
-        \ ddu#ui#filer#is_tree() ?
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow'})<CR>" :
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', #{ name: 'filer_mychoosewin', quit: v:true })<CR>"
-
-  nnoremap <buffer><silent> ~
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME)} })<CR>
-  nnoremap <buffer><silent> ^
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand(g:my_initvim_path)} })<CR>
-  nnoremap <buffer><silent> =
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': {'path': expand($HOME . "/repos")} })<CR>
-
-  nnoremap <buffer><silent> q
-        \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
-
-  nnoremap <buffer><silent> <BS>
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'narrow', 'params': {'path': '..'}})<CR>
-
-  nnoremap <buffer><silent> c
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'copy'})<CR>
-
-  nnoremap <buffer><silent> C
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'cd' })<CR>
-
-  nnoremap <buffer><silent> x
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'cut'})<CR>
-
-  nnoremap <buffer><silent> p
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'paste'})<CR>
-  nnoremap <buffer><silent> P
-        \ <Cmd>call ddu#ui#filer#do_action('preview')<CR>
-
-  nnoremap <buffer><silent> d
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'delete'})<CR>
-
-  nnoremap <buffer><silent> r
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'rename'})<CR>
-
-  nnoremap <buffer><silent> R
-        \ <Cmd>call ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
-
-  nnoremap <buffer><silent> a
-        \ <Cmd>call ddu#ui#filer#do_action('chooseAction')<CR>
-
-  nnoremap <buffer><silent> m
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'move'})<CR>
-
-  nnoremap <buffer><silent> b
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'newFile'})<CR>
-
-  nnoremap <buffer><silent> B
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'newDirectory'})<CR>
-
-  nnoremap <buffer><silent> yy
-        \ <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'yank'})<CR>
-
-  nnoremap <buffer><silent><expr> h
-        \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>" : "<Cmd>echoe 'cannot close this item'<CR>"
-
-  nnoremap <buffer><silent><expr> l
-        \ ddu#ui#filer#is_tree() ? "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" : "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'vsplit'}})<CR>"
-
-  nnoremap <buffer><silent><expr> L
-        \ ddu#ui#filer#is_tree() ?
-        \ "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" :
-        \ "<Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>"
-
-  nnoremap <buffer><silent> <TAB>
-        \ <Cmd>call ddu#ui#filer#do_action('expandItem', {'mode': 'toggle'})<CR>
-
-endfunction
-
-command! DduFiler call ddu#start({ 'name': 'filer' })
+command! DduFiler call OpenDduFiler(s:current_filer)
 nnoremap ^       :<C-u>DduFiler<CR>
-
-command! DduPreference  call ddu#start({ 'name': 'filer_preference' })
-nnoremap <BS>           :<C-u>DduPreference<CR>
 
 
 " ddu-source --------------------
@@ -428,6 +450,15 @@ if has('win32')
   " Insert emoji mapping.
   nnoremap  .  :<C-u>DduClip<CR>
 endif
+
+let s:current_filer = 0
+
+let s:filers = ['filer_1', 'filer_2', 'filer_3', 'filer_4', ]
+function! OpenDduFiler(window_id) abort
+  let s:current_filer = a:window_id
+  let l:name = s:filers[a:window_id]
+  call ddu#start({ 'name': l:name })
+endfunction
 
 " tpope/vim-dadbod
 
