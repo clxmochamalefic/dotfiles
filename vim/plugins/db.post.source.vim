@@ -5,6 +5,7 @@ endif
 " TOML FORMAT
 " [local]
 " connection_string = "mysql://xxxx"
+" type =  "mysql"
 " port = "3306"
 " user =  "LOCAL"
 " password =  "PASSWD"

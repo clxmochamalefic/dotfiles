@@ -93,6 +93,11 @@ call ddu#custom#patch_local('buffer', #{
       \       params: #{ path: $HOME },
       \     },
       \   ],
+      \   sourceOptions: #{
+      \     _: #{
+      \       columns: ['icon_filename'],
+      \     },
+      \   },
       \   kindOptions: #{
       \     buffer: #{
       \       defaultAction: 'open',
