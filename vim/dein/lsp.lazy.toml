@@ -10,7 +10,7 @@ depends = [
   'null-ls.nvim',
   'lspsaga.nvim',
   'ddc.vim',
-  'ddc-nvim-lsp'
+  'ddc-source-nvim-lsp'
 ]
 on_event = ['BufEnter']
 hook_source = '''

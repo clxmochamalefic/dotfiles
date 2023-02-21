@@ -11,7 +11,6 @@ let s:sources = [
       \   'file',
       \   'nvim-lsp',
       \   'vsnip',
-      \   'path',
       \ ]
 
 let s:cmd_sources = {
@@ -24,13 +23,9 @@ let s:cmd_sources = {
       \   '=': ['input'],
       \ }
 
-
 "if has('win32')
 "  let s:sources = add(s:sources, 'windows-clipboard-history')
 "endif
-call ddc#custom#patch_global('sources', s:sources)
-
-call ddc#custom#patch_global('cmdlineSources', s:cmd_sources)
 
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
@@ -71,7 +66,7 @@ let s:sourceOptions['file'] = #{
       \   mark: '   ',
       \   forceCompletionPattern: '[\w@:~._-]/[\w@:~._-]*',
       \   minAutoCompleteLength: 2,
-      \   sorters: ['sorter_file'],
+      \   sorters: ['sorter_fuzzy'],
       \ }
 
 let s:sourceOptions["nvim-lsp"] = #{
@@ -86,18 +81,19 @@ let s:sourceOptions["omni"] = #{
       \   mark: '   ',
       \ }
 
+"let s:sourceOptions['path'] = #{
+"      \   mark: '   ',
+"      \   forceCompletionPattern: '[\w@:~._-]/[\w@:~._-]*',
+"      \   minAutoCompleteLength: 2,
+"      \   sorters: ['sorter_fuzzy'],
+"      \ }
+
 let s:sourceOptions['vsnip'] = #{
       \   mark: '   ',
       \   dup: v:true,
       \   matchers:   ['matcher_fuzzy'],
       \   sorters:    ['sorter_fuzzy'],
       \   converters: ['converter_fuzzy']
-      \ }
-let s:sourceOptions['path'] = #{
-      \   mark: '   ',
-      \   forceCompletionPattern: '[\w@:~._-]/[\w@:~._-]*',
-      \   minAutoCompleteLength: 2,
-      \   sorters: ['sorter_path'],
       \ }
 
 
@@ -140,7 +136,11 @@ let s:sourceParams['file'] = #{
       \   followSymlinks: v:true,
       \ }
 
-let s:sourceParams['vim-lsp'] = #{
+"let s:sourceParams['path'] = #{
+"      \   cmd: ['fd', '--max-depth', '5'],
+"      \ }
+
+let s:sourceParams['nvim-lsp'] = #{
       \   maxSize:    20,
       \ }
 
@@ -171,8 +171,8 @@ let s:filterParams["converter_truncate"] = #{
 
 " Filetype
 call ddc#custom#patch_filetype(['toml'], #{
-      \   sourceOptions: #{
-      \     vim-lsp: #{ forceCompletionPattern: '\.|[=#{[,"]\s*' },
+      \   sourceOptions: {
+      \     "nvim-lsp": #{ forceCompletionPattern: '\.|[=#{[,"]\s*' },
       \ }})
 
 call ddc#custom#patch_filetype(
@@ -180,14 +180,7 @@ call ddc#custom#patch_filetype(
       \   'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
       \   'json', 'sh', 'lua', 'toml', 'go'
       \ ], #{
-      \   sources: extend(['vim-lsp'], s:sources),
-      \ })
-call ddc#custom#patch_filetype( ['markdown', 'gitcommit', 'help'], #{
-      \   sources: extend([
-      \     'nextword',
-      \     'github_issue', 'github_pull_request',
-      \   ], s:sources),
-      \   keywordPattern: '[a-zA-Z_:#]\k*',
+      \   sources: extend(['nvim-lsp'], s:sources),
       \ })
 
 
@@ -197,6 +190,7 @@ call ddc#custom#patch_filetype( ['markdown', 'gitcommit', 'help'], #{
 " integrate preferences.
 let s:patch_global = {}
 let s:patch_global.sources = s:sources
+let s:patch_global.cmdlineSources = s:cmd_sources
 let s:patch_global.sourceOptions  = s:sourceOptions
 let s:patch_global.sourceParams   = s:sourceParams 
 let s:patch_global.filterParams   = s:filterParams 
@@ -210,8 +204,6 @@ let s:patch_global.autoCompleteEvents = [
 let s:patch_global.ui = 'pum'
 
 call ddc#custom#patch_global(s:patch_global)
-
-
 
 
 " Key mappings
@@ -235,8 +227,8 @@ inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
 inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
 inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
 
-inoremap <silent><expr> <C-l>   ddc#map#extend()
-inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
+inoremap <silent><expr> <C-l>       ddc#map#extend()
+inoremap <silent><expr> <C-x><C-f>  ddc#map#manual_complete('path')
 
 
 "nnoremap :       <Cmd>call CommandlinePre()<CR>:

@@ -4,17 +4,17 @@ depends = [
   'denops.vim',
   'pum.vim',
   'ddc-ui-pum'
-  'ddc-nvim-lsp',
-  'ddc-around',
+  'ddc-source-nvim-lsp',
+  'ddc-source-around',
   'ddc-buffer',
 #  'ddc-dictionary',
-  'ddc-file',
+  'ddc-source-file',
   'ddc-fuzzy',
-  'ddc-source-cmdline-history',
+  'ddc-cmdline-history',
   'ddc-shell-history',
   'ddc-matcher_head',
   'ddc-source-omni',
-  'ddc-path',
+#  'ddc-path',
   'ddc-sorter_rank',
   'vim-vsnip',
   'vim-vsnip-integ',
@@ -38,7 +38,7 @@ depends = ['pum.vim']
 # SOURCE ####################
 
 [[plugins]]
-repo = 'Shougo/ddc-around'
+repo = 'Shougo/ddc-source-around'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -46,19 +46,15 @@ repo = 'matsui54/ddc-buffer'
 on_source = 'ddc.vim'
 
 #[[plugins]]
-#repo = 'matsui54/ddc-dictionary'
+#repo = 'matsui54/ddc-source-dictionary'
 #on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'LumaKernel/ddc-file'
+repo = 'LumaKernel/ddc-source-file'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'tani/ddc-fuzzy'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
+repo = 'Shougo/ddc-source-nvim-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -66,14 +62,14 @@ repo = 'Shougo/ddc-source-omni'
 on_source = 'ddc.vim'
 
 
-[[plugins]]
-repo = 'tani/ddc-path'
-on_source = 'ddc.vim'
+#[[plugins]]
+#repo = 'tani/ddc-path'
+#on_source = 'ddc.vim'
 
 # SOURCE_SHELL ####################
 
 [[plugins]]
-repo='Shougo/ddc-source-cmdline-history'
+repo='Shougo/ddc-cmdline-history'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -90,6 +86,10 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'tani/ddc-fuzzy'
 on_source = 'ddc.vim'
 
 # CONVERTER ####################

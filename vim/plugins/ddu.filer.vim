@@ -26,10 +26,10 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent> P     <Cmd>call ddu#ui#filer#do_action('preview')<CR>
 
   " change window
-  nnoremap <buffer><silent> <F1>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer1', 'params': { 'id': 0 }, 'quit': v:true })<CR>
-  nnoremap <buffer><silent> <F2>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer2', 'params': { 'id': 1 }, 'quit': v:true })<CR>
-  nnoremap <buffer><silent> <F3>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer3', 'params': { 'id': 2 }, 'quit': v:true })<CR>
-  nnoremap <buffer><silent> <F4>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer4', 'params': { 'id': 3 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F5>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer1', 'params': { 'id': 0 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F6>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer2', 'params': { 'id': 1 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F7>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer3', 'params': { 'id': 2 }, 'quit': v:true })<CR>
+  nnoremap <buffer><silent> <F8>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open_filer4', 'params': { 'id': 3 }, 'quit': v:true })<CR>
 
 
   " change directory (path)
@@ -54,10 +54,9 @@ function! s:ddu_filer_my_settings() abort
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open', 'params': { 'command': 'split' } })<CR>"
 
   " change directory aliases
-  nnoremap <buffer><silent> <F12> <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand(g:my_initvim_path)    } })<CR>
-  nnoremap <buffer><silent> <F11> <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME . "/repos")     } })<CR>
-  nnoremap <buffer><silent> <F10> <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME . "/Documents") } })<CR>
-  nnoremap <buffer><silent> <F9>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME)                } })<CR>
+  nnoremap <buffer><silent> ^     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand(g:my_initvim_path)    } })<CR>
+  nnoremap <buffer><silent> \    <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME . "/repos")     } })<CR>
+  nnoremap <buffer><silent> \|     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME . "/Documents") } })<CR>
   nnoremap <buffer><silent> ~     <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': expand($HOME)                } })<CR>
 
   nnoremap <buffer><silent> <BS>  <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow', 'params': { 'path': '..' } })<CR>
