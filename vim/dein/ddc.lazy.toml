@@ -13,9 +13,14 @@ depends = [
   'ddc-source-cmdline-history',
   'ddc-shell-history',
   'ddc-matcher_head',
+  'ddc-source-omni',
+  'ddc-path',
   'ddc-sorter_rank',
   'vim-vsnip',
   'vim-vsnip-integ',
+
+  'ddc-converter_remove_overlap',
+  'ddc-converter_truncate',
 
   'windows-clipboard-history.vim',
 ]
@@ -34,9 +39,15 @@ depends = ['pum.vim']
 
 [[plugins]]
 repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
+repo = 'matsui54/ddc-buffer'
+on_source = 'ddc.vim'
+
+#[[plugins]]
+#repo = 'matsui54/ddc-dictionary'
+#on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'LumaKernel/ddc-file'
@@ -47,19 +58,26 @@ repo = 'tani/ddc-fuzzy'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-source-omni'
+on_source = 'ddc.vim'
+
+
+[[plugins]]
+repo = 'tani/ddc-path'
+on_source = 'ddc.vim'
+
+# SOURCE_SHELL ####################
+
+[[plugins]]
 repo='Shougo/ddc-source-cmdline-history'
 on_source = 'ddc.vim'
 
 [[plugins]]
 repo='delphinus/ddc-shell-history'
-on_source = 'ddc.vim'
-
-#[[plugins]]
-#repo = 'matsui54/ddc-dictionary'
-#on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'matsui54/ddc-buffer'
 on_source = 'ddc.vim'
 
 # MATCHER ####################
@@ -72,6 +90,16 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+# CONVERTER ####################
+
+[[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'matsui54/ddc-converter_truncate'
 on_source = 'ddc.vim'
 
 

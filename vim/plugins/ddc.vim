@@ -2,18 +2,6 @@ if g:is_enable_my_debug
   echo "begin /plugins/ddc.vim load"
 endif
 
-" Use pum.vim
-call ddc#custom#patch_global('ui', 'pum')
-
-call ddc#custom#patch_global('autoCompleteEvents', [
-      \   'InsertEnter',
-      \   'TextChangedI',
-      \   'TextChangedP',
-      \   'CmdlineEnter',
-      \   'CmdlineChanged',
-      \   'TermOutput',
-      \ ])
-
 " Customize global settings
 " Use around source.
 " https://github.com/Shougo/ddc-around
@@ -23,14 +11,10 @@ let s:sources = [
       \   'file',
       \   'nvim-lsp',
       \   'vsnip',
+      \   'path',
       \ ]
 
-"if has('win32')
-"  let s:sources = add(s:sources, 'windows-clipboard-history')
-"endif
-call ddc#custom#patch_global('sources', s:sources)
-
-call ddc#custom#patch_global('cmdlineSources', {
+let s:cmd_sources = {
       \   ':': ['cmdline-history', 'cmdline', 'around'],
       \   '@': ['cmdline-history', 'input', 'file', 'around'],
       \   '>': ['cmdline-history', 'input', 'file', 'around'],
@@ -38,92 +22,199 @@ call ddc#custom#patch_global('cmdlineSources', {
       \   '?': ['around', 'line'],
       \   '-': ['around', 'line'],
       \   '=': ['input'],
-      \ })
+      \ }
+
+
+"if has('win32')
+"  let s:sources = add(s:sources, 'windows-clipboard-history')
+"endif
+call ddc#custom#patch_global('sources', s:sources)
+
+call ddc#custom#patch_global('cmdlineSources', s:cmd_sources)
 
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
 " https://github.com/Shougo/ddc-sorter_rank
-let s:source_options = {
-      \   "_": #{
-      \     mark: '   ',
-      \     ignoreCase: v:true,
-      \   },
-      \   "around": #{
-      \     mark: '   ',
-      \   },
-      \   "nvim-lsp": #{
-      \     mark: '   ',
-      \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
-      \   },
-      \   "cmdline-history": #{
-      \     mark: '   ',
-      \   },
-      \   "shell-history": #{
-      \     mark: '   ',
-      \     minKeywordLength: 1,
-      \     maxKeywordLength: 50,
-      \   },
-      \   'vsnip': #{
-      \     mark: '   ',
-      \     matchers: ['matcher_head'],
-      \     sorters: ['sorter_rank'],
-      \   },
-      \   'buffer': #{
-      \     mark: '   ',
-      \     matchers: ['matcher_head'],
-      \     sorters: ['sorter_rank'],
-      \   },
-      \   'file': #{
-      \     mark: '   ',
-      \     minAutoCompleteLength: 1,
-      \   },
+let s:sourceOptions = {}
+
+let s:sourceOptions["_"] = #{
+      \   mark: '   ',
+      \   ignoreCase: v:true,
+      \   matchers: ['matcher_fuzzy'],
+      \   sorters: ['sorter_fuzzy'],
+      \   converters: [
+      \     'converter_remove_overlap',
+      \     'converter_truncate',
+      \     'converter_fuzzy',
+      \   ],
+      \   maxItems: 10,
+      \ }
+
+let s:sourceOptions["around"] = #{
+      \   mark: '   ',
+      \   isVolatile: v:true,
+      \   matchers:   ['matcher_fuzzy'],
+      \   sorters:    ['sorter_fuzzy'],
+      \   converters: ['converter_fuzzy'],
+      \   maxItems: 8,
+      \ }
+
+let s:sourceOptions['buffer'] = #{
+      \   mark: '   ',
+      \   isVolatile: v:true,
+      \   matchers:   ['matcher_fuzzy'],
+      \   sorters:    ['sorter_fuzzy'],
+      \   converters: ['converter_fuzzy']
+      \ }
+
+let s:sourceOptions['file'] = #{
+      \   mark: '   ',
+      \   forceCompletionPattern: '[\w@:~._-]/[\w@:~._-]*',
+      \   minAutoCompleteLength: 2,
+      \   sorters: ['sorter_file'],
+      \ }
+
+let s:sourceOptions["nvim-lsp"] = #{
+      \   mark: '   ',
+      \   isVolatile: v:true,
+      \   forceCompletionPattern: '\.\w*|:\w*|->\w*',
+      \   matchers:   ['matcher_fuzzy'],
+      \   sorters:    ['sorter_fuzzy'],
+      \   converters: ['converter_fuzzy']
+      \ }
+let s:sourceOptions["omni"] = #{
+      \   mark: '   ',
+      \ }
+
+let s:sourceOptions['vsnip'] = #{
+      \   mark: '   ',
+      \   dup: v:true,
+      \   matchers:   ['matcher_fuzzy'],
+      \   sorters:    ['sorter_fuzzy'],
+      \   converters: ['converter_fuzzy']
+      \ }
+let s:sourceOptions['path'] = #{
+      \   mark: '   ',
+      \   forceCompletionPattern: '[\w@:~._-]/[\w@:~._-]*',
+      \   minAutoCompleteLength: 2,
+      \   sorters: ['sorter_path'],
+      \ }
+
+
+let s:sourceOptions["cmdline-history"] = #{
+      \   mark: '   ',
+      \   isVolatile: v:true,
+      \   matchers:   ['matcher_fuzzy'],
+      \   sorters:    ['sorter_fuzzy'],
+      \   converters: ['converter_fuzzy']
+      \ }
+
+let s:sourceOptions["shell-history"] = #{
+      \   mark: '   ',
+      \   isVolatile: v:true,
+      \   minKeywordLength: 2,
+      \   maxKeywordLength: 50,
+      \   matchers:   ['matcher_fuzzy'],
+      \   sorters:    ['sorter_fuzzy'],
+      \   converters: ['converter_fuzzy']
       \ }
 
 "if has('win32')
 "  let s:source_options["windows-clipboard-history"] = #{ mark: '', }
 "endif
-call ddc#custom#patch_global('sourceOptions', s:source_options)
 
-let s:source_params = {
-    \   'vim-lsp': {
-    \     'maxSize': 100,
-    \   },
-    \   'around': {
-    \     'maxSize': 100
-    \   },
-    \   'buffer': {
-    \     'requireSameFiletype': v:false,
-    \     'limitBytes': 5000000,
-    \     'fromAltBuf': v:true,
-    \     'forceCollect': v:true,
-    \   },
-    \ }
+let s:sourceParams = {}
+
+let s:sourceParams['around'] = #{
+      \   maxSize:    500,
+      \ }
+
+let s:sourceParams['buffer'] = #{
+      \   requireSameFiletype: v:false,
+      \   fromAltBuf: v:true,
+      \   bufNameStyle: 'basename',
+      \ }
+
+let s:sourceParams['file'] = #{
+      \   trailingSlash: v:true,
+      \   followSymlinks: v:true,
+      \ }
+
+let s:sourceParams['vim-lsp'] = #{
+      \   maxSize:    20,
+      \ }
+
 "if has('win32')
 "  let s:source_params["windows-clipboard-history"] = #{
 "    \   maxSize: 100,
 "    \   maxAbbrWidth: 100,
 "    \ }
 "endif
-
-call ddc#custom#patch_global('sourceParams', s:source_params)
-
-"call ddc#custom#patch_global('filterParams', {
-"  \   'matcher_fuzzy': {
-"  \     'splitMode': 'word'
-"  \   }
-"  \ })
 "
-"call ddc#custom#patch_global('filterParams', {
-"  \   'converter_fuzzy': {
-"  \     'hlGroup': 'SpellBad'
-"  \   }
-"  \ })
+let s:filterParams = {}
+let s:filterParams['matcher_fuzzy'] = #{
+      \   splitMode: 'word'
+      \ }
+
+let s:filterParams['converter_fuzzy'] = #{
+      \   hlGroup: 'SpellBad'
+      \ }
+
+let s:filterParams["converter_truncate"] = #{
+      \   maxAbbrWidth: 40,
+      \   maxInfoWidth: 40,
+      \   maxKindWidth: 20,
+      \   maxMenuWidth: 20,
+      \   ellipsis: '..',
+      \ }
+
+
+" Filetype
+call ddc#custom#patch_filetype(['toml'], #{
+      \   sourceOptions: #{
+      \     vim-lsp: #{ forceCompletionPattern: '\.|[=#{[,"]\s*' },
+      \ }})
+
+call ddc#custom#patch_filetype(
+      \ [
+      \   'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
+      \   'json', 'sh', 'lua', 'toml', 'go'
+      \ ], #{
+      \   sources: extend(['vim-lsp'], s:sources),
+      \ })
+call ddc#custom#patch_filetype( ['markdown', 'gitcommit', 'help'], #{
+      \   sources: extend([
+      \     'nextword',
+      \     'github_issue', 'github_pull_request',
+      \   ], s:sources),
+      \   keywordPattern: '[a-zA-Z_:#]\k*',
+      \ })
+
 
 " Add matching patterns
-call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
+"call ddc#custom#patch_global('keywordPattern', '[a-zA-Z_:]\w*')
+
+" integrate preferences.
+let s:patch_global = {}
+let s:patch_global.sources = s:sources
+let s:patch_global.sourceOptions  = s:sourceOptions
+let s:patch_global.sourceParams   = s:sourceParams 
+let s:patch_global.filterParams   = s:filterParams 
+let s:patch_global.backspaceCompletion = v:true
+
+" set other preferences
+let s:patch_global.autoCompleteEvents = [
+      \ 'InsertEnter', 'TextChangedI', 'TextChangedP',
+      \ 'CmdlineEnter', 'CmdlineChanged',
+      \ ]
+let s:patch_global.ui = 'pum'
+
+call ddc#custom#patch_global(s:patch_global)
 
 
-" Mappings
+
+
+" Key mappings
 
 " For insert mode completion
 inoremap <silent><expr> <TAB>
@@ -188,9 +279,9 @@ inoremap <silent><expr> <C-x><C-f> ddc#map#manual_complete('path')
 "  endif
 "endfunction
 
-" Use ddc.
-call ddc#enable()
 
+" use ddc.
+call ddc#enable()
 
 if g:is_enable_my_debug
   echo "end /plugins/ddc.vim load"
