@@ -17,6 +17,19 @@ hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/lsp.vim"
 '''
 
+
+# null-ls ------------------------------
+[[plugins]]
+repo = 'jose-elias-alvarez/null-ls.nvim'
+depends = ['plenary.nvim']
+on_source = "nvim-lspconfig"
+build = 'npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing'
+
+[[plugins]] # plenary.nvim(null-ls depends of this plugin) 
+repo = 'nvim-lua/plenary.nvim'
+on_source = 'null-ls.nvim'
+
+
 # mason ------------------------------
 [[plugins]]
 repo = 'williamboman/mason.nvim'
@@ -32,15 +45,6 @@ repo = 'mfussenegger/nvim-dap'
 on_source = "nvim-lspconfig"
 
 # linter and formatter on mason ------------------------------
-[[plugins]]
-repo = 'jose-elias-alvarez/null-ls.nvim'
-depends = ['plenary.nvim']
-on_source = "nvim-lspconfig"
-
-[[plugins]] # plenary.nvim(null-ls depends of this plugin) 
-on_source = 'null-ls.nvim'
-repo = 'nvim-lua/plenary.nvim'
-
 [[plugins]] # mason-null-ls.nvim
 repo = 'jay-babu/mason-null-ls.nvim'
 depends = 'null-ls.nvim'

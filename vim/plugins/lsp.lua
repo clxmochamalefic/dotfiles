@@ -56,9 +56,20 @@ local codeaction = require("lspsaga.codeaction")
 vim.keymap.set("n", "<leader>,", function() codeaction:code_action() end, { silent = true })
 vim.keymap.set("n", "<leader>d", "<Cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
 vim.keymap.set("n", "<leader>h", function() vim.lsp.buf.hover() end, { silent = true })
+vim.keymap.set("n", "<leader>r", "<Cmd>Lspsaga rename<CR>", { silent = true })
 
 
 -- null-ls.nvim
+--
+local null_ls = require("null-ls")
+local sources = { null_ls.builtins.diagnostics.textlint.with({ filetypes = { "markdown" } }) }
+null_ls.setup({
+  border = 'single',
+  diagnostics_format = '#{m} (#{s}: #{c})',
+  sources = sources,
+})
+
+--
 -- https://github.com/jose-elias-alvarez/null-ls.nvim
 -- local null_ls = require("null-ls")
 -- 
