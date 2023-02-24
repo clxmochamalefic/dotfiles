@@ -1,0 +1,15 @@
+#[[multiple_plugins]]
+#plugins = ['nvim-notify']
+#hook_add = '''
+#  execute "source " . g:my_initvim_path . "/plugins/floating.lua"
+#'''
+
+[[plugins]]
+repo = 'rcarriga/nvim-notify'
+on_event = ['BufEnter']
+hook_add = '''
+  execute "source " . g:my_initvim_path . "/plugins/nvimnotify.lua"
+'''
+
+
+

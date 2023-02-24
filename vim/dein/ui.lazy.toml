@@ -1,0 +1,33 @@
+[[multiple_plugins]]
+plugins = [
+  'vim-illuminate',
+  'nvim-colorizer.lua',
+  'nvim-scrollbar',
+  'nvim-scrollbar',
+  'nvim-hlslens',
+  'nvim-ufo',
+]
+hook_add = '''
+  execute "source " . g:my_initvim_path . "/plugins/ui.lua"
+'''
+
+[[plugins]]
+repo = 'RRethy/vim-illuminate'
+on_event = ['BufEnter']
+
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+on_event = ['BufEnter']
+
+[[plugins]]
+repo = 'petertriho/nvim-scrollbar'
+depends = ['nvim-hlslens']
+on_event = ['BufEnter']
+
+[[plugins]]
+repo = 'kevinhwang91/nvim-hlslens'
+depends = ['nvim-ufo']
+
+[[plugins]]
+repo = 'kevinhwang91/nvim-ufo'
+
