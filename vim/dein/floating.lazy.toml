@@ -7,7 +7,7 @@
 [[plugins]]
 repo = 'rcarriga/nvim-notify'
 on_event = ['BufEnter']
-hook_add = '''
+hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/nvimnotify.lua"
 '''
 

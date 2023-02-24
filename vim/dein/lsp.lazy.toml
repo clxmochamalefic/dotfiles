@@ -21,13 +21,22 @@ hook_source = '''
 # null-ls ------------------------------
 [[plugins]]
 repo = 'jose-elias-alvarez/null-ls.nvim'
-depends = ['plenary.nvim']
+depends = ['plenary.nvim', 'nvim-ufo']
 on_source = "nvim-lspconfig"
 build = 'npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing'
 
 [[plugins]] # plenary.nvim(null-ls depends of this plugin) 
 repo = 'nvim-lua/plenary.nvim'
 on_source = 'null-ls.nvim'
+
+[[plugins]]
+repo = 'kevinhwang91/nvim-ufo'
+depends = ['promise-async']
+on_source = 'nvim-lspconfig'
+
+[[plugins]]
+repo = 'kevinhwang91/promise-async'
+on_source = 'nvim-ufo'
 
 
 # mason ------------------------------

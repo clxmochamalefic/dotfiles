@@ -57,31 +57,65 @@ ins_left {
 	'lsp_progress',
 	display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' } },
 	timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
-	spinner_symbols = { '🌑 ', '🌒 ', '🌓 ', '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' },
+	spinner_symbols = { '🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘' },
 }
 
--- tabline.nvim ------------------------------
-require'tabline'.setup {
-  -- Defaults configuration options
-  enable = true,
+-- -- tabline.nvim ------------------------------
+-- require'tabline'.setup {
+--   -- Defaults configuration options
+--   enable = true,
+--   options = {
+--     -- If lualine is installed tabline will use separators configured in lualine by default.
+--     -- These options can be used to override those settings.
+--     section_separators = {'', ''},
+--     component_separators = {'', ''},
+--     max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+--     show_tabs_always = false, -- this shows tabs only when there are more than one tab or if the first tab is named
+--     show_devicons = true, -- this shows devicons in buffer section
+--     show_bufnr = false, -- this appends [bufnr] to buffer section,
+--     show_filename_only = false, -- shows base filename only instead of relative path in filename
+--     modified_icon = "+ ", -- change the default modified icon
+--     modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
+--     show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+--   }
+-- }
+-- 
+-- vim.cmd[[
+--   set guioptions-=e " Use showtabline in gui vim
+--   set sessionoptions+=tabpages,globals " store tabpages and globals in session
+-- ]]
+
+
+-- bufferline
+local ok, bufferline = pcall(require, "bufferline")
+if not ok then
+    print('"akinsho/bufferline.nvim" not available')
+    return
+end
+bufferline.setup({
   options = {
-    -- If lualine is installed tabline will use separators configured in lualine by default.
-    -- These options can be used to override those settings.
-    section_separators = {'', ''},
-    component_separators = {'', ''},
-    max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-    show_tabs_always = false, -- this shows tabs only when there are more than one tab or if the first tab is named
-    show_devicons = true, -- this shows devicons in buffer section
-    show_bufnr = false, -- this appends [bufnr] to buffer section,
-    show_filename_only = false, -- shows base filename only instead of relative path in filename
-    modified_icon = "+ ", -- change the default modified icon
-    modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
-    show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
-  }
-}
-
-vim.cmd[[
-  set guioptions-=e " Use showtabline in gui vim
-  set sessionoptions+=tabpages,globals " store tabpages and globals in session
-]]
-
+    mode = "buffers",
+    close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
+    left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
+    indicator = {
+      icon = '▎', -- this should be omitted if indicator style is not 'icon'
+      style = 'icon',
+    },
+    buffer_close_icon = '',
+    modified_icon = '●',
+    close_icon = '',
+    left_trunc_marker = '',
+    right_trunc_marker = '',
+    diagnostics = "nvim_lsp",
+    offsets = {
+      {
+        filetype = "NvimTree",
+        text = "File Explorer",
+        text_align = "left",
+        separator = true,
+      },
+    },
+    separator_style = "slant",
+    enforce_regular_tabs = true,
+  },
+})

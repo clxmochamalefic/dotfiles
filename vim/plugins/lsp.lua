@@ -224,6 +224,10 @@ local servers = {
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+}
 
 local lspconfig = require "lspconfig"
 
@@ -247,4 +251,10 @@ mason_lspconfig.setup_handlers({
     lspconfig[server_name].setup(opts)
   end
 })
+
+
+-- nvim-ufo ------------------------------
+
+-- local ufo = require('ufo')
+-- ufo.setup()
 

@@ -39,6 +39,7 @@ let g:dein_plugins = [
   \ expand(g:git_lazy_toml_filepath),
   \ expand(g:lsp_lazy_toml_filepath),
   \ expand(g:db_lazy_toml_filepath),
+  \
   \ expand(g:floating_lazy_toml_filepath),
   \ expand(g:nui_lazy_toml_filepath),
   \ expand(g:ui_lazy_toml_filepath),
