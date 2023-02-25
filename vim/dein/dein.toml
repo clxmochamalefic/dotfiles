@@ -28,19 +28,14 @@ hook_add = '''
   command! RunDenoServer call s:run_deno_server()
   command! Rds RunDenoServer
 '''
-# hook_source = '''
-#   execute "Rds"
-# '''
 
-
-# hook_post_update ------------------------------
-[[multiple_plugins]]
-plugins = [ 'vimproc.vim' ]
-hook_post_update = '''
-  execute "source " . g:my_initvim_path . "/plugins/base.post.update.vim"
-'''
+[[plugins]]
+repo = 'kyazdani42/nvim-web-devicons'
 
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
 build = 'make'
+hook_post_update = '''
+  execute "source " . g:my_initvim_path . "/plugins/base.post.update.vim"
+'''
 

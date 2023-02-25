@@ -57,3 +57,53 @@ hook_post_source = '''
   g:lexima_enable_newline_rules = 1
   g:lexima_enable_endwise_rules = 1
 '''
+
+[[plugins]]
+repo = 'deris/vim-rengbang'
+on_event = ['InsertChange']
+hook_source = '''
+  " Following settings is default value.
+  let g:rengbang_default_pattern  = '\(\d\+\)'
+  let g:rengbang_default_start    = 0
+  let g:rengbang_default_step     = 1
+  let g:rengbang_default_usefirst = 0
+  let g:rengbang_default_confirm_sequence = [
+    \   'pattern',
+    \   'start',
+    \   'step',
+    \   'usefirst',
+    \   'format',
+    \ ]
+'''
+
+[[plugins]]
+repo = 'haya14busa/vim-asterisk'
+on_event = ['FileReadPost', 'InsertLeave']
+hook_source = '''
+  let g:asterisk#keeppos = 1
+  map *  <Plug>(asterisk-z*)
+  map #  <Plug>(asterisk-z#)
+  map g* <Plug>(asterisk-gz*)
+  map g# <Plug>(asterisk-gz#)
+'''
+
+[[plugins]]
+repo = 'AndrewRadev/linediff.vim'
+on_event = ['FileReadPost', 'InsertChange']
+
+[[plugins]]
+repo = 'Pocco81/abbrev-man.nvim'
+on_event = ['FileReadPost', 'InsertChange']
+lua_source = '''
+  local abbrev_man = require("abbrev-man")
+  abbrev_man.setup({
+    load_natural_dictionaries_at_startup = true,
+    load_programming_dictionaries_at_startup = true,
+    natural_dictionaries = {
+      ["nt_en"] = {}
+    },
+    programming_dictionaries = {
+      ["pr_py"] = {}
+    }
+  })
+'''

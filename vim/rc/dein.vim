@@ -10,6 +10,7 @@ let g:dein_toml_filepath          = s:dein_toml_path . 'dein.toml'
 
 let g:colorscheme_filepath        = s:dein_toml_path . 'colorscheme.toml'
 let g:statusline_filepath         = s:dein_toml_path . 'statusline.toml'
+let g:ui_toml_filepath            = s:dein_toml_path . 'ui.toml'
 
 let g:dein_lazy_toml_filepath     = s:dein_toml_path . 'dein.lazy.toml'
 
@@ -20,7 +21,6 @@ let g:git_lazy_toml_filepath      = s:dein_toml_path . 'git.lazy.toml'
 let g:lsp_lazy_toml_filepath      = s:dein_toml_path . 'lsp.lazy.toml'
 let g:db_lazy_toml_filepath       = s:dein_toml_path . 'db.lazy.toml'
 
-let g:floating_lazy_toml_filepath = s:dein_toml_path . 'floating.lazy.toml'
 let g:nui_lazy_toml_filepath      = s:dein_toml_path . 'nui.lazy.toml'
 let g:ui_lazy_toml_filepath       = s:dein_toml_path . 'ui.lazy.toml'
 
@@ -30,6 +30,7 @@ let g:dein_plugins = [
   \
   \ expand(g:colorscheme_filepath),
   \ expand(g:statusline_filepath),
+  \ expand(g:ui_toml_filepath),
   \
   \ expand(g:dein_lazy_toml_filepath),
   \
@@ -40,7 +41,6 @@ let g:dein_plugins = [
   \ expand(g:lsp_lazy_toml_filepath),
   \ expand(g:db_lazy_toml_filepath),
   \
-  \ expand(g:floating_lazy_toml_filepath),
   \ expand(g:nui_lazy_toml_filepath),
   \ expand(g:ui_lazy_toml_filepath),
   \ ]
@@ -89,6 +89,7 @@ function! s:reload_plugin(tomls) abort
 
     call s:dein_add_wrapper(g:colorscheme_filepath)
     call s:dein_add_wrapper(g:statusline_filepath)
+    call s:dein_add_wrapper(g:ui_toml_filepath)
 
     call s:dein_add_wrapper(g:dein_lazy_toml_filepath)
 
@@ -99,7 +100,6 @@ function! s:reload_plugin(tomls) abort
     call s:dein_add_wrapper(g:lsp_lazy_toml_filepath)
     call s:dein_add_wrapper(g:db_lazy_toml_filepath)
 
-    call s:dein_add_wrapper(g:floating_lazy_toml_filepath)
     call s:dein_add_wrapper(g:nui_lazy_toml_filepath)
     call s:dein_add_wrapper(g:ui_lazy_toml_filepath)
 
