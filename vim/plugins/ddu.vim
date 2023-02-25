@@ -100,8 +100,8 @@ function! MyDduChooseWin(src, args)
   endtry
 endfunction
 
-execute "source " . g:my_initvim_path . "/plugins/ddu.filer.vim"
 execute "source " . g:my_initvim_path . "/plugins/ddu.ff.vim"
+execute "source " . g:my_initvim_path . "/plugins/ddu.filer.vim"
 
 if g:is_enable_my_debug
   echo "begin /plugins/ddu.vim end"

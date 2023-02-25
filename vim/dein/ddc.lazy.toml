@@ -24,7 +24,7 @@ depends = [
 
   'windows-clipboard-history.vim',
 ]
-on_event = ['VimEnter']
+on_event = ['InsertChange', 'CmdlineChanged']
 hook_source = '''
   execute "source " . g:my_initvim_path . "/plugins/ddc.vim"
 '''

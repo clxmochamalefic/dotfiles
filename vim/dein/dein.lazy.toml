@@ -6,7 +6,14 @@ on_event = ['BufEnter']
 [[plugins]]
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'pandoc.markdown', 'rmd', 'md']
-build = 'sh -c "cd app && yarn install"'
+hook_done_update = '''
+  if has('win32')
+    execute 'pwsh -c "cd app && yarn install"'
+  else
+    execute 'sh -c "cd app && yarn install"'
+  endif
+'''
+build = ''
 
 [[plugins]]
 repo = 'roxma/vim-hug-neovim-rpc'
