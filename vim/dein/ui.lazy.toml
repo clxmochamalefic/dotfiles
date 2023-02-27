@@ -263,3 +263,14 @@ lua_source = '''
   local bufresize = require("bufresize")
   bufresize.setup()
 '''
+
+[[plugins]]
+repo = 'Rasukarusan/nvim-popup-message'
+on_event = ['VimEnter']
+hook_post_source = '''
+"  function! s:get_messages() abort
+"    return execute('messages')
+"  endfunction
+  command! PopMess call popup_message#open(execute('messages'))
+'''
+
