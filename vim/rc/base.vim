@@ -27,6 +27,8 @@ exe 'set backupdir=' . expand(s:home_tmp_dir . '/backupfiles')
 " ctags path
 set tags=./tags;$HOME
 
+" autochdir (auto change directory by buffer file path)
+set autochdir
 
 "---------------------------------------------------------------------------
 " Window
