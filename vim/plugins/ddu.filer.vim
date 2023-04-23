@@ -34,22 +34,22 @@ function! s:ddu_filer_my_settings() abort
 
   " change directory (path)
   nnoremap <buffer><silent><expr> <CR>
-        \ ddu#ui#filer#is_tree() ?
+        \ ddu#ui#get_item()->get('isTree', v:false) ?
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'narrow'})<CR>" :
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'filer_mychoosewin', 'quit': v:true })<CR>"
 
   nnoremap <buffer><silent><expr> h
-        \ ddu#ui#filer#is_tree() ?
+        \ ddu#ui#get_item()->get('isTree', v:false) ?
         \ "<Cmd>call ddu#ui#filer#do_action('collapseItem')<CR>" :
         \ "<Cmd>echoe 'cannot close this item'<CR>"
 
   nnoremap <buffer><silent><expr> l
-        \ ddu#ui#filer#is_tree() ?
+        \ ddu#ui#get_item()->get('isTree', v:false) ?
         \ "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" :
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open', 'params': { 'command': 'vsplit' } })<CR>"
 
   nnoremap <buffer><silent><expr> L
-        \ ddu#ui#filer#is_tree() ?
+        \ ddu#ui#get_item()->get('isTree', v:false) ?
         \ "<Cmd>call ddu#ui#filer#do_action('expandItem')<CR>" :
         \ "<Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'open', 'params': { 'command': 'split' } })<CR>"
 
