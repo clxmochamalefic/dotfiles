@@ -19,11 +19,13 @@ let g:ddu_lazy_toml_filepath      = s:dein_toml_path . 'ddu.lazy.toml'
 
 let g:git_lazy_toml_filepath      = s:dein_toml_path . 'git.lazy.toml'
 let g:lsp_lazy_toml_filepath      = s:dein_toml_path . 'lsp.lazy.toml'
+let g:copilot_lazy_toml_filepath  = s:dein_toml_path . 'copilot.lazy.toml'
 let g:db_lazy_toml_filepath       = s:dein_toml_path . 'db.lazy.toml'
 
 let g:nui_lazy_toml_filepath      = s:dein_toml_path . 'nui.lazy.toml'
 let g:ui_lazy_toml_filepath       = s:dein_toml_path . 'ui.lazy.toml'
-let g:copilot_lazy_toml_filepath       = s:dein_toml_path . 'copilot.lazy.toml'
+let g:term_lazy_toml_filepath       = s:dein_toml_path . 'term.lazy.toml'
+
 
 " plugin list
 let g:dein_plugins = [
@@ -40,11 +42,12 @@ let g:dein_plugins = [
   \
   \ expand(g:git_lazy_toml_filepath),
   \ expand(g:lsp_lazy_toml_filepath),
+  \ expand(g:copilot_lazy_toml_filepath),
   \ expand(g:db_lazy_toml_filepath),
   \
   \ expand(g:nui_lazy_toml_filepath),
   \ expand(g:ui_lazy_toml_filepath),
-  \ expand(g:copilot_lazy_toml_filepath),
+  \ expand(g:term_lazy_toml_filepath),
   \ ]
 
 if g:is_enable_my_debug
@@ -100,11 +103,12 @@ function! s:reload_plugin(tomls) abort
 
     call s:dein_add_wrapper(g:git_lazy_toml_filepath)
     call s:dein_add_wrapper(g:lsp_lazy_toml_filepath)
+    call s:dein_add_wrapper(g:copilot_lazy_toml_filepath)
     call s:dein_add_wrapper(g:db_lazy_toml_filepath)
 
     call s:dein_add_wrapper(g:nui_lazy_toml_filepath)
     call s:dein_add_wrapper(g:ui_lazy_toml_filepath)
-    call s:dein_add_wrapper(g:copilot_lazy_toml_filepath)
+    call s:dein_add_wrapper(g:term_lazy_toml_filepath)
 
     call dein#end()
     call dein#save_state()

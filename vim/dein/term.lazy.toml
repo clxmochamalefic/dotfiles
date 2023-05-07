@@ -1,0 +1,9 @@
+[[plugins]]
+repo = 'voldikss/vim-floaterm'
+on_cmd = 'Floaterm'
+hook_source = '''
+  execute "source " . expand(g:my_initvim_path . "/plugins/floaterm.lua")
+'''
+hook_post_source = '''
+  command! Floaterm exec "FloatermToggle"
+'''
