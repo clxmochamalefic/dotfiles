@@ -141,7 +141,8 @@ set mousehide
 if has('win32')
   set shell=pwsh
   set shellcmdflag=-c
-  set shellquote="
+  set shellquote=\"
+  set shellxquote=
 endif
 
 augroup Terminal
