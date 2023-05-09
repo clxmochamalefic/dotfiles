@@ -77,6 +77,10 @@ on_source = 'ddc.vim'
 repo='delphinus/ddc-shell-history'
 on_source = 'ddc.vim'
 
+[[plugins]]
+repo='vim-skk/skkeleton'
+on_source = 'ddc.vim'
+
 # MATCHER ####################
 
 [[plugins]]

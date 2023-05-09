@@ -11,6 +11,7 @@ let s:sources = [
       \   'file',
       \   'nvim-lsp',
       \   'vsnip',
+      \   'skkeleton',
       \ ]
 
 let s:cmd_sources = {
@@ -79,6 +80,12 @@ let s:sourceOptions["nvim-lsp"] = #{
       \ }
 let s:sourceOptions["omni"] = #{
       \   mark: '   ',
+      \ }
+let s:sourceOptions["skkeleton"] = #{
+      \   mark: ' 🎌 ',
+      \   matchers: ['skkeleton'],
+      \   sorters: [],
+      \   isVolatile: v:true,
       \ }
 
 "let s:sourceOptions['path'] = #{
@@ -268,6 +275,13 @@ function! CommandlinePost() abort
   endif
 endfunction
 
+" skkeleton
+let s:skkeleton_dir = expand('~/.cache/.skkeleton')
+if !isdirectory(s:skkeleton_dir)
+  call mkdir(s:skkeleton_dir, 'p')
+endif
+
+call skkeleton#config({'completionRankFile': '~/.cache/.skkeleton/rank.json'})
 
 " use ddc.
 call ddc#enable()
