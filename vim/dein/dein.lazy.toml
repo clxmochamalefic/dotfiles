@@ -49,14 +49,6 @@ on_if = 'has("win32")'
 
 
 [[plugins]]
-repo = "Shougo/deol.nvim"
-depends = ['pum.vim', 'ddc.vim']
-on_event = ['BufEnter']
-hook_add = '''
-  execute "source " . g:my_initvim_path . "/plugins/lazy.source.vim"
-'''
-
-[[plugins]]
 repo = 'cohama/lexima.vim'
 on_event = ['InsertChange']
 hook_post_source = '''

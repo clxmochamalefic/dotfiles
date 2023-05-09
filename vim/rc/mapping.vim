@@ -8,6 +8,8 @@ nnoremap <C-J> <C-]>
 " terminal alias
 command! -nargs=* T split | wincmd j | resize 20 | terminal <args>
 
+tnoremap <ESC>   <C-\><C-n>
+
 " today date and time
 nmap <C-;> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
 nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
