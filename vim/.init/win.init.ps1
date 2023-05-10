@@ -34,9 +34,24 @@ if (Test-Path '~/AppData/Local/nvim/ginit.vim') {
     Remove-Item ~/AppData/Local/nvim/ginit.vim
 }
 
+if (Test-Path '~/.config/nvim/init.lua') {
+    Remove-Item ~/.config/nvim/init.lua
+}
+if (Test-Path '~/.config/nvim/ginit.lua') {
+    Remove-Item ~/.config/nvim/ginit.lua
+}
+
+if (Test-Path '~/AppData/Local/nvim/init.lua') {
+    Remove-Item ~/AppData/Local/nvim/init.lua
+}
+
+if (Test-Path '~/AppData/Local/nvim/ginit.lua') {
+    Remove-Item ~/AppData/Local/nvim/ginit.lua
+}
+
 Write-Output "write reference preference"
 
-$preferencePathStr = $PSScriptRoot.ToString()
+$preferencePathStr = [System.IO.Path]::GetDirectoryName($PSScriptRoot.ToString())
 
 $preferencePathStr = $preferencePathStr.Replace($HOME, '$HOME')
 $preferencePathStr = $preferencePathStr.Replace('\', '/' )
