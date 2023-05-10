@@ -10,3 +10,13 @@ function _G.FileExists(name)
    return f ~= nil and io.close(f)
 end
 
+function _G.TryCatch(what)
+  local status, exception = pcall(what.try)
+  if not status then
+    what.catch(exception)
+  end
+  if what.finally then
+    what.finally()
+  end
+  return exception
+end
