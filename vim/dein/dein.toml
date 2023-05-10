@@ -2,18 +2,18 @@
 repo = 'Shougo/dein.vim'
 
 
-# hook_add ------------------------------
-[[multiple_plugins]]
-plugins = [ 'pum.vim', 'vim-choosewin' ]
+[[plugins]]
+repo = 'Shougo/pum.vim'
 hook_add = '''
-  execute "source " . g:my_initvim_path . "/plugins/base.add.vim"
+  execute "source " . g:my_initvim_path . "/plugins/pum.lua"
 '''
 
 [[plugins]]
-repo = 'Shougo/pum.vim'
-
-[[plugins]]
 repo = 't9md/vim-choosewin'
+hook_add = '''
+  " invoke with '-'
+  nmap  -  <Plug>(choosewin)
+'''
 
 
 [[plugins]]
