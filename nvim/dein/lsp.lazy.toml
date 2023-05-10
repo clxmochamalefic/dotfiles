@@ -1,0 +1,116 @@
+# LSP ------------------------------
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+depends = [
+  'denops.vim',
+  'neodev.nvim',
+  'mason.nvim',
+  'mason-lspconfig.nvim',
+  'nvim-dap',
+  'null-ls.nvim',
+  'lspsaga.nvim',
+  'ddc.vim',
+  'ddc-source-nvim-lsp'
+]
+on_event = ['BufEnter']
+hook_source = '''
+  execute "source " . g:my_initvim_path . "/plugins/lsp.vim"
+'''
+
+
+# null-ls ------------------------------
+[[plugins]]
+repo = 'jose-elias-alvarez/null-ls.nvim'
+depends = ['plenary.nvim', 'nvim-ufo']
+on_source = "nvim-lspconfig"
+build = 'npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing'
+
+[[plugins]] # plenary.nvim(null-ls depends of this plugin) 
+repo = 'nvim-lua/plenary.nvim'
+on_source = 'null-ls.nvim'
+
+[[plugins]]
+repo = 'kevinhwang91/nvim-ufo'
+depends = ['promise-async']
+on_source = 'nvim-lspconfig'
+
+[[plugins]]
+repo = 'kevinhwang91/promise-async'
+on_source = 'nvim-ufo'
+
+
+# mason ------------------------------
+[[plugins]]
+repo = 'williamboman/mason.nvim'
+on_source = "nvim-lspconfig"
+
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
+on_source = "nvim-lspconfig"
+
+# DAP (Debug Adapter Protocol) on mason ------------------------------
+[[plugins]]
+repo = 'mfussenegger/nvim-dap'
+on_source = "nvim-lspconfig"
+
+# linter and formatter on mason ------------------------------
+[[plugins]] # mason-null-ls.nvim
+repo = 'jay-babu/mason-null-ls.nvim'
+depends = 'null-ls.nvim'
+on_source = 'mason-lspconfig.nvim'
+lua_source = '''
+  require('mason-null-ls').setup({
+    ensure_installed = nil,
+    automatic_installation = {
+      exclude = {
+        'textlint',
+      },
+    },
+    automatic_setup = false,
+  })
+'''
+
+
+# lsp-saga ------------------------------
+[[plugins]]
+repo = 'glepnir/lspsaga.nvim'
+depends = ['nvim-treesitter', 'nvim-web-devicons']
+on_source = "nvim-lspconfig"
+on_event = 'LspAttach'
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+if = 'has("nvim-0.7")'
+on_source = "lspsaga.nvim"
+on_event = 'BufRead'
+on_cmd = ['TSUpdate', 'TSInstall', 'TSInstallInfo', 'TSModuleInfo', 'TSConfigInfo']
+hook_post_update = ':TSUpdate'
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+on_source = "nvim-lspconfig"
+on_event = 'LspAttach'
+hook_source = '''
+  let g:popup_preview_config = {
+      \   'delay': 10,
+      \   'maxWidth': 100,
+      \   'winblend': 0,
+      \ }
+  call popup_preview#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help'
+on_source = "nvim-lspconfig"
+on_event = 'LspAttach'
+hook_source = '''
+  call signature_help#enable()
+'''
+
+# neodev.nvim ------------------------------
+[[plugins]]
+repo = 'folke/neodev.nvim'
+lua_source = '''
+  require("neodev").setup({})
+'''
+

@@ -1,0 +1,122 @@
+# ddu ------------------------------
+[[plugins]]
+repo = 'Shougo/ddu.vim'
+depends = [
+  'denops.vim',
+
+  'ddu-ui-ff',
+  'ddu-ui-filer',
+
+  'ddu-source-action',
+  'ddu-source-buffer',
+  'ddu-source-custom-list',
+  'ddu-source-dein_update',
+  'ddu-source-emoji',
+  'ddu-source-file',
+  'ddu-source-file_old',
+  'ddu-source-file_rec',
+  'ddu-source-mr',
+  'ddu-source-nvim-lsp',
+  'ddu-source-source',
+
+  'ddu-filter-matcher_substring',
+
+  'ddu-kind-file',
+  'ddu-kind-word',
+
+  'ddu-column-filename',
+  'ddu-column-icon_filename',
+
+  'ddu-vim-ui-select',
+
+  'windows-clipboard-history.vim',
+]
+on_event = ['VimEnter']
+hook_post_source = '''
+  execute "source " . expand(g:my_initvim_path . "/plugins/ddu.vim")
+'''
+
+
+# ddu-ui ------------------------------
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-ff'
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-filer'
+
+
+# ddu-source ------------------------------
+
+[[plugins]]
+repo = 'Shougo/ddu-source-action'
+
+[[plugins]]
+repo = 'shun/ddu-source-buffer'
+
+[[plugins]]
+repo='liquidz/ddu-source-custom-list'
+
+[[plugins]]
+repo='matsui54/ddu-source-dein_update'
+
+[[plugins]]
+repo = '4513ECHO/ddu-source-emoji'
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file'
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file_old'
+
+[[plugins]]
+repo = 'Shougo/ddu-source-file_rec'
+
+[[plugins]]
+repo = 'kuuote/ddu-source-mr'
+depends = ['mr.vim']
+
+[[plugins]]
+repo = 'lambdalisue/mr.vim'
+
+[[plugins]]
+repo = 'gamoutatsumi/ddu-source-nvim-lsp'
+
+[[plugins]]
+repo = '4513ECHO/ddu-source-source'
+
+
+# ddu-filter ------------------------------
+
+[[plugins]]
+repo = 'Shougo/ddu-filter-matcher_substring'
+on_source = ['ddu.vim']
+
+
+# ddu-kind ------------------------------
+
+[[plugins]]
+repo = 'Shougo/ddu-kind-file'
+on_source = ['ddu.vim']
+
+[[plugins]]
+repo = 'Shougo/ddu-kind-word'
+on_source = ['ddu.vim']
+
+
+# ddu-column ------------------------------
+
+[[plugins]]
+repo = 'Shougo/ddu-column-filename'
+on_source = ['ddu.vim']
+
+[[plugins]]
+repo = 'ryota2357/ddu-column-icon_filename'
+on_source = ['ddu.vim']
+
+
+# other ------------------------------
+
+[[plugins]]
+repo = 'matsui54/ddu-vim-ui-select'
+

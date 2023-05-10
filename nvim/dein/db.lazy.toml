@@ -1,0 +1,15 @@
+[[plugins]]
+repo = 'tpope/vim-dadbod'
+depends = ['vim-dotenv', 'vim-dadbod-ui']
+on_event = ['VimEnter']
+hook_post_source = '''
+  execute "source " . g:my_initvim_path . "/plugins/db.post.source.vim"
+'''
+
+[[plugins]]
+repo = 'tpope/vim-dotenv'
+
+[[plugins]]
+repo = 'kristijanhusak/vim-dadbod-ui'
+
+
