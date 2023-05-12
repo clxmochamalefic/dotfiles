@@ -1,7 +1,7 @@
 return {
   {
     'Shougo/pum.vim',
-    command = function()
+    init = function()
       vim.fn['pum#set_option']('max_width', 100)
       vim.fn['pum#set_option']('use_complete', true)
       vim.fn['pum#set_option']('border', 'rounded')
@@ -22,13 +22,13 @@ return {
   },
   {
     't9md/vim-choosewin',
-    command = function()
+    init = function()
       vim.keymap.set("n", "-", "<Plug>(choosewin)")
     end
   },
   {
     'vim-denops/denops.vim',
-    command = function()
+    init = function()
       vim.g.denops.deno = "deno"
       local function run_deno_server()
         vim.fn.execute("sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts'", "silent")
@@ -46,7 +46,7 @@ return {
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
     lazy = true,
-    command = function()
+    init = function()
       if vim.fn.has('win32') then
         vim.fn.execute('pwsh -c "cd app && yarn install"')
       else
@@ -80,7 +80,7 @@ return {
     'cohama/lexima.vim',
     lazy = true,
     event = { 'InsertChange' },
-    command = function()
+    init = function()
       vim.g.lexima_enable_basic_rules   = 1
       vim.g.lexima_enable_newline_rules = 1
       vim.g.lexima_enable_endwise_rules = 1
@@ -90,7 +90,7 @@ return {
     'deris/vim-rengbang',
     lazy = true,
     event = { 'InsertChange' },
-    command = function()
+    init = function()
       -- Following settings is default value.
       vim.g.rengbang_default_pattern  = '\\(\\d\\+\\)'
       vim.g.rengbang_default_start    = 0
@@ -109,7 +109,7 @@ return {
     'haya14busa/vim-asterisk',
     lazy = true,
     event = { 'FileReadPost', 'InsertLeave' },
-    command = function()
+    config = function()
       vim.g.asterisk.keeppos = 1
       vim.map.set("*",  "<Plug>(asterisk-z*)")
       vim.map.set("#",  "<Plug>(asterisk-z#)")
@@ -125,7 +125,7 @@ return {
     'Pocco81/abbrev-man.nvim',
     lazy = true,
     event = { 'FileReadPost', 'InsertChange' },
-    command = function()
+    config = function()
       local abbrev_man = require("abbrev-man")
       abbrev_man.setup({
         load_natural_dictionaries_at_startup = true,
