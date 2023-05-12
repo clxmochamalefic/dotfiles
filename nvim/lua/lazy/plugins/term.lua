@@ -1,5 +1,12 @@
+return {
+  {
+'voldikss/vim-floaterm',
+lazy = true,
+
+  }
+}
 [[plugins]]
-repo = 'voldikss/vim-floaterm'
+repo = 
 on_cmd = 'Floaterm'
 lua_add = '''
   vim.keymap.set("n", "<C-w>", "<Cmd>Floaterm<CR>", { silent = true })

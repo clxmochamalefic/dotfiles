@@ -1,6 +1,7 @@
 return {
   {
     'tpope/vim-dadbod',
+    lazy = true,
     event = 'VimEnter',
     dependencies = {
       'tpope/vim-dotenv',

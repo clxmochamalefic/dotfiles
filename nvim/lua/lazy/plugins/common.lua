@@ -63,7 +63,7 @@ return {
   {
     'osyo-manga/vim-precious',
     lazy = true,
-    dependencies = { 'context_filetype.vim' },
+    dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },
   {
