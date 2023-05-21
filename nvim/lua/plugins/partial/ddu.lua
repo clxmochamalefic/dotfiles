@@ -1,13 +1,15 @@
+local utils = require('utils')
+
 local function win_all()
   return vim.fn.range(1, vim.fn.winnr('$'))
 end
 
 local function MyDduChooseWin(src, args)
-  TryCatch {
+  utils.try_catch {
     try = function()
       local path = args[0].action.path
       vim.fn["choosewin#start"](win_all(), {auto_choose = true, hook_enable = false })
-      vim.fn.execute('edit ' + path)
+      vim.cmd('edit ' .. path)
     end,
     catch = function()
       if src == 0 then
@@ -59,12 +61,12 @@ local function ddu_basic()
   vim.fn["ddu#custom#patch_global"]({
     ui = 'ff',
     sources = {
-      { name = 'file_rec', params = #{} },
+      { name = 'file_rec', params = {} },
       { name = 'file' },
       { name = 'buffer' },
       { name = 'emoji' },
     },
-    sourceOptions = #{
+    sourceOptions = {
       "_"; {
         columns = {'icon_filename'},
         matchers = {'matcher_substring'},
@@ -546,15 +548,14 @@ return {
 
       'Shougo/ddu-source-action',
       'Shougo/ddu-source-buffer',
-      'Shougo/ddu-source-custom-list',
-      'Shougo/ddu-source-dein_update',
-      'Shougo/ddu-source-emoji',
+      'liquidz/ddu-source-custom-list',
+      '4513ECHO/ddu-source-emoji',
       'Shougo/ddu-source-file',
       'Shougo/ddu-source-file_old',
       'Shougo/ddu-source-file_rec',
-      'Shougo/ddu-source-mr',
-      'Shougo/ddu-source-nvim-lsp',
-      'Shougo/ddu-source-source',
+      'kuuote/ddu-source-mr',
+      'gamoutatsumi/ddu-source-nvim-lsp',
+      '4513ECHO/ddu-source-source',
 
       'Shougo/ddu-filter-matcher_substring',
 

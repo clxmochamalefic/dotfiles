@@ -1,7 +1,10 @@
 return {
   {
     'Shougo/pum.vim',
-    init = function()
+    config = function()
+      -- vim.call('pum#set_option', 'max_width', 100)
+      -- vim.call('pum#set_option', 'use_complete', true)
+      -- vim.call('pum#set_option', 'border', 'rounded')
       vim.fn['pum#set_option']('max_width', 100)
       vim.fn['pum#set_option']('use_complete', true)
       vim.fn['pum#set_option']('border', 'rounded')
@@ -29,14 +32,14 @@ return {
   {
     'vim-denops/denops.vim',
     init = function()
-      vim.g.denops.deno = "deno"
+      vim.g['denops#deno'] = "deno"
       local function run_deno_server()
-        vim.fn.execute("sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts'", "silent")
+        vim.cmd("!sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts'")
         vim.g.denops_server_addr = '127.0.0.1:32123'
       end
 
-      vim.fn.command("RunDenoServer", run_deno_server())
-      vim.fn.command("Rds", "RunDenoServer")
+      vim.api.nvim_create_user_command("RunDenoServer", run_deno_server, {})
+      vim.api.nvim_create_user_command("Rds",           run_deno_server, {})
     end
   },
   {
@@ -46,13 +49,7 @@ return {
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
     lazy = true,
-    init = function()
-      if vim.fn.has('win32') then
-        vim.fn.execute('pwsh -c "cd app && yarn install"')
-      else
-        vim.fn.execute('sh -c "cd app && yarn install"')
-      end
-    end
+    build = "cd app && yarn install",
   },
   {
     -- completion [{()}]
@@ -66,11 +63,11 @@ return {
     dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },
-  {
-    'LeafCage/vimhelpgenerator',
-    lazy = true,
-    ft = { 'vimscript', 'lua', 'typescript' }
-  },
+--  {
+--    'LeafCage/vimhelpgenerator',
+--    lazy = true,
+--    ft = { 'vimscript', 'lua', 'typescript' }
+--  },
   {
     'Milly/windows-clipboard-history.vim',
     lazy = true,

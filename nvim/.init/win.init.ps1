@@ -54,17 +54,21 @@ Write-Output "write reference preference"
 $preferencePathStr = [System.IO.Path]::GetDirectoryName($PSScriptRoot.ToString())
 
 $preferencePathStr = $preferencePathStr.Replace('\', '/' )
+$luaPathStr = $preferencePathStr + "/lua"
 
 Write-Output $preferencePathStr
 
-Set-Content -Path ~/.config/nvim/init.lua  -Value "vim.cmd([[runtime ${preferencePathStr} ]])"  -Encoding UTF8
-Add-Content -Path ~/.config/nvim/init.lua  -Value "vim.g.preference_path = vim.fn.expand('${preferencePathStr}')"  -Encoding UTF8
-Add-Content -Path ~/.config/nvim/init.lua  -Value "vim.cmd([[luafile ${preferencePathStr}/init.lua]])"  -Encoding UTF8
-Set-Content -Path ~/.config/nvim/ginit.lua -Value "vim.cmd([[luafile ${preferencePathStr}/ginit.lua]])" -Encoding UTF8
+Set-Content -Path ~/.config/nvim/init.lua  -Value "vim.opt.runtimepath:append(',${preferencePathStr}')"                 -Encoding UTF8
+Add-Content -Path ~/.config/nvim/init.lua  -Value "vim.opt.runtimepath:append(',${luaPathStr}')"                        -Encoding UTF8
+Add-Content -Path ~/.config/nvim/init.lua  -Value "vim.g.preference_path = vim.fn.expand('${preferencePathStr}')"       -Encoding UTF8
+Add-Content -Path ~/.config/nvim/init.lua  -Value "vim.cmd([[luafile ${preferencePathStr}/init.lua]])"                  -Encoding UTF8
+Set-Content -Path ~/.config/nvim/ginit.lua -Value "vim.cmd([[luafile ${preferencePathStr}/ginit.lua]])"                 -Encoding UTF8
 
-Set-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.cmd([[runtime ${preferencePathStr} ]])"  -Encoding UTF8
-Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.g.preference_path = vim.fn.expand('${preferencePathStr}')"  -Encoding UTF8
-Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.cmd([[luafile ${preferencePathStr}/init.lua]])"  -Encoding UTF8
-Set-Content -Path ~/AppData/Local/nvim/ginit.lua -Value "vim.cmd([[luafile ${preferencePathStr}/ginit.lua]])" -Encoding UTF8
+Set-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.opt.runtimepath:append(',${preferencePathStr}')"           -Encoding UTF8
+Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.opt.runtimepath:append(',${luaPathStr}')"                  -Encoding UTF8
+Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.g.preference_path = vim.fn.expand('${preferencePathStr}')" -Encoding UTF8
+Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.cmd([[luafile ${preferencePathStr}/init.lua]])"            -Encoding UTF8
+Set-Content -Path ~/AppData/Local/nvim/ginit.lua -Value "vim.cmd([[luafile ${preferencePathStr}/ginit.lua]])"           -Encoding UTF8
 
 Write-Output "finished and all correct"
+

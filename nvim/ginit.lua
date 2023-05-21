@@ -1,42 +1,67 @@
-" this init.vim is using utf-8
-scriptencoding utf-8
+-- this init.vim is using utf-8
+vim.opt.encoding = 'utf-8'
+vim.scriptencoding = 'utf-8'
 
-call rpcnotify(1, 'Gui', 'Option', 'Tabline', 0)
+local utils = require('utils')
 
-" Migu 2M
-" https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
-"
-" Cica
-" https://github.com/miiton/Cica
-let s:fav_font_map = #{
-      \   Migu2M: 'Migu 2M',
-      \   Migu2MPL: 'Migu 2M for Powerline',
-      \   Cica: 'Cica',
-      \   Hack: 'Hack',
-      \ }
+local currentFont = 'Cica'
 
-let s:fontsize = 13
-let s:min_fontsize = 7
-function! AdjustFontSize(amount) abort
-  let s:fontsize = s:fontsize + a:amount
-  execute 'set guifont=' . s:fav_font_map['Cica'] . ':h' . s:fontsize
-endfunction
+-- Neovim GTK --
+if vim.g.GtkGuiLoaded == 1 then
+--  vim.rpcnotify(1, "Gui", "Option", "Cmdline", 0)
+--  vim.rpcnotify(1, "Gui", "Option", "Popupmenu", 0)
+  vim.rpcnotify(1, "Gui", "Option", "Tabline", 0)
+--  vim.rpcnotify(1, "Gui", "Option", "SetCursorBlink", 0)
+--  vim.rpcnotify(1, "Gui", "Font", "JetBrainsMono 10")
+--  vim.rpcnotify(1, "Gui", "Linespace", "2")
+end
 
-let s:max_columns = 260
+-- Migu 2M
+-- https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
 
-function! AutoAdjustFontSize() abort
-  let l:diff = s:max_columns - &columns
-  let l:unit = l:diff / 27
-  " 27ずつ
-  let s:fontsize = s:fontsize + l:unit
-  if s:fontsize < s:min_fontsize
-    s:fontsize = s:min_fontsize
-  endif
-  execute 'set guifont=' . s:fav_font_map['Cica'] . ':h' . s:fontsize
-endfunction
+-- Cica
+-- https://github.com/miiton/Cica
 
+local fav_font_map = {
+  Migu2M    = 'Migu 2M',
+  Migu2MPL  = 'Migu 2M for Powerline',
+  Cica      = 'Cica',
+  Hack      = 'Hack',
+}
 
-noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>
-noremap <C-ScrollWheelDown> :call AdjustFontSize(-1)<CR>
-inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
-inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
+local fontsize = 13
+local min_fontsize = 7
+
+local function adjust_font_size(amount)
+  fontsize = fontsize + amount
+  vim.cmd('set guifont=' .. fav_font_map[currentFont] .. ':h' .. fontsize)
+end
+local function increment_font_size()
+  adjust_font_size(1)
+end
+local function decrement_font_size()
+  adjust_font_size(1)
+end
+
+local max_columns = 260
+
+local function AutoAdjustFontSize()
+  local diff = max_columns - utils.get_vim_columns()
+  local unit = diff / 27
+  -- 27ずつ
+  local fontsize = fontsize + unit
+  if fontsize < min_fontsize then
+    fontsize = min_fontsize
+  end
+  vim.cmd('set guifont=' .. fav_font_map[currentFont] .. ':h' .. fontsize)
+end
+
+-- noremap <C-ScrollWheelUp> :call adjust_font_size(1)<CR>
+-- noremap <C-ScrollWheelDown> :call adjust_font_size(-1)<CR>
+-- inoremap <C-ScrollWheelUp> <Esc>:call adjust_font_size(1)<CR>a
+-- inoremap <C-ScrollWheelDown> <Esc>:call adjust_font_size(-1)<CR>a
+vim.keymap.set('n', '<C-ScrollWheelUp>',    increment_font_size, { noremap = true })
+vim.keymap.set('n', '<C-ScrollWheelDown>',  decrement_font_size, { noremap = true })
+vim.keymap.set('i', '<C-ScrollWheelUp>',    increment_font_size, { noremap = true })
+vim.keymap.set('i', '<C-ScrollWheelDown>',  decrement_font_size, { noremap = true })
+

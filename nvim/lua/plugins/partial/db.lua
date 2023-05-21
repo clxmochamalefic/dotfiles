@@ -30,11 +30,11 @@ return {
       vim.g.dbs = {}
 
       if vim.fn.isdirectory(db_toml_dir) ~= 1 then
-        vim.fn.execute('!mkdir ' + db_toml_dir, "silent")
+        vim.cmd('!mkdir ' + db_toml_dir)
       end
 
-      local filelist =  vim.fn.expand(db_toml_dir + "/*.toml")
-      local splitted = vim.fn.split(filelist, "\n")
+      -- local filelist =  vim.fn.expand(db_toml_dir + "/*.toml")
+      -- local splitted = vim.fn.split(filelist, "\n")
       -- for s:file in s:splitted
       --   let s:read = dein#toml#parse_file(expand(s:file))
       --   for s:prefix in keys(s:read)

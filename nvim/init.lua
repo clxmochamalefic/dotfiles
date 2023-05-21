@@ -1,4 +1,5 @@
-local utils = require('lua.utils.init')
+local utils = require('utils')
+
 -- this init.vim is using utf-8
 vim.opt.encoding = 'utf-8'
 vim.scriptencoding = 'utf-8'
@@ -19,16 +20,14 @@ vim.g.is_enable_my_debug = false
 vim.g.my_home_preference_path = vim.fn.expand("~/.config/nvim")
 vim.g.my_initvim_path = vim.fn.expand(vim.g.preference_path)
 
-utils.DebugEcho('load base')
+utils.begin_debug(vim.g.my_initvim_path .. ' load')
 
-require("lua.preferences.base").setup()
-
-utils.DebugEcho('begin ' .. vim.g.my_initvim_path .. ' load')
+require("preferences.base"):load()
 
 local python_preference_path = vim.g.my_home_preference_path
 
 -- python path
-if not utils.FileExists(python_preference_path .. '/python.lua') then
+if not utils.file_exists(python_preference_path .. '/python.lua') then
   local py2pref = ""
   local py3pref = ""
 
@@ -44,19 +43,22 @@ if not utils.FileExists(python_preference_path .. '/python.lua') then
   end
 
   local body = py2pref .. "\n" .. py3pref .. "\n"
+
+  utils.debug_echo('python preference path' .. python_preference_path)
+  utils.debug_echo('python preference body' .. body)
+
   io.open(python_preference_path .. '/python.lua', "w"):write(body):close()
 end
 
 
-utils.DebugEcho('load rc')
+utils.debug_echo('load rc')
 
+require("preferences.ft")
+require("preferences.mapping")
+require("preferences.color")
+require("preferences.command")
 
-vim.cmd("runtime /lua/plugins")
+require("plugins"):load()
 
-vim.cmd("runtime /lua/preferences/ft.lua")
-vim.cmd("runtime /lua/preferences/mapping.lua")
-vim.cmd("runtime /lua/preferences/color.lua")
-vim.cmd("runtime /lua/preferences/command.lua")
-
-utils.DebugEcho('end' .. vim.g.my_initvim_path .. ' load')
+utils.end_debug(vim.g.my_initvim_path .. ' load')
 

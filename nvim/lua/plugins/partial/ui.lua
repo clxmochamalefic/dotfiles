@@ -270,6 +270,9 @@ return {
     event = { 'BufEnter' },
     config = function()
       vim.notify = require("notify")
+      vim.notify.setup({
+          background_colour = "#000000",
+      })
     end
   },
   {
@@ -286,7 +289,11 @@ return {
     lazy = true,
     event = { 'VimEnter' },
     config = function()
-      vim.fn.command("PopMess", vim.fn["popup_message#open"]("execute('messages')"))
+      vim.api.nvim_create_user_command(
+      'PopMess',
+      function(opts)
+        vim.fn["popup_message#open"]("execute('messages')")
+      end, {})
     end
   },
 }

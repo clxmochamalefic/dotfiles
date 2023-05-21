@@ -1,18 +1,25 @@
 -- ---------------------------------------------------------------------------
 --  COLORSCHEME PREFERENCE
+-- background color
+vim.o.background = "dark"
+-- using colorscheme
+vim.api.nvim_exec([[
+try
+  colorscheme onehalfdark
+catch /^Vim\%((\a\+)\)\=:E185/
+  colorscheme default
+  set background=dark
+endtry
+]], false)
 
-local colorscheme = 'onehalfdark'
+--  highlight cursor line
+vim.o.cursorline = true
 
 --  define colorscheme load function for lazyload
-local function load_colorscheme()
-  -- background color
-  vim.o.background = "dark"
-  -- using colorscheme
-  vim.fn.execute("colorscheme " . colorscheme)
-end
 
 -- onepoint colors
 local opc = {
+  ctermzero = 249,
   ctermbg = 249,
   ctermfg = 46,
   default = {
@@ -40,17 +47,10 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   group = onepoint_augroup_id,
   pattern = '*',
   callback = function ()
-    vim.fn.highlight('LineNr',        { ctermbg = opc.ctermfg, ctermfg = 0 })
-    vim.fn.highlight('CursorLineNr',  { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg })
+    vim.fn.highlight('LineNr',        { ctermbg = opc.ctermfg, ctermfg = opc.ctermzero  })
+    vim.fn.highlight('CursorLineNr',  { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg    })
   end
 })
-
---  highlight cursor line
-vim.o.cursorline = true
-
-
---  load colorscheme (after loaded plugins)
-load_colorscheme()
 
 local modify_color_for_comp_augroup_id = vim.api.nvim_create_augroup('ModifyColorForComp', { clear = true })
 vim.api.nvim_create_autocmd('ColorScheme', {
