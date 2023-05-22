@@ -2,10 +2,17 @@
 return {
   {
     'neovim/nvim-lspconfig',
-    azy = true,
+    lazy = true,
     dependencies = {
       'vim-denops/denops.vim',
-      'folke/neodev.nvim',
+      -- neodev.nvim ------------------------------
+      {
+        'folke/neodev.nvim',
+        lazy = true,
+        config = function()
+          require("neodev").setup({})
+        end
+      },
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'mfussenegger/nvim-dap',
@@ -24,7 +31,7 @@ return {
         },
         {
           'jay-babu/mason-null-ls.nvim',
-          command = function()
+          config = function()
             require('mason-null-ls').setup({
               ensure_installed = nil,
               automatic_installation = {
@@ -43,7 +50,7 @@ return {
               'nvim-treesitter/nvim-treesitter',
               event = 'BufRead',
               cmd = { 'TSUpdate', 'TSInstall', 'TSInstallInfo', 'TSModuleInfo', 'TSConfigInfo' },
-              hook_post_update = ':TSUpdate',
+              build = 'vim.cmd([[:TSUpdate]])',
             },
             'nvim-tree/nvim-web-devicons',
             event = { 'LspAttach' }
@@ -53,7 +60,7 @@ return {
         'Shougo/ddc-source-nvim-lsp'
       },
       event = { 'BufEnter' },
-      command = function()
+      config = function()
         -- Lspsaga --------------------------------------------------
 
         -- nvim-treesitter
@@ -321,7 +328,7 @@ return {
     'matsui54/denops-popup-preview.vim',
     lazy = true,
     event = 'LspAttach',
-    command = function()
+    config = function()
       vim.g.popup_preview_config = {
         delay = 10,
         maxWidth = 100,
@@ -334,17 +341,10 @@ return {
     repo = 'matsui54/denops-signature_help',
     lazy = true,
     event = 'LspAttach',
-    command = function()
-      vim.fn["signature_help#enable"]()
+    init = function()
+      -- vim.fn["signature_help#enable"]()
+      vim.cmd("call signature_help#enable()")
     end
   },
-  -- neodev.nvim ------------------------------
-  {
-    'folke/neodev.nvim',
-    lazy = true,
-    command = function()
-      require("neodev").setup({})
-    end
-  }
 }
 

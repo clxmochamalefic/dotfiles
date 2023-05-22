@@ -6,7 +6,7 @@ return {
       'MunifTanjim/nui.nvim',
     },
     event = { 'VimEnter' },
-    command = function()
+    config = function()
       -- nui.nvim --------------------------------------------------
       local Popup = require("nui.popup")
       local event = require("nui.utils.autocmd").event

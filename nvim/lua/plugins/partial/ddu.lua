@@ -24,9 +24,7 @@ local function MyDduChooseWin(src, args)
 end
 
 local function ddu_basic()
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("begin /plugins/ddu.vim load")
-  end
+  utils.begin_debug('ddu basic')
 
   vim.g.ddu_float_window_col            = vim.g.float_window_col
   vim.g.ddu_float_window_row            = vim.g.float_window_row
@@ -39,26 +37,26 @@ local function ddu_basic()
   vim.g.floating_ddu_ui_params = {
     span = 2,
 
-    split = 'floating',
-    floatingBorder = 'rounded',
-    filterFloatingPosition = 'bottom',
-    filterSplitDirection = 'floating',
-    winRow = vim.g.ddu_float_window_row,
-    winCol = vim.g.ddu_float_window_col,
-    winWidth = vim.g.ddu_float_window_width,
-    winHeight = vim.g.ddu_float_window_height,
+    split                   = 'floating',
+    floatingBorder          = 'rounded',
+    filterFloatingPosition  = 'bottom',
+    filterSplitDirection    = 'floating',
+    winRow                  = vim.g.ddu_float_window_row,
+    winCol                  = vim.g.ddu_float_window_col,
+    winWidth                = vim.g.ddu_float_window_width,
+    winHeight               = vim.g.ddu_float_window_height,
 
-    previewFloating = true,
-    previewVertical = true,
-    previewFloatingBorder = 'rounded',
-    previewFloatingZindex = 10000,
-    previewCol = vim.g.ddu_float_window_preview_col,
-    previewWidth = vim.g.ddu_float_window_preview_width,
-    previewHeight = vim.g.ddu_float_window_preview_height,
+    previewFloating         = true,
+    previewVertical         = true,
+    previewFloatingBorder   = 'rounded',
+    previewFloatingZindex   = 10000,
+    previewCol              = vim.g.ddu_float_window_preview_col,
+    previewWidth            = vim.g.ddu_float_window_preview_width,
+    previewHeight           = vim.g.ddu_float_window_preview_height,
   }
 
   --  ddu.vim ------------------------------
-  vim.fn["ddu#custom#patch_global"]({
+  vim.fn['ddu#custom#patch_global']({
     ui = 'ff',
     sources = {
       { name = 'file_rec', params = {} },
@@ -67,7 +65,7 @@ local function ddu_basic()
       { name = 'emoji' },
     },
     sourceOptions = {
-      "_"; {
+      _ = {
         columns = {'icon_filename'},
         matchers = {'matcher_substring'},
       },
@@ -81,16 +79,16 @@ local function ddu_basic()
       },
     },
     kindOptions = {
-      file = { defaultAction = 'open', },
-      file_old = { defaultAction = 'open', },
-      file_rec = { defaultAction = 'open', },
-      action = { defaultAction = 'do', },
-      word = { defaultAction = 'append', },
-      dein_update = { defaultAction = 'viewDiff', },
+      file =          { defaultAction = 'open', },
+      file_old =      { defaultAction = 'open', },
+      file_rec =      { defaultAction = 'open', },
+      action =        { defaultAction = 'do', },
+      word =          { defaultAction = 'append', },
+      dein_update =   { defaultAction = 'viewDiff', },
       "custom-list"; { defaultAction = 'callback', },
     },
-    uiParams = #{
-      "_"; vim.g.floating_ddu_ui_params,
+    uiParams = {
+      _ = vim.g.floating_ddu_ui_params,
     },
     actionOptions = {
       echo =     { quit = false, },
@@ -103,16 +101,14 @@ local function ddu_basic()
 
   --  ddu-ui-ff
   if vim.fn.has('macunix') then
-    vim.fn.command("brew install desktop-file-utils")
+    vim.cmd("brew install desktop-file-utils")
   end
 
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("begin /plugins/ddu.vim end")
-  end
-
+  utils.end_debug('ddu basic')
 end
 
 local function ddu_ff()
+  utils.begin_debug('ddu ff')
   if vim.g.is_enable_my_debug then
     vim.fn.echo "begin /plugins/ff.ddu.vim load"
   end
@@ -120,9 +116,12 @@ local function ddu_ff()
   vim.fn["ddu#custom#action"]('kind', 'file', 'ff_mychoosewin', function(args) return MyDduChooseWin(0, args) end)
   local current_ff_name = 'buffer'
 
-  vim.fn.command("DduFF", vim.fn["ddu#start"]({ name = current_ff_name }))
-  vim.keymap.set("n", "Z", ":<C-u>DduFF<CR>", { noremap = true })
+  local function call_ddu_ff()
+    vim.fn["ddu#start"]({ name = current_ff_name })
+  end
 
+  vim.api.nvim_create_user_command('DduFF', call_ddu_ff, {})
+  vim.keymap.set("n", "Z", call_ddu_ff, { noremap = true })
 
   local function OpenDduFF(name)
     -- if a:isRequireWin && !has('win32')
@@ -237,7 +236,11 @@ local function ddu_ff()
     }
   })
 
-  vim.fn.command("DduBuffer", vim.fn["ddu#start"]({ name = 'buffer' }))
+  local function call_ddu_ff()
+    vim.fn["ddu#start"]({ name = current_ff_name })
+  end
+
+  vim.api.nvim_create_user_command('DduBuffer', function() return vim.fn["ddu#start"]({ name = 'buffer' }) end, {})
 
   --  ddu-source-file_old
   vim.fn["ddu#custom#patch_local"]('file_old', {
@@ -258,7 +261,7 @@ local function ddu_ff()
     }
   })
 
-  vim.fn.command("DduFileOld", vim.fn["ddu#start"]({ name = 'file_old' }))
+  vim.api.nvim_create_user_command('DduFileOld', function() return vim.fn["ddu#start"]({ name = 'file_old' }) end, {})
 
   --  ddu-source-emoji
   vim.fn["ddu#custom#patch_local"]('emoji', {
@@ -281,7 +284,7 @@ local function ddu_ff()
     }
   })
 
-  vim.fn.command("DduEmoji", vim.fn["ddu#start"]({ name = 'emoji' }))
+  vim.api.nvim_create_user_command('DduEmoji', function() return vim.fn["ddu#start"]({ name = 'emoji' }) end, {})
 
   --  ddu-source-mrw
   local mr_source = {
@@ -301,7 +304,7 @@ local function ddu_ff()
     },
   })
 
-  vim.fn.command("DduMrw", vim.fn["ddu#start"]({ name = 'mrw' }))
+  vim.api.nvim_create_user_command('DduMrw', function() return vim.fn["ddu#start"]({ name = 'mrw' }) end, {})
 
   local mrw_source = {
     name  = 'mr',
@@ -319,7 +322,7 @@ local function ddu_ff()
     },
   })
 
-  vim.fn.command("DduMrwCurrent", vim.fn["ddu#start"]({ name = 'mrw_current' }))
+  vim.api.nvim_create_user_command('DduMrwCurrent', function() return vim.fn["ddu#start"]({ name = 'mrw_current' }) end, {})
 
 
   --  windows-clipboard-history
@@ -335,18 +338,14 @@ local function ddu_ff()
       },
     })
 
-    vim.fn.command("DduClip", vim.fn["ddu#start"]({ name = 'clip_history' }))
+    vim.api.nvim_create_user_command('DduClip', function() return vim.fn["ddu#start"]({ name = 'clip_history' }) end, {})
   end
 
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("begin /plugins/ff.ddu.vim end")
-  end
+  utils.end_debug('ddu ff')
 end
 
 local function ddu_filer()
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("begin /plugins/filer.ddu.vim load")
-  end
+  utils.begin_debug('ddu filer')
 
   -- ddu-ui-filer
   local current_filer = 0
@@ -530,16 +529,13 @@ local function ddu_filer()
   vim.fn.command("DduFiler", OpenDduFiler(current_filer))
   vim.keymap.set("n", "z", function() return OpenDduFiler(current_filer) end, { noremap = true })
 
-
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("begin /plugins/filer.ddu.vim end")
-  end
-
+  utils.end_debug('ddu filer')
 end
 
 return {
   {
     'Shougo/ddu.vim',
+    lazy = true,
     dependencies = {
       'vim-denops/denops.vim',
 
@@ -570,7 +566,7 @@ return {
       'Milly/windows-clipboard-history.vim',
     },
     event = { 'VimEnter' },
-    command = function()
+    config = function()
       ddu_basic()
       ddu_ff()
       ddu_filer()

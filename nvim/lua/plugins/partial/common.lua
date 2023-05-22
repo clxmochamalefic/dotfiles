@@ -2,9 +2,6 @@ return {
   {
     'Shougo/pum.vim',
     config = function()
-      -- vim.call('pum#set_option', 'max_width', 100)
-      -- vim.call('pum#set_option', 'use_complete', true)
-      -- vim.call('pum#set_option', 'border', 'rounded')
       vim.fn['pum#set_option']('max_width', 100)
       vim.fn['pum#set_option']('use_complete', true)
       vim.fn['pum#set_option']('border', 'rounded')
@@ -42,9 +39,9 @@ return {
       vim.api.nvim_create_user_command("Rds",           run_deno_server, {})
     end
   },
-  {
-    'kyazdani42/nvim-web-devicons'
-  },
+--  {
+--    'kyazdani42/nvim-web-devicons'
+--  },
   {
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
@@ -107,11 +104,15 @@ return {
     lazy = true,
     event = { 'FileReadPost', 'InsertLeave' },
     config = function()
-      vim.g.asterisk.keeppos = 1
-      vim.map.set("*",  "<Plug>(asterisk-z*)")
-      vim.map.set("#",  "<Plug>(asterisk-z#)")
-      vim.map.set("g*", "<Plug>(asterisk-gz*)")
-      vim.map.set("g#", "<Plug>(asterisk-gz#)")
+      vim.g["asterisk#keeppos"] = 1
+      vim.keymap.set('n', "*",  "<Plug>(asterisk-z*)")
+      vim.keymap.set('n', "#",  "<Plug>(asterisk-z#)")
+      vim.keymap.set('n', "g*", "<Plug>(asterisk-gz*)")
+      vim.keymap.set('n', "g#", "<Plug>(asterisk-gz#)")
+      -- vim.map.set("*",  "<Plug>(asterisk-z*)")
+      -- vim.map.set("#",  "<Plug>(asterisk-z#)")
+      -- vim.map.set("g*", "<Plug>(asterisk-gz*)")
+      -- vim.map.set("g#", "<Plug>(asterisk-gz#)")
     end
   },
   {
