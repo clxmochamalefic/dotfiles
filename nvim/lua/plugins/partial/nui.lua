@@ -43,8 +43,6 @@ return {
         vim.api.nvim_buf_set_lines(messagePopup.bufnr, 0, 1, false, { message })
       end, { nargs = 0, })
 
-
-
       -- fine-cmdline by nui.nvim --------------------------------------------------
       require('fine-cmdline').setup({
         cmdline = {
@@ -80,9 +78,11 @@ return {
         }
       })
 
-      vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', { noremap = true })
-
-    end
+      -- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', { noremap = true })
+    end,
+    keys = {
+      { ":", "<cmd>FineCmdline<CR>", mode = "n" },
+    }
   }
 }
 

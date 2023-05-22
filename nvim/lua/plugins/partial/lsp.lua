@@ -323,28 +323,30 @@ return {
 
       end
     },
-  },
-  {
-    'matsui54/denops-popup-preview.vim',
-    lazy = true,
-    event = 'LspAttach',
-    config = function()
-      vim.g.popup_preview_config = {
-        delay = 10,
-        maxWidth = 100,
-        winblend = 0,
-      }
-      vim.fn["popup_preview#enable"]()
-    end
-  },
-  {
-    repo = 'matsui54/denops-signature_help',
-    lazy = true,
-    event = 'LspAttach',
-    init = function()
-      -- vim.fn["signature_help#enable"]()
-      vim.cmd("call signature_help#enable()")
-    end
+    {
+      'matsui54/denops-popup-preview.vim',
+      dependencies = { 'Shougo/ddc.vim', 'vim-denops/denops.vim', },
+      lazy = true,
+      event = 'LspAttach',
+      config = function()
+        vim.g.popup_preview_config = {
+          delay = 10,
+          maxWidth = 100,
+          winblend = 0,
+        }
+        vim.fn["popup_preview#enable"]()
+      end
+    },
+--    {
+--      repo = 'matsui54/denops-signature_help',
+--      dependencies = { 'Shougo/ddc.vim', 'vim-denops/denops.vim', },
+--      lazy = true,
+--      event = 'LspAttach',
+--      config = function()
+--        -- vim.fn["signature_help#enable"]()
+--        vim.fn["signature_help#enable"]()
+--      end
+--    },
   },
 }
 

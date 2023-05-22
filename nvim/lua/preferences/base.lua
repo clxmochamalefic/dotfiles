@@ -62,7 +62,7 @@ function M.load(_collection)
   --  use clipboard
   vim.g.nopaste = true
   vim.keymap.set("n", "<S-Insert>", "<C-R>+")
-  vim.g.clipboard = "unnamed"
+  vim.opt.clipboard = "unnamed"
 
 
   -- ---------------------------------------------------------------------------

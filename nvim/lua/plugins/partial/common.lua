@@ -44,9 +44,19 @@ return {
 --  },
   {
     'iamcco/markdown-preview.nvim',
-    ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
+    dependencies = {
+      "zhaozg/vim-diagram",
+      "aklt/plantuml-syntax",
+    },
     lazy = true,
-    build = "cd app && yarn install",
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+    cmd = { "MarkdownPreview" },
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+--    ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
   },
   {
     -- completion [{()}]
@@ -60,11 +70,11 @@ return {
     dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },
---  {
---    'LeafCage/vimhelpgenerator',
---    lazy = true,
+  {
+    'LeafCage/vimhelpgenerator',
+    lazy = true,
 --    ft = { 'vimscript', 'lua', 'typescript' }
---  },
+  },
   {
     'Milly/windows-clipboard-history.vim',
     lazy = true,

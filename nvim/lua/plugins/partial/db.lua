@@ -2,7 +2,7 @@ return {
   {
     'tpope/vim-dadbod',
     lazy = true,
-    event = 'VimEnter',
+    event = { 'VimEnter' },
     dependencies = {
       'tpope/vim-dotenv',
       'kristijanhusak/vim-dadbod-ui'
@@ -30,7 +30,7 @@ return {
       vim.g.dbs = {}
 
       if vim.fn.isdirectory(db_toml_dir) ~= 1 then
-        vim.cmd('!mkdir ' + db_toml_dir)
+        vim.cmd('!mkdir ' .. db_toml_dir)
       end
 
       -- local filelist =  vim.fn.expand(db_toml_dir + "/*.toml")
