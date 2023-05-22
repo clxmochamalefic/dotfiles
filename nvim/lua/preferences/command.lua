@@ -74,12 +74,5 @@ vim.api.nvim_create_user_command("Rer",               reload_preference,  {})
 vim.api.nvim_create_user_command("ReloadAll",         reload_all,         {})
 vim.api.nvim_create_user_command("Rea",               reload_all,         {})
 
---  show dein.vim install and update progress
-local function show_dein_progress()
-  vim.fn.echo(vim.fn['dein#get_progress']())
-end
-vim.api.nvim_create_user_command("DeinProgress",  show_dein_progress, {})
-vim.api.nvim_create_user_command("Dp",            show_dein_progress, {})
-
 utils.end_debug(vim.fn["expand"]('%/h'))
 

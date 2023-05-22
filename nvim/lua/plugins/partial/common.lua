@@ -31,16 +31,18 @@ return {
   },
   {
     'vim-denops/denops.vim',
-    config = function()
-      vim.g['denops#deno'] = "deno"
-      local function run_deno_server()
-        vim.cmd("!sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts'")
-        vim.g.denops_server_addr = '127.0.0.1:32123'
-      end
+--    init = function()
+--      local function run_deno_server()
+--        vim.cmd("!sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts --port 32123'")
+--        vim.cmd("!sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts'")
+--        vim.g.denops_server_addr = '127.0.0.1:32123'
+--      end
 
-      vim.api.nvim_create_user_command("RunDenoServer", run_deno_server, {})
-      vim.api.nvim_create_user_command("Rds",           run_deno_server, {})
-    end
+--      run_deno_server()
+--
+--      vim.api.nvim_create_user_command("RunDenoServer", run_deno_server, {})
+--      vim.api.nvim_create_user_command("Rds",           run_deno_server, {})
+--    end
   },
 --  {
 --    'kyazdani42/nvim-web-devicons'
