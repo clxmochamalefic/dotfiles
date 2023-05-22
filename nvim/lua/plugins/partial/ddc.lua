@@ -228,8 +228,8 @@ local function ddc_preference()
     desc              = '[ddc.vim] Manually open popup menu'
   })
 
-  vim.keymap.set('i', '<C-l>', vim.fn["ddc#map#extend"](), { silent = true, expr = true, noremap = true })
-  vim.keymap.set('i', '<C-x><C-f>', vim.fn["ddc#map#manual_complete"]('path'), { silent = true, expr = true, noremap = true })
+  vim.keymap.set('i', '<C-l>',      function() return vim.fn["ddc#map#extend"]() end,                 { silent = true, expr = true, noremap = true })
+  vim.keymap.set('i', '<C-x><C-f>', function() return vim.fn["ddc#map#manual_complete"]('path') end,  { silent = true, expr = true, noremap = true })
 
 
   --  skkeleton
@@ -283,6 +283,7 @@ return {
   event = {'InsertEnter', 'CursorHold'},
   dependencies = {
     'vim-denops/denops.vim',
+
     'pum.vim',
     'Shougo/ddc-ui-pum',
     'Shougo/ddc-source-nvim-lsp',
@@ -305,8 +306,13 @@ return {
     'matsui54/ddc-converter_truncate',
 
     'Milly/windows-clipboard-history.vim',
+
+    'vim-skk/skkeleton',
+
+    'matsui54/denops-popup-preview.vim',
+    'matsui54/denops-signature_help',
   },
-  command = function()
+  config = function()
     ddc_preference()
     snippet_preference()
   end

@@ -27,8 +27,11 @@ return {
     end
   },
   {
+    'kevinhwang91/promise-async'
+  },
+  {
     'vim-denops/denops.vim',
-    init = function()
+    config = function()
       vim.g['denops#deno'] = "deno"
       local function run_deno_server()
         vim.cmd("!sh -c 'deno run -A --no-lock ./denops/@denops-private/cli.ts'")

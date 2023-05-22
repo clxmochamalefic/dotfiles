@@ -325,7 +325,7 @@ return {
     },
     {
       'matsui54/denops-popup-preview.vim',
-      dependencies = { 'Shougo/ddc.vim', 'vim-denops/denops.vim', },
+      dependencies = { 'vim-denops/denops.vim', },
       lazy = true,
       event = 'LspAttach',
       config = function()
@@ -337,16 +337,16 @@ return {
         vim.fn["popup_preview#enable"]()
       end
     },
---    {
---      repo = 'matsui54/denops-signature_help',
---      dependencies = { 'Shougo/ddc.vim', 'vim-denops/denops.vim', },
---      lazy = true,
---      event = 'LspAttach',
---      config = function()
---        -- vim.fn["signature_help#enable"]()
---        vim.fn["signature_help#enable"]()
---      end
---    },
+    {
+      'matsui54/denops-signature_help',
+      dependencies = { 'vim-denops/denops.vim', },
+      lazy = true,
+      event = 'LspAttach',
+      config = function()
+        -- vim.fn["signature_help#enable"]()
+        vim.fn["signature_help#enable"]()
+      end
+    },
   },
 }
 
