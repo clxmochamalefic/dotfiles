@@ -20,6 +20,16 @@ vim.g.is_enable_my_debug = true
 vim.g.my_home_preference_path = vim.fn.expand("~/.config/nvim")
 vim.g.my_initvim_path = vim.fn.expand(vim.g.preference_path)
 
+utils.debug_echo('load rc')
+
+local base    = require("preferences.base")
+local ft      = require("preferences.ft")
+local mapping = require("preferences.mapping")
+local command = require("preferences.command")
+local colour  = require("preferences.colour")
+
+local plugins = require("plugins")
+
 utils.begin_debug(vim.g.my_initvim_path)
 
 local python_preference_path = vim.g.my_home_preference_path
@@ -49,15 +59,14 @@ if not utils.file_exists(python_preference_path .. '/python.lua') then
 end
 
 utils.debug_echo('load plugins')
-require("plugins"):load()
 
-utils.debug_echo('load rc')
+plugins.setup()
 
-require("preferences.base"):load()
-require("preferences.ft")
-require("preferences.mapping")
-require("preferences.colour")
-require("preferences.command")
+base.setup()
+ft.setup()
+mapping.setup()
+command.setup()
+colour.setup()
 
 utils.end_debug(vim.g.my_initvim_path)
 

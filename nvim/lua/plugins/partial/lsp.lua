@@ -3,6 +3,8 @@ return {
   {
     'neovim/nvim-lspconfig',
     lazy = true,
+    cmd = "Mason",
+    event = { 'VimEnter' },
     dependencies = {
       'vim-denops/denops.vim',
       -- neodev.nvim ------------------------------
