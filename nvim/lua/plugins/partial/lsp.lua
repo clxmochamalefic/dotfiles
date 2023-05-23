@@ -325,30 +325,6 @@ return {
 
       end
     },
-    {
-      'matsui54/denops-popup-preview.vim',
-      dependencies = { 'vim-denops/denops.vim', },
-      lazy = true,
-      event = 'LspAttach',
-      config = function()
-        vim.g.popup_preview_config = {
-          delay = 10,
-          maxWidth = 100,
-          winblend = 0,
-        }
-        vim.fn["popup_preview#enable"]()
-      end
-    },
-    {
-      'matsui54/denops-signature_help',
-      dependencies = { 'vim-denops/denops.vim', },
-      lazy = true,
-      event = 'LspAttach',
-      config = function()
-        -- vim.fn["signature_help#enable"]()
-        vim.fn["signature_help#enable"]()
-      end
-    },
   },
 }
 

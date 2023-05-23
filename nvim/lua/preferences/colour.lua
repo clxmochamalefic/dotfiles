@@ -9,17 +9,10 @@ local opt = vim.opt
 local fn = vim.fn
 local api = vim.api
 local g = vim.g
+local hl = vim.highlight
 
 colour.setup = function()
-  -- using colorscheme
-  -- api.nvim_exec([[
-  -- try
-  --   colorscheme onehalfdark
-  -- catch /^Vim\%((\a\+)\)\=:E185/
-  --   colorscheme default
-  --   set background=dark
-  -- endtry
-  -- ]], false)
+  utils.begin_debug("colour")
 
   local colorscheme = "onehalfdark"
 
@@ -28,7 +21,7 @@ colour.setup = function()
       vim.cmd("colorscheme " .. colorscheme)
     end,
     catch = function()
-      vim.cmd("colorscheme " .. "default")
+      vim.cmd("colorscheme " .. "primary")
     end,
     finally = function()
       -- background color
@@ -44,85 +37,59 @@ colour.setup = function()
   --  define colorscheme load function for lazyload
 
   -- onepoint colors
-  local opc                 = {
+  local opc = {
     ctermzero = 0,
-    ctermbg = 249,
-    ctermfg = 46,
-    default = {
-      guibg = "#2F0B3A", guifg = "#D8D8D8"
-    },
-    sub1 = {
-      guibg = "#610B5E", guifg = "#F2F2F2"
-    },
-    sub2 = {
-      guibg = "#FEB2FC", guifg = "#D8D8D8"
-    },
-    sub3 = {
-      guibg = "#dc92ff", guifg = "#F2F2F2"
-    }
+    ctermbg   = 249,
+    ctermfg   = 46,
+    primary   = { guibg = "#2F0B3A", guifg = "#D8D8D8" },
+    secondary = { guibg = "#610B5E", guifg = "#F2F2F2" },
+    sub2      = { guibg = "#FEB2FC", guifg = "#D8D8D8" },
+    sub3      = { guibg = "#dc92ff", guifg = "#F2F2F2" },
   }
 
-  local opc_default         = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.default.guibg,
-    guifg = opc.default.guifg }
-  local opc_sub1            = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub1.guibg,
-    guifg = opc.sub1.guifg }
-  local opc_sub2            = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub2.guibg,
-    guifg = opc.sub2.guifg }
-  local opc_sub3            = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub3.guibg,
-    guifg = opc.sub3.guifg }
+  local opc_primary   = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.primary.guibg,    guifg = opc.primary.guifg }
+  local opc_secondary = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.secondary.guibg,  guifg = opc.secondary.guifg }
+  local opc_sub2      = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub2.guibg,       guifg = opc.sub2.guifg }
+  local opc_sub3      = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub3.guibg,       guifg = opc.sub3.guifg }
 
   --  modify line number col color
-  local onepoint_augroup_id = api.nvim_create_augroup('MyColorSchemeOnePointModify', { clear = true })
+  local onepoint_augroup_id = api.nvim_create_augroup('MyColorScheme', { clear = true })
   api.nvim_create_autocmd('ColorScheme', {
     group = onepoint_augroup_id,
     pattern = '*',
     callback = function()
-      fn.highlight('LineNr', { ctermbg = opc.ctermfg, ctermfg = opc.ctermzero })
-      fn.highlight('CursorLineNr', { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg })
+      -- LineNumber
+      hl.create('LineNr',        { ctermbg = opc.ctermfg, ctermfg = opc.ctermzero })
+      hl.create('CursorLineNr',  { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg })
+
+      -- TransparentBG
+      local opc_none = { ctermbg = "none", guibg = "none" }
+      hl.create("Normal",       opc_none)
+      hl.create("NonText",      opc_none)
+      hl.create("LineNr",       opc_none)
+      hl.create("Folded",       opc_none)
+      hl.create("EndOfBuffer",  opc_none)
     end
   })
 
-  local modify_color_for_comp_augroup_id = api.nvim_create_augroup('ModifyColorForComp', { clear = true })
+  local myhighlight_augroup_id = api.nvim_create_augroup('MyHighlight', { clear = true })
   api.nvim_create_autocmd('ColorScheme', {
-    group = modify_color_for_comp_augroup_id,
+    group = myhighlight_augroup_id,
     callback = function()
-      fn.highlight("RegistersWindow", opc_default)
-      fn.highlight("Pmenu", opc_default)
-      fn.highlight("PmenuSel", opc_sub1)
-      fn.highlight("PmenuSbar", opc_sub2)
-      fn.highlight("PmenuThumb", opc_sub3)
-    end
-  })
+      -- pmenus
+      hl.create("RegistersWindow", opc_primary,   false)
+      hl.create("Pmenu",           opc_primary,   false)
+      hl.create("PmenuSel",        opc_secondary, false)
+      hl.create("PmenuSbar",       opc_sub2,      false)
+      hl.create("PmenuThumb",      opc_sub3,      false)
 
-  local modify_color_for_float_wnd_augroup_id = api.nvim_create_augroup('ModifyColorForFloatWindow', { clear = true })
-  api.nvim_create_autocmd('ColorScheme', {
-    group = modify_color_for_float_wnd_augroup_id,
-    callback = function()
-      fn.highlight("NormalFloat", opc_default)
-      fn.highlight("FloatBorder", opc_default)
-    end
-  })
+      -- floating window
+      hl.create("NormalFloat", opc_primary,       false)
+      hl.create("FloatBorder", opc_primary,       false)
 
-  local modify_color_for_term_augroup_id = api.nvim_create_augroup('ModifyColorForTerm', { clear = true })
-  api.nvim_create_autocmd('ColorScheme', {
-    group = modify_color_for_term_augroup_id,
-    callback = function()
-      fn.highlight("TermCursor", opc_sub1)
-      fn.highlight("TermCursorNC", opc_default)
-    end
-  })
-
-  local opc_none = { ctermbg = "none", guibg = "none" }
-  local transparent_bg_augroup_id = api.nvim_create_augroup('TransparentBG', { clear = true })
-  api.nvim_create_autocmd('ColorScheme', {
-    group = transparent_bg_augroup_id,
-    pattern = '*',
-    callback = function()
-      fn.highlight("Normal", opc_none)
-      fn.highlight("NonText", opc_none)
-      fn.highlight("LineNr", opc_none)
-      fn.highlight("Folded", opc_none)
-      fn.highlight("EndOfBuffer", opc_none)
+      -- terminal window
+      hl.create("TermCursor", opc_secondary,      false)
+      hl.create("TermCursorNC", opc_primary,      false)
     end
   })
 
@@ -131,6 +98,8 @@ colour.setup = function()
     g.terminal_color_0 = '#565F70'
     g.terminal_color_8 = '#717C91'
   end
+
+  utils.end_debug("colour")
 end
 
 return colour

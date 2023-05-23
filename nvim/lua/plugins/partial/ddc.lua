@@ -1,7 +1,7 @@
 local utils = require("utils")
 
 local function ddc_preference()
-  utils.begin_debug("/plugins/ddc.vim load")
+  utils.begin_debug("ddc")
 
   -- Customize global settings
   -- Use around source.
@@ -16,13 +16,13 @@ local function ddc_preference()
   }
 
   local cmd_sources = {
-    ':'; {'cmdline-history', 'cmdline', 'around'},
-    '@'; {'cmdline-history', 'input', 'file', 'around'},
-    '>'; {'cmdline-history', 'input', 'file', 'around'},
-    '/'; {'around', 'line'},
-    '?'; {'around', 'line'},
-    '-'; {'around', 'line'},
-    '='; {'input'},
+    [':'] = { 'cmdline-history', 'cmdline', 'around'},
+    ['@'] = { 'cmdline-history', 'input', 'file', 'around'},
+    ['>'] = { 'cmdline-history', 'input', 'file', 'around'},
+    ['/'] = { 'around', 'line'},
+    ['?'] = { 'around', 'line'},
+    ['-'] = { 'around', 'line'},
+    ['='] = { 'input'},
   }
 
   -- if has('win32')
@@ -32,9 +32,7 @@ local function ddc_preference()
   -- Use matcher_head and sorter_rank.
   -- https://github.com/Shougo/ddc-matcher_head
   -- https://github.com/Shougo/ddc-sorter_rank
-  local sourceOptions = {}
-
-  sourceOptions["_"] = {
+  local source_option_default = {
     mark        = '   ',
     ignoreCase  = true,
     matchers    = {'matcher_fuzzy'},
@@ -46,8 +44,7 @@ local function ddc_preference()
     },
     maxItems    = 10,
   }
-
-  sourceOptions["around"] = {
+  local source_option_around = {
     mark        = '   ',
     isVolatile  = true,
     matchers    = {'matcher_fuzzy'},
@@ -55,23 +52,20 @@ local function ddc_preference()
     converters  = {'converter_fuzzy'},
     maxItems    = 8,
   }
-
-  sourceOptions['buffer'] = {
+  local source_option_buffer = {
     mark        = '   ',
     isVolatile  = true,
     matchers    = {'matcher_fuzzy'},
     sorters     = {'sorter_fuzzy'},
     converters  = {'converter_fuzzy'},
   }
-
-  sourceOptions['file'] = {
+  local source_option_file = {
     mark                    = '   ',
     forceCompletionPattern  = '[\\w@:~._-]/[\\w@:~._-]*',
     minAutoCompleteLength   = 2,
     sorters                 = {'sorter_fuzzy'},
   }
-
-  sourceOptions["nvim-lsp"] = {
+  local source_option_nvimlsp = {
     mark                    = '   ',
     isVolatile              = true,
     forceCompletionPattern  = '\\.\\w*|:\\w*|->\\w*',
@@ -79,41 +73,37 @@ local function ddc_preference()
     sorters                 = {'sorter_fuzzy'},
     converters              = {'converter_fuzzy'}
   }
-  sourceOptions["omni"] = {
+  local source_option_omni = {
     mark = '   ',
   }
-  sourceOptions["skkeleton"] = {
+  local source_option_skkeleton = {
     mark        = ' 🎌 ',
     isVolatile  = true,
     matchers    = {'skkeleton'},
     sorters     = {},
   }
 
-  -- sourceOptions['path'] = {
+  -- local source_option_path = {
   --   mark = '   ',
   --   forceCompletionPattern = '[\\w@:~._-]/[\\w@:~._-]*',
   --   minAutoCompleteLength = 2,
   --   sorters = ['sorter_fuzzy'],
   -- }
-
-  sourceOptions['vsnip'] = {
+  local source_option_vsnip = {
     mark        = '   ',
     dup         = true,
     matchers    = {'matcher_fuzzy'},
     sorters     = {'sorter_fuzzy'},
     converters  = {'converter_fuzzy'}
   }
-
-
-  sourceOptions["cmdline-history"] = {
+  local source_option_cmdlinehistory = {
     mark        = '   ',
     isVolatile  = true,
     matchers    = {'matcher_fuzzy'},
     sorters     = {'sorter_fuzzy'},
     converters  = {'converter_fuzzy'}
   }
-
-  sourceOptions["shell-history"] = {
+  local source_option_shellhistory = {
     mark              = '   ',
     isVolatile        = true,
     minKeywordLength  = 2,
@@ -122,35 +112,51 @@ local function ddc_preference()
     sorters           = {'sorter_fuzzy'},
     converters        = {'converter_fuzzy'}
   }
+  local source_options = {
+    ["_"] = source_option_default,
+    ["around"] = source_option_around,
+    ['buffer'] = source_option_buffer,
+    ['file'] = source_option_file,
+    ["nvim-lsp"] = source_option_nvimlsp,
+    ["omni"] = source_option_omni,
+    ['vsnip'] = source_option_vsnip,
+    ["cmdline-history"] = source_option_cmdlinehistory,
+    ["shell-history"] = source_option_shellhistory,
+  }
+
 
   -- if has('win32')
   --   local source_options["windows-clipboard-history"] = { mark"; '', }
   -- endif
 
-  local sourceParams = {}
-
-  sourceParams['around'] = {
+  local source_params_around = {
     maxSize = 500,
   }
 
-  sourceParams['buffer'] = {
+  local source_params_buffer = {
     requireSameFiletype = false,
     fromAltBuf          = true,
     bufNameStyle        = 'basename',
   }
 
-  sourceParams['file'] = {
+  local source_params_file = {
     trailingSlash   = true,
     followSymlinks  = true,
   }
 
+  local source_params_nvimlsp = {
+    maxSize =    20,
+  }
+
+  local source_params = {
+    ['around']   = source_params_around,
+    ['buffer']   = source_params_buffer,
+    ['file']     = source_params_file,
+    ['nvim-lsp'] = source_params_nvimlsp,
+  }
   -- sourceParams['path'] = {
   --   "cmd"; {'fd', '--max-depth', '5'},
   -- }
-
-  sourceParams['nvim-lsp'] = {
-    maxSize =    20,
-  }
 
   -- if vim.fn.has('win32') then
   --   source_params["windows-clipboard-history"] = {
@@ -158,18 +164,16 @@ local function ddc_preference()
   --     "maxAbbrWidth"; 100,
   --   }
   -- end
-  -- 
-  local filterParams = {}
 
-  filterParams['matcher_fuzzy'] = {
+  local filter_params_matcher_fuzzy = {
     splitMode = 'word'
   }
 
-  filterParams['converter_fuzzy'] = {
+  local filter_params_converter_fuzzy = {
     hlGroup = 'SpellBad'
   }
 
-  filterParams["converter_truncate"] = {
+  local filter_params_truncate = {
     maxAbbrWidth = 40,
     maxInfoWidth = 40,
     maxKindWidth = 20,
@@ -177,11 +181,17 @@ local function ddc_preference()
     ellipsis = '..',
   }
 
+  local filter_params = {
+    ['matcher_fuzzy'] = filter_params_matcher_fuzzy,
+    ['converter_fuzzy'] = filter_params_converter_fuzzy,
+    ["converter_truncate"] = filter_params_truncate,
+  }
+
 
   --  Filetype
   vim.fn["ddc#custom#patch_filetype"]({'toml'}, {
     sourceOptions = {
-      "nvim-lsp"; { forceCompletionPattern = '\\.|[={[,"]\\s*' },
+      ["nvim-lsp"] = { forceCompletionPattern = '\\.|[={[,"]\\s*' },
     }
   })
 
@@ -190,25 +200,25 @@ local function ddc_preference()
     'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
     'json', 'sh', 'lua', 'toml', 'go'
   }, {
-    sources = { 'nvim-lsp'; sources },
+    sources = { ['nvim-lsp'] = sources },
   })
 
 
-  --  integrate preferences.
-  local patch_global = {}
-  patch_global.sources              = sources
-  patch_global.cmdlineSources       = cmd_sources
-  patch_global.sourceOptions        = sourceOptions
-  patch_global.sourceParams         = sourceParams 
-  patch_global.filterParams         = filterParams 
-  patch_global.backspaceCompletion  = true
-
-  --  set other preferences
-  patch_global.autoCompleteEvents = {
+  local autocomplete_events  = {
     'InsertEnter', 'TextChangedI', 'TextChangedP',
     'CmdlineEnter', 'CmdlineChanged',
   }
-  patch_global.ui = 'pum'
+  --  integrate preferences.
+  local patch_global = {
+    sources             = sources,
+    cmdlineSources      = cmd_sources,
+    sourceOptions       = source_options,
+    sourceParams        = source_params,
+    filterParams        = filter_params,
+    backspaceCompletion = true,
+    autoCompleteEvents  = autocomplete_events,
+    ui                  = 'pum',
+  }
 
   vim.fn["ddc#custom#patch_global"](patch_global)
 
@@ -243,7 +253,7 @@ local function ddc_preference()
   --  use ddc.
   vim.fn["ddc#enable"]()
 
-  utils.end_debug("/plugins/ddc.vim load")
+  utils.end_debug("ddc")
 
 end
 
@@ -278,7 +288,7 @@ end
 return {
   'Shougo/ddc.vim',
   lazy = true,
-  event = {'InsertEnter', 'CursorHold'},
+  event = { 'InsertEnter', 'CursorHold' },
   dependencies = {
     'vim-denops/denops.vim',
 
@@ -307,8 +317,29 @@ return {
 
     'vim-skk/skkeleton',
 
-    'matsui54/denops-popup-preview.vim',
-    'matsui54/denops-signature_help',
+    {
+      'matsui54/denops-popup-preview.vim',
+      dependencies = { 'vim-denops/denops.vim', },
+      lazy = true,
+      event = 'LspAttach',
+      config = function()
+        vim.g.popup_preview_config = {
+          delay = 10,
+          maxWidth = 100,
+          winblend = 0,
+        }
+        vim.fn["popup_preview#enable"]()
+      end
+    },
+    {
+      'matsui54/denops-signature_help',
+      dependencies = { 'vim-denops/denops.vim', },
+      lazy = true,
+      event = 'LspAttach',
+      config = function()
+        vim.fn["signature_help#enable"]()
+      end
+    },
   },
   config = function()
     ddc_preference()
