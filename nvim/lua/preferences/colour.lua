@@ -1,25 +1,43 @@
 -- ---------------------------------------------------------------------------
 --  COLORSCHEME PREFERENCE
--- background color
-vim.o.background = "dark"
+
+local utils = require("utils")
+
 -- using colorscheme
-vim.api.nvim_exec([[
-try
-  colorscheme onehalfdark
-catch /^Vim\%((\a\+)\)\=:E185/
-  colorscheme default
-  set background=dark
-endtry
-]], false)
+-- vim.api.nvim_exec([[
+-- try
+--   colorscheme onehalfdark
+-- catch /^Vim\%((\a\+)\)\=:E185/
+--   colorscheme default
+--   set background=dark
+-- endtry
+-- ]], false)
+
+local colorscheme = "onehalfdark"
+
+utils.try_catch({
+  try = function()
+    vim.cmd("colorscheme " .. colorscheme)
+  end,
+  catch = function()
+    vim.cmd("colorscheme " .. "default")
+  end,
+  finally = function()
+    -- background color
+    vim.opt.background = "dark"
+  end
+})
+
+vim.opt.termguicolors = true
 
 --  highlight cursor line
-vim.o.cursorline = true
+vim.opt.cursorline = true
 
 --  define colorscheme load function for lazyload
 
 -- onepoint colors
 local opc = {
-  ctermzero = 249,
+  ctermzero = 0,
   ctermbg = 249,
   ctermfg = 46,
   default = {
@@ -97,7 +115,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 --  modify color by colorscheme
-if colorscheme == 'onehalfdark' then
+if colorscheme == "onehalfdark" then
   vim.g.terminal_color_0 = '#565F70'
   vim.g.terminal_color_8 = '#717C91'
 end

@@ -268,7 +268,7 @@ return {
     'rcarriga/nvim-notify',
     lazy = true,
     event = { 'BufEnter' },
-    config = function()
+    init = function()
       vim.notify = require("notify")
       vim.notify.setup({
           background_colour = "#000000",

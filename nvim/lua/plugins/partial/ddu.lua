@@ -2,14 +2,21 @@ local utils = require('utils')
 
 local fn = vim.fn
 
+local DDU_TYPE = { FF = 0, Filer = 1 }
+
 -- ddu-ui-filer
-local current_filer = 0
+local current_filer = 1
 local filers = { 'filer_1', 'filer_2', 'filer_3', 'filer_4', }
 
 local function show_ddu_filer()
-  utils.debug_echo("begin show_ddu_filer")
+  utils.begin_debug("show_ddu_filer")
+  for index, value in ipairs(filers) do
+    utils.debug_echo("filers: " .. index .. " : " .. value)
+  end
+  utils.debug_echo("current_filer: " .. current_filer)
+  utils.debug_echo("name: " .. filers[current_filer])
   fn["ddu#start"]({ name = filers[current_filer] })
-  utils.debug_echo("end show_ddu_filer")
+  utils.end_debug("show_ddu_filer")
 end
 local function open_ddu_filer(window_id)
   current_filer = window_id
@@ -20,9 +27,9 @@ end
 -- ddu-ui-ff
 local current_ff_name = 'buffer'
 local function show_ddu_ff()
-  utils.debug_echo("begin show_ddu_ff")
+  utils.begin_debug("show_ddu_ff")
   fn["ddu#start"]({ name = current_ff_name })
-  utils.debug_echo("end show_ddu_ff")
+  utils.end_debug("show_ddu_ff")
 end
 local function open_ddu_ff(name)
   current_ff_name = name
@@ -36,24 +43,24 @@ end
 
 local function my_ddu_choosewin(src, args)
   utils.debug_echo("begin my_ddu_choosewin")
+  utils.debug_echo("src: " .. src)
+  utils.debug_echo("args", args)
+
   utils.try_catch {
     try = function()
-      utils.debug_echo("begin try --->")
-      local path = args[0].action.path
+      local path = args.items[1].action.path
       fn["choosewin#start"](win_all(), {auto_choose = true, hook_enable = false })
       vim.cmd('edit ' .. path)
-      utils.debug_echo("<--- end try")
     end,
     catch = function()
-      utils.debug_echo("begin catch --->")
-      if src == 0 then
-        -- call ddu#ui#ff#do_action('itemAction')
+      if src == DDU_TYPE.FF then
         fn["ddu#ui#ff#do_action"]('itemAction', args)
+      elseif src == DDU_TYPE.Filer then
+        fn["ddu#ui#filer#do_action"]('itemAction', args)
       else
         -- call ddu#ui#filer#do_action('itemAction')
-        fn["ddu#ui#filer#do_action"]('itemAction', args)
+        utils.echoerr("failed my_ddu_choosewin")
       end
-      utils.debug_echo("end catch --->")
     end
   }
   utils.debug_echo("end my_ddu_choosewin")
@@ -142,7 +149,7 @@ end
 local function ddu_ff()
   utils.begin_debug('ddu ff')
 
-  fn["ddu#custom#action"]('kind', 'file', 'ff_mychoosewin', function(args) my_ddu_choosewin(0, args) end)
+  fn["ddu#custom#action"]('kind', 'file', 'ff_mychoosewin', function(args) my_ddu_choosewin(DDU_TYPE.FF, args) end)
 
   fn["ddu#custom#action"]('kind', 'file', 'ff_open_buffer',       function() open_ddu_ff('buffer') end )
   fn["ddu#custom#action"]('kind', 'file', 'ff_open_mrw',          function() open_ddu_ff('mrw') end )
@@ -351,48 +358,49 @@ end
 local function ddu_filer()
   utils.begin_debug('ddu filer')
   --
-  fn["ddu#custom#action"]('kind', 'file', 'open_filer1', function() open_ddu_filer(0) end)
-  fn["ddu#custom#action"]('kind', 'file', 'open_filer2', function() open_ddu_filer(1) end)
-  fn["ddu#custom#action"]('kind', 'file', 'open_filer3', function() open_ddu_filer(2) end)
-  fn["ddu#custom#action"]('kind', 'file', 'open_filer4', function() open_ddu_filer(3) end)
+  fn["ddu#custom#action"]('kind', 'file', 'open_filer1', function() open_ddu_filer(1) end)
+  fn["ddu#custom#action"]('kind', 'file', 'open_filer2', function() open_ddu_filer(2) end)
+  fn["ddu#custom#action"]('kind', 'file', 'open_filer3', function() open_ddu_filer(3) end)
+  fn["ddu#custom#action"]('kind', 'file', 'open_filer4', function() open_ddu_filer(4) end)
 
   local function ddu_filer_my_settings()
     utils.begin_debug('ddu_filer_my_settings')
 
     utils.debug_echo('basic keymaps')
     -- basic actions
-    vim.keymap.set("n", "q", fn["ddu#ui#filer#do_action"]('quit')        , { noremap = true, silent = true, buffer = true })
-    vim.keymap.set("n", "z", fn["ddu#ui#filer#do_action"]('quit')        , { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "q", function() fn["ddu#ui#filer#do_action"]('quit')          end, { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "z", function() fn["ddu#ui#filer#do_action"]('quit')          end, { noremap = true, silent = true, buffer = true })
     -- TODO: redraw
-    vim.keymap.set("n", "R", fn["ddu#ui#filer#do_action"]('refreshItems'), { noremap = true, silent = true, buffer = true })
-    vim.keymap.set("n", "a", fn["ddu#ui#filer#do_action"]('chooseAction'), { noremap = true, silent = true, buffer = true })
-    vim.keymap.set("n", "P", fn["ddu#ui#filer#do_action"]('preview')     , { noremap = true, silent = true, buffer = true })
+    -- nnoremap <buffer><silent> R     <Cmd>call ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
+    vim.keymap.set("n", "R", function() fn["ddu#ui#filer#do_action"]('refreshItems')  end, { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "a", function() fn["ddu#ui#filer#do_action"]('chooseAction')  end, { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "P", function() fn["ddu#ui#filer#do_action"]('preview')       end, { noremap = true, silent = true, buffer = true })
 
     -- change window
-    vim.keymap.set("n", "<F5>", fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer1', params = { id = 0 }, quit = true }), { noremap = true, silent = true, buffer = true })
-    vim.keymap.set("n", "<F6>", fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer2', params = { id = 1 }, quit = true }), { noremap = true, silent = true, buffer = true })
-    vim.keymap.set("n", "<F7>", fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer3', params = { id = 2 }, quit = true }), { noremap = true, silent = true, buffer = true })
-    vim.keymap.set("n", "<F8>", fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer4', params = { id = 3 }, quit = true }), { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "<F5>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer1', params = { id = 0 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "<F6>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer2', params = { id = 1 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "<F7>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer3', params = { id = 2 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
+    vim.keymap.set("n", "<F8>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer4', params = { id = 3 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
 
     utils.debug_echo('change dir keymaps')
     -- change directory (path)
     vim.keymap.set("n", "<CR>", function()
-      return fn["ddu#ui#get_item"]():get('isTree', false)
+      return fn["ddu#ui#get_item"]()['isTree']
       and  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'narrow'})
       or   fn["ddu#ui#filer#do_action"]('itemAction', { name = 'filer_mychoosewin', quit = true })
     end, { noremap = true, silent = true, buffer = true, expr = true })
     vim.keymap.set("n", "h", function()
-      return fn["ddu#ui#get_item"]():get('isTree', false)
+      return fn["ddu#ui#get_item"]()['isTree']
       and  fn["ddu#ui#filer#do_action"]('collapseItem')
       or   utils.echoe('cannot close this item')
     end, { noremap = true, silent = true, buffer = true, expr = true })
     vim.keymap.set("n", "l", function()
-      return fn["ddu#ui#get_item"]():get('isTree', false)
+      return fn["ddu#ui#get_item"]()['isTree']
       and fn["ddu#ui#filer#do_action"]('expandItem')
       or  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open', params = { command = 'vsplit' } })
     end, { noremap = true, silent = true, buffer = true, expr = true })
     vim.keymap.set("n", "L", function()
-      return fn["ddu#ui#get_item"]():get('isTree', false)
+      return fn["ddu#ui#get_item"]()['isTree']
       and fn["ddu#ui#filer#do_action"]('expandItem')
       or  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open', params = { command = 'split' } })
     end, { noremap = true, silent = true, buffer = true, expr = true })
@@ -418,8 +426,10 @@ local function ddu_filer()
   end
 
   local ddu_filer_sources = {
+    {
       name = 'file',
       param = {},
+    }
   }
   local ddu_filer_source_options = {
     ["_"] = {
@@ -518,7 +528,7 @@ local function ddu_filer()
   vim.g.floating_ddu_ui_params_4preference = vim.g.floating_ddu_ui_params_default
   vim.g.floating_ddu_ui_params_4preference.search = fn.expand(vim.g.my_initvim_path)
   --
-  fn["ddu#custom#action"]('kind', 'file', 'filer_mychoosewin', function(args) return my_ddu_choosewin(1, args) end)
+  fn["ddu#custom#action"]('kind', 'file', 'filer_mychoosewin', function(args) return my_ddu_choosewin(DDU_TYPE.Filer, args) end)
 
   local augroup_id = vim.api.nvim_create_augroup('my_ddu_ff_preference', { clear = true })
   vim.api.nvim_create_autocmd({ 'TabEnter', 'WinEnter', 'CursorHold', 'FocusGained' }, {
