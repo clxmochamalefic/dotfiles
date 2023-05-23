@@ -1,7 +1,7 @@
+local utils = require("utils")
+
 local function ddc_preference()
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("begin /plugins/ddc.vim load")
-  end
+  utils.begin_debug("/plugins/ddc.vim load")
 
   -- Customize global settings
   -- Use around source.
@@ -243,9 +243,7 @@ local function ddc_preference()
   --  use ddc.
   vim.fn["ddc#enable"]()
 
-  if vim.g.is_enable_my_debug then
-    vim.fn.echo("end /plugins/ddc.vim load")
-  end
+  utils.end_debug("/plugins/ddc.vim load")
 
 end
 

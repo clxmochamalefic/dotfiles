@@ -3,10 +3,29 @@ local M = {}
 function M.load(_collection)
 end
 
+function M._echo(type, mes)
+  vim.cmd("echo" .. type .. " '" .. mes .. "'")
+end
+
+function M.echo( mes)
+  M._echo("", mes)
+end
+function M.echom(mes)
+  M._echo("m", mes)
+end
+
+function M.echoerr(mes)
+  M._echo("err", mes)
+end
+
+function M.echoe(mes)
+  M.echoerr(mes)
+end
+
 -- debug preference
 function M.debug_echo(mes)
   if vim.g.is_enable_my_debug then
-    vim.fn.echo(mes)
+    M.echom(mes)
   end
 end
 

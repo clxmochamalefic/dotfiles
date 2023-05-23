@@ -7,21 +7,26 @@ local current_filer = 0
 local filers = { 'filer_1', 'filer_2', 'filer_3', 'filer_4', }
 
 local function show_ddu_filer()
+  utils.debug_echo("begin show_ddu_filer")
   fn["ddu#start"]({ name = filers[current_filer] })
+  utils.debug_echo("end show_ddu_filer")
 end
 local function open_ddu_filer(window_id)
   current_filer = window_id
+  utils.echom("ddu-filer: " .. name)
   show_ddu_filer()
 end
 
 -- ddu-ui-ff
 local current_ff_name = 'buffer'
 local function show_ddu_ff()
+  utils.debug_echo("begin show_ddu_ff")
   fn["ddu#start"]({ name = current_ff_name })
+  utils.debug_echo("end show_ddu_ff")
 end
 local function open_ddu_ff(name)
   current_ff_name = name
-  fn.echom(name)
+  utils.echom("ddu-ff: " .. name)
   show_ddu_ff()
 end
 
@@ -30,13 +35,17 @@ local function win_all()
 end
 
 local function my_ddu_choosewin(src, args)
+  utils.debug_echo("begin my_ddu_choosewin")
   utils.try_catch {
     try = function()
+      utils.debug_echo("begin try --->")
       local path = args[0].action.path
       fn["choosewin#start"](win_all(), {auto_choose = true, hook_enable = false })
       vim.cmd('edit ' .. path)
+      utils.debug_echo("<--- end try")
     end,
     catch = function()
+      utils.debug_echo("begin catch --->")
       if src == 0 then
         -- call ddu#ui#ff#do_action('itemAction')
         fn["ddu#ui#ff#do_action"]('itemAction', args)
@@ -44,8 +53,10 @@ local function my_ddu_choosewin(src, args)
         -- call ddu#ui#filer#do_action('itemAction')
         fn["ddu#ui#filer#do_action"]('itemAction', args)
       end
+      utils.debug_echo("end catch --->")
     end
   }
+  utils.debug_echo("end my_ddu_choosewin")
 end
 
 local function ddu_basic()
@@ -130,9 +141,6 @@ end
 
 local function ddu_ff()
   utils.begin_debug('ddu ff')
-  if vim.g.is_enable_my_debug then
-    fn.echo "begin /plugins/ff.ddu.vim load"
-  end
 
   fn["ddu#custom#action"]('kind', 'file', 'ff_mychoosewin', function(args) my_ddu_choosewin(0, args) end)
 
@@ -236,7 +244,7 @@ local function ddu_ff()
     }
   })
 
-  vim.api.nvim_create_user_command('DduBuffer', function() fn["ddu#start"]({ name = 'buffer' }) end, {})
+  vim.api.nvim_create_user_command('DduBuffer', function() open_ddu_ff("buffer") end, {})
 
   --  ddu-source-file_old
   fn["ddu#custom#patch_local"]('file_old', {
@@ -257,7 +265,7 @@ local function ddu_ff()
     }
   })
 
-  vim.api.nvim_create_user_command('DduFileOld', function() fn["ddu#start"]({ name = 'file_old' }) end, {})
+  vim.api.nvim_create_user_command('DduFileOld', function() open_ddu_ff("file_old") end, {})
 
   --  ddu-source-emoji
   fn["ddu#custom#patch_local"]('emoji', {
@@ -280,7 +288,7 @@ local function ddu_ff()
     }
   })
 
-  vim.api.nvim_create_user_command('DduEmoji', function() fn["ddu#start"]({ name = 'emoji' }) end, {})
+  vim.api.nvim_create_user_command('DduEmoji', function() open_ddu_ff("emoji") end, {})
 
   --  ddu-source-mrw
   local mr_source = {
@@ -300,7 +308,7 @@ local function ddu_ff()
     },
   })
 
-  vim.api.nvim_create_user_command('DduMrw', function() fn["ddu#start"]({ name = 'mrw' }) end, {})
+  vim.api.nvim_create_user_command('DduMrw', function() open_ddu_ff("mrw") end, {})
 
   local mrw_source = {
     name  = 'mr',
@@ -318,7 +326,7 @@ local function ddu_ff()
     },
   })
 
-  vim.api.nvim_create_user_command('DduMrwCurrent', function() fn["ddu#start"]({ name = 'mrw_current' }) end, {})
+  vim.api.nvim_create_user_command('DduMrwCurrent', function() open_ddu_ff("mrw_current") end, {})
 
 
   --  windows-clipboard-history
@@ -334,7 +342,7 @@ local function ddu_ff()
       },
     })
 
-    vim.api.nvim_create_user_command('DduClip', function() fn["ddu#start"]({ name = 'clip_history' }) end, {})
+    vim.api.nvim_create_user_command('DduClip', function() open_ddu_ff("clip_history") end, {})
   end
 
   utils.end_debug('ddu ff')
@@ -349,6 +357,9 @@ local function ddu_filer()
   fn["ddu#custom#action"]('kind', 'file', 'open_filer4', function() open_ddu_filer(3) end)
 
   local function ddu_filer_my_settings()
+    utils.begin_debug('ddu_filer_my_settings')
+
+    utils.debug_echo('basic keymaps')
     -- basic actions
     vim.keymap.set("n", "q", fn["ddu#ui#filer#do_action"]('quit')        , { noremap = true, silent = true, buffer = true })
     vim.keymap.set("n", "z", fn["ddu#ui#filer#do_action"]('quit')        , { noremap = true, silent = true, buffer = true })
@@ -363,6 +374,7 @@ local function ddu_filer()
     vim.keymap.set("n", "<F7>", fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer3', params = { id = 2 }, quit = true }), { noremap = true, silent = true, buffer = true })
     vim.keymap.set("n", "<F8>", fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer4', params = { id = 3 }, quit = true }), { noremap = true, silent = true, buffer = true })
 
+    utils.debug_echo('change dir keymaps')
     -- change directory (path)
     vim.keymap.set("n", "<CR>", function()
       return fn["ddu#ui#get_item"]():get('isTree', false)
@@ -372,7 +384,7 @@ local function ddu_filer()
     vim.keymap.set("n", "h", function()
       return fn["ddu#ui#get_item"]():get('isTree', false)
       and  fn["ddu#ui#filer#do_action"]('collapseItem')
-      or   fn.echoe('cannot close this item')
+      or   utils.echoe('cannot close this item')
     end, { noremap = true, silent = true, buffer = true, expr = true })
     vim.keymap.set("n", "l", function()
       return fn["ddu#ui#get_item"]():get('isTree', false)
@@ -385,6 +397,7 @@ local function ddu_filer()
       or  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open', params = { command = 'split' } })
     end, { noremap = true, silent = true, buffer = true, expr = true })
 
+    utils.debug_echo('change dir alias keymaps')
     -- change directory aliases
     vim.keymap.set("n", "^",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "narrow", params = { path = fn.expand(vim.g.my_initvim_path) } }) end, { noremap = true, silent = true, buffer = true })
     vim.keymap.set("n", "|",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "narrow", params = { path = fn.expand("~/repos") } })             end, { noremap = true, silent = true, buffer = true })
@@ -400,13 +413,13 @@ local function ddu_filer()
     vim.keymap.set("n", "y",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "yank" })                                                         end, { noremap = true, silent = true, buffer = true })
     vim.keymap.set("n", "d",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "delete" })                                                       end, { noremap = true, silent = true, buffer = true })
     vim.keymap.set("n", "r",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "rename" })                                                       end, { noremap = true, silent = true, buffer = true })
+
+    utils.end_debug('ddu_filer_my_settings')
   end
 
   local ddu_filer_sources = {
-    {
       name = 'file',
       param = {},
-    },
   }
   local ddu_filer_source_options = {
     ["_"] = {

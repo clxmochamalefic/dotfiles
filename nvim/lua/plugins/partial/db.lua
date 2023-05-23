@@ -1,3 +1,5 @@
+local utils = require("utils")
+
 return {
   {
     'tpope/vim-dadbod',
@@ -8,9 +10,7 @@ return {
       'kristijanhusak/vim-dadbod-ui'
     },
     config = function ()
-      if vim.g.is_enable_my_debug then
-        vim.fn.echo("begin /plugins/db.lazy.post.source.vim")
-      end
+      utils.begin_debug("/plugins/db.lazy.post.source.vim")
 
       -- TOML FORMAT
       -- [local]
@@ -44,9 +44,7 @@ return {
       --   endfor
       -- endfor
 
-      if vim.g.is_enable_my_debug then
-        vim.fn.echo("end /plugins/db.lazy.post.source.vim")
-      end
+      utils.end_debug("/plugins/db.lazy.post.source.vim")
 
     end
   }
