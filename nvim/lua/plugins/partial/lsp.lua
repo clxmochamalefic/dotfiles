@@ -51,8 +51,8 @@ return {
             {
               'nvim-treesitter/nvim-treesitter',
               event = 'BufRead',
-              cmd = { 'TSUpdate', 'TSInstall', 'TSInstallInfo', 'TSModuleInfo', 'TSConfigInfo' },
-              build = 'vim.cmd([[:TSUpdate]])',
+              cmd = { 'TSUpdate', 'TSInstall', 'TSInstallFromGrammar', 'TSInstallInfo', 'TSModuleInfo', 'TSConfigInfo' },
+              build = 'vim.cmd("TSInstallFromGrammar")',
             },
             'nvim-tree/nvim-web-devicons',
             event = { 'LspAttach' }

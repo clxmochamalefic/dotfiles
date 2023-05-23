@@ -1,7 +1,7 @@
 local utils = require("utils")
 
-local function ddc_preference()
-  utils.begin_debug("ddc")
+local function ddc_init()
+  utils.begin_debug("ddc_init")
 
   -- Customize global settings
   -- Use around source.
@@ -16,7 +16,7 @@ local function ddc_preference()
   }
 
   local cmd_sources = {
-    [':'] = { 'cmdline-history', 'cmdline', 'around'},
+    [':'] = { 'cmdline-history', 'around'},
     ['@'] = { 'cmdline-history', 'input', 'file', 'around'},
     ['>'] = { 'cmdline-history', 'input', 'file', 'around'},
     ['/'] = { 'around', 'line'},
@@ -113,15 +113,15 @@ local function ddc_preference()
     converters        = {'converter_fuzzy'}
   }
   local source_options = {
-    ["_"] = source_option_default,
-    ["around"] = source_option_around,
-    ['buffer'] = source_option_buffer,
-    ['file'] = source_option_file,
-    ["nvim-lsp"] = source_option_nvimlsp,
-    ["omni"] = source_option_omni,
-    ['vsnip'] = source_option_vsnip,
+    ["_"]               = source_option_default,
+    ["around"]          = source_option_around,
+    ['buffer']          = source_option_buffer,
+    ['file']            = source_option_file,
+    ["nvim-lsp"]        = source_option_nvimlsp,
+    ["omni"]            = source_option_omni,
+    ['vsnip']           = source_option_vsnip,
     ["cmdline-history"] = source_option_cmdlinehistory,
-    ["shell-history"] = source_option_shellhistory,
+    ["shell-history"]   = source_option_shellhistory,
   }
 
 
@@ -182,30 +182,30 @@ local function ddc_preference()
   }
 
   local filter_params = {
-    ['matcher_fuzzy'] = filter_params_matcher_fuzzy,
-    ['converter_fuzzy'] = filter_params_converter_fuzzy,
-    ["converter_truncate"] = filter_params_truncate,
+    ['matcher_fuzzy']       = filter_params_matcher_fuzzy,
+    ['converter_fuzzy']     = filter_params_converter_fuzzy,
+    ["converter_truncate"]  = filter_params_truncate,
   }
 
 
-  --  Filetype
-  vim.fn["ddc#custom#patch_filetype"]({'toml'}, {
-    sourceOptions = {
-      ["nvim-lsp"] = { forceCompletionPattern = '\\.|[={[,"]\\s*' },
-    }
-  })
+  -- --  Filetype
+  -- vim.fn["ddc#custom#patch_filetype"]({'toml'}, {
+  --   sourceOptions = {
+  --     ["nvim-lsp"] = { forceCompletionPattern = '\\.|[={[,"]\\s*' },
+  --   }
+  -- })
 
-  vim.fn["ddc#custom#patch_filetype"](
-  {
-    'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
-    'json', 'sh', 'lua', 'toml', 'go'
-  }, {
-    sources = { ['nvim-lsp'] = sources },
-  })
+  -- vim.fn["ddc#custom#patch_filetype"](
+  -- {
+  --   'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
+  --   'json', 'sh', 'lua', 'toml', 'go'
+  -- }, {
+  --   sources = { ['nvim-lsp'] = sources },
+  -- })
 
 
   local autocomplete_events  = {
-    'InsertEnter', 'TextChangedI', 'TextChangedP',
+    'InsertEnter',  'TextChangedI', 'TextChangedP',
     'CmdlineEnter', 'CmdlineChanged',
   }
   --  integrate preferences.
@@ -222,9 +222,16 @@ local function ddc_preference()
 
   vim.fn["ddc#custom#patch_global"](patch_global)
 
+  --  use ddc.
+  vim.fn["ddc#enable"]()
+
+  utils.end_debug("ddc_init")
+end
+
+local function ddc_preference()
+  utils.begin_debug("ddc_preference")
 
   --  Key mappings
-
   --  For insert mode completion
   vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
   vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
@@ -241,7 +248,6 @@ local function ddc_preference()
   vim.keymap.set('i', '<C-l>',      function() return vim.fn["ddc#map#extend"]() end,                 { silent = true, expr = true, noremap = true })
   vim.keymap.set('i', '<C-x><C-f>', function() return vim.fn["ddc#map#manual_complete"]('path') end,  { silent = true, expr = true, noremap = true })
 
-
   --  skkeleton
   local skkeleton_dir = vim.fn.expand('~/.cache/.skkeleton')
   if vim.fn.isdirectory(skkeleton_dir) ~= 1 then
@@ -250,38 +256,18 @@ local function ddc_preference()
 
   vim.fn["skkeleton#config"]({ completionRankFile = '~/.cache/.skkeleton/rank.json' })
 
-  --  use ddc.
-  vim.fn["ddc#enable"]()
-
-  utils.end_debug("ddc")
-
+  utils.end_debug("ddc_preference")
 end
 
 local function snippet_preference()
-  vim.keymap.set(
-    'i',
-    '<Tab>',
-    function() return vim.fn["vsnip#available"](1) and '<Plug>(vsnip-expand-or-jump)' or '<Tab>' end,
-    { expr = true }
-  )
-  vim.keymap.set(
-    's',
-    '<Tab>',
-    function() return vim.fn["vsnip#available"](1) and '<Plug>(vsnip-expand-or-jump)' or '<Tab>' end,
-    { expr = true }
-  )
-  vim.keymap.set(
-    'i',
-    '<S-Tab>',
-    function() return vim.fn["vsnip#jumpable"](-1) and '<Plug>(vsnip-jump-prev)' or '<S-Tab>' end,
-    { expr = true }
-  )
-  vim.keymap.set(
-    's',
-    '<S-Tab>',
-    function() return vim.fn["vsnip#jumpable"](-1) and '<Plug>(vsnip-jump-prev)' or '<S-Tab>' end,
-    { expr = true }
-  )
+  utils.begin_debug("snippet_preference")
+
+  vim.keymap.set('i', '<Tab>',    function() return vim.fn["vsnip#available"](1) and '<Plug>(vsnip-expand-or-jump)' or '<Tab>' end, { expr = true })
+  vim.keymap.set('s', '<Tab>',    function() return vim.fn["vsnip#available"](1) and '<Plug>(vsnip-expand-or-jump)' or '<Tab>' end, { expr = true })
+  vim.keymap.set('i', '<S-Tab>',  function() return vim.fn["vsnip#jumpable"](-1) and '<Plug>(vsnip-jump-prev)' or '<S-Tab>' end,    { expr = true })
+  vim.keymap.set('s', '<S-Tab>',  function() return vim.fn["vsnip#jumpable"](-1) and '<Plug>(vsnip-jump-prev)' or '<S-Tab>' end,    { expr = true })
+
+  utils.end_debug("snippet_preference")
 end
 
 
@@ -292,7 +278,7 @@ return {
   dependencies = {
     'vim-denops/denops.vim',
 
-    'pum.vim',
+    'Shougo/pum.vim',
     'Shougo/ddc-ui-pum',
     'Shougo/ddc-source-nvim-lsp',
     'Shougo/ddc-source-around',
@@ -341,7 +327,10 @@ return {
       end
     },
   },
+  init = function()
+  end,
   config = function()
+    ddc_init()
     ddc_preference()
     snippet_preference()
   end
