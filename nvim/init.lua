@@ -67,6 +67,7 @@ plugins.setup()
 ft.setup()
 mapping.setup()
 command.setup()
+
 colour.setup()
 
 utils.end_debug(vim.g.my_initvim_path)

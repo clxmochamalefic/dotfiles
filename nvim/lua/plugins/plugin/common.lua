@@ -124,10 +124,6 @@ return {
       vim.keymap.set('n', "#",  "<Plug>(asterisk-z#)")
       vim.keymap.set('n', "g*", "<Plug>(asterisk-gz*)")
       vim.keymap.set('n', "g#", "<Plug>(asterisk-gz#)")
-      -- vim.map.set("*",  "<Plug>(asterisk-z*)")
-      -- vim.map.set("#",  "<Plug>(asterisk-z#)")
-      -- vim.map.set("g*", "<Plug>(asterisk-gz*)")
-      -- vim.map.set("g#", "<Plug>(asterisk-gz#)")
     end
   },
   {
