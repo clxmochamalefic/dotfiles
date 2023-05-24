@@ -1,18 +1,139 @@
 -- ---------------------------------------------------------------------------
 --  COLORSCHEME PREFERENCE
 
-local colour = {}
-
 local utils = require("utils")
 
 local opt = vim.opt
 local fn = vim.fn
 local api = vim.api
 local g = vim.g
-local hl = vim.highlight
+local hl_define = vim.highlight.create
+
+local is_nvim_version_gt_08 = fn.has('nvim-0.8')
+
+if is_nvim_version_gt_08 then
+  hl_define = api.nvim_set_hl
+end
+
+-- onepoint colors
+local opc = {
+  -- cui
+  c = {
+    zero = 0,
+    bg   = 249,
+    fg   = 46,
+  },
+  cn = {
+    bg   = "none",
+    fg   = "none",
+  },
+  -- gui
+  g = {
+    primary   = { bg = "#2F0B3A", fg = "#D8D8D8" },
+    secondary = { bg = "#610B5E", fg = "#F2F2F2" },
+    sub2      = { bg = "#FEB2FC", fg = "#D8D8D8" },
+    sub3      = { bg = "#dc92ff", fg = "#F2F2F2" },
+  }
+}
+
+local opc_cui_primary   = {}
+local opc_cui_secondary = {}
+local opc_primary       = {}
+local opc_secondary     = {}
+local opc_sub2          = {}
+local opc_sub3          = {}
+local opc_none          = {}
+
+if is_nvim_version_gt_08 then
+  opc_cui_primary   = { bg = opc.g.primary.bg, fg = opc.g.primary.fg }
+  opc_cui_secondary = { bg = opc.g.sub3.bg,    fg = opc.g.sub3.fg }
+  opc_primary       = opc.g.primary
+  opc_secondary     = opc.g.secondary
+  opc_sub2          = opc.g.sub2
+  opc_sub3          = opc.g.sub3
+  opc_none          = opc.cn
+else
+  opc_cui_primary   = { ctermbg = opc.c.fg,   ctermfg = opc.c.zero }
+  opc_cui_secondary = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg }
+  opc_primary       = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.primary.bg,    guifg = opc.g.primary.fg }
+  opc_secondary     = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.secondary.bg,  guifg = opc.g.secondary.fg }
+  opc_sub2          = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.sub2.bg,       guifg = opc.g.sub2.fg }
+  opc_sub3          = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.sub3.bg,       guifg = opc.g.sub3.fg }
+  opc_none          = { ctermbg = opc.cn.bg,  ctermfg = opc.cn.fg }
+end
+
+local colour = {}
+
+colour.get_my_colorscheme = function()
+  utils.begin_debug("colour.get_my_colorscheme")
+  local my_colorscheme = {}
+
+  if is_nvim_version_gt_08 then
+    utils.debug_echo("nvim-version: 0.8")
+    -- LineNumber
+    table.insert(my_colorscheme, { 0, 'LineNr',       opc_cui_primary })
+    table.insert(my_colorscheme, { 0, 'CursorLineNr', opc_cui_secondary })
+    -- -- TransparentBG
+    table.insert(my_colorscheme, { 0, "Normal",       opc_none })
+    table.insert(my_colorscheme, { 0, "NonText",      opc_none })
+    table.insert(my_colorscheme, { 0, "LineNr",       opc_none })
+    table.insert(my_colorscheme, { 0, "Folded",       opc_none })
+    table.insert(my_colorscheme, { 0, "EndOfBuffer",  opc_none })
+  else
+    -- LineNumber
+    table.insert(my_colorscheme, { 'LineNr',          opc_cui_primary,   false })
+    table.insert(my_colorscheme, { 'CursorLineNr',    opc_cui_secondary, false })
+    -- -- TransparentBG
+    table.insert(my_colorscheme, { "Normal",          opc_none,          false })
+    table.insert(my_colorscheme, { "NonText",         opc_none,          false })
+    table.insert(my_colorscheme, { "LineNr",          opc_none,          false })
+    table.insert(my_colorscheme, { "Folded",          opc_none,          false })
+    table.insert(my_colorscheme, { "EndOfBuffer",     opc_none,          false })
+  end
+
+  utils.end_debug("colour.get_my_colorscheme")
+  return my_colorscheme
+end
+
+colour.get_highlight = function()
+  utils.begin_debug("colour.get_highlight")
+  local my_highlight = {}
+
+  if is_nvim_version_gt_08 then
+    utils.debug_echo("nvim-version: 0.8")
+    -- pmenus
+    table.insert(my_highlight, { 0, "RegistersWindow",  opc_primary,   })
+    table.insert(my_highlight, { 0, "Pmenu",            opc_primary,   })
+    table.insert(my_highlight, { 0, "PmenuSel",         opc_secondary, })
+    table.insert(my_highlight, { 0, "PmenuSbar",        opc_sub2,      })
+    table.insert(my_highlight, { 0, "PmenuThumb",       opc_sub3,      })
+    -- floating window
+    table.insert(my_highlight, { 0, "NormalFloat",      opc_primary,   })
+    table.insert(my_highlight, { 0, "FloatBorder",      opc_primary,   })
+    -- terminal window
+    table.insert(my_highlight, { 0, "TermCursor",       opc_secondary, })
+    table.insert(my_highlight, { 0, "TermCursorNC",     opc_primary,   })
+  else
+    -- pmenus
+    table.insert(my_highlight, { "RegistersWindow",     opc_primary,   false })
+    table.insert(my_highlight, { "Pmenu",               opc_primary,   false })
+    table.insert(my_highlight, { "PmenuSel",            opc_secondary, false })
+    table.insert(my_highlight, { "PmenuSbar",           opc_sub2,      false })
+    table.insert(my_highlight, { "PmenuThumb",          opc_sub3,      false })
+    -- floating window
+    table.insert(my_highlight, { "NormalFloat",         opc_primary,   false })
+    table.insert(my_highlight, { "FloatBorder",         opc_primary,   false })
+    -- terminal window
+    table.insert(my_highlight, { "TermCursor",          opc_secondary, false })
+    table.insert(my_highlight, { "TermCursorNC",        opc_primary,   false })
+  end
+  
+  utils.end_debug("colour.get_highlight")
+  return my_highlight
+end
 
 colour.setup = function()
-  utils.begin_debug("colour")
+  utils.begin_debug("colour.setup")
 
   local colorscheme = "onehalfdark"
 
@@ -36,70 +157,51 @@ colour.setup = function()
 
   --  define colorscheme load function for lazyload
 
-  -- onepoint colors
-  local opc = {
-    ctermzero = 0,
-    ctermbg   = 249,
-    ctermfg   = 46,
-    primary   = { guibg = "#2F0B3A", guifg = "#D8D8D8" },
-    secondary = { guibg = "#610B5E", guifg = "#F2F2F2" },
-    sub2      = { guibg = "#FEB2FC", guifg = "#D8D8D8" },
-    sub3      = { guibg = "#dc92ff", guifg = "#F2F2F2" },
-  }
+  local my_colorscheme = colour.get_my_colorscheme()
+  local my_highlight    = colour.get_highlight()
 
-  local opc_primary   = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.primary.guibg,    guifg = opc.primary.guifg }
-  local opc_secondary = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.secondary.guibg,  guifg = opc.secondary.guifg }
-  local opc_sub2      = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub2.guibg,       guifg = opc.sub2.guifg }
-  local opc_sub3      = { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg, guibg = opc.sub3.guibg,       guifg = opc.sub3.guifg }
+  local set_colorscheme = function()
+    utils.debug_echo("set colorschemes")
+    for i, x in pairs(my_colorscheme) do
+      utils.debug_echo(i, x)
+      hl_define(x[1], x[2], x[3])
+    end
+  end
+  local set_highlight = function()
+    utils.debug_echo("set highlights")
+    for i, x in pairs(my_highlight) do
+      utils.debug_echo(i, x)
+      hl_define(x[1], x[2], x[3])
+    end
+  end
 
   --  modify line number col color
-  local onepoint_augroup_id = api.nvim_create_augroup('MyColorScheme', { clear = true })
+  local mycolorscheme_augroup_id = api.nvim_create_augroup('MyColorScheme', { clear = true })
   api.nvim_create_autocmd('ColorScheme', {
-    group = onepoint_augroup_id,
+    group = mycolorscheme_augroup_id,
     pattern = '*',
-    callback = function()
-      -- LineNumber
-      hl.create('LineNr',        { ctermbg = opc.ctermfg, ctermfg = opc.ctermzero })
-      hl.create('CursorLineNr',  { ctermbg = opc.ctermbg, ctermfg = opc.ctermfg })
-
-      -- TransparentBG
-      local opc_none = { ctermbg = "none", guibg = "none" }
-      hl.create("Normal",       opc_none)
-      hl.create("NonText",      opc_none)
-      hl.create("LineNr",       opc_none)
-      hl.create("Folded",       opc_none)
-      hl.create("EndOfBuffer",  opc_none)
-    end
+    callback = set_colorscheme
   })
 
   local myhighlight_augroup_id = api.nvim_create_augroup('MyHighlight', { clear = true })
   api.nvim_create_autocmd('ColorScheme', {
     group = myhighlight_augroup_id,
-    callback = function()
-      -- pmenus
-      hl.create("RegistersWindow", opc_primary,   false)
-      hl.create("Pmenu",           opc_primary,   false)
-      hl.create("PmenuSel",        opc_secondary, false)
-      hl.create("PmenuSbar",       opc_sub2,      false)
-      hl.create("PmenuThumb",      opc_sub3,      false)
-
-      -- floating window
-      hl.create("NormalFloat", opc_primary,       false)
-      hl.create("FloatBorder", opc_primary,       false)
-
-      -- terminal window
-      hl.create("TermCursor", opc_secondary,      false)
-      hl.create("TermCursorNC", opc_primary,      false)
-    end
+    callback = set_highlight
   })
+
+  utils.debug_echo("=== default load ===")
+  set_colorscheme()
+  utils.debug_echo("=== default load ===")
+  set_highlight()
 
   --  modify color by colorscheme
   if colorscheme == "onehalfdark" then
+    utils.debug_echo("overwrite terminal color")
     g.terminal_color_0 = '#565F70'
     g.terminal_color_8 = '#717C91'
   end
 
-  utils.end_debug("colour")
+  utils.end_debug("colour.setup")
 end
 
 return colour

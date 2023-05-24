@@ -44,17 +44,17 @@ mapping.setup = function()
   })
 
   --  Help画面でのqだけでのヘルプ終了
-  local help_augroup = api.nvim_create_augroup('QuitHelp', { clear = true })
-  api.nvim_create_autocmd("FileType", {
-    group = help_augroup,
-    pattern = {
-      "help",
-    },
-    callback = function()
-      -- do something
-      keymap.set("n", "q", fn.execute("quit"), { noremap = true, silent = true, buffer = true })
-    end
-  })
+  -- local help_augroup = api.nvim_create_augroup('QuitHelp', { clear = true })
+  -- api.nvim_create_autocmd("FileType", {
+  --   group = help_augroup,
+  --   pattern = {
+  --     "help",
+  --   },
+  --   callback = function()
+  --     -- do something
+  --     keymap.set("n", "q", fn.execute("quit"), { noremap = true, silent = true, buffer = true })
+  --   end
+  -- })
 
 
   --  閉じかっこの自動入力

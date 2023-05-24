@@ -23,13 +23,23 @@ function M.echoe(mes)
 end
 
 -- debug preference
-function M.debug_echo(mes, args)
+function M.debug_echo(mes, args, stack)
   if vim.g.is_enable_my_debug then
     M.echom(mes)
+    local this_stack = stack or 0
+
+    local tabshift = ""
+    for i=0,this_stack do
+      tabshift = tabshift .. "  "
+    end
 
     if args then
       for i, v in ipairs(args) do
-        M.echom(i .. " : " .. v)
+        if type(v) == "table" then
+          M.debug_echo(i, v, this_stack + 1)
+        else
+          M.echom(tabshift .. i .. " : " .. v)
+        end
       end
     end
   end
