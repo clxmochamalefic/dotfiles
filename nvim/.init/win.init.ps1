@@ -70,5 +70,8 @@ Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.g.preference_path =
 Add-Content -Path ~/AppData/Local/nvim/init.lua  -Value "vim.cmd([[luafile ${preferencePathStr}/init.lua]])"            -Encoding UTF8
 Set-Content -Path ~/AppData/Local/nvim/ginit.lua -Value "vim.cmd([[luafile ${preferencePathStr}/ginit.lua]])"           -Encoding UTF8
 
+[System.Environment]::SetEnvironmentVariable("LUA_PATH",        $luaPathStr, "User")
+[System.Environment]::SetEnvironmentVariable("LUA_EXE_PATH",    $luaPathStr, "User")
+
 Write-Output "finished and all correct"
 
