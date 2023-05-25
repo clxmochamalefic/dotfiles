@@ -1,10 +1,11 @@
+local g = vim.g
+local api = vim.api
+local cmd = vim.cmd
+
 local M = {}
 
-function M.load(_collection)
-end
-
 function M._echo(type, mes)
-  vim.cmd("echo" .. type .. " '" .. mes .. "'")
+  cmd("echo" .. type .. " '" .. mes .. "'")
 end
 
 function M.echo( mes)
@@ -24,7 +25,7 @@ end
 
 -- debug preference
 function M.debug_echo(mes, args, stack)
-  if vim.g.is_enable_my_debug then
+  if g.is_enable_my_debug then
     M.echom(mes)
     local this_stack = stack or 0
 
@@ -77,21 +78,25 @@ function M.try_catch(what)
 end
 
 function M.get_vim_lines()
-  return vim.api.nvim_eval("&lines")
+  return api.nvim_eval("&lines")
 end
 
 function M.get_vim_columns()
-  return vim.api.nvim_eval("&columns")
+  return api.nvim_eval("&columns")
 end
 
 function M.resize_float_window_default()
   M.resize_float_window(8, 30)
 end
 function M.resize_float_window(col, height)
-  vim.g.float_window_col = col
-  vim.g.float_window_height = height
-  vim.g.float_window_row = M.get_vim_lines() - vim.g.float_window_height - 2
-  vim.g.float_window_width = M.get_vim_columns() - (vim.g.float_window_col * 2)
+  g.float_window_col    = col
+  g.float_window_height = height
+  g.float_window_row    = M.get_vim_lines()   - g.float_window_height - 2
+  g.float_window_width  = M.get_vim_columns() - (g.float_window_col * 2)
+end
+
+function M.feedkey(key, mode)
+	api.nvim_feedkeys(api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
 return M

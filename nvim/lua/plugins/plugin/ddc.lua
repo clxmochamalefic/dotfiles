@@ -1,7 +1,17 @@
 local utils = require("utils")
 
+local g = vim.g
+local fn = vim.fn
+local api = vim.api
+local keymap = vim.keymap
+
+local vsnip = {
+  available = fn["vsnip#available"],
+  jumpable = fn["vsnip#jumpable"],
+}
+
 local function pumvisible()
-  return vim.fn["pum#visible"]() == 1
+  return fn["pum#visible"]() == 1
 end
 
 local function ddc_init()
@@ -16,7 +26,7 @@ local function ddc_init()
     'file',
     'nvim-lsp',
     'vsnip',
-    'skkeleton',
+--    'skkeleton',
   }
 
   local cmd_sources = {
@@ -80,12 +90,12 @@ local function ddc_init()
   local source_option_omni = {
     mark = '   ',
   }
-  local source_option_skkeleton = {
-    mark        = ' 🎌 ',
-    isVolatile  = true,
-    matchers    = {'skkeleton'},
-    sorters     = {},
-  }
+--  local source_option_skkeleton = {
+--    mark        = ' 🎌 ',
+--    isVolatile  = true,
+--    matchers    = {'skkeleton'},
+--    sorters     = {},
+--  }
 
   -- local source_option_path = {
   --   mark = '   ',
@@ -162,7 +172,7 @@ local function ddc_init()
   --   "cmd"; {'fd', '--max-depth', '5'},
   -- }
 
-  -- if vim.fn.has('win32') then
+  -- if fn.has('win32') then
   --   source_params["windows-clipboard-history"] = {
   --     "maxSize"; 100,
   --     "maxAbbrWidth"; 100,
@@ -193,13 +203,13 @@ local function ddc_init()
 
 
   -- --  Filetype
-  -- vim.fn["ddc#custom#patch_filetype"]({'toml'}, {
+  -- fn."ddc#custom#patch_filetype"]({'toml'}, {
   --   sourceOptions = {
   --     ["nvim-lsp"] = { forceCompletionPattern = '\\.|[={[,"]\\s*' },
   --   }
   -- })
 
-  -- vim.fn["ddc#custom#patch_filetype"](
+  -- fn."ddc#custom#patch_filetype"](
   -- {
   --   'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
   --   'json', 'sh', 'lua', 'toml', 'go'
@@ -224,10 +234,10 @@ local function ddc_init()
     ui                  = 'pum',
   }
 
-  vim.fn["ddc#custom#patch_global"](patch_global)
+  fn["ddc#custom#patch_global"](patch_global)
 
   --  use ddc.
-  vim.fn["ddc#enable"]()
+  fn["ddc#enable"]()
 
   utils.end_debug("ddc_init")
 end
@@ -237,35 +247,29 @@ local function ddc_preference()
 
   --  Key mappings
   --  For insert mode completion
-  vim.keymap.set('i', '<C-n>', '<Cmd>call pum#map#insert_relative(1)<CR>')
-  vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
-  vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
-  vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
-  vim.keymap.set('i', '<CR>', function() 
+  keymap.set('i', '<C-n>', fn["pum#map#insert_relative"](1))
+  keymap.set('i', '<C-p>', fn["pum#map#insert_relative"](-1))
+  keymap.set('i', '<C-e>', fn["pum#map#cancel"]())
+  keymap.set('i', '<C-y>', fn["pum#map#confirm"]())
+  keymap.set('i', '<CR>', function() 
     if pumvisible() then
+      utils.debug_echo("pumvisible true")
       fn["pum#map#confirm"]()
       return " "
     end
-    --return "<CR>"
-    return ""
-  end)
+
+    utils.debug_echo("pumvisible false")
+    return "<CR>"
+  end, { silent = true, expr = true })
   -- Manually open the completion menu
-  vim.keymap.set('i', '<C-Space>', 'ddc#map#manual_complete()', {
+  keymap.set('i', '<C-Space>', fn["ddc#map#manual_complete"](), {
     replace_keycodes  = false,
     expr              = true,
     desc              = '[ddc.vim] Manually open popup menu'
   })
 
-  vim.keymap.set('i', '<C-l>',      function() return vim.fn["ddc#map#extend"]() end,                 { silent = true, expr = true, noremap = true })
-  vim.keymap.set('i', '<C-x><C-f>', function() return vim.fn["ddc#map#manual_complete"]('path') end,  { silent = true, expr = true, noremap = true })
-
-  --  skkeleton
-  local skkeleton_dir = vim.fn.expand('~/.cache/.skkeleton')
-  if vim.fn.isdirectory(skkeleton_dir) ~= 1 then
-    vim.fn.mkdir(skkeleton_dir, 'p')
-  end
-
-  vim.fn["skkeleton#config"]({ completionRankFile = '~/.cache/.skkeleton/rank.json' })
+  keymap.set('i', '<C-l>',      function() fn["ddc#map#extend"]() end,                 { silent = true, expr = true, noremap = true })
+  keymap.set('i', '<C-x><C-f>', function() fn["ddc#map#manual_complete"]('path') end,  { silent = true, expr = true, noremap = true })
 
   utils.end_debug("ddc_preference")
 end
@@ -273,10 +277,10 @@ end
 local function snippet_preference()
   utils.begin_debug("snippet_preference")
 
-  vim.keymap.set('i', '<Tab>',    function() return vim.fn["vsnip#available"](1) and '<Plug>(vsnip-expand-or-jump)' or '<Tab>' end, { expr = true })
-  vim.keymap.set('s', '<Tab>',    function() return vim.fn["vsnip#available"](1) and '<Plug>(vsnip-expand-or-jump)' or '<Tab>' end, { expr = true })
-  vim.keymap.set('i', '<S-Tab>',  function() return vim.fn["vsnip#jumpable"](-1) and '<Plug>(vsnip-jump-prev)' or '<S-Tab>' end,    { expr = true })
-  vim.keymap.set('s', '<S-Tab>',  function() return vim.fn["vsnip#jumpable"](-1) and '<Plug>(vsnip-jump-prev)' or '<S-Tab>' end,    { expr = true })
+  keymap.set('i', '<Tab>',    function() return vsnip.available(1) == 1 and utils.feedkey('<Plug>(vsnip-expand-or-jump)', "")  or utils.feedkey('<Tab>',   "") end, { expr = true })
+  keymap.set('s', '<Tab>',    function() return vsnip.available(1) == 1 and utils.feedkey('<Plug>(vsnip-expand-or-jump)', "")  or utils.feedkey('<Tab>',   "") end, { expr = true })
+  keymap.set('i', '<S-Tab>',  function() return vsnip.jumpable(-1) == 1 and utils.feedkey('<Plug>(vsnip-jump-prev)', "")       or utils.feedkey('<S-Tab>', "") end, { expr = true })
+  keymap.set('s', '<S-Tab>',  function() return vsnip.jumpable(-1) == 1 and utils.feedkey('<Plug>(vsnip-jump-prev)', "")       or utils.feedkey('<S-Tab>', "") end, { expr = true })
 
   utils.end_debug("snippet_preference")
 end
@@ -330,6 +334,15 @@ return {
     dependencies = {
       'vim-denops/denops.vim',
     },
+    config = function()
+      --  skkeleton
+      local skkeleton_dir = fn.expand('~/.cache/.skkeleton')
+      if fn.isdirectory(skkeleton_dir) ~= 1 then
+          fn.mkdir(skkeleton_dir, 'p')
+      end
+
+      fn["skkeleton#config"]({ completionRankFile = '~/.cache/.skkeleton/rank.json' })
+    end
   },
   {
     lazy = true,
@@ -341,13 +354,13 @@ return {
     --    event = 'LspAttach',
     event = { 'User DenopsReady' },
     config = function()
-      vim.g.popup_preview_config = {
+      g.popup_preview_config = {
         delay = 10,
         maxWidth = 100,
         winblend = 10,
       }
-      --      vim.fn["popup_preview#enable"]()
-      vim.api.nvim_call_function('popup_preview#enable', {})
+      --      fn."popup_preview#enable"]()
+      api.nvim_call_function('popup_preview#enable', {})
     end,
     init = function()
     end
@@ -362,12 +375,12 @@ return {
     --    event = { 'LspAttach' },
     event = { 'User DenopsReady' },
     config = function()
-      vim.g.signature_help_config = {
+      g.signature_help_config = {
         contentsStyle = 'currentLabel',
         viewStyle = 'virtual',
       }
-      --      vim.fn["signature_help#enable"]()
-      vim.api.nvim_call_function('signature_help#enable', {})
+      --      fn."signature_help#enable"]()
+      api.nvim_call_function('signature_help#enable', {})
     end,
   },
 }
