@@ -16,6 +16,8 @@ mapping.setup = function()
 
   keymap.set("t", "<C-J>", "<C-]>", { noremap = true, silent = true })
 
+  keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
+
   --  today date and time
   -- nmap <C-;> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
   -- nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>

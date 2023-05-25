@@ -5,10 +5,13 @@
 local base = {}
 
 local utils = require('utils')
-local opt = vim.opt
-local fn = vim.fn
-local api = vim.api
+
 local g = vim.g
+local fn = vim.fn
+local cmd = vim.cmd
+local opt = vim.opt
+local api = vim.api
+local keymap = vim.keymap
 
 base.setup = function()
   --  define default file encoding and fileformat
@@ -47,7 +50,7 @@ base.setup = function()
   opt.wildmode = "list:full,full"
   opt.hidden = true
   --  編集中ファイルがあっても別画面に切り替え可能に
-  vim.cmd("set noequalalways")
+  cmd("set noequalalways")
 
 
   -- ---------------------------------------------------------------------------
@@ -65,7 +68,7 @@ base.setup = function()
 
   --  use clipboard
   g.nopaste = true
-  vim.keymap.set("n", "<S-Insert>", "<C-R>+")
+  keymap.set("n", "<S-Insert>", "<C-R>+")
   opt.clipboard = "unnamedplus"
 
 
@@ -115,7 +118,7 @@ base.setup = function()
   --  日本語入力に関する設定:
   if fn.has('multi_byte_ime') or fn.has('xim') then
     -- IME ON時のカーソルの色を設定(設定例:紫)
-    vim.cmd("highlight CursorIM guibg=Purple guifg=NONE")
+    cmd("highlight CursorIM guibg=Purple guifg=NONE")
     -- 挿入モード・検索モードでのデフォルトのIME状態設定
     opt.iminsert = 0
     opt.imsearch = 0
@@ -162,7 +165,7 @@ base.setup = function()
     pattern = '*',
     callback = function()
       -- do something
-      fn.startinsert()
+      cmd.startinsert()
     end
   })
 

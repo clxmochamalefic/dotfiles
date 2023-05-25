@@ -33,6 +33,7 @@ local opc = {
     secondary = { bg = "#610B5E", fg = "#F2F2F2" },
     sub2      = { bg = "#FEB2FC", fg = "#D8D8D8" },
     sub3      = { bg = "#dc92ff", fg = "#F2F2F2" },
+    terminal  = { bg = "#191d30", fg = "#D8D8D8" },
   }
 }
 
@@ -43,6 +44,8 @@ local opc_secondary     = {}
 local opc_sub2          = {}
 local opc_sub3          = {}
 local opc_none          = {}
+local opc_term          = {}
+local opc_term_nc       = {}
 
 if is_nvim_version_gt_08 then
   opc_cui_primary   = { bg = opc.g.primary.bg, fg = opc.g.primary.fg }
@@ -52,6 +55,9 @@ if is_nvim_version_gt_08 then
   opc_sub2          = opc.g.sub2
   opc_sub3          = opc.g.sub3
   opc_none          = opc.cn
+
+  opc_term          = opc.g.terminal
+  opc_term_nc       = { fg = "gray" }
 else
   opc_cui_primary   = { ctermbg = opc.c.fg,   ctermfg = opc.c.zero }
   opc_cui_secondary = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg }
@@ -60,6 +66,9 @@ else
   opc_sub2          = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.sub2.bg,       guifg = opc.g.sub2.fg }
   opc_sub3          = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.sub3.bg,       guifg = opc.g.sub3.fg }
   opc_none          = { ctermbg = opc.cn.bg,  ctermfg = opc.cn.fg }
+
+  opc_term          = { ctermbg = opc.c.bg,   ctermfg = opc.c.fg, guibg = opc.g.terminal.bg,   guifg = opc.g.terminal.fg }
+  opc_term_nc       = { guifg = "gray" }
 end
 
 local colour = {}
@@ -102,30 +111,42 @@ colour.get_highlight = function()
   if is_nvim_version_gt_08 then
     utils.debug_echo("nvim-version: 0.8")
     -- pmenus
-    table.insert(my_highlight, { 0, "RegistersWindow",  opc_primary,   })
-    table.insert(my_highlight, { 0, "Pmenu",            opc_primary,   })
-    table.insert(my_highlight, { 0, "PmenuSel",         opc_secondary, })
-    table.insert(my_highlight, { 0, "PmenuSbar",        opc_sub2,      })
-    table.insert(my_highlight, { 0, "PmenuThumb",       opc_sub3,      })
+    table.insert(my_highlight, { 0, "RegistersWindow",    opc_primary,  })
+    table.insert(my_highlight, { 0, "Pmenu",              opc_primary,  })
+    table.insert(my_highlight, { 0, "PmenuSel",           opc_secondary,})
+    table.insert(my_highlight, { 0, "PmenuSbar",          opc_sub2,     })
+    table.insert(my_highlight, { 0, "PmenuThumb",         opc_sub3,     })
     -- floating window
-    table.insert(my_highlight, { 0, "NormalFloat",      opc_primary,   })
-    table.insert(my_highlight, { 0, "FloatBorder",      opc_primary,   })
+    table.insert(my_highlight, { 0, "NormalFloat",        opc_primary,  })
+    table.insert(my_highlight, { 0, "FloatBorder",        opc_primary,  })
+    table.insert(my_highlight, { 0, "FloatShadow",        opc_primary,  })
+    table.insert(my_highlight, { 0, "FloatShadowThrough", opc_primary,  })
     -- terminal window
-    table.insert(my_highlight, { 0, "TermCursor",       opc_secondary, })
-    table.insert(my_highlight, { 0, "TermCursorNC",     opc_primary,   })
+    table.insert(my_highlight, { 0, "TermCursor",         opc_secondary,})
+    table.insert(my_highlight, { 0, "TermCursorNC",       opc_primary,  })
+    -- floaterm
+    table.insert(my_highlight, { 0, "Floaterm",           opc_term,     })
+    table.insert(my_highlight, { 0, "FloatermBorder",     opc_term,     })
+    table.insert(my_highlight, { 0, "FloatermNC",         opc_term_nc,  })
   else
     -- pmenus
-    table.insert(my_highlight, { "RegistersWindow",     opc_primary,   false })
-    table.insert(my_highlight, { "Pmenu",               opc_primary,   false })
-    table.insert(my_highlight, { "PmenuSel",            opc_secondary, false })
-    table.insert(my_highlight, { "PmenuSbar",           opc_sub2,      false })
-    table.insert(my_highlight, { "PmenuThumb",          opc_sub3,      false })
+    table.insert(my_highlight, { "RegistersWindow",       opc_primary,    false })
+    table.insert(my_highlight, { "Pmenu",                 opc_primary,    false })
+    table.insert(my_highlight, { "PmenuSel",              opc_secondary,  false })
+    table.insert(my_highlight, { "PmenuSbar",             opc_sub2,       false })
+    table.insert(my_highlight, { "PmenuThumb",            opc_sub3,       false })
     -- floating window
-    table.insert(my_highlight, { "NormalFloat",         opc_primary,   false })
-    table.insert(my_highlight, { "FloatBorder",         opc_primary,   false })
+    table.insert(my_highlight, { "NormalFloat",           opc_primary,    false })
+    table.insert(my_highlight, { "FloatBorder",           opc_primary,    false })
+    table.insert(my_highlight, { "FloatShadow",           opc_primary,    false })
+    table.insert(my_highlight, { "FloatShadowThrough",    opc_primary,    false })
     -- terminal window
-    table.insert(my_highlight, { "TermCursor",          opc_secondary, false })
-    table.insert(my_highlight, { "TermCursorNC",        opc_primary,   false })
+    table.insert(my_highlight, { "TermCursor",            opc_secondary,  false })
+    table.insert(my_highlight, { "TermCursorNC",          opc_primary,    false })
+    -- floaterm
+    table.insert(my_highlight, { "Floaterm",              opc_term,       false })
+    table.insert(my_highlight, { "FloatermBorder",        opc_term,       false })
+    table.insert(my_highlight, { "FloatermNC",            opc_term_nc,    false })
   end
   
   utils.end_debug("colour.get_highlight")
