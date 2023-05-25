@@ -1,5 +1,9 @@
 local utils = require("utils")
 
+local function pumvisible()
+  return vim.fn["pum#visible"]() == 1
+end
+
 local function ddc_init()
   utils.begin_debug("ddc_init")
 
@@ -237,7 +241,14 @@ local function ddc_preference()
   vim.keymap.set('i', '<C-p>', '<Cmd>call pum#map#insert_relative(-1)<CR>')
   vim.keymap.set('i', '<C-e>', '<Cmd>call pum#map#cancel()<CR>')
   vim.keymap.set('i', '<C-y>', '<Cmd>call pum#map#confirm()<CR>')
-  vim.keymap.set('i', '<CR>', function() return vim.fn["pum#visible"] == 1 and '<Cmd>call pum#map#confirm()<CR>' or '<CR>' end)
+  vim.keymap.set('i', '<CR>', function() 
+    if pumvisible() then
+      fn["pum#map#confirm"]()
+      return " "
+    end
+    --return "<CR>"
+    return ""
+  end)
   -- Manually open the completion menu
   vim.keymap.set('i', '<C-Space>', 'ddc#map#manual_complete()', {
     replace_keycodes  = false,
@@ -272,67 +283,92 @@ end
 
 
 return {
-  'Shougo/ddc.vim',
-  lazy = true,
-  event = { 'InsertEnter', 'CursorHold' },
-  dependencies = {
-    'vim-denops/denops.vim',
+  {
+    'Shougo/ddc.vim',
+    lazy = true,
+    event = { 'InsertEnter', 'CursorHold' },
+    dependencies = {
+      'vim-denops/denops.vim',
 
-    'Shougo/pum.vim',
-    'Shougo/ddc-ui-pum',
-    'Shougo/ddc-source-nvim-lsp',
-    'Shougo/ddc-source-around',
-    'Shougo/ddc-buffer',
-    --  'ddc-dictionary',
-    'LumaKernel/ddc-source-file',
-    'tani/ddc-fuzzy',
-    'Shougo/ddc-cmdline-history',
-    'delphinus/ddc-shell-history',
-    'Shougo/ddc-matcher_head',
-    'Shougo/ddc-source-omni',
-    --  'ddc-path',
-    'Shougo/ddc-sorter_rank',
-    'hrsh7th/vim-vsnip',
-    'hrsh7th/vim-vsnip-integ',
-    'rafamadriz/friendly-snippets',
+      'Shougo/pum.vim',
+      'Shougo/ddc-ui-pum',
+      'Shougo/ddc-source-nvim-lsp',
+      'Shougo/ddc-source-around',
+      'Shougo/ddc-buffer',
+      --  'ddc-dictionary',
+      'LumaKernel/ddc-source-file',
+      'tani/ddc-fuzzy',
+      'Shougo/ddc-cmdline-history',
+      'delphinus/ddc-shell-history',
+      'Shougo/ddc-matcher_head',
+      'Shougo/ddc-source-omni',
+      --  'ddc-path',
+      'Shougo/ddc-sorter_rank',
+      'hrsh7th/vim-vsnip',
+      'hrsh7th/vim-vsnip-integ',
+      'rafamadriz/friendly-snippets',
 
-    'Shougo/ddc-converter_remove_overlap',
-    'matsui54/ddc-converter_truncate',
+      'Shougo/ddc-converter_remove_overlap',
+      'matsui54/ddc-converter_truncate',
 
-    'Milly/windows-clipboard-history.vim',
+      'Milly/windows-clipboard-history.vim',
 
-    'vim-skk/skkeleton',
+      'vim-skk/skkeleton',
 
-    {
       'matsui54/denops-popup-preview.vim',
-      dependencies = { 'vim-denops/denops.vim', },
-      lazy = true,
-      event = 'LspAttach',
-      config = function()
-        vim.g.popup_preview_config = {
-          delay = 10,
-          maxWidth = 100,
-          winblend = 0,
-        }
-        vim.fn["popup_preview#enable"]()
-      end
-    },
-    {
       'matsui54/denops-signature_help',
-      dependencies = { 'vim-denops/denops.vim', },
-      lazy = true,
-      event = 'LspAttach',
-      config = function()
-        vim.fn["signature_help#enable"]()
-      end
+    },
+    config = function()
+        ddc_init()
+        ddc_preference()
+        snippet_preference()
+    end
+  },
+  {
+    lazy = true,
+    'vim-skk/skkeleton',
+    dependencies = {
+      'vim-denops/denops.vim',
     },
   },
-  init = function()
-  end,
-  config = function()
-    ddc_init()
-    ddc_preference()
-    snippet_preference()
-  end
+  {
+    lazy = true,
+    'matsui54/denops-popup-preview.vim',
+    dependencies = {
+      'vim-denops/denops.vim',
+      'Shougo/pum.vim',
+    },
+    --    event = 'LspAttach',
+    event = { 'User DenopsReady' },
+    config = function()
+      vim.g.popup_preview_config = {
+        delay = 10,
+        maxWidth = 100,
+        winblend = 10,
+      }
+      --      vim.fn["popup_preview#enable"]()
+      vim.api.nvim_call_function('popup_preview#enable', {})
+    end,
+    init = function()
+    end
+  },
+  {
+    lazy = true,
+    'matsui54/denops-signature_help',
+    dependencies = {
+      'vim-denops/denops.vim',
+      'Shougo/pum.vim',
+    },
+    --    event = { 'LspAttach' },
+    event = { 'User DenopsReady' },
+    config = function()
+      vim.g.signature_help_config = {
+        contentsStyle = 'currentLabel',
+        viewStyle = 'virtual',
+      }
+      --      vim.fn["signature_help#enable"]()
+      vim.api.nvim_call_function('signature_help#enable', {})
+    end,
+  },
 }
 
