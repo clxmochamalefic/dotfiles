@@ -13,7 +13,7 @@ vim.o.compatible = false
 vim.api.nvim_create_augroup('MyAutoCmd', { clear = true })
 
 -- debug mode
-vim.g.is_enable_my_debug = true
+vim.g.is_enable_my_debug = false
 
 -- get preference file path
 -- `vim.g.preference_path` defined on ~/.cache/nvim/init.vim
