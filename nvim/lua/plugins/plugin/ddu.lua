@@ -8,6 +8,11 @@ local keymap = vim.keymap
 
 local DDU_TYPE = { FF = 0, Filer = 1 }
 
+local km_opts = {
+  bns =   { buffer = true,              noremap = true, silent = true, },
+  bens =  { buffer = true, expr = true, noremap = true, silent = true, },
+}
+
 local ddu = {
   patch_global  = fn['ddu#custom#patch_global'],
   action        = fn['ddu#custom#action'],
@@ -20,11 +25,17 @@ local ddu = {
   },
   do_action = function(ddu_type, key, args)
     if ddu_type == DDU_TYPE.FF then
-      return fn["ddu#ui#ff#do_action"](key, args)
+      fn["ddu#ui#ff#do_action"](key, args)
+    else
+      fn["ddu#ui#filer#do_action"](key, args)
     end
-
-    return fn["ddu#ui#filer#do_action"](key, args)
   end,
+  patch_local = fn["ddu#custom#patch_local"],
+  item = {
+    is_tree = function()
+      return fn["ddu#ui#get_item"]()['isTree']
+    end,
+  },
 }
 
 
@@ -67,7 +78,7 @@ local function win_all()
 end
 
 local function my_ddu_choosewin(src, args)
-  utils.debug_echo("begin my_ddu_choosewin")
+  utils.begin_debug("my_ddu_choosewin")
   utils.debug_echo("src: " .. src)
   utils.debug_echo("args", args)
 
@@ -78,18 +89,17 @@ local function my_ddu_choosewin(src, args)
       cmd('edit ' .. path)
     end,
     catch = function()
-      ddu.do_action(src, 'itemAction', args)
---      if src == DDU_TYPE.FF then
---        fn["ddu#ui#ff#do_action"]('itemAction', args)
---      elseif src == DDU_TYPE.Filer then
---        fn["ddu#ui#filer#do_action"]('itemAction', args)
---      else
---        -- call ddu#ui#filer#do_action('itemAction')
---        utils.echoerr("failed my_ddu_choosewin")
---      end
+      if src == DDU_TYPE.FF then
+        ddu.ff.do_action('itemAction', args)
+      elseif src == DDU_TYPE.Filer then
+        ddu.filer.do_action('itemAction', args)
+      else
+        -- call ddu#ui#filer#do_action('itemAction')
+        utils.echoerr("failed my_ddu_choosewin")
+      end
     end
   }
-  utils.debug_echo("end my_ddu_choosewin")
+  utils.end_debug("my_ddu_choosewin")
 end
 
 local ddu_float_window = {
@@ -183,29 +193,29 @@ local function ddu_ff()
 
   ddu.action('kind', 'file', 'ff_mychoosewin',       function(args) my_ddu_choosewin(DDU_TYPE.FF, args) end)
 
-  ddu.action('kind', 'file', 'ff_open_buffer',       function() open_ddu_ff('buffer') end )
-  ddu.action('kind', 'file', 'ff_open_mrw',          function() open_ddu_ff('mrw') end )
-  ddu.action('kind', 'file', 'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
-  ddu.action('kind', 'file', 'ff_open_emoji',        function() open_ddu_ff('emoji') end )
-  ddu.action('kind', 'file', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+  ddu.action('kind', 'file',    'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+  ddu.action('kind', 'file',    'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+  ddu.action('kind', 'file',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+  ddu.action('kind', 'file',    'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+  ddu.action('kind', 'file',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
 
-  -- ddu.action('kind', 'buffer', 'ff_open_buffer',       { args -> open_ddu_ff('buffer',        false) })
-  -- ddu.action('kind', 'buffer', 'ff_open_mrw',          { args -> open_ddu_ff('mrw',           false) })
-  -- ddu.action('kind', 'buffer', 'ff_open_mrw_current',  { args -> open_ddu_ff('mrw_current',   false) })
-  -- ddu.action('kind', 'buffer', 'ff_open_emoji',        { args -> open_ddu_ff('emoji',         false) })
-  -- ddu.action('kind', 'buffer', 'ff_open_clip_history', { args -> open_ddu_ff('clip_history',  true) })
+  ddu.action('kind', 'buffer',  'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+  ddu.action('kind', 'buffer',  'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+  ddu.action('kind', 'buffer',  'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+  ddu.action('kind', 'buffer',  'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+  ddu.action('kind', 'buffer',  'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
 
-  -- ddu.action('kind', 'mrw', 'ff_open_buffer',       { args -> open_ddu_ff('buffer',        false) })
-  -- ddu.action('kind', 'mrw', 'ff_open_mrw',          { args -> open_ddu_ff('mrw',           false) })
-  -- ddu.action('kind', 'mrw', 'ff_open_mrw_current',  { args -> open_ddu_ff('mrw_current',   false) })
-  -- ddu.action('kind', 'mrw', 'ff_open_emoji',        { args -> open_ddu_ff('emoji',         false) })
-  -- ddu.action('kind', 'mrw', 'ff_open_clip_history', { args -> open_ddu_ff('clip_history',  true) })
+  ddu.action('kind', 'mrw',     'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+  ddu.action('kind', 'mrw',     'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+  ddu.action('kind', 'mrw',     'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+  ddu.action('kind', 'mrw',     'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+  ddu.action('kind', 'mrw',     'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
 
-  ddu.action('kind', 'word', 'ff_open_buffer',       function() open_ddu_ff('buffer') end)
-  ddu.action('kind', 'word', 'ff_open_mrw',          function() open_ddu_ff('mrw') end)
-  ddu.action('kind', 'word', 'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end)
-  ddu.action('kind', 'word', 'ff_open_emoji',        function() open_ddu_ff('emoji') end)
-  ddu.action('kind', 'word', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
+  ddu.action('kind', 'word',    'ff_open_buffer',       function() open_ddu_ff('buffer') end)
+  ddu.action('kind', 'word',    'ff_open_mrw',          function() open_ddu_ff('mrw') end)
+  ddu.action('kind', 'word',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end)
+  ddu.action('kind', 'word',    'ff_open_emoji',        function() open_ddu_ff('emoji') end)
+  ddu.action('kind', 'word',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
 
   if fn.has('win32') then
     ddu.action('kind', 'windows-clipboard-history', 'ff_open_buffer',       function() open_ddu_ff('buffer') end)
@@ -216,30 +226,25 @@ local function ddu_ff()
   end
 
   local function ddu_ff_my_settings()
-    keymap.set("n", "z", function() return fn["ddu#ui#ff#do_action"]('itemAction', { name = 'ff_open_buffer',       quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "x", function() return fn["ddu#ui#ff#do_action"]('itemAction', { name = 'ff_open_mrw',          quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "c", function() return fn["ddu#ui#ff#do_action"]('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "v", function() return fn["ddu#ui#ff#do_action"]('itemAction', { name = 'ff_open_emoji',        quit = true }) end, { buffer = true, silent = true })
+    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, { buffer = true, silent = true })
+    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, { buffer = true, silent = true })
+    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, { buffer = true, silent = true })
+    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, { buffer = true, silent = true })
 
     if fn.has('win32') then
-      keymap.set("n", "b", function() fn["ddu#ui#ff#do_action"]('itemAction', { name = 'ff_open_clip_history', quit = true }) end, { buffer = true, silent = true })
+      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, { buffer = true, silent = true })
     end
-    -- nnoremap <buffer><silent>   <F12> <Cmd>fn["ddu#ui#filer#do_action('itemAction', { 'name': 'open_buffer',       'quit': true })<CR>
-    -- nnoremap <buffer><silent>   <F11> <Cmd>fn["ddu#ui#filer#do_action('itemAction', { 'name': 'open_mrw',          'quit': true })<CR>
-    -- nnoremap <buffer><silent>   <F10> <Cmd>fn["ddu#ui#filer#do_action('itemAction', { 'name': 'open_mrw_current',  'quit': true })<CR>
-    -- nnoremap <buffer><silent>   <F9>  <Cmd>fn["ddu#ui#filer#do_action('itemAction', { 'name': 'open_emoji',        'quit': true })<CR>
-    -- if has('win32')
-    --   nnoremap <buffer><silent> <F8>  <Cmd>fn["ddu#ui#filer#do_action('itemAction', { 'name': 'open_clip_history', 'quit': true })<CR>
-    -- end
 
-    keymap.set("n", "<CR>",     function() fn["ddu#ui#ff#do_action"]('itemAction', { name = 'ff_mychoosewin', quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "<Space>",  function() fn["ddu#ui#ff#do_action"]('toggleSelectItem')                                     end, { buffer = true, silent = true })
-    keymap.set("n", "i",        function() fn["ddu#ui#ff#do_action"]('openFilterWindow')                                     end, { buffer = true, silent = true })
-    keymap.set("n", "P",        function() fn["ddu#ui#ff#do_action"]('preview')                                              end, { buffer = true, silent = true })
-    keymap.set("n", "q",        function() fn["ddu#ui#ff#do_action"]('quit')                                                 end, { buffer = true, silent = true })
-    keymap.set("n", "l",        function() fn["ddu#ui#ff#do_action"]('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, { buffer = true, silent = true, expr = true })
-    keymap.set("n", "L",        function() fn["ddu#ui#ff#do_action"]('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, { buffer = true, silent = true, expr = true })
-    keymap.set("n", "d",        function() fn["ddu#ui#ff#do_action"]('itemAction', { name = 'delete' }) end, { buffer = true, silent = true })
+    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, { buffer = true, silent = true })
+    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, { buffer = true, silent = true })
+    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, { buffer = true, silent = true })
+    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, { buffer = true, silent = true })
+    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, { buffer = true, silent = true })
+
+    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, { buffer = true, silent = true, expr = true })
+    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, { buffer = true, silent = true, expr = true })
+
+    keymap.set("n", "d",        function() ddu.ff.do_action('itemAction', { name = 'delete' }) end, { buffer = true, silent = true })
   end
 
   local augroup_id = api.nvim_create_augroup('my_ddu_ff_preference', { clear = true })
@@ -260,7 +265,7 @@ local function ddu_ff()
 
 
   --  ddu-source-buffer
-  fn["ddu#custom#patch_local"]('buffer', {
+  ddu.patch_local('buffer', {
     ui = 'ff',
     sources = {
       {
@@ -286,7 +291,7 @@ local function ddu_ff()
   api.nvim_create_user_command('DduBuffer', function() open_ddu_ff("buffer") end, {})
 
   --  ddu-source-file_old
-  fn["ddu#custom#patch_local"]('file_old', {
+  ddu.patch_local('file_old', {
     ui = 'ff',
     sources = {
       {
@@ -307,7 +312,7 @@ local function ddu_ff()
   api.nvim_create_user_command('DduFileOld', function() open_ddu_ff("file_old") end, {})
 
   --  ddu-source-emoji
-  fn["ddu#custom#patch_local"]('emoji', {
+  ddu.patch_local('emoji', {
     sources = {
       {
         name  = 'emoji',
@@ -335,7 +340,7 @@ local function ddu_ff()
     param = { kind = 'mrw' },
   }
 
-  fn["ddu#custom#patch_local"]('mrw', {
+  ddu.patch_local('mrw', {
     ui = 'ff',
     sources = {
       mr_source,
@@ -353,7 +358,7 @@ local function ddu_ff()
     name  = 'mr',
     param ={ kind = 'mrw', current = true },
   }
-  fn["ddu#custom#patch_local"]('mrw_current', {
+  ddu.patch_local('mrw_current', {
     ui = 'ff',
     sources = {
       mrw_source,
@@ -371,7 +376,7 @@ local function ddu_ff()
   --  windows-clipboard-history
 
   if fn.has('win32') then
-    fn["ddu#custom#patch_local"]('clip_history', {
+    ddu.patch_local('clip_history', {
       ui = 'ff',
       sources = {
         {
@@ -400,59 +405,43 @@ local function ddu_filer()
 
     utils.debug_echo('basic keymaps')
     -- basic actions
-    keymap.set("n", "q", function() fn["ddu#ui#filer#do_action"]('quit')          end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "z", function() fn["ddu#ui#filer#do_action"]('quit')          end, { noremap = true, silent = true, buffer = true })
+    keymap.set("n", "q", function() ddu.filer.do_action('quit')          end, km_opts.bns)
+    keymap.set("n", "z", function() ddu.filer.do_action('quit')          end, km_opts.bns)
     -- TODO: redraw
     -- nnoremap <buffer><silent> R     <Cmd>call ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
-    keymap.set("n", "R", function() fn["ddu#ui#filer#do_action"]('refreshItems')  end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "a", function() fn["ddu#ui#filer#do_action"]('chooseAction')  end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "P", function() fn["ddu#ui#filer#do_action"]('preview')       end, { noremap = true, silent = true, buffer = true })
+    keymap.set("n", "R", function() ddu.filer.do_action('refreshItems')  end, km_opts.bns)
+    keymap.set("n", "a", function() ddu.filer.do_action('chooseAction')  end, km_opts.bns)
+    keymap.set("n", "P", function() ddu.filer.do_action('preview')       end, km_opts.bns)
 
     -- change window
-    keymap.set("n", "<F5>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer1', params = { id = 0 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "<F6>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer2', params = { id = 1 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "<F7>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer3', params = { id = 2 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "<F8>", function() fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open_filer4', params = { id = 3 }, quit = true }) end, { noremap = true, silent = true, buffer = true })
+    keymap.set("n", "<F5>", function() ddu.filer.do_action('itemAction', { name = 'open_filer1', params = { id = 0 }, quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F6>", function() ddu.filer.do_action('itemAction', { name = 'open_filer2', params = { id = 1 }, quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F7>", function() ddu.filer.do_action('itemAction', { name = 'open_filer3', params = { id = 2 }, quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F8>", function() ddu.filer.do_action('itemAction', { name = 'open_filer4', params = { id = 3 }, quit = true }) end, km_opts.bns)
 
     utils.debug_echo('change dir keymaps')
     -- change directory (path)
-    keymap.set("n", "<CR>", function()
-      return fn["ddu#ui#get_item"]()['isTree']
-      and  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'narrow'})
-      or   fn["ddu#ui#filer#do_action"]('itemAction', { name = 'filer_mychoosewin', quit = true })
-    end, { noremap = true, silent = true, buffer = true, expr = true })
-    keymap.set("n", "h", function()
-      return fn["ddu#ui#get_item"]()['isTree']
-      and  fn["ddu#ui#filer#do_action"]('collapseItem')
-      or   utils.echoe('cannot close this item')
-    end, { noremap = true, silent = true, buffer = true, expr = true })
-    keymap.set("n", "l", function()
-      return fn["ddu#ui#get_item"]()['isTree']
-      and fn["ddu#ui#filer#do_action"]('expandItem')
-      or  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open', params = { command = 'vsplit' } })
-    end, { noremap = true, silent = true, buffer = true, expr = true })
-    keymap.set("n", "L", function()
-      return fn["ddu#ui#get_item"]()['isTree']
-      and fn["ddu#ui#filer#do_action"]('expandItem')
-      or  fn["ddu#ui#filer#do_action"]('itemAction', { name = 'open', params = { command = 'split' } })
-    end, { noremap = true, silent = true, buffer = true, expr = true })
+    keymap.set("n", "<CR>", function() return ddu.item.is_tree() and ddu.filer.do_action('itemAction', { name = 'narrow'}) or ddu.do_action(DDU_TYPE.Filer, 'itemAction', { name = 'filer_mychoosewin', quit = true })         end, km_opts.ebns)
+    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.filer.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                                            end, km_opts.ebns)
+    keymap.set("n", "l",    function() return ddu.item.is_tree() and ddu.filer.do_action('expandItem')                     or ddu.do_action(DDU_TYPE.Filer, 'itemAction', { name = 'open', params = { command = 'vsplit' } })  end, km_opts.ebns)
+    keymap.set("n", "L",    function() return ddu.item.is_tree() and ddu.filer.do_action('expandItem')                     or ddu.do_action(DDU_TYPE.Filer, 'itemAction', { name = 'open', params = { command = 'split' } })   end, km_opts.ebns)
 
     utils.debug_echo('change dir alias keymaps')
     -- change directory aliases
-    keymap.set("n", "^",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "narrow", params = { path = fn.expand(g.my_initvim_path) } }) end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "|",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "narrow", params = { path = fn.expand("~/repos") } })             end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "~",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "narrow", params = { path = fn.expand("~/Documents") } })         end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "<BS>", function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "narrow", params = { path = ".." } })                             end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "C",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "cd" })                                                           end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "c",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "copy" })                                                         end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "x",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "cut" })                                                          end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "p",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "paste" })                                                        end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "m",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "move" })                                                         end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "b",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "newFile" })                                                      end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "B",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "newDirectory" })                                                 end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "y",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "yank" })                                                         end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "d",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "delete" })                                                       end, { noremap = true, silent = true, buffer = true })
-    keymap.set("n", "r",    function() return fn["ddu#ui#filer#do_action"]('itemAction', { name = "rename" })                                                       end, { noremap = true, silent = true, buffer = true })
+    keymap.set("n", "^",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand(g.my_initvim_path) } }) end, km_opts.bns)
+    keymap.set("n", "|",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand("~/repos") } })         end, km_opts.bns)
+    keymap.set("n", "~",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand("~/Documents") } })     end, km_opts.bns)
+    keymap.set("n", "<BS>", function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = ".." } })                         end, km_opts.bns)
+    keymap.set("n", "C",    function() ddu.filer.do_action('itemAction', { name = "cd" })                                                       end, km_opts.bns)
+    keymap.set("n", "c",    function() ddu.filer.do_action('itemAction', { name = "copy" })                                                     end, km_opts.bns)
+    keymap.set("n", "x",    function() ddu.filer.do_action('itemAction', { name = "cut" })                                                      end, km_opts.bns)
+    keymap.set("n", "p",    function() ddu.filer.do_action('itemAction', { name = "paste" })                                                    end, km_opts.bns)
+    keymap.set("n", "m",    function() ddu.filer.do_action('itemAction', { name = "move" })                                                     end, km_opts.bns)
+    keymap.set("n", "b",    function() ddu.filer.do_action('itemAction', { name = "newFile" })                                                  end, km_opts.bns)
+    keymap.set("n", "B",    function() ddu.filer.do_action('itemAction', { name = "newDirectory" })                                             end, km_opts.bns)
+    keymap.set("n", "y",    function() ddu.filer.do_action('itemAction', { name = "yank" })                                                     end, km_opts.bns)
+    keymap.set("n", "d",    function() ddu.filer.do_action('itemAction', { name = "delete" })                                                   end, km_opts.bns)
+    keymap.set("n", "r",    function() ddu.filer.do_action('itemAction', { name = "rename" })                                                   end, km_opts.bns)
 
     utils.end_debug('ddu_filer_my_settings')
   end
@@ -480,7 +469,7 @@ local function ddu_filer()
   }
 
   local ddu_ui_params_default = ddu_ui_params
-  ddu_ui_params_default.border = "rounded"
+  ddu_ui_params_default.border = ddu_float_window.border
   ddu_ui_params_default.search = fn.expand('%:p')
   ddu_ui_params_default.sort = 'filename'
   ddu_ui_params_default.sortTreesFirst = true
@@ -499,54 +488,8 @@ local function ddu_filer()
     }
   }
 
---  local ddu_filer_params = {
---    ui            = 'filer',
---    sources       = ddu_filer_sources,
---    sourceOptions = ddu_filer_source_options,
---    kindOptions   = ddu_filer_kind_options,
---    actionOptions = ddu_filer_action_options,
---    uiParams      = ddu_filer_ui_params,
---  }
-
---  fn["ddu#custom#patch_local"]('filer_1', {
---    ui            = 'filer',
---    name          = 'filer_1',
---    sources       = ddu_filer_sources,
---    sourceOptions = ddu_filer_source_options,
---    kindOptions   = ddu_filer_kind_options,
---    actionOptions = ddu_filer_action_options,
---    uiParams      = ddu_filer_ui_params,
---  })
---  fn["ddu#custom#patch_local"]('filer_2', {
---    ui            = 'filer',
---    name          = 'filer_2',
---    sources       = ddu_filer_sources,
---    sourceOptions = ddu_filer_source_options,
---    kindOptions   = ddu_filer_kind_options,
---    actionOptions = ddu_filer_action_options,
---    uiParams      = ddu_filer_ui_params,
---  })
---  fn["ddu#custom#patch_local"]('filer_3', {
---    ui            = 'filer',
---    name          = 'filer_3',
---    sources       = ddu_filer_sources,
---    sourceOptions = ddu_filer_source_options,
---    kindOptions   = ddu_filer_kind_options,
---    actionOptions = ddu_filer_action_options,
---    uiParams      = ddu_filer_ui_params,
---  })
---  fn["ddu#custom#patch_local"]('filer_4', {
---    ui            = 'filer',
---    name          = 'filer_4',
---    sources       = ddu_filer_sources,
---    sourceOptions = ddu_filer_source_options,
---    kindOptions   = ddu_filer_kind_options,
---    actionOptions = ddu_filer_action_options,
---    uiParams      = ddu_filer_ui_params,
---  })
-
   for _, name in ipairs(filers) do
-    fn["ddu#custom#patch_local"](name, {
+    ddu.patch_local(name, {
       ui            = 'filer',
       name          = name,
       sources       = ddu_filer_sources,
@@ -567,7 +510,7 @@ local function ddu_filer()
     group = augroup_id,
     pattern = "*",
     callback = function ()
-      fn["ddu#ui#filer#do_action"]('checkItems')
+      ddu.filer.do_action('checkItems')
     end
   })
   api.nvim_create_autocmd('FileType', {
