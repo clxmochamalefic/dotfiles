@@ -1,4 +1,5 @@
 local g = vim.g
+local keymap = vim.keymap
 local api = vim.api
 
 local M = {}
@@ -34,6 +35,10 @@ function M.debug_echo(mes, args, stack)
     end
 
     if args then
+      if type(args) ~= "table" then
+        M.echom(tabshift .. " : " .. args)
+        return
+      end
       for i, v in ipairs(args) do
         if type(v) == "table" then
           M.debug_echo(i, v, this_stack + 1)
@@ -96,6 +101,21 @@ end
 
 function M.feedkey(key, mode)
 	api.nvim_feedkeys(api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
+function M.keymap_set(t)
+  local mode  = t.mode
+  local lhs   = t.lhs
+  local rhs   = t.rhs
+  local opts  = t.opts
+
+  if type(mode) ~= "table" then
+    mode = { t.mode }
+  end
+
+  for _, m in ipairs(mode) do
+    keymap.set(m, lhs, rhs, opts)
+  end
 end
 
 return M

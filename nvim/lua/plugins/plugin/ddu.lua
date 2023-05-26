@@ -8,10 +8,7 @@ local keymap = vim.keymap
 
 local DDU_TYPE = { FF = 0, Filer = 1 }
 
-local km_opts = {
-  bns =   { buffer = true,              noremap = true, silent = true, },
-  ebns =  { buffer = true, expr = true, noremap = true, silent = true, },
-}
+local km_opts = require("const.keymap")
 
 local ddu = {
   patch_global  = fn['ddu#custom#patch_global'],
@@ -141,41 +138,41 @@ local function ddu_basic()
   utils.begin_debug('ddu basic')
 
   --  ddu.vim ------------------------------
-  ddu.patch_global({
-    ui = 'ff',
-    sources = {
-      { name = 'file_rec', params = {} },
-      { name = 'file' },
-      { name = 'buffer' },
-      { name = 'emoji' },
-    },
-    sourceOptions = {
-      ["_"] = {
-        columns   = {'icon_filename'},
-        matchers  = {'matcher_substring'},
-      },
-    },
-    filterParams = {
-      matcher_substring = {
-        highlightMatched = 'Search',
-      },
-    },
-    kindOptions = {
-      file            = { defaultAction = 'open',     },
-      file_old        = { defaultAction = 'open',     },
-      file_rec        = { defaultAction = 'open',     },
-      action          = { defaultAction = 'do',       },
-      word            = { defaultAction = 'append',   },
-      ["custom-list"] = { defaultAction = 'callback', },
-    },
-    uiParams = {
-      ["_"] = ddu_ui_params,
-    },
-    actionOptions = {
-      echo      = { quit = false, },
-      echoDiff  = { quit = false, },
-    },
-  })
+--  ddu.patch_global({
+--    ui = 'ff',
+--    sources = {
+--      { name = 'file_rec', params = {} },
+--      { name = 'file' },
+--      { name = 'buffer' },
+--      { name = 'emoji' },
+--    },
+--    sourceOptions = {
+--      ["_"] = {
+--        columns   = {'icon_filename'},
+--        matchers  = {'matcher_substring'},
+--      },
+--    },
+--    filterParams = {
+--      matcher_substring = {
+--        highlightMatched = 'Search',
+--      },
+--    },
+--    kindOptions = {
+--      file            = { defaultAction = 'open',     },
+--      file_old        = { defaultAction = 'open',     },
+--      file_rec        = { defaultAction = 'open',     },
+--      action          = { defaultAction = 'do',       },
+--      word            = { defaultAction = 'append',   },
+--      ["custom-list"] = { defaultAction = 'callback', },
+--    },
+--    uiParams = {
+--      ["_"] = ddu_ui_params,
+--    },
+--    actionOptions = {
+--      echo      = { quit = false, },
+--      echoDiff  = { quit = false, },
+--    },
+--  })
 
 
   --  ddu-ui --------------------
@@ -191,13 +188,13 @@ end
 local function ddu_ff()
   utils.begin_debug('ddu ff')
 
-  ddu.action('kind', 'file', 'ff_mychoosewin',       function(args) my_ddu_choosewin(DDU_TYPE.FF, args) end)
+  ddu.action('kind', 'file',    'ff_mychoosewin',       function(args) my_ddu_choosewin(DDU_TYPE.FF, args) end)
 
-  ddu.action('kind', 'file',    'ff_open_buffer',       function() open_ddu_ff('buffer') end )
-  ddu.action('kind', 'file',    'ff_open_mrw',          function() open_ddu_ff('mrw') end )
-  ddu.action('kind', 'file',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
-  ddu.action('kind', 'file',    'ff_open_emoji',        function() open_ddu_ff('emoji') end )
-  ddu.action('kind', 'file',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+  -- ddu.action('kind', 'file',    'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+  -- ddu.action('kind', 'file',    'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+  -- ddu.action('kind', 'file',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+  -- ddu.action('kind', 'file',    'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+  -- ddu.action('kind', 'file',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
 
   ddu.action('kind', 'buffer',  'ff_open_buffer',       function() open_ddu_ff('buffer') end )
   ddu.action('kind', 'buffer',  'ff_open_mrw',          function() open_ddu_ff('mrw') end )
@@ -226,23 +223,23 @@ local function ddu_ff()
   end
 
   local function ddu_ff_my_settings()
-    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, km_opts.ebns)
-    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, km_opts.ebns)
-    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, km_opts.ebns)
-    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, km_opts.ebns)
+    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, km_opts.bns)
 
     if fn.has('win32') then
-      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.ebns)
+      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.bns)
     end
 
-    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, km_opts.ebns)
-    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, km_opts.ebns)
-    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, km_opts.ebns)
-    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, km_opts.ebns)
-    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, km_opts.ebns)
+    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, km_opts.bns)
+    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, km_opts.bns)
+    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, km_opts.bns)
+    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, km_opts.bns)
+    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, km_opts.bns)
 
-    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, km_opts.ebns)
-    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, km_opts.ebns)
+    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, km_opts.bns)
+    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, km_opts.bns)
 
     keymap.set("n", "d",        function() ddu.ff.do_action('itemAction', { name = 'delete' }) end, km_opts.ebns)
   end
@@ -431,7 +428,8 @@ local function ddu_filer()
     -- change directory aliases
     keymap.set("n", "^",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand(g.my_initvim_path) } }) end, km_opts.bns)
     keymap.set("n", "|",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand("~/repos") } })         end, km_opts.bns)
-    keymap.set("n", "~",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand("~/Documents") } })     end, km_opts.bns)
+    keymap.set("n", "~",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand("~") } })               end, km_opts.bns)
+    keymap.set("n", "=",    function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = fn.expand("~/Documents") } })     end, km_opts.bns)
     keymap.set("n", "<BS>", function() ddu.filer.do_action('itemAction', { name = "narrow", params = { path = ".." } })                         end, km_opts.bns)
     keymap.set("n", "C",    function() ddu.filer.do_action('itemAction', { name = "cd" })                                                       end, km_opts.bns)
     keymap.set("n", "c",    function() ddu.filer.do_action('itemAction', { name = "copy" })                                                     end, km_opts.bns)

@@ -80,7 +80,7 @@ colour.get_my_colorscheme = function()
   if is_nvim_version_gt_08 then
     utils.debug_echo("nvim-version: 0.8")
     -- LineNumber
-    table.insert(my_colorscheme, { 0, 'LineNr',       opc_cui_primary })
+    -- table.insert(my_colorscheme, { 0, 'LineNr',       opc_cui_primary })
     table.insert(my_colorscheme, { 0, 'CursorLineNr', opc_cui_secondary })
     -- -- TransparentBG
     -- table.insert(my_colorscheme, { 0, "Normal",       opc_none })
@@ -90,7 +90,7 @@ colour.get_my_colorscheme = function()
     -- table.insert(my_colorscheme, { 0, "EndOfBuffer",  opc_none })
   else
     -- LineNumber
-    table.insert(my_colorscheme, { 'LineNr',          opc_cui_primary,   false })
+    -- table.insert(my_colorscheme, { 'LineNr',          opc_cui_primary,   false })
     table.insert(my_colorscheme, { 'CursorLineNr',    opc_cui_secondary, false })
     -- -- TransparentBG
     -- table.insert(my_colorscheme, { "Normal",          opc_none,          false })
