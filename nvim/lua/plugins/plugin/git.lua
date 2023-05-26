@@ -1,3 +1,9 @@
+local g = vim.g
+local fn = vim.fn
+local api = vim.api
+local opt = vim.opt
+local keymap = vim.keymap
+
 return {
   {
     'TimUntersberger/neogit',
@@ -5,7 +11,8 @@ return {
     dependencies = {
       'sindrets/diffview.nvim',
       'lewis6991/gitsigns.nvim',
-      'nvim-lua/plenary.nvim'
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
     },
     event = { 'BufWrite', 'FileReadPost' },
     config = function()

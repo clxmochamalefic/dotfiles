@@ -8,7 +8,6 @@ local utils = require('utils')
 
 local g = vim.g
 local fn = vim.fn
-local cmd = vim.cmd
 local opt = vim.opt
 local api = vim.api
 local keymap = vim.keymap
@@ -50,7 +49,7 @@ base.setup = function()
   opt.wildmode = "list:full,full"
   opt.hidden = true
   --  編集中ファイルがあっても別画面に切り替え可能に
-  cmd("set noequalalways")
+  vim.cmd("set noequalalways")
 
 
   -- ---------------------------------------------------------------------------
@@ -86,7 +85,7 @@ base.setup = function()
   --  disable use tabcharacter and define tabstop
   opt.tabstop = 2
   opt.smartindent = true
-  opt.shiftwidth = 4
+  opt.shiftwidth = 2
   opt.expandtab = true
   opt.backspace = "indent,eol,start"
 
@@ -118,7 +117,7 @@ base.setup = function()
   --  日本語入力に関する設定:
   if fn.has('multi_byte_ime') or fn.has('xim') then
     -- IME ON時のカーソルの色を設定(設定例:紫)
-    cmd("highlight CursorIM guibg=Purple guifg=NONE")
+    vim.cmd("highlight CursorIM guibg=Purple guifg=NONE")
     -- 挿入モード・検索モードでのデフォルトのIME状態設定
     opt.iminsert = 0
     opt.imsearch = 0
@@ -165,7 +164,7 @@ base.setup = function()
     pattern = '*',
     callback = function()
       -- do something
-      cmd.startinsert()
+      vim.cmd.startinsert()
     end
   })
 

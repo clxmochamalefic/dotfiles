@@ -3,6 +3,7 @@ local utils = require("utils")
 local g = vim.g
 local fn = vim.fn
 local api = vim.api
+local opt = vim.opt
 local keymap = vim.keymap
 
 local vsnip = {
@@ -351,7 +352,6 @@ return {
       'vim-denops/denops.vim',
       'Shougo/pum.vim',
     },
-    --    event = 'LspAttach',
     event = { 'User DenopsReady' },
     config = function()
       g.popup_preview_config = {
@@ -372,7 +372,6 @@ return {
       'vim-denops/denops.vim',
       'Shougo/pum.vim',
     },
-    --    event = { 'LspAttach' },
     event = { 'User DenopsReady' },
     config = function()
       g.signature_help_config = {

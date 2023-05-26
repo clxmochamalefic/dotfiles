@@ -1,3 +1,9 @@
+local g = vim.g
+local fn = vim.fn
+local api = vim.api
+local opt = vim.opt
+local keymap = vim.keymap
+
 return {
   {
     'goolord/alpha-nvim',
@@ -70,30 +76,8 @@ return {
     'petertriho/nvim-scrollbar',
     lazy = true,
     dependencies = {
-      {
-        'kevinhwang91/nvim-hlslens',
-        lazy = true,
-        dependencies = { 'kevinhwang91/nvim-ufo', },
-        event = { 'BufReadPost', 'FileReadPost' },
-        config = function()
-          require('hlslens').setup()
-          local kopts = {noremap = true, silent = true}
-
-          vim.api.nvim_set_keymap('n', 'n',
-          [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-          kopts)
-          vim.api.nvim_set_keymap('n', 'N',
-          [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-          kopts)
-          vim.api.nvim_set_keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-          vim.api.nvim_set_keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
-          vim.api.nvim_set_keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
-          vim.api.nvim_set_keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
-
-          vim.api.nvim_set_keymap('n', '<Leader>l', '<Cmd>noh<CR>', kopts)
-        end
-      },
-      'gitsigns.nvim'
+      'kevinhwang91/nvim-hlslens',
+      'lewis6991/gitsigns.nvim'
     },
     event = { 'FileReadPost', 'CursorHold', 'CursorHoldI' },
     config = function()
@@ -251,6 +235,29 @@ return {
     end
   },
   {
+    'kevinhwang91/nvim-hlslens',
+    lazy = true,
+    dependencies = { 'kevinhwang91/nvim-ufo', },
+    event = { 'BufReadPost', 'FileReadPost' },
+    config = function()
+      require('hlslens').setup()
+      local kopts = {noremap = true, silent = true}
+
+      vim.api.nvim_set_keymap('n', 'n',
+      [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+      kopts)
+      vim.api.nvim_set_keymap('n', 'N',
+      [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+      kopts)
+      vim.api.nvim_set_keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+      vim.api.nvim_set_keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+      vim.api.nvim_set_keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+      vim.api.nvim_set_keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+
+      vim.api.nvim_set_keymap('n', '<Leader>l', '<Cmd>noh<CR>', kopts)
+    end
+  },
+  {
     'unblevable/quick-scope',
     lazy = true,
     event = { 'FileReadPost', 'InsertLeave' },
@@ -270,9 +277,7 @@ return {
     event = { 'BufEnter' },
     init = function()
       vim.notify = require("notify")
---      vim.notify.setup({
---          background_colour = "#000000",
---      })
+      vim.notify.setup({ background_colour = "#000000", })
     end
   },
   {

@@ -3,14 +3,14 @@ local utils = require('utils')
 local g = vim.g
 local fn = vim.fn
 local api = vim.api
-local cmd = vim.cmd
+local opt = vim.opt
 local keymap = vim.keymap
 
 local DDU_TYPE = { FF = 0, Filer = 1 }
 
 local km_opts = {
   bns =   { buffer = true,              noremap = true, silent = true, },
-  bens =  { buffer = true, expr = true, noremap = true, silent = true, },
+  ebns =  { buffer = true, expr = true, noremap = true, silent = true, },
 }
 
 local ddu = {
@@ -86,7 +86,7 @@ local function my_ddu_choosewin(src, args)
     try = function()
       local path = args.items[1].action.path
       fn["choosewin#start"](win_all(), {auto_choose = true, hook_enable = false })
-      cmd('edit ' .. path)
+      vim.cmd('edit ' .. path)
     end,
     catch = function()
       if src == DDU_TYPE.FF then
@@ -226,25 +226,25 @@ local function ddu_ff()
   end
 
   local function ddu_ff_my_settings()
-    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, { buffer = true, silent = true })
+    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, km_opts.ebns)
+    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, km_opts.ebns)
+    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, km_opts.ebns)
+    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, km_opts.ebns)
 
     if fn.has('win32') then
-      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, { buffer = true, silent = true })
+      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.ebns)
     end
 
-    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, { buffer = true, silent = true })
-    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, { buffer = true, silent = true })
-    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, { buffer = true, silent = true })
-    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, { buffer = true, silent = true })
-    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, { buffer = true, silent = true })
+    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, km_opts.ebns)
+    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, km_opts.ebns)
+    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, km_opts.ebns)
+    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, km_opts.ebns)
+    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, km_opts.ebns)
 
-    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, { buffer = true, silent = true, expr = true })
-    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, { buffer = true, silent = true, expr = true })
+    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, km_opts.ebns)
+    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, km_opts.ebns)
 
-    keymap.set("n", "d",        function() ddu.ff.do_action('itemAction', { name = 'delete' }) end, { buffer = true, silent = true })
+    keymap.set("n", "d",        function() ddu.ff.do_action('itemAction', { name = 'delete' }) end, km_opts.ebns)
   end
 
   local augroup_id = api.nvim_create_augroup('my_ddu_ff_preference', { clear = true })
@@ -422,7 +422,8 @@ local function ddu_filer()
     utils.debug_echo('change dir keymaps')
     -- change directory (path)
     keymap.set("n", "<CR>", function() return ddu.item.is_tree() and ddu.filer.do_action('itemAction', { name = 'narrow'}) or ddu.do_action(DDU_TYPE.Filer, 'itemAction', { name = 'filer_mychoosewin', quit = true })         end, km_opts.ebns)
-    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.filer.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                                            end, km_opts.ebns)
+    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.filer.do_action('collapseItem')                                                                                                                       end, km_opts.ebns)
+--    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.filer.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                                            end, km_opts.ebns)
     keymap.set("n", "l",    function() return ddu.item.is_tree() and ddu.filer.do_action('expandItem')                     or ddu.do_action(DDU_TYPE.Filer, 'itemAction', { name = 'open', params = { command = 'vsplit' } })  end, km_opts.ebns)
     keymap.set("n", "L",    function() return ddu.item.is_tree() and ddu.filer.do_action('expandItem')                     or ddu.do_action(DDU_TYPE.Filer, 'itemAction', { name = 'open', params = { command = 'split' } })   end, km_opts.ebns)
 

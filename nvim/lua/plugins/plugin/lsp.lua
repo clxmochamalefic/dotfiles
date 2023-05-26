@@ -1,5 +1,11 @@
 -- LSP ------------------------------
 
+local g = vim.g
+local fn = vim.fn
+local api = vim.api
+local opt = vim.opt
+local keymap = vim.keymap
+
 local lsp = vim.lsp
 
 return {

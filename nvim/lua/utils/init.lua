@@ -1,11 +1,10 @@
 local g = vim.g
 local api = vim.api
-local cmd = vim.cmd
 
 local M = {}
 
 function M._echo(type, mes)
-  cmd("echo" .. type .. " '" .. mes .. "'")
+  vim.cmd("echo" .. type .. " '" .. mes .. "'")
 end
 
 function M.echo( mes)
@@ -20,7 +19,7 @@ function M.echoerr(mes)
 end
 
 function M.echoe(mes)
-  M.echoerr(mes)
+  M._echo("err", mes)
 end
 
 -- debug preference

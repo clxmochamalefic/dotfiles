@@ -1,9 +1,16 @@
+local g = vim.g
+local fn = vim.fn
+local api = vim.api
+local opt = vim.opt
+local loop = vim.loop
+local keymap = vim.keymap
+
 local plugins = {}
 
 plugins.setup = function()
-  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-  if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
+  local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not loop.fs_stat(lazypath) then
+    fn.system({
       "git",
       "clone",
       "--filter=blob:none",
@@ -12,7 +19,7 @@ plugins.setup = function()
       lazypath,
     })
   end
-  vim.opt.rtp:prepend(lazypath)
+  opt.rtp:prepend(lazypath)
 
   require('lazy').setup("plugins.plugin")
 end
