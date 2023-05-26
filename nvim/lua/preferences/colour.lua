@@ -83,21 +83,21 @@ colour.get_my_colorscheme = function()
     table.insert(my_colorscheme, { 0, 'LineNr',       opc_cui_primary })
     table.insert(my_colorscheme, { 0, 'CursorLineNr', opc_cui_secondary })
     -- -- TransparentBG
-    table.insert(my_colorscheme, { 0, "Normal",       opc_none })
-    table.insert(my_colorscheme, { 0, "NonText",      opc_none })
-    table.insert(my_colorscheme, { 0, "LineNr",       opc_none })
-    table.insert(my_colorscheme, { 0, "Folded",       opc_none })
-    table.insert(my_colorscheme, { 0, "EndOfBuffer",  opc_none })
+    -- table.insert(my_colorscheme, { 0, "Normal",       opc_none })
+    -- table.insert(my_colorscheme, { 0, "NonText",      opc_none })
+    -- table.insert(my_colorscheme, { 0, "LineNr",       opc_none })
+    -- table.insert(my_colorscheme, { 0, "Folded",       opc_none })
+    -- table.insert(my_colorscheme, { 0, "EndOfBuffer",  opc_none })
   else
     -- LineNumber
     table.insert(my_colorscheme, { 'LineNr',          opc_cui_primary,   false })
     table.insert(my_colorscheme, { 'CursorLineNr',    opc_cui_secondary, false })
     -- -- TransparentBG
-    table.insert(my_colorscheme, { "Normal",          opc_none,          false })
-    table.insert(my_colorscheme, { "NonText",         opc_none,          false })
-    table.insert(my_colorscheme, { "LineNr",          opc_none,          false })
-    table.insert(my_colorscheme, { "Folded",          opc_none,          false })
-    table.insert(my_colorscheme, { "EndOfBuffer",     opc_none,          false })
+    -- table.insert(my_colorscheme, { "Normal",          opc_none,          false })
+    -- table.insert(my_colorscheme, { "NonText",         opc_none,          false })
+    -- table.insert(my_colorscheme, { "LineNr",          opc_none,          false })
+    -- table.insert(my_colorscheme, { "Folded",          opc_none,          false })
+    -- table.insert(my_colorscheme, { "EndOfBuffer",     opc_none,          false })
   end
 
   utils.end_debug("colour.get_my_colorscheme")
