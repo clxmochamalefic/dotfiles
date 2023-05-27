@@ -160,13 +160,14 @@ base.setup = function()
   end
 
   api.nvim_create_augroup('Terminal', { clear = true })
-  api.nvim_create_autocmd('TermOpen', {
-    pattern = '*',
-    callback = function()
-      -- do something
-      vim.cmd.startinsert()
-    end
-  })
+-- auto insert mode
+--  api.nvim_create_autocmd('TermOpen', {
+--    pattern = '*',
+--    callback = function()
+--      -- do something
+--      vim.cmd.startinsert()
+--    end
+--  })
 
 
   g.float_window_row = 10

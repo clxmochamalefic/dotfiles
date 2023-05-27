@@ -42,10 +42,8 @@ local filers = { 'filer_1', 'filer_2', 'filer_3', 'filer_4', }
 
 local function show_ddu_filer()
   utils.begin_debug("show_ddu_filer")
-  utils.debug_echo("filers: ", filers)
-  utils.debug_echo("current_filer: " .. current_filer)
-  utils.debug_echo("name: " .. filers[current_filer])
 
+  utils.echom("ddu-filer: " .. filers[current_filer])
   ddu.start({ name = filers[current_filer] })
 
   utils.end_debug("show_ddu_filer")
@@ -59,8 +57,8 @@ end
 local current_ff_name = 'buffer'
 local function show_ddu_ff()
   utils.begin_debug("show_ddu_ff")
-  utils.echom("ddu-ff: " .. current_ff_name)
 
+  utils.echom("ddu-ff: " .. current_ff_name)
   ddu.start({ name = current_ff_name })
 
   utils.end_debug("show_ddu_ff")
@@ -189,77 +187,47 @@ local function ddu_ff()
   utils.begin_debug('ddu ff')
 
   ddu.action('kind', 'file',    'ff_mychoosewin',       function(args) my_ddu_choosewin(DDU_TYPE.FF, args) end)
+  ddu.action('kind', 'word',    'ff_mychoosewin',       function(args) my_ddu_choosewin(DDU_TYPE.FF, args) end)
 
-  -- ddu.action('kind', 'file',    'ff_open_buffer',       function() open_ddu_ff('buffer') end )
-  -- ddu.action('kind', 'file',    'ff_open_mrw',          function() open_ddu_ff('mrw') end )
-  -- ddu.action('kind', 'file',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
-  -- ddu.action('kind', 'file',    'ff_open_emoji',        function() open_ddu_ff('emoji') end )
-  -- ddu.action('kind', 'file',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+  ddu.action('kind', 'file',  'ff_open_buffer',         function() open_ddu_ff('buffer') end )
+  ddu.action('kind', 'file',  'ff_open_mrw',            function() open_ddu_ff('mrw') end )
+  ddu.action('kind', 'file',  'ff_open_mrw_current',    function() open_ddu_ff('mrw_current') end )
+  ddu.action('kind', 'file',  'ff_open_emoji',          function() open_ddu_ff('emoji') end )
 
-  ddu.action('kind', 'buffer',  'ff_open_buffer',       function() open_ddu_ff('buffer') end )
-  ddu.action('kind', 'buffer',  'ff_open_mrw',          function() open_ddu_ff('mrw') end )
-  ddu.action('kind', 'buffer',  'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
-  ddu.action('kind', 'buffer',  'ff_open_emoji',        function() open_ddu_ff('emoji') end )
-  ddu.action('kind', 'buffer',  'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+  ddu.action('kind', 'word', 'ff_open_buffer',          function() open_ddu_ff('buffer') end)
+  ddu.action('kind', 'word', 'ff_open_mrw',             function() open_ddu_ff('mrw') end)
+  ddu.action('kind', 'word', 'ff_open_mrw_current',     function() open_ddu_ff('mrw_current') end)
+  ddu.action('kind', 'word', 'ff_open_emoji',           function() open_ddu_ff('emoji') end)
 
-  ddu.action('kind', 'mrw',     'ff_open_buffer',       function() open_ddu_ff('buffer') end )
-  ddu.action('kind', 'mrw',     'ff_open_mrw',          function() open_ddu_ff('mrw') end )
-  ddu.action('kind', 'mrw',     'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
-  ddu.action('kind', 'mrw',     'ff_open_emoji',        function() open_ddu_ff('emoji') end )
-  ddu.action('kind', 'mrw',     'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
-
-  ddu.action('kind', 'word',    'ff_open_buffer',       function() open_ddu_ff('buffer') end)
-  ddu.action('kind', 'word',    'ff_open_mrw',          function() open_ddu_ff('mrw') end)
-  ddu.action('kind', 'word',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end)
-  ddu.action('kind', 'word',    'ff_open_emoji',        function() open_ddu_ff('emoji') end)
-  ddu.action('kind', 'word',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
 
   if fn.has('win32') then
-    ddu.action('kind', 'windows-clipboard-history', 'ff_open_buffer',       function() open_ddu_ff('buffer') end)
-    ddu.action('kind', 'windows-clipboard-history', 'ff_open_mrw',          function() open_ddu_ff('mrw') end)
-    ddu.action('kind', 'windows-clipboard-history', 'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end)
-    ddu.action('kind', 'windows-clipboard-history', 'ff_open_emoji',        function() open_ddu_ff('emoji') end)
-    ddu.action('kind', 'windows-clipboard-history', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
+    ddu.action('kind', 'file', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+    ddu.action('kind', 'word', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
   end
 
-  local function ddu_ff_my_settings()
-    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, km_opts.bns)
-    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, km_opts.bns)
-    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, km_opts.bns)
-    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, km_opts.bns)
-
-    if fn.has('win32') then
-      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.bns)
-    end
-
-    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, km_opts.bns)
-    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, km_opts.bns)
-    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, km_opts.bns)
-    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, km_opts.bns)
-    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, km_opts.bns)
-
-    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, km_opts.bns)
-    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, km_opts.bns)
-
-    keymap.set("n", "d",        function() ddu.ff.do_action('itemAction', { name = 'delete' }) end, km_opts.ebns)
-  end
-
-  local augroup_id = api.nvim_create_augroup('my_ddu_ff_preference', { clear = true })
-  api.nvim_create_autocmd('FileType', {
-    group = augroup_id,
-    pattern = {
-      "ddu-ff",
-      "ddu-ff-buffer",
-      "ddu-ff-mrw",
-      "ddu-ff-mrw_current",
-      "ddu-ff-emoji",
-      "ddu-ff-clip_history",
-    },
-    callback = function ()
-      ddu_ff_my_settings()
-    end
-  })
-
+--  ddu.action('kind', 'buffer',  'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+--  ddu.action('kind', 'buffer',  'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+--  ddu.action('kind', 'buffer',  'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+--  ddu.action('kind', 'buffer',  'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+--  ddu.action('kind', 'buffer',  'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+--
+--  ddu.action('kind', 'mrw',     'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+--  ddu.action('kind', 'mrw',     'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+--  ddu.action('kind', 'mrw',     'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+--  ddu.action('kind', 'mrw',     'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+--  ddu.action('kind', 'mrw',     'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+--
+--  ddu.action('kind', 'word',    'ff_open_buffer',       function() open_ddu_ff('buffer') end)
+--  ddu.action('kind', 'word',    'ff_open_mrw',          function() open_ddu_ff('mrw') end)
+--  ddu.action('kind', 'word',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end)
+--  ddu.action('kind', 'word',    'ff_open_emoji',        function() open_ddu_ff('emoji') end)
+--  ddu.action('kind', 'word',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
+--
+--  -- ddu.action('kind', 'file',    'ff_open_buffer',       function() open_ddu_ff('buffer') end )
+--  -- ddu.action('kind', 'file',    'ff_open_mrw',          function() open_ddu_ff('mrw') end )
+--  -- ddu.action('kind', 'file',    'ff_open_mrw_current',  function() open_ddu_ff('mrw_current') end )
+--  -- ddu.action('kind', 'file',    'ff_open_emoji',        function() open_ddu_ff('emoji') end )
+--  -- ddu.action('kind', 'file',    'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
 
   --  ddu-source-buffer
   ddu.patch_local('buffer', {
@@ -272,7 +240,7 @@ local function ddu_ff()
     },
     sourceOptions = {
       ["_"] = {
-        columns = { 'icon_filename' },
+        columns = { 'filename' },
       },
     },
     kindOptions = {
@@ -281,6 +249,7 @@ local function ddu_ff()
       },
     },
     uiParams = {
+      ["_"] = ddu_ui_params,
       buffer = ddu_ui_params,
     }
   })
@@ -302,6 +271,7 @@ local function ddu_ff()
       },
     },
     uiParams = {
+      ["_"] = ddu_ui_params,
       file_old = ddu_ui_params,
     }
   })
@@ -310,6 +280,7 @@ local function ddu_ff()
 
   --  ddu-source-emoji
   ddu.patch_local('emoji', {
+    ui = 'ff',
     sources = {
       {
         name  = 'emoji',
@@ -325,6 +296,7 @@ local function ddu_ff()
       },
     },
     uiParams = {
+      ["_"] = ddu_ui_params,
       emoji = ddu_ui_params,
     }
   })
@@ -347,6 +319,10 @@ local function ddu_ff()
         defaultAction = 'open',
       },
     },
+    uiParams = {
+      ["_"] = ddu_ui_params,
+      mr = ddu_ui_params,
+    }
   })
 
   api.nvim_create_user_command('DduMrw', function() open_ddu_ff("mrw") end, {})
@@ -365,6 +341,10 @@ local function ddu_ff()
         defaultAction = 'open',
       },
     },
+    uiParams = {
+      ["_"] = ddu_ui_params,
+      mrw = ddu_ui_params,
+    }
   })
 
   api.nvim_create_user_command('DduMrwCurrent', function() open_ddu_ff("mrw_current") end, {})
@@ -381,24 +361,120 @@ local function ddu_ff()
           param  = { prefix = 'Clip:' },
         }
       },
+      kindOptions = {
+        clip_history = {
+          defaultAction = 'yank',
+        },
+      },
+      uiParams = {
+        ["_"]         = ddu_ui_params,
+        clip_history  = ddu_ui_params,
+      }
     })
 
     api.nvim_create_user_command('DduClip', function() open_ddu_ff("clip_history") end, {})
   end
+
+  local function ddu_ff_my_settings()
+    utils.begin_debug('ddu_ff_my_settings')
+
+    keymap.set("n", "<F5>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_buffer',       quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F6>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw',          quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F7>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_mrw_current',  quit = true }) end, km_opts.bns)
+    keymap.set("n", "<F8>",     function() ddu.ff.do_action('itemAction', { name = 'ff_open_emoji',        quit = true }) end, km_opts.bns)
+
+    if fn.has('win32') then
+      keymap.set("n", "<F9>",   function() ddu.ff.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.bns)
+    end
+
+    keymap.set("n", "<CR>",     function() ddu.ff.do_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, km_opts.bns)
+    keymap.set("n", "<Space>",  function() ddu.ff.do_action('toggleSelectItem')                                     end, km_opts.bns)
+    keymap.set("n", "i",        function() ddu.ff.do_action('openFilterWindow')                                     end, km_opts.bns)
+    keymap.set("n", "P",        function() ddu.ff.do_action('preview')                                              end, km_opts.bns)
+    keymap.set("n", "q",        function() ddu.ff.do_action('quit')                                                 end, km_opts.bns)
+
+    keymap.set("n", "l",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, km_opts.bns)
+    keymap.set("n", "L",        function() ddu.ff.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, km_opts.bns)
+
+    keymap.set("n", "d",        function() ddu.ff.do_action('itemAction', { name = 'delete' }) end, km_opts.ebns)
+
+    utils.end_debug('ddu_ff_my_settings')
+  end
+
+  local augroup_id = api.nvim_create_augroup('my_ddu_ff_preference', { clear = true })
+  api.nvim_create_autocmd('FileType', {
+    group = augroup_id,
+    pattern = { "ddu-ff", },
+    callback = ddu_ff_my_settings
+  })
 
   utils.end_debug('ddu ff')
 end
 
 local function ddu_filer()
   utils.begin_debug('ddu filer')
-  --
-  ddu.action('kind', 'file', 'open_filer1', function() open_ddu_filer(1) end)
-  ddu.action('kind', 'file', 'open_filer2', function() open_ddu_filer(2) end)
-  ddu.action('kind', 'file', 'open_filer3', function() open_ddu_filer(3) end)
-  ddu.action('kind', 'file', 'open_filer4', function() open_ddu_filer(4) end)
+
+  local ddu_filer_sources = {
+    {
+      name = 'file',
+      param = {},
+    }
+  }
+  local ddu_filer_source_options = {
+    ["_"] = {
+      columns = { 'icon_filename' },
+    },
+  }
+  local ddu_filer_kind_options = {
+    file = {
+      defaultAction = 'open',
+    },
+  }
+  local ddu_filer_action_options = {
+    narrow = {
+      quit = false,
+    },
+  }
+
+  local ddu_ui_filer_params = ddu_ui_params
+  ddu_ui_filer_params.border = ddu_float_window.border
+  ddu_ui_filer_params.search = fn.expand('%:p')
+  ddu_ui_filer_params.sort = 'filename'
+  ddu_ui_filer_params.sortTreesFirst = true
+  ddu_ui_filer_params.splitDirection = "topleft"
+
+  local ddu_filer_uiparams = {
+    ["_"] = ddu_ui_filer_params,
+    filer = ddu_ui_filer_params,
+    icon_filename = {
+      span = 2,
+      padding = 2,
+      iconWidth = 2,
+      useLinkIcon = "grayout",
+      sort = 'filename',
+      sortTreesFirst = true,
+    }
+  }
+
+  for _, name in ipairs(filers) do
+    ddu.patch_local(name, {
+      ui            = 'filer',
+      name          = name,
+      sources       = ddu_filer_sources,
+      sourceOptions = ddu_filer_source_options,
+      kindOptions   = ddu_filer_kind_options,
+      actionOptions = ddu_filer_action_options,
+      uiParams      = ddu_filer_uiparams,
+    })
+  end
 
   local function ddu_filer_my_settings()
     utils.begin_debug('ddu_filer_my_settings')
+
+    ddu.action('kind', 'file', 'open_filer1', function() open_ddu_filer(1) end)
+    ddu.action('kind', 'file', 'open_filer2', function() open_ddu_filer(2) end)
+    ddu.action('kind', 'file', 'open_filer3', function() open_ddu_filer(3) end)
+    ddu.action('kind', 'file', 'open_filer4', function() open_ddu_filer(4) end)
 
     utils.debug_echo('basic keymaps')
     -- basic actions
@@ -445,66 +521,9 @@ local function ddu_filer()
     utils.end_debug('ddu_filer_my_settings')
   end
 
-  local ddu_filer_sources = {
-    {
-      name = 'file',
-      param = {},
-    }
-  }
-  local ddu_filer_source_options = {
-    ["_"] = {
-      columns = { 'icon_filename' },
-    },
-  }
-  local ddu_filer_kind_options = {
-    file = {
-      defaultAction = 'open',
-    },
-  }
-  local ddu_filer_action_options = {
-    narrow = {
-      quit = false,
-    },
-  }
-
-  local ddu_ui_params_default = ddu_ui_params
-  ddu_ui_params_default.border = ddu_float_window.border
-  ddu_ui_params_default.search = fn.expand('%:p')
-  ddu_ui_params_default.sort = 'filename'
-  ddu_ui_params_default.sortTreesFirst = true
-  ddu_ui_params_default.splitDirection = "topleft"
-
-  local ddu_filer_ui_params = {
-    ["_"] = ddu_ui_params_default,
-    filer = ddu_ui_params_default,
-    icon_filename = {
-      span = 2,
-      padding = 2,
-      iconWidth = 2,
-      useLinkIcon = "grayout",
-      sort = 'filename',
-      sortTreesFirst = true,
-    }
-  }
-
-  for _, name in ipairs(filers) do
-    ddu.patch_local(name, {
-      ui            = 'filer',
-      name          = name,
-      sources       = ddu_filer_sources,
-      sourceOptions = ddu_filer_source_options,
-      kindOptions   = ddu_filer_kind_options,
-      actionOptions = ddu_filer_action_options,
-      uiParams      = ddu_filer_ui_params,
-    })
-  end
-
-  local ddu_ui_params_4preference = ddu_ui_params_default
-  ddu_ui_params_4preference.search = fn.expand(g.my_initvim_path)
-  --
   ddu.action('kind', 'file', 'filer_mychoosewin', function(args) return my_ddu_choosewin(DDU_TYPE.Filer, args) end)
 
-  local augroup_id = api.nvim_create_augroup('my_ddu_ff_preference', { clear = true })
+  local augroup_id = api.nvim_create_augroup('my_ddu_filer_preference', { clear = true })
   api.nvim_create_autocmd({ 'TabEnter', 'WinEnter', 'CursorHold', 'FocusGained' }, {
     group = augroup_id,
     pattern = "*",
@@ -525,8 +544,8 @@ end
 
 return {
   {
-    'Shougo/ddu.vim',
     lazy = true,
+    'Shougo/ddu.vim',
     dependencies = {
       'vim-denops/denops.vim',
 
@@ -569,4 +588,9 @@ return {
       { "Z", "<cmd>DduFF<CR>", mode = "n" },
     },
   },
+  {
+    lazy = true,
+    'kuuote/ddu-source-mr',
+    dependencies = { "lambdalisue/mr.vim" },
+  }
 }

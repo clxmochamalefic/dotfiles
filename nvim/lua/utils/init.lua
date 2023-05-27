@@ -1,14 +1,17 @@
 local g = vim.g
-local keymap = vim.keymap
+local fn = vim.fn
 local api = vim.api
+local keymap = vim.keymap
+
+require("utils.string")
 
 local M = {}
 
-function M._echo(type, mes)
-  vim.cmd("echo" .. type .. " '" .. mes .. "'")
+function M._echo(t, mes)
+  vim.cmd("echo" .. t .. " '" .. mes .. "'")
 end
 
-function M.echo( mes)
+function M.echo(mes)
   M._echo("", mes)
 end
 function M.echom(mes)
@@ -30,7 +33,7 @@ function M.debug_echo(mes, args, stack)
     local this_stack = stack or 0
 
     local tabshift = ""
-    for i=0,this_stack do
+    for _ = 0,this_stack do
       tabshift = tabshift .. "  "
     end
 
@@ -116,6 +119,37 @@ function M.keymap_set(t)
   for _, m in ipairs(mode) do
     keymap.set(m, lhs, rhs, opts)
   end
+end
+
+function M.read_secrets(filename)
+  if filename:endswith(".json") then
+    return M.read_json(filename)
+  end
+
+  return nil
+end
+
+function M.read_json(filename)
+  M.echo("read_json(): " .. filename)
+
+  local path = vim.fn["expand"]("~/.config/" .. filename)
+  M.echo("path: " .. path)
+
+  local fp = io.open(path)
+
+  M.echo("try")
+  if not fp then
+    return nil
+  end
+
+  M.echo("can read")
+  local r = fp:read("*a")
+
+  M.echo("r: " .. r)
+  local json = fn["json_decode"](r)
+  fp:close()
+
+  return json
 end
 
 return M
