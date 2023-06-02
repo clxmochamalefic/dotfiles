@@ -21,6 +21,27 @@ base.setup = function()
   -- ---------------------------------------------------------------------------
   --  PATH
 
+
+
+
+
+  opt.compatible = false
+--  opt.langmenu = 'en_US'
+  opt.title = true
+  opt.ruler = true
+  opt.showcmd = true
+--  opt.wrap = false
+  opt.lazyredraw = true
+--  opt.completeopt = 'menuone,noinsert'
+  opt.scrolloff = 10
+--  opt.inccommand = 'split'
+  opt.cursorline = true
+
+
+
+
+
+
   --  UndoFiles
   local home_tmp_dir = fn.expand('~/.cache/vim_tmp')
   local undofiles = fn.expand(home_tmp_dir .. '/undofiles')
@@ -44,9 +65,10 @@ base.setup = function()
 
   -- ---------------------------------------------------------------------------
   --  Window
-  opt.wildmenu = true
+  --opt.wildmenu = true
+  opt.wildmenu = false
   --  コマンドライン補完設定
-  opt.wildmode = "list:full,full"
+  -- opt.wildmode = "list:full,full"
   opt.hidden = true
   --  編集中ファイルがあっても別画面に切り替え可能に
   vim.cmd("set noequalalways")

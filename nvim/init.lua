@@ -12,7 +12,9 @@ vim.o.compatible = false
 -- reset augroup
 vim.api.nvim_create_augroup('MyAutoCmd', { clear = true })
 
+-- ------------------------------------------------------------
 -- debug mode
+-- ------------------------------------------------------------
 vim.g.is_enable_my_debug = false
 
 -- get preference file path

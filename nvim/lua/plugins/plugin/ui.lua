@@ -258,17 +258,14 @@ return {
     end
   },
   {
-    'unblevable/quick-scope',
     lazy = true,
-    event = { 'FileReadPost', 'InsertLeave' },
-    config = function()
-      -- Trigger a highlight in the appropriate direction when pressing these keys:
-      vim.g.qs_highlight_on_keys = {'f', 'F', 't', 'T'}
-    end
+    'unblevable/quick-scope',
+    event = { 'BufReadPost', 'BufAdd', 'BufNewFile' },
+    keys = { 'f', 'F', 't', 'T'}
   },
   {
-    'yutkat/wb-only-current-line.nvim',
     lazy = true,
+    'yutkat/wb-only-current-line.nvim',
     event = { 'FileReadPost', 'InsertEnter' }
   },
   {

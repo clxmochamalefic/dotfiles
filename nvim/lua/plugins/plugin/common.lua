@@ -6,22 +6,26 @@ local keymap = vim.keymap
 
 return {
   {
+    lazy = true,
     'Shougo/pum.vim',
     config = function()
-      vim.fn['pum#set_option']('max_width', 100)
-      vim.fn['pum#set_option']('use_complete', true)
-      vim.fn['pum#set_option']('border', 'rounded')
+      fn['pum#set_option']({
+        max_width     = 100,
+        use_complete  = true,
+        border        = 'rounded',
+        padding       = true
+      })
 
       local blend = 20
 
-      vim.api.nvim_set_option('pumblend', blend)
+      api.nvim_set_option('pumblend', blend)
 
-      local augroup_id = vim.api.nvim_create_augroup('transparent-windows', { clear = true })
-      vim.api.nvim_create_autocmd('FileType', {
+      local augroup_id = api.nvim_create_augroup('transparent-windows', { clear = true })
+      api.nvim_create_autocmd('FileType', {
         group = augroup_id,
         pattern = '*',
         callback = function ()
-          vim.api.nvim_set_option('winblend', blend)
+          api.nvim_set_option('winblend', blend)
         end
       })
     end

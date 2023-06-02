@@ -9,12 +9,15 @@ local opt = vim.opt
 local keymap = vim.keymap
 
 local vsnip = {
-  available = fn["vsnip#available"],
-  jumpable = fn["vsnip#jumpable"],
+  expandable  = fn["vsnip#expandable"],
+  available   = fn["vsnip#available"],
+  jumpable    = fn["vsnip#jumpable"],
 }
 
-function pumvisible()
-  local r = fn["pum#visible"]() == 1
+local ddcmanualcomp = false
+
+local function pumvisible()
+  local r = fn["pum#visible"]()
   utils.debug_echo("pumvisible: ", tostring(r))
   return r
 --  return fn["pum#visible"]()
@@ -58,6 +61,10 @@ local function ddc_init()
     ['?'] = { 'around', 'line'},
     ['-'] = { 'around', 'line'},
     ['='] = { 'input'},
+  }
+
+  local ui_params = {
+    pum = { insert = true, },
   }
 
   -- if has('win32')
@@ -111,12 +118,12 @@ local function ddc_init()
   local source_option_omni = {
     mark = '   ',
   }
---  local source_option_skkeleton = {
---    mark        = ' 🎌 ',
---    isVolatile  = true,
---    matchers    = {'skkeleton'},
---    sorters     = {},
---  }
+  local source_option_skkeleton = {
+    mark        = ' 🎌 ',
+    isVolatile  = true,
+    matchers    = {'skkeleton'},
+    sorters     = {},
+  }
 
   -- local source_option_path = {
   --   mark = '   ',
@@ -245,6 +252,8 @@ local function ddc_init()
   }
   --  integrate preferences.
   local patch_global = {
+    ui                  = 'pum',
+--    uiParams            = ui_params,
     sources             = sources,
     cmdlineSources      = cmd_sources,
     sourceOptions       = source_options,
@@ -252,13 +261,14 @@ local function ddc_init()
     filterParams        = filter_params,
     backspaceCompletion = true,
     autoCompleteEvents  = autocomplete_events,
-    ui                  = 'pum',
   }
 
   fn["ddc#custom#patch_global"](patch_global)
 
   --  use ddc.
   fn["ddc#enable"]()
+  fn["ddc#enable_cmdline_completion"]()
+  fn["ddc#enable_terminal_completion"]()
 
   utils.end_debug("ddc_init")
 end
@@ -269,70 +279,92 @@ local function ddc_preference()
   --  Key mappings
   --  For insert mode completion
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-n>',
-    rhs   = function()
-      if pumvisible() then
-        fn["pum#map#insert_relative"](1)
-      else
-        return '<C-n>'
+    rhs   = "",
+    opts  = {
+      callback = function()
+        if pumvisible() then
+          ddcmanualcomp = false
+          fn["pum#map#insert_relative"](1)
+        elseif fn["ddc#map#can_complete"]() then
+          ddcmanualcomp = true
+          fn["ddc#map#manual_complete"]()
+        else
+          return '<C-n>'
+        end
       end
-    end,
-    opts  = km_opts.ens
+    }
   })
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-p>',
-    rhs   = function()
-      if pumvisible() then
-        fn["pum#map#insert_relative"](-1)
-      else
-        return '<C-p>'
+    rhs   = "",
+    opts  = {
+      callback = function()
+        if pumvisible() then
+          ddcmanualcomp = false
+          fn["pum#map#insert_relative"](-1)
+        elseif fn["ddc#map#can_complete"]() then
+          ddcmanualcomp = true
+          fn["ddc#map#manual_complete"]()
+        else
+          return '<C-p>'
+        end
       end
-    end,
-    opts  = km_opts.en
+    }
   })
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-e>',
     rhs   = function()
       if pumvisible() then
         fn["pum#map#cancel"]()
+        return ""
       else
         return '<C-e>'
       end
     end,
-    opts  = km_opts.en
+    opts  = km_opts.e
   })
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-y>',
     rhs   = function()
       if pumvisible() then
         fn["pum#map#confirm"]()
+        return ""
       end
     end,
-    opts  = km_opts.en
+    opts  = km_opts.e
   })
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<CR>',
+    --rhs   = function()
+    --  if pumvisible() then
+    --    fn["ddc#map#manual_complete"]()
+    --  else
+    --    return "<CR>"
+    --  end
+    --end,
     rhs   = function()
       if pumvisible() then
         fn["pum#map#confirm"]()
-      else
-        return "<CR>"
+        return ""
       end
+      return "<CR>"
     end,
-    opts  = km_opts.ens
+    opts  = km_opts.e
   })
   -- Manually open the completion menu
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-Space>',
     rhs   = function()
       if pumvisible() then
         fn["ddc#map#manual_complete"]()
+        return ""
       else
         return '<C-Space>'
       end
@@ -344,11 +376,12 @@ local function ddc_preference()
     }
   })
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-l>',
     rhs   = function()
       if pumvisible() then
         fn["ddc#map#extend"]()
+        return ""
       else
         return '<C-l>'
       end
@@ -356,11 +389,12 @@ local function ddc_preference()
     opts  = km_opts.ns
   })
   utils.keymap_set({
-    mode  = { "i", "c", },
+    mode  = { "i", "c", "t" },
     lhs   = '<C-x><C-f>',
     rhs   = function()
       if pumvisible() then
         fn["ddc#map#manual_complete"]('path')
+        return ""
       else
         return '<C-x><C-f>'
       end
@@ -378,8 +412,12 @@ local function snippet_preference()
     mode  = { "i", "s", },
     lhs   = '<Tab>',
     rhs   = function()
-      if vsnip.available(1) then
+      if vsnip.expandable(1) == 1 then
+        utils.feedkey("<Plug>(vsnip-expand)", "")
+        return ""
+      elseif vsnip.available(1) == 1 then
         utils.feedkey('<Plug>(vsnip-expand-or-jump)', "")
+        return ""
       else
         return '<Tab>'
       end
@@ -390,8 +428,9 @@ local function snippet_preference()
     mode  = { "i", "s", },
     lhs   = '<S-Tab>',
     rhs   = function()
-      if vsnip.jumpable(-1) then
+      if vsnip.jumpable(-1) == 1 then
         utils.feedkey('<Plug>(vsnip-jump-prev)', "")
+        return ""
       else
         return '<S-Tab>'
       end
@@ -406,8 +445,8 @@ end
 
 return {
   {
-    'Shougo/ddc.vim',
     lazy = true,
+    'Shougo/ddc.vim',
     event = { 'InsertEnter', 'CursorHold' },
     dependencies = {
       'vim-denops/denops.vim',
@@ -445,6 +484,13 @@ return {
         ddc_preference()
         snippet_preference()
     end
+  },
+  {
+    lazy = true,
+    'Shougo/ddc-ui-pum',
+    dependencies = {
+      'Shougo/pum.vim',
+    },
   },
   {
     lazy = true,

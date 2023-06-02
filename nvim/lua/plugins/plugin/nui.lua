@@ -86,9 +86,9 @@ return {
 
       -- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', { noremap = true })
     end,
-    -- keys = {
-    --   { ":", "<cmd>FineCmdline<CR>", mode = "n" },
-    -- }
+    keys = {
+      { ":", "<cmd>FineCmdline<CR>", mode = "n" },
+    }
   }
 }
 
