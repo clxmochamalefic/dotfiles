@@ -118,7 +118,7 @@ return {
             highlight = "Search",
           },
           Error = {
-            text      = { "-", "=" },
+            text      = { "#", "=" },
             priority  = 2,
             gui       = nil,
             color     = nil,
@@ -127,7 +127,7 @@ return {
             highlight = "DiagnosticVirtualTextError",
           },
           Warn = {
-            text      = { "-", "=" },
+            text      = { "!", "=" },
             priority  = 3,
             gui       = nil,
             color     = nil,
@@ -136,7 +136,7 @@ return {
             highlight = "DiagnosticVirtualTextWarn",
           },
           Info = {
-            text      = { "-", "=" },
+            text      = { "i", "=" },
             priority  = 4,
             gui       = nil,
             color     = nil,
@@ -145,7 +145,7 @@ return {
             highlight = "DiagnosticVirtualTextInfo",
           },
           Hint = {
-            text      = { "-", "=" },
+            text      = { "?", "=" },
             priority  = 5,
             gui       = nil,
             color     = nil,

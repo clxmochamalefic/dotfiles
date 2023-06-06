@@ -218,8 +218,8 @@ colour.setup = function()
   --  modify color by colorscheme
   if colorscheme == "onehalfdark" then
     utils.debug_echo("overwrite terminal color")
-    g.terminal_color_0 = '#565F70'
-    g.terminal_color_8 = '#717C91'
+    g.terminal_color_0 = '#5A6A7C'
+    g.terminal_color_8 = '#8097B0'
   end
 
   utils.end_debug("colour.setup")

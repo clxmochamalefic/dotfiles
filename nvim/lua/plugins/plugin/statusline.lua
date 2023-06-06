@@ -36,18 +36,18 @@ return {
           }
         },
         sections = {
-          lualine_a = {'mode'},
-          lualine_b = {'branch', 'diff', 'diagnostics'},
-          lualine_c = {'filename', 'lsp_progress'},
-          lualine_x = {'encoding', 'fileformat', 'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
+          lualine_a = { 'mode' },
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { { 'filename', path = 4 }, 'lsp_progress' },
+          lualine_x = { 'encoding', 'fileformat', 'filetype' },
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' },
         },
         inactive_sections = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = {'filename'},
-          lualine_x = {'location'},
+          lualine_c = { { 'filename', path = 4 } },
+          lualine_x = { 'location' },
           lualine_y = {},
           lualine_z = {}
         },
@@ -106,46 +106,46 @@ return {
   {
     'arkav/lualine-lsp-progress',
   },
-  {
-    'akinsho/bufferline.nvim',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function()
-      -- bufferline
-      local ok, bufferline = pcall(require, "bufferline")
-      if not ok then
-        utils.echoe('"akinsho/bufferline.nvim" not available')
-        return
-      end
-      bufferline.setup({
-        options = {
-          mode = "buffers",
-          close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
-          left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-          indicator = {
-            icon = '▎', -- this should be omitted if indicator style is not 'icon'
-            style = 'icon',
-          },
-          buffer_close_icon = '',
-          modified_icon = '●',
-          close_icon = '',
-          left_trunc_marker = '',
-          right_trunc_marker = '',
-          diagnostics = "nvim_lsp",
-          offsets = {
-            {
-              filetype = "NvimTree",
-              text = "File Explorer",
-              text_align = "left",
-              separator = true,
-            },
-          },
-          separator_style = "slant",
-          enforce_regular_tabs = true,
-        },
-      })
-    end,
-  },
+--  {
+--    'akinsho/bufferline.nvim',
+--    dependencies = {
+--      'nvim-tree/nvim-web-devicons',
+--    },
+--    config = function()
+--      -- bufferline
+--      local ok, bufferline = pcall(require, "bufferline")
+--      if not ok then
+--        utils.echoe('"akinsho/bufferline.nvim" not available')
+--        return
+--      end
+--      bufferline.setup({
+--        options = {
+--          mode = "buffers",
+--          close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
+--          left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
+--          indicator = {
+--            icon = '▎', -- this should be omitted if indicator style is not 'icon'
+--            style = 'icon',
+--          },
+--          buffer_close_icon = '',
+--          modified_icon = '●',
+--          close_icon = '',
+--          left_trunc_marker = '',
+--          right_trunc_marker = '',
+--          diagnostics = "nvim_lsp",
+--          offsets = {
+--            {
+--              filetype = "NvimTree",
+--              text = "File Explorer",
+--              text_align = "left",
+--              separator = true,
+--            },
+--          },
+--          separator_style = "slant",
+--          enforce_regular_tabs = true,
+--        },
+--      })
+--    end,
+--  },
 }
 
