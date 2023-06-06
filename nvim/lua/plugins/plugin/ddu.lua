@@ -12,9 +12,9 @@ local ddu = {
   patch_global  = fn['ddu#custom#patch_global'],
   action        = fn['ddu#custom#action'],
   start         = fn['ddu#start'],
-  sync_action = fn["ddu#ui#sync_action"],
-  do_action = fn["ddu#ui#do_action"],
-  patch_local = fn["ddu#custom#patch_local"],
+  sync_action   = fn["ddu#ui#sync_action"],
+  do_action     = fn["ddu#ui#do_action"],
+  patch_local   = fn["ddu#custom#patch_local"],
   item = {
     is_tree = function()
       return fn["ddu#ui#get_item"]()['isTree']
@@ -116,19 +116,19 @@ local function ddu_ff()
   ddu.action('kind', 'file',  'ff_mychoosewin',         function(args) my_ddu_choosewin(args) end)
   ddu.action('kind', 'word',  'ff_mychoosewin',         function(args) my_ddu_choosewin(args) end)
 
-  ddu.action('kind', 'file',  'ff_open_buffer',         function() open_ddu_ff('buffer') end )
-  ddu.action('kind', 'file',  'ff_open_mrw',            function() open_ddu_ff('mrw') end )
-  ddu.action('kind', 'file',  'ff_open_mrw_current',    function() open_ddu_ff('mrw_current') end )
-  ddu.action('kind', 'file',  'ff_open_emoji',          function() open_ddu_ff('emoji') end )
+  ddu.action('kind', 'file',  'ff_open_buffer',         function() open_ddu_ff('buffer')      end)
+  ddu.action('kind', 'file',  'ff_open_mrw',            function() open_ddu_ff('mrw')         end)
+  ddu.action('kind', 'file',  'ff_open_mrw_current',    function() open_ddu_ff('mrw_current') end)
+  ddu.action('kind', 'file',  'ff_open_emoji',          function() open_ddu_ff('emoji')       end)
 
-  ddu.action('kind', 'word', 'ff_open_buffer',          function() open_ddu_ff('buffer') end)
-  ddu.action('kind', 'word', 'ff_open_mrw',             function() open_ddu_ff('mrw') end)
+  ddu.action('kind', 'word', 'ff_open_buffer',          function() open_ddu_ff('buffer')      end)
+  ddu.action('kind', 'word', 'ff_open_mrw',             function() open_ddu_ff('mrw')         end)
   ddu.action('kind', 'word', 'ff_open_mrw_current',     function() open_ddu_ff('mrw_current') end)
-  ddu.action('kind', 'word', 'ff_open_emoji',           function() open_ddu_ff('emoji') end)
+  ddu.action('kind', 'word', 'ff_open_emoji',           function() open_ddu_ff('emoji')       end)
 
 
   if fn.has('win32') then
-    ddu.action('kind', 'file', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end )
+    ddu.action('kind', 'file', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
     ddu.action('kind', 'word', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
   end
 
@@ -139,11 +139,6 @@ local function ddu_ff()
       {
         name  = 'buffer',
         param = { path = "~" },
-      },
-    },
-    sourceOptions = {
-      ["_"] = {
-        columns = { 'filename' },
       },
     },
     kindOptions = {
@@ -290,11 +285,11 @@ local function ddu_ff()
       keymap.set("n", "<F9>",   function() ddu.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.bn)
     end
 
-    keymap.set("n", "<CR>",     function() ddu.sync_action('itemAction', { name = 'ff_mychoosewin', quit = true }) end, km_opts.bn)
-    keymap.set("n", "<Space>",  function() ddu.do_action('toggleSelectItem')                                     end, km_opts.bn)
-    keymap.set("n", "i",        function() ddu.do_action('openFilterWindow')                                     end, km_opts.bn)
-    keymap.set("n", "P",        function() ddu.do_action('preview')                                              end, km_opts.bn)
-    keymap.set("n", "q",        function() ddu.do_action('quit')                                                 end, {})
+    keymap.set("n", "<CR>",     function() ddu.sync_action('itemAction', { name = 'ff_mychoosewin', quit = true })  end, km_opts.bn)
+    keymap.set("n", "<Space>",  function() ddu.do_action('toggleSelectItem')                                        end, km_opts.bn)
+    keymap.set("n", "i",        function() ddu.do_action('openFilterWindow')                                        end, km_opts.bn)
+    keymap.set("n", "P",        function() ddu.do_action('preview')                                                 end, km_opts.bn)
+    keymap.set("n", "q",        function() ddu.do_action('quit')                                                    end, {})
 
     keymap.set("n", "l",        function() ddu.do_action('itemAction', { name = 'open', params = { command = 'vsplit'}, quit = true }) end, km_opts.bn)
     keymap.set("n", "L",        function() ddu.do_action('itemAction', { name = 'open', params = { command = 'split'},  quit = true }) end, km_opts.bn)
@@ -404,9 +399,9 @@ local function ddu_filer()
 
     utils.debug_echo('change dir keymaps')
     -- change directory (path)
-    keymap.set("n", "<CR>", function() return ddu.item.is_tree() and ddu.do_action('itemAction', { name = 'narrow'}) or ddu.sync_action('itemAction', { name = 'filer_mychoosewin', quit = true })         end, km_opts.bn)
-    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                                                                                                                       end, km_opts.bn)
---    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                                            end, km_opts.bn)
+    keymap.set("n", "<CR>", function() return ddu.item.is_tree() and ddu.do_action('itemAction', { name = 'narrow'}) or ddu.sync_action('itemAction', { name = 'filer_mychoosewin', quit = true })       end, km_opts.bn)
+    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                                                                                                       end, km_opts.bn)
+--    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                            end, km_opts.bn)
     keymap.set("n", "l",    function() return ddu.item.is_tree() and ddu.do_action('expandItem')                     or ddu.do_action('itemAction', { name = 'open', params = { command = 'vsplit' } })  end, km_opts.bn)
     keymap.set("n", "L",    function() return ddu.item.is_tree() and ddu.do_action('expandItem')                     or ddu.do_action('itemAction', { name = 'open', params = { command = 'split' } })   end, km_opts.bn)
 

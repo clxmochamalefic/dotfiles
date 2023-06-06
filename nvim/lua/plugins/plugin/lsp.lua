@@ -1,5 +1,7 @@
 -- LSP ------------------------------
 
+local util = require 'vim.lsp.util'
+
 local g = vim.g
 local fn = vim.fn
 local api = vim.api
@@ -7,6 +9,43 @@ local opt = vim.opt
 local keymap = vim.keymap
 
 local lsp = vim.lsp
+
+local function on_cursor_hold()
+  if vim.lsp.buf.server_ready() then
+    vim.diagnostic.open_float()
+  end
+end
+
+local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
+
+local function enable_diagnostics_hover()
+  vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
+  vim.api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+end
+
+local function disable_diagnostics_hover()
+  vim.api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
+end
+
+local function on_hover()
+  disable_diagnostics_hover()
+
+  vim.lsp.buf.hover()
+
+  vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
+  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
+  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, { group = "lspconfig-enable-diagnostics-hover", callback = function()
+    vim.api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
+    enable_diagnostics_hover()
+  end })
+end
+
+local formatting_callback = function(client, bufnr)
+  vim.keymap.set('n', '<leader>f', function()
+    local params = util.make_formatting_params({})
+    client.request('textDocument/formatting', params, nil, bufnr) 
+  end, { buffer = bufnr })
+end
 
 return {
     {
@@ -32,31 +71,33 @@ return {
 --        vim.o.updatetime = 100
 --        vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
-
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-          virtual_text = false,
-          focus = false,
-          border = "rounded",
-        })
+--        api.nvim_set_option('updatetime', 500)
+--        enable_diagnostics_hover()
+--
+--        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+--          virtual_text = false,
+--          focus = false,
+--          border = "rounded",
+--        })
 
 --        -- You will likely want to reduce updatetime which affects CursorHold
 --        -- note: this setting is global and should be set only once
-        vim.o.updatetime = 500
+--        vim.o.updatetime = 500
 --          vim.cmd [[autocmd CursorMoved,CursorMovedI,CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
 --          vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
 --          vim.cmd [[autocmd LspAttach * silent lua vim.lsp.buf.hover()]]
 --          vim.cmd [[autocmd BufReadPost * silent lua vim.lsp.buf.hover()]]
 
-        local function is_active_lsp_on_current_buffer(bufNumber)
-            local isLoadLsp = false;
-            vim.lsp.for_each_buffer_client(bufNumber, function(client, client_id, bufnr)
-                if client.name ~= "null-ls" then
-                    isLoadLsp = true
-                end
-            end)
-          
-            return isLoadLsp
-        end
+--        local function is_active_lsp_on_current_buffer(bufNumber)
+--            local isLoadLsp = false;
+--            vim.lsp.for_each_buffer_client(bufNumber, function(client, client_id, bufnr)
+--                if client.name ~= "null-ls" then
+--                    isLoadLsp = true
+--                end
+--            end)
+--
+--            return isLoadLsp
+--        end
 
 --        vim.api.nvim_create_autocmd("LspAttach", {
 --          callback = function(args)
@@ -127,14 +168,21 @@ return {
         mason_lspconfig.setup_handlers({
           function(server_name)
             local opts = {}
-            --      opts.on_attach = function(_, bufnr)
-            --        local bufopts = { silent = true, buffer = bufnr }
-            --
-            --        -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-            --        -- vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
-            --        -- vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
-            --        -- vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
-            --      end
+            opts.on_attach = function(client, bufnr)
+              -- local bufopts = { silent = true, buffer = bufnr }
+
+              -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+              -- vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
+              -- vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
+              -- vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
+
+
+              if client.name ~= 'ccls' then
+                formatting_callback(client, bufnr)
+              end
+              common_on_attach(client, bufnr)
+
+            end
             opts.capabilities = capabilities
 
             lspconfig[server_name].setup(opts)
@@ -207,18 +255,17 @@ return {
         'nvim-lua/plenary.nvim',
       },
       config = function(_, _)
---        -- null-ls.nvim
---        --
---        local null_ls = require("null-ls")
---        local sources = { null_ls.builtins.diagnostics.textlint.with({ filetypes = { "markdown" } }) }
---        null_ls.setup({
---          border = 'single',
---          diagnostics_format = '#{m} (#{s}: #{c})',
---          sources = sources,
---        })
+        -- null-ls.nvim
+        local null_ls = require("null-ls")
+        local sources = { null_ls.builtins.diagnostics.textlint.with({ filetypes = { "markdown" } }) }
+        null_ls.setup({
+          border = 'single',
+          diagnostics_format = '#{m} (#{s}: #{c})',
+          sources = sources,
+        })
 
---
---        https://github.com/jose-elias-alvarez/null-ls.nvim
+
+--        -- https://github.com/jose-elias-alvarez/null-ls.nvim
 --        local null_ls = require("null-ls")
 --
 --        local code_actions = null_ls.builtins.code_actions
