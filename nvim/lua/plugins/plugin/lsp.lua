@@ -3,52 +3,56 @@
 local util = require 'vim.lsp.util'
 
 local g = vim.g
+local o = vim.o
 local fn = vim.fn
 local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
+local diagnostic = vim.diagnostic
 
 local lsp = vim.lsp
 
+local border = "rounded"
+
 local function on_cursor_hold()
-  if vim.lsp.buf.server_ready() then
-    vim.diagnostic.open_float()
+  if lsp.buf.server_ready() then
+    diagnostic.open_float()
   end
 end
 
 local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
 local function enable_diagnostics_hover()
-  vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
-  vim.api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+  api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
+  api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
 end
 
 local function disable_diagnostics_hover()
-  vim.api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
+  api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
 end
 
 local function on_hover()
   disable_diagnostics_hover()
 
-  vim.lsp.buf.hover()
+  lsp.buf.hover()
 
-  vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
+  api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
   -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
-  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, { group = "lspconfig-enable-diagnostics-hover", callback = function()
-    vim.api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
+  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, { group = "lspconfig-enable-diagnostics-hover", callback = function()
+    api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
     enable_diagnostics_hover()
   end })
 end
 
 local formatting_callback = function(client, bufnr)
-  vim.keymap.set('n', '<leader>f', function()
+  keymap.set('n', '<leader>f', function()
     local params = util.make_formatting_params({})
     client.request('textDocument/formatting', params, nil, bufnr) 
   end, { buffer = bufnr })
 end
 
 return {
-    {
+  {
       lazy = true,
       'neovim/nvim-lspconfig',
       cmd = { "LspInstall", "LspUninstall" },
@@ -58,22 +62,32 @@ return {
       },
       config = function()
 --        general settings
---        vim.diagnostic.config({
---          float = {
---            source = "always", -- Or "if_many"
---          },
---        })
---        vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---          vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = true }
---        )
+        diagnostic.config({
+          float = {
+            source = "always", -- Or "if_many"
+          },
+        })
+        lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+          lsp.diagnostic.on_publish_diagnostics, { virtual_text = true }
+        )
+        lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+          border = border,
+          filetype = "lsp-hover", -- invalid
+          virtual_text = false,
+          focus = false,
+        })
+        lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+          border = border,
+        }),
 --        You will likely want to reduce updatetime which affects CursorHold
 --        note: this setting is global and should be set only once
---        vim.o.updatetime = 100
---        vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+        o.updatetime = 1000
+---       api.nvim_set_option('updatetime', 1000)
 
---        api.nvim_set_option('updatetime', 500)
---        enable_diagnostics_hover()
---
+        vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+        enable_diagnostics_hover()
+
 --        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 --          virtual_text = false,
 --          focus = false,
@@ -170,18 +184,20 @@ return {
           function(server_name)
             local opts = {}
             opts.on_attach = function(client, bufnr)
-              -- local bufopts = { silent = true, buffer = bufnr }
+              local bufopts = { silent = true, buffer = bufnr }
+              keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+              keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+              keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
+              keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+              keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+              keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
+              keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
+              keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
 
-              -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-              -- vim.keymap.set('n', 'gtD', vim.lsp.buf.type_definition, bufopts)
-              -- vim.keymap.set('n', 'grf', vim.lsp.buf.references, bufopts)
-              -- vim.keymap.set('n', '<space>p', vim.lsp.buf.format, bufopts)
-
-
-              if client.name ~= 'ccls' then
-                formatting_callback(client, bufnr)
-              end
-              -- common_on_attach(client, bufnr)
+--              if client.name ~= 'ccls' then
+--                formatting_callback(client, bufnr)
+--              end
+--              common_on_attach(client, bufnr)
 
             end
             opts.capabilities = capabilities
@@ -240,13 +256,18 @@ return {
       event = { 'InsertEnter' },
       config = function()
         require('mason-null-ls').setup({
+          automatic_setup = true,
           ensure_installed = nil,
           automatic_installation = {
             exclude = {
               'textlint',
             },
           },
-          automatic_setup = false,
+          handlers = {
+            function(source_name, methods)
+              require("mason-null-ls.automatic_setup")(source_name, methods)
+            end,
+          },
         })
       end
     },
@@ -260,53 +281,115 @@ return {
       config = function(_, _)
         -- null-ls.nvim
         local null_ls = require("null-ls")
-        local sources = { null_ls.builtins.diagnostics.textlint.with({ filetypes = { "markdown" } }) }
-        null_ls.setup({
-          border = 'single',
-          diagnostics_format = '#{m} (#{s}: #{c})',
-          sources = sources,
-        })
+        null_ls.setup(
+        {
+          on_attach = function(client, bufnr)
+            if client.supports_method("textDocument/formatting") then
+              vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+              vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                  -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+                  vim.lsp.buf.format({ bufnr = bufnr })
+                end,
+              })
+            end
+          end,
+          sources = {
+            null_ls.builtins.code_actions.eslint_d,
+            null_ls.builtins.code_actions.proselint,
+            null_ls.builtins.code_actions.shellcheck,
+            null_ls.builtins.code_actions.statix,
+            null_ls.builtins.completion.spell,
+            null_ls.builtins.diagnostics.editorconfig_checker.with(
+            {
+              command = "editorconfig-checker"
+            }
+            ),
+            null_ls.builtins.diagnostics.actionlint,
+            null_ls.builtins.diagnostics.commitlint,
+            null_ls.builtins.diagnostics.curlylint,
+            null_ls.builtins.diagnostics.deadnix,
+            null_ls.builtins.diagnostics.djlint,
+            null_ls.builtins.diagnostics.eslint_d,
+            null_ls.builtins.diagnostics.fish,
+            null_ls.builtins.diagnostics.gitlint,
+            null_ls.builtins.diagnostics.hadolint,
+            null_ls.builtins.diagnostics.proselint,
+            null_ls.builtins.diagnostics.pylama,
+            null_ls.builtins.diagnostics.shellcheck,
+            null_ls.builtins.diagnostics.staticcheck,
+            null_ls.builtins.diagnostics.statix,
+            null_ls.builtins.diagnostics.vale,
+            null_ls.builtins.diagnostics.write_good,
+            null_ls.builtins.diagnostics.tidy,
+            null_ls.builtins.formatting.alejandra,
+            null_ls.builtins.formatting.beautysh,
+            null_ls.builtins.formatting.black,
+            null_ls.builtins.formatting.cbfmt,
+            null_ls.builtins.formatting.clang_format,
+            null_ls.builtins.formatting.djlint,
+            null_ls.builtins.formatting.eslint_d,
+            null_ls.builtins.formatting.fish_indent,
+            null_ls.builtins.formatting.goimports.with({
+              condition = function(utils)
+                -- Try to detect if we are in a tailscale repo
+                return utils.root_has_file({ "go.toolchain.rev" })
+              end,
+            }),
+            null_ls.builtins.formatting.golines.with({
+              condition = function(utils)
+                return not utils.root_has_file({ "go.toolchain.rev" })
+              end,
+            }),
+            null_ls.builtins.formatting.isort,
+            null_ls.builtins.formatting.jq,
+            null_ls.builtins.formatting.tidy,
+            null_ls.builtins.formatting.prettierd,
+            null_ls.builtins.formatting.shellharden,
+            null_ls.builtins.formatting.swiftformat,
+            -- null_ls.builtins.formatting.terraform_fmt, -- Covered by LSP?
+            null_ls.builtins.formatting.trim_newlines,
+            null_ls.builtins.formatting.trim_whitespace,
+            null_ls.builtins.formatting.packer,
+            null_ls.builtins.hover.dictionary
+          }
+        }
+        )
+      end,
+      --config = function(_, _)
+      --  -- https://github.com/jose-elias-alvarez/null-ls.nvim
+      --  local null_ls = require("null-ls")
 
+      --  local code_actions = null_ls.builtins.code_actions
+      --  local completion = null_ls.builtins.completion
+      --  local diagnostics = null_ls.builtins.diagnostics
+      --  local formatting = null_ls.builtins.formatting
+      --  local hover = null_ls.builtins.hover
 
---        -- https://github.com/jose-elias-alvarez/null-ls.nvim
---        local null_ls = require("null-ls")
---
---        local code_actions = null_ls.builtins.code_actions
---        local completion = null_ls.builtins.completion
---        local diagnostics = null_ls.builtins.diagnostics
---        local formatting = null_ls.builtins.formatting
---        --local hover = null_ls.builtins.hover
---
---        local sources = {
---          code_actions.gitsigns,
---          completion.vsnip,
---          formatting.stylua,
---          formatting.taplo,
---          diagnostics.textlint.with({
---            filetypes = { 'markdown' },
---            prefer_local = 'node_modules/.bin',
---          }),
---          formatting.textlint.with({
---            filetypes = { 'markdown' },
---            prefer_local = 'node_modules/.bin',
---          }),
---          diagnostics.textlint.credo,
---        }
---
---        null_ls.setup({
---          border = 'single',
---          diagnostics_format = '#{m} (#{s}: #{c})',
---          sources = sources,
---        })
---        null_ls.setup({
---          sources = {
---            null_ls.builtins.formatting.stylua,
---            null_ls.builtins.diagnostics.eslint,
---            null_ls.builtins.completion.spell,
---          },
---          diagnostics_format = "#{m} (#{s}: #{c})",
---        })
-      end
+      --  local sources = {
+      --    code_actions.gitsigns,
+      --    completion.vsnip,
+      --    formatting.stylua,
+      --    formatting.taplo,
+      --    diagnostics.textlint.with({
+      --      filetypes = { 'markdown' },
+      --      prefer_local = 'node_modules/.bin',
+      --    }),
+      --    formatting.textlint.with({
+      --      filetypes = { 'markdown' },
+      --      prefer_local = 'node_modules/.bin',
+      --    }),
+      --    diagnostics.textlint.credo,
+      --  }
+
+      --  null_ls.setup({
+      --    border = 'single',
+      --    diagnostics_format = '#{m} (#{s}: #{c})',
+      --    sources = sources,
+      --  })
+      --end
     },
     {
       lazy = true,
