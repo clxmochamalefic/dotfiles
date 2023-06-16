@@ -128,6 +128,7 @@ return {
         'vim-denops/denops.vim',
         'mfussenegger/nvim-dap',
       },
+      event = { 'InsertEnter' },
       opts = function(_, opts)
         if not opts.handlers then
           opts.handlers = {}
@@ -180,7 +181,7 @@ return {
               if client.name ~= 'ccls' then
                 formatting_callback(client, bufnr)
               end
-              common_on_attach(client, bufnr)
+              -- common_on_attach(client, bufnr)
 
             end
             opts.capabilities = capabilities
@@ -236,6 +237,7 @@ return {
       dependencies = {
         'jose-elias-alvarez/null-ls.nvim',
       },
+      event = { 'InsertEnter' },
       config = function()
         require('mason-null-ls').setup({
           ensure_installed = nil,
@@ -254,6 +256,7 @@ return {
       dependencies = {
         'nvim-lua/plenary.nvim',
       },
+      event = { 'InsertEnter' },
       config = function(_, _)
         -- null-ls.nvim
         local null_ls = require("null-ls")

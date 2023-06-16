@@ -111,3 +111,4 @@ cp ./*.vim ~/.config/nvim/
 ## exec nvim
 
 1. auto install dein and plugins
+
