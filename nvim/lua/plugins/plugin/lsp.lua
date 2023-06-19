@@ -61,7 +61,7 @@ return {
         'williamboman/mason-lspconfig.nvim',
       },
       config = function()
---        general settings
+        -- general settings
         diagnostic.config({
           float = {
             source = "always", -- Or "if_many"
@@ -70,23 +70,23 @@ return {
         lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
           lsp.diagnostic.on_publish_diagnostics, { virtual_text = true }
         )
-        lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-          border = border,
-          filetype = "lsp-hover", -- invalid
-          virtual_text = false,
-          focus = false,
+        lsp.handlers["textDocument/hover"] = vim.lsp.with(
+          vim.lsp.handlers.hover, {
+            border = border,
+            virtual_text = false,
+            focus = false,
         })
         lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
           border = border,
-        }),
+        })
 --        You will likely want to reduce updatetime which affects CursorHold
 --        note: this setting is global and should be set only once
         o.updatetime = 1000
----       api.nvim_set_option('updatetime', 1000)
+--        api.nvim_set_option('updatetime', 1000)
 
         vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
-        enable_diagnostics_hover()
+        --enable_diagnostics_hover()
 
 --        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 --          virtual_text = false,
@@ -138,11 +138,11 @@ return {
     {
       lazy = true,
       'williamboman/mason-lspconfig.nvim',
+      event = { 'InsertEnter' },
       dependencies = {
         'vim-denops/denops.vim',
         'mfussenegger/nvim-dap',
       },
-      event = { 'InsertEnter' },
       opts = function(_, opts)
         if not opts.handlers then
           opts.handlers = {}
@@ -179,29 +179,30 @@ return {
 
         local lspconfig = require "lspconfig"
         local mason_lspconfig = require "mason-lspconfig"
+        local on_attach = function(client, bufnr)
+          local bufopts = { silent = true, buffer = bufnr }
+          keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+          keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+          keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
+          keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+          keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+          keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
+          keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
+          keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
+
+          --              if client.name ~= 'ccls' then
+          --                formatting_callback(client, bufnr)
+          --              end
+          --              common_on_attach(client, bufnr)
+        end
+
+        local opts = {
+          on_attach = on_attach,
+          capabilities = capabilities,
+        }
         mason_lspconfig.setup({ ensure_installed = servers })
         mason_lspconfig.setup_handlers({
           function(server_name)
-            local opts = {}
-            opts.on_attach = function(client, bufnr)
-              local bufopts = { silent = true, buffer = bufnr }
-              keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-              keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-              keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-              keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-              keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-              keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
-              keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
-              keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
-
---              if client.name ~= 'ccls' then
---                formatting_callback(client, bufnr)
---              end
---              common_on_attach(client, bufnr)
-
-            end
-            opts.capabilities = capabilities
-
             lspconfig[server_name].setup(opts)
           end
         })
@@ -253,7 +254,6 @@ return {
       dependencies = {
         'jose-elias-alvarez/null-ls.nvim',
       },
-      event = { 'InsertEnter' },
       config = function()
         require('mason-null-ls').setup({
           automatic_setup = true,
@@ -277,9 +277,7 @@ return {
       dependencies = {
         'nvim-lua/plenary.nvim',
       },
-      event = { 'InsertEnter' },
-      config = function(_, _)
-        -- null-ls.nvim
+      config = function()
         local null_ls = require("null-ls")
         null_ls.setup(
         {

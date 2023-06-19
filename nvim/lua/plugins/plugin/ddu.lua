@@ -74,6 +74,7 @@ local function my_ddu_choosewin(args)
     end
   }
   utils.end_debug("my_ddu_choosewin")
+  return 0
 end
 
 local ddu_float_window = {
@@ -285,7 +286,7 @@ local function ddu_ff()
       keymap.set("n", "<F9>",   function() ddu.do_action('itemAction', { name = 'ff_open_clip_history', quit = true }) end, km_opts.bn)
     end
 
-    keymap.set("n", "<CR>",     function() ddu.sync_action('itemAction', { name = 'ff_mychoosewin', quit = true })  end, km_opts.bn)
+    keymap.set("n", "<CR>",     function() ddu.do_action('itemAction', { name = 'ff_mychoosewin', quit = true })  end, km_opts.bn)
     keymap.set("n", "<Space>",  function() ddu.do_action('toggleSelectItem')                                        end, km_opts.bn)
     keymap.set("n", "i",        function() ddu.do_action('openFilterWindow')                                        end, km_opts.bn)
     keymap.set("n", "P",        function() ddu.do_action('preview')                                                 end, km_opts.bn)
@@ -399,7 +400,7 @@ local function ddu_filer()
 
     utils.debug_echo('change dir keymaps')
     -- change directory (path)
-    keymap.set("n", "<CR>", function() return ddu.item.is_tree() and ddu.do_action('itemAction', { name = 'narrow'}) or ddu.sync_action('itemAction', { name = 'filer_mychoosewin', quit = true })       end, km_opts.bn)
+    keymap.set("n", "<CR>", function() return ddu.item.is_tree() and ddu.do_action('itemAction', { name = 'narrow' }) or ddu.do_action('itemAction', { name = 'filer_mychoosewin', quit = true })       end, km_opts.bn)
     keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                                                                                                       end, km_opts.bn)
 --    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                            end, km_opts.bn)
     keymap.set("n", "l",    function() return ddu.item.is_tree() and ddu.do_action('expandItem')                     or ddu.do_action('itemAction', { name = 'open', params = { command = 'vsplit' } })  end, km_opts.bn)
