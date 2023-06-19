@@ -38,6 +38,7 @@ end
 local function open_ddu_filer(window_id)
   current_filer = window_id
   show_ddu_filer()
+  return 0
 end
 
 -- ddu-ui-ff
@@ -53,6 +54,7 @@ end
 local function open_ddu_ff(name)
   current_ff_name = name
   show_ddu_ff()
+  return 0
 end
 
 local function win_all()
@@ -110,27 +112,26 @@ local ddu_ui_params = {
   previewHeight           = ddu_float_window.preview_height,
 }
 
-
 local function ddu_ff()
   utils.begin_debug('ddu ff')
 
   ddu.action('kind', 'file',  'ff_mychoosewin',         function(args) my_ddu_choosewin(args) end)
   ddu.action('kind', 'word',  'ff_mychoosewin',         function(args) my_ddu_choosewin(args) end)
 
-  ddu.action('kind', 'file',  'ff_open_buffer',         function() open_ddu_ff('buffer')      end)
-  ddu.action('kind', 'file',  'ff_open_mrw',            function() open_ddu_ff('mrw')         end)
-  ddu.action('kind', 'file',  'ff_open_mrw_current',    function() open_ddu_ff('mrw_current') end)
-  ddu.action('kind', 'file',  'ff_open_emoji',          function() open_ddu_ff('emoji')       end)
+  ddu.action('kind', 'file',  'ff_open_buffer',         function() return open_ddu_ff('buffer')      end)
+  ddu.action('kind', 'file',  'ff_open_mrw',            function() return open_ddu_ff('mrw')         end)
+  ddu.action('kind', 'file',  'ff_open_mrw_current',    function() return open_ddu_ff('mrw_current') end)
+  ddu.action('kind', 'file',  'ff_open_emoji',          function() return open_ddu_ff('emoji')       end)
 
-  ddu.action('kind', 'word', 'ff_open_buffer',          function() open_ddu_ff('buffer')      end)
-  ddu.action('kind', 'word', 'ff_open_mrw',             function() open_ddu_ff('mrw')         end)
-  ddu.action('kind', 'word', 'ff_open_mrw_current',     function() open_ddu_ff('mrw_current') end)
-  ddu.action('kind', 'word', 'ff_open_emoji',           function() open_ddu_ff('emoji')       end)
+  ddu.action('kind', 'word', 'ff_open_buffer',          function() return open_ddu_ff('buffer')      end)
+  ddu.action('kind', 'word', 'ff_open_mrw',             function() return open_ddu_ff('mrw')         end)
+  ddu.action('kind', 'word', 'ff_open_mrw_current',     function() return open_ddu_ff('mrw_current') end)
+  ddu.action('kind', 'word', 'ff_open_emoji',           function() return open_ddu_ff('emoji')       end)
 
 
   if fn.has('win32') then
-    ddu.action('kind', 'file', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
-    ddu.action('kind', 'word', 'ff_open_clip_history', function() open_ddu_ff('clip_history') end)
+    ddu.action('kind', 'file', 'ff_open_clip_history',  function() return open_ddu_ff('clip_history') end)
+    ddu.action('kind', 'word', 'ff_open_clip_history',  function() return open_ddu_ff('clip_history') end)
   end
 
   --  ddu-source-buffer
@@ -378,10 +379,10 @@ local function ddu_filer()
   local function ddu_filer_my_settings()
     utils.begin_debug('ddu_filer_my_settings')
 
-    ddu.action('kind', 'file', 'open_filer1', function() open_ddu_filer(1) end)
-    ddu.action('kind', 'file', 'open_filer2', function() open_ddu_filer(2) end)
-    ddu.action('kind', 'file', 'open_filer3', function() open_ddu_filer(3) end)
-    ddu.action('kind', 'file', 'open_filer4', function() open_ddu_filer(4) end)
+    ddu.action('kind', 'file', 'open_filer1', function() return open_ddu_filer(1) end)
+    ddu.action('kind', 'file', 'open_filer2', function() return open_ddu_filer(2) end)
+    ddu.action('kind', 'file', 'open_filer3', function() return open_ddu_filer(3) end)
+    ddu.action('kind', 'file', 'open_filer4', function() return open_ddu_filer(4) end)
 
     utils.debug_echo('basic keymaps')
     -- basic actions

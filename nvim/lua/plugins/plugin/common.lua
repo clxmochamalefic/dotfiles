@@ -53,10 +53,8 @@ return {
       "aklt/plantuml-syntax",
     },
     cmd = { "MarkdownPreview" },
-    build = function()
-      vim.cmd('!sh -c "cd app && yarn install"')
+    build = "cd app && yarn install",
       -- vim.fn["mkdp#util#install"]()
-    end,
     config = function()
       vim.g.mkdp_filetypes = { "markdown" }
     end,
