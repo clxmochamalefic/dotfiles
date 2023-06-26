@@ -1,6 +1,7 @@
 -- LSP ------------------------------
 
 local util = require 'vim.lsp.util'
+local myutils = require 'utils'
 
 local g = vim.g
 local o = vim.o
@@ -180,6 +181,8 @@ return {
         local lspconfig = require "lspconfig"
         local mason_lspconfig = require "mason-lspconfig"
         local on_attach = function(client, bufnr)
+          myutils.echo("LSP started")
+
           local bufopts = { silent = true, buffer = bufnr }
           keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
           keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -238,7 +241,6 @@ return {
     },
     -- neodev.nvim ------------------------------
     {
-      lazy = true,
       'folke/neodev.nvim',
       config = function()
           require("neodev").setup({})
@@ -249,7 +251,6 @@ return {
       'mfussenegger/nvim-dap',
     },
     {
-      lazy = true,
       'jay-babu/mason-null-ls.nvim',
       dependencies = {
         'jose-elias-alvarez/null-ls.nvim',
@@ -272,17 +273,18 @@ return {
       end
     },
     {
-      lazy = true,
       'jose-elias-alvarez/null-ls.nvim',
       dependencies = {
         'nvim-lua/plenary.nvim',
       },
+      build = "pip install editorconfig-checker",
       config = function()
         local null_ls = require("null-ls")
         null_ls.setup(
         {
           on_attach = function(client, bufnr)
             if client.supports_method("textDocument/formatting") then
+              myutils.echo("Setting up null-ls formatting")
               vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
               vim.api.nvim_create_autocmd("BufWritePre", {
                 group = augroup,
