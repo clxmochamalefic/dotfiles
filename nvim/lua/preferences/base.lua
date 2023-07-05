@@ -33,7 +33,7 @@ base.setup = function()
 --  opt.wrap = false
   opt.lazyredraw = true
 --  opt.completeopt = 'menuone,noinsert'
-  opt.scrolloff = 10
+  opt.scrolloff = 5
 --  opt.inccommand = 'split'
   opt.cursorline = true
 
@@ -202,3 +202,4 @@ base.setup = function()
 end
 
 return base
+

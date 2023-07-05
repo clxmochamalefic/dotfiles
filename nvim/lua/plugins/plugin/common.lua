@@ -46,21 +46,6 @@ return {
     'nvim-tree/nvim-web-devicons'
   },
   {
-    lazy = true,
-    'iamcco/markdown-preview.nvim',
-    dependencies = {
-      "zhaozg/vim-diagram",
-      "aklt/plantuml-syntax",
-    },
-    cmd = { "MarkdownPreview" },
-    build = "cd app && yarn install",
-      -- vim.fn["mkdp#util#install"]()
-    config = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
-    ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
-  },
-  {
     -- completion [{()}]
     'tpope/vim-surround',
     lazy = true,
