@@ -7,6 +7,7 @@ local base = {}
 local utils = require('utils')
 
 local g = vim.g
+local o = vim.o
 local fn = vim.fn
 local opt = vim.opt
 local api = vim.api
@@ -175,6 +176,7 @@ base.setup = function()
   -- ---------------------------------------------------------------------------
   --  terminal
   if fn.has('win32') then
+    o.shell = "pwsh"
     opt.shell = "pwsh"
     opt.shellcmdflag = "-c"
     opt.shellquote = '\"'

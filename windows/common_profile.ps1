@@ -21,3 +21,5 @@ oh-my-posh init pwsh --config $env:POSH_THEMES_PATH/paradox.omp.json | Invoke-Ex
 Import-Module PSReadline
 Set-PSReadLineOption -EditMode Emacs
 
+$OutputEncoding = [System.Text.Encoding]::GetEncoding('utf-8')
+

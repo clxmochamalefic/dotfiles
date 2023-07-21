@@ -19,10 +19,32 @@ return {
     end,
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
   },
+  {
+    "vinnymeller/swagger-preview.nvim",
+    build = "npm install -g swagger-ui-watcher",
+    config = function()
+      require("swagger-preview").setup({
+        port = 6060,
+        host = "localhost",
+      })
+    end,
+  },
 --  {
 --    lazy = true,
 --    'shuntaka9576/preview-swagger.nvim',
---    cmd = { "SwaggerPreview" },
+--    cmd = "SwaggerPreview",
+--    run = "yarn install",
+--    build = "yarn install",
+--    config = function()
+--      g.pswag_node_path = g.node_host_prog
+--      g.pswag_lunch_port = 6060
+--    end,
+--    ft = { 'yaml', 'yml' },
+--  },
+--  {
+----    lazy = true,
+--    'xavierchow/vim-swagger-preview',
+--    cmd = { "GenerateDiagram" },
 --    build = "yarn install",
 --    --init = function()
 --    --  g.node_path = vim.cmd([[!gcm node | Select-Object Source]]),
@@ -42,28 +64,5 @@ return {
 --    --},
 --    ft = { 'yaml', 'yml' },
 --  },
-  {
-    lazy = true,
-    'xavierchow/vim-swagger-preview',
-    cmd = { "SwaggerPreview" },
-    build = "yarn install",
-    --init = function()
-    --  g.node_path = vim.cmd([[!gcm node | Select-Object Source]]),
-
-    --  g.pswag_node_path = g.node_path,
-    --  g.pswag_lunch_port = 6060
-    --end,
-    config = function()
-      --g.node_path = vim.cmd([[!gcm node | Select-Object Source]]),
-
-      g.pswag_node_path = g.node_host_prog
-      g.pswag_lunch_port = 6060
-    end,
-    --opts = {
-    --  pswag_node_path = g.node_path,
-    --  pswag_lunch_port = 6060
-    --},
-    ft = { 'yaml', 'yml' },
-  },
 }
 

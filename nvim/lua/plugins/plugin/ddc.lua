@@ -49,7 +49,8 @@ local function ddc_init()
     'buffer',
     'file',
     'nvim-lsp',
-    'vsnip',
+--    'vsnip',
+    'tsnip',
 --    'skkeleton',
   }
 
@@ -131,7 +132,14 @@ local function ddc_init()
   --   minAutoCompleteLength = 2,
   --   sorters = ['sorter_fuzzy'],
   -- }
-  local source_option_vsnip = {
+--  local source_option_vsnip = {
+--    mark        = '   ',
+--    dup         = true,
+--    matchers    = {'matcher_fuzzy'},
+--    sorters     = {'sorter_fuzzy'},
+--    converters  = {'converter_fuzzy'}
+--  }
+  local source_option_tsnip = {
     mark        = '   ',
     dup         = true,
     matchers    = {'matcher_fuzzy'},
@@ -161,7 +169,8 @@ local function ddc_init()
     ['file']            = source_option_file,
     ["nvim-lsp"]        = source_option_nvimlsp,
     ["omni"]            = source_option_omni,
-    ['vsnip']           = source_option_vsnip,
+--    ['vsnip']           = source_option_vsnip,
+    ['tsnip']           = source_option_tsnip,
     ["cmdline-history"] = source_option_cmdlinehistory,
     ["shell-history"]   = source_option_shellhistory,
   }
@@ -468,6 +477,7 @@ return {
       'hrsh7th/vim-vsnip',
       'hrsh7th/vim-vsnip-integ',
       'rafamadriz/friendly-snippets',
+      'yuki-yano/tsnip.nvim',
 
       'Shougo/ddc-converter_remove_overlap',
       'matsui54/ddc-converter_truncate',
@@ -491,6 +501,18 @@ return {
     dependencies = {
       'Shougo/pum.vim',
     },
+  },
+  {
+    lazy = true,
+    'yuki-yano/tsnip.nvim',
+    dependencies = {
+      'vim-denops/denops.vim',
+    },
+    config = function()
+      if pcall(require, "nui.input") then
+        g.tsnip_use_nui = true
+      end
+    end,
   },
   {
     lazy = true,
