@@ -23,6 +23,26 @@ end
 
 local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
+local servers = {
+  "tsserver",
+  "prismals",
+  "omnisharp",
+  "dockerls",
+  "eslint",
+  "jsonls",
+  "intelephense",
+  "powershell_es",
+  "sqlls",
+  "lemminx",
+  "yamlls",
+  "html",
+  "cssls",
+  "marksman",
+  "clangd",
+  "vimls",
+}
+
+
 local function enable_diagnostics_hover()
   api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
   api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
@@ -57,10 +77,11 @@ end
 
 return {
   {
-    --lazy = true,
     "neovim/nvim-lspconfig",
-    cmd = { "LspInstall", "LspUninstall" },
-    --event = { 'InsertEnter' },
+    cmd = {
+      "LspInstall",
+      "LspUninstall"
+    },
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
     },
@@ -87,93 +108,23 @@ return {
       --        api.nvim_set_option('updatetime', 1000)
 
       vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
-
-      --enable_diagnostics_hover()
-
-      --        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      --          virtual_text = false,
-      --          focus = false,
-      --          border = "rounded",
-      --        })
-
-      --        -- You will likely want to reduce updatetime which affects CursorHold
-      --        -- note: this setting is global and should be set only once
-      --        vim.o.updatetime = 500
-      --          vim.cmd [[autocmd CursorMoved,CursorMovedI,CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --          vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --          vim.cmd [[autocmd LspAttach * silent lua vim.lsp.buf.hover()]]
-      --          vim.cmd [[autocmd BufReadPost * silent lua vim.lsp.buf.hover()]]
-
-      --        local function is_active_lsp_on_current_buffer(bufNumber)
-      --            local isLoadLsp = false;
-      --            vim.lsp.for_each_buffer_client(bufNumber, function(client, client_id, bufnr)
-      --                if client.name ~= "null-ls" then
-      --                    isLoadLsp = true
-      --                end
-      --            end)
-      --
-      --            return isLoadLsp
-      --        end
-
-      --        vim.api.nvim_create_autocmd("LspAttach", {
-      --          callback = function(args)
-      --          -- vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --            vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --
-      --          -- local bufnr = args.buf
-      --          -- local client = vim.lsp.get_client_by_id(args.data.client_id)
-      --          -- if client.server_capabilities.completionProvider then
-      --          --   vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-      --          -- end
-      --          -- if client.server_capabilities.definitionProvider then
-      --          --   vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
-      --          -- end
-      --        end,
-      --})
-
-      -- nvim-ufo ------------------------------
-
-      -- local ufo = require('ufo')
-      -- ufo.setup()
     end,
   },
   {
-    --lazy = true,
     "williamboman/mason-lspconfig.nvim",
-    --event = { 'InsertEnter' },
     dependencies = {
       "vim-denops/denops.vim",
       "mfussenegger/nvim-dap",
     },
-    opts = function(_, opts)
-      if not opts.handlers then
-        opts.handlers = {}
-      end
-      opts.handlers[1] = function(server)
-        require("utils.lsp").setup(server)
-      end
-    end,
+--    opts = function(_, opts)
+--      if not opts.handlers then
+--        opts.handlers = {}
+--      end
+--      opts.handlers[1] = function(server)
+--        require("utils.lsp").setup(server)
+--      end
+--    end,
     config = function()
-      local servers = {
-        "tsserver",
-        "prismals",
-        "omnisharp",
-        "dockerls",
-        "eslint",
-        "jsonls",
-        "intelephense",
-        "powershell_es",
-        "sqlls",
-        "lemminx",
-        "yamlls",
-        "html",
-        "cssls",
-        "marksman",
-        "clangd",
-        "vimls",
-      }
-
-      --  require("mason-lspconfig").setup(opts)
       local capabilities = lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
       capabilities.textDocument.foldingRange = {
@@ -181,97 +132,48 @@ return {
         lineFoldingOnly = true,
       }
 
-        local lspconfig = require "lspconfig"
-        local mason_lspconfig = require "mason-lspconfig"
-        local on_attach = function(client, bufnr)
-          myutils.echo("LSP started")
-
-          local bufopts = { silent = true, buffer = bufnr }
-          keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-          keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-          keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-          keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-          keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-          keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
-          keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
-          keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
-      end
-      --local on_attach = function(client, bufnr)
-      --  -- local bufopts = { silent = true, buffer = bufnr, noremap = true }
-      --  keymap.set('n', 'gD',   vim.lsp.buf.declaration,      { desc = "goto declaration",      silent = true, noremap = true })
-      --  keymap.set('n', 'gd',   vim.lsp.buf.definition,       { desc = "goto definition",       silent = true, noremap = true })
-      --  keymap.set('n', 'gx',   vim.lsp.buf.type_definition,  { desc = "goto type_definition",  silent = true, noremap = true })
-      --  keymap.set('n', 'gi',   vim.lsp.buf.implementation,   { desc = "goto implementation",   silent = true, noremap = true })
-      --  keymap.set('n', 'K',    vim.lsp.buf.hover,            { desc = "goto hover",            silent = true, noremap = true })
-      --  keymap.set('n', 'gX',   vim.lsp.buf.references,       { desc = "goto references",       silent = true, noremap = true })
-      --  keymap.set('n', '<F2>', vim.lsp.buf.rename,           { desc = "goto rename",           silent = true, noremap = true })
-      --  keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, { desc = "goto format", silent = true, noremap = true })
-      --  --keymap.set('n', 'gD',   vim.lsp.buf.declaration,      { desc = "goto declaration",      buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', 'gd',   vim.lsp.buf.definition,       { desc = "goto definition",       buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', 'gx',   vim.lsp.buf.type_definition,  { desc = "goto type_definition",  buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', 'gi',   vim.lsp.buf.implementation,   { desc = "goto implementation",   buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', 'K',    vim.lsp.buf.hover,            { desc = "goto hover",            buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', 'gX',   vim.lsp.buf.references,       { desc = "goto references",       buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', '<F2>', vim.lsp.buf.rename,           { desc = "goto rename",           buffer = bufnr, silent = true, noremap = true })
-      --  --keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, { desc = "goto format", buffer = bufnr, silent = true, noremap = true })
-
-      --  --              if client.name ~= 'ccls' then
-      --  --                formatting_callback(client, bufnr)
-      --  --              end
-      --  --              common_on_attach(client, bufnr)
-      --end
-      local keymapopts = { noremap = true, silent = true }
-      vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, keymapopts)
-      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, keymapopts)
-      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, keymapopts)
-      vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, keymapopts)
-
-      local on_attach = function(client, bufnr)
-        myutils.echo("call on_attach")
-
-        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-        -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-        -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set("n", "<space>wl", function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
-        vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
-        vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-        vim.keymap.set("n", "<space>f", function()
-          vim.lsp.buf.format({ async = true })
-        end, bufopts)
-        vim.api.nvim_create_augroup("lsp_document_format", { clear = true })
-        vim.api.nvim_clear_autocmds({ buffer = bufnr, group = "lsp_document_format" })
-        vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-          callback = function()
-            vim.lsp.buf.format()
-          end,
-          buffer = bufnr,
-          group = "lsp_document_format",
-          desc = "Document Format",
-        })
-      end
-
+      local lspconfig = require "lspconfig"
+      local mason_lspconfig = require "mason-lspconfig"
       local opts = {
         on_attach = on_attach,
         capabilities = capabilities,
       }
-      local lspconfig = require("lspconfig")
-      local mason_lspconfig = require("mason-lspconfig")
+
       mason_lspconfig.setup({ ensure_installed = servers })
       mason_lspconfig.setup_handlers({
         function(server_name)
           lspconfig[server_name].setup(opts)
         end,
       })
+
+      local on_attach = function(client, bufnr)
+        myutils.echo("LSP started")
+
+        local bufopts = { silent = true, buffer = bufnr }
+        keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
+        keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+        keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
+        keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
+        keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
+      end
+
+      local augroup_id = api.nvim_create_augroup("my_lspinfo_preference", { clear = true })
+      api.nvim_create_autocmd("FileType", {
+        group = augroup_id,
+        pattern = { "lspinfo" },
+        callback = function ()
+          ddu_ff_my_settings()
+        end,
+      })
+
+      myutils.end_debug("ddu ff")
+    end,
+    pattern = { "lspinfo" },
+    callback = function ()
+      ddu_ff_my_settings()
     end,
   },
   {
@@ -334,9 +236,9 @@ return {
   {
     --lazy = true,
     "jose-elias-alvarez/null-ls.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
+--    dependencies = {
+--      "nvim-lua/plenary.nvim",
+--    },
     config = function()
       local null_ls = require("null-ls")
       null_ls.setup({
@@ -443,11 +345,11 @@ return {
     --  })
     --end
   },
-  {
-    lazy = true,
-    "nvim-lua/plenary.nvim",
-    build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
-  },
+--  {
+--    lazy = true,
+--    "nvim-lua/plenary.nvim",
+--    build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
+--  },
   {
     lazy = true,
     "kevinhwang91/nvim-ufo",
@@ -455,26 +357,4 @@ return {
       "kevinhwang91/promise-async",
     },
   },
-  {
-    lazy = true,
-    "kevinhwang91/promise-async",
-  },
-  --        {
-  --          lazy = true,
-  --          'nvimdev/lspsaga.nvim',
-  --          dependencies = {
-  --            {
-  --              'nvim-treesitter/nvim-treesitter',
-  --              event = 'BufRead',
-  --              cmd = { 'TSUpdate', 'TSInstall', 'TSInstallFromGrammar', 'TSInstallInfo', 'TSModuleInfo', 'TSConfigInfo' },
-  --              build = 'vim.cmd("TSInstallFromGrammar")',
-  --            },
-  --            'nvim-tree/nvim-web-devicons',
-  --            event = { 'LspAttach' }
-  --          },
-  --        },
-  --        {
-  --          lazy = true,
-  --          'nvim-treesitter/nvim-treesitter',
-  --        },
 }

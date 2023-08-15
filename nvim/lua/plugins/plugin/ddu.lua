@@ -537,11 +537,13 @@ local function ddu_filer()
       ui = "filer",
       name = name,
       sources = ddu_filer_sources,
+      resume = true,
       sourceOptions = ddu_filer_source_options,
       kindOptions = ddu_filer_kind_options,
       actionOptions = ddu_filer_action_options,
       uiParams = ddu_filer_uiparams,
     })
+    -- ddu.push(name)
   end
 
   local function ddu_filer_my_settings()
@@ -602,13 +604,13 @@ local function ddu_filer()
     end, km_opts.bn)
     --    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                            end, km_opts.bn)
     keymap.set("n", "l", function()
-      return ddu.item.is_tree() and ddu.do_action("expandItem")
+      return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
       or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
-    end, km_opts.bn)
+    end, km_opts.ben)
     keymap.set("n", "L", function()
-      return ddu.item.is_tree() and ddu.do_action("expandItem")
+      return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
       or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
-    end, km_opts.bn)
+    end, km_opts.ben)
 
     utils.debug_echo("change dir alias keymaps")
     -- change directory aliases

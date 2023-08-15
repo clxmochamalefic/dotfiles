@@ -1,8 +1,16 @@
+local utils = require('utils')
+
 local g = vim.g
 local fn = vim.fn
 local opt = vim.opt
 local api = vim.api
 local keymap = vim.keymap
+
+local revealjs_path = "~/bin/reveal.js"
+
+--if not file_exists(revealjs_path) then
+--  os.execute("mkdir " .. dirname)
+--end
 
 return {
   {
@@ -19,16 +27,33 @@ return {
     end,
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
   },
-  {
-    "vinnymeller/swagger-preview.nvim",
-    build = "npm install -g swagger-ui-watcher",
-    config = function()
-      require("swagger-preview").setup({
-        port = 6060,
-        host = "localhost",
-      })
-    end,
-  },
+--  {
+--    lazy = true,
+--    "vinnymeller/swagger-preview.nvim",
+--    build = "npm install -g swagger-ui-watcher",
+--    config = function()
+--      require("swagger-preview").setup({
+--        port = 6060,
+--        host = "localhost",
+--      })
+--    end,
+--    ft = { 'yaml', 'yml' },
+--  },
+--  {
+--    lazy = true,
+--    "blindFS/vim-reveal",
+--    cmd = { "Reveal" },
+--    build = "git clone https://github.com/hakimel/reveal.js.git " .. revealjs_path .. " && cd " .. revealjs_path .. " && npm install",
+--    config = function()
+--      g.reveal_root_path = revealjs_path
+--      g.reveal_config = {
+--        filename = 'reveal',
+--        -- key1 = 'value1',
+--        -- key2 = 'value2',
+--      }
+--    end,
+--    ft = { 'markdown', 'md' },
+--  },
 --  {
 --    lazy = true,
 --    'shuntaka9576/preview-swagger.nvim',
