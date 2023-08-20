@@ -606,11 +606,11 @@ local function ddu_filer()
     keymap.set("n", "l", function()
       return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
       or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
-    end, km_opts.ben)
+    end, km_opts.bn)
     keymap.set("n", "L", function()
       return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
       or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
-    end, km_opts.ben)
+    end, km_opts.bn)
 
     utils.debug_echo("change dir alias keymaps")
     -- change directory aliases

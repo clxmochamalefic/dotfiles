@@ -112,5 +112,10 @@ return {
     'AndrewRadev/linediff.vim',
     event = { 'FileReadPost', 'InsertChange' }
   },
+  {
+    lazy = true,
+    "nvim-lua/plenary.nvim",
+    build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
+  },
 }
 

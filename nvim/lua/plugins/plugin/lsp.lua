@@ -345,11 +345,6 @@ return {
     --  })
     --end
   },
---  {
---    lazy = true,
---    "nvim-lua/plenary.nvim",
---    build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
---  },
   {
     lazy = true,
     "kevinhwang91/nvim-ufo",
