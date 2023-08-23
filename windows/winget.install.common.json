@@ -1,105 +1,104 @@
 {
-  "$schema" : "https://aka.ms/winget-packages.schema.2.0.json",
-  "CreationDate" : "2022-10-15T07:11:21.793-00:00",
-  "Sources" : 
-  [
+  "$schema": "https://aka.ms/winget-packages.schema.2.0.json",
+  "CreationDate": "2022-10-15T07:11:21.793-00:00",
+  "Sources": [
     {
-      "Packages" : 
-      [
+      "Packages": [
         {
-          "PackageIdentifier" : "7zip.7zip"
+          "PackageIdentifier": "7zip.7zip"
         },
         {
-          "PackageIdentifier" : "GIMP.GIMP"
+          "PackageIdentifier": "GIMP.GIMP"
         },
         {
-          "PackageIdentifier" : "Google.Chrome"
+          "PackageIdentifier": "Google.Chrome"
         },
         {
-          "PackageIdentifier" : "Microsoft.Edge"
+          "PackageIdentifier": "Microsoft.Edge"
         },
         {
-          "PackageIdentifier" : "Microsoft.EdgeWebView2Runtime"
+          "PackageIdentifier": "Microsoft.EdgeWebView2Runtime"
         },
         {
-          "PackageIdentifier" : "Microsoft.PowerShell"
+          "PackageIdentifier": "Microsoft.PowerShell"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
+          "PackageIdentifier": "Microsoft.VCRedist.2013.x64"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2013.x64"
+          "PackageIdentifier": "Microsoft.VCRedist.2013.x64"
         },
         {
-          "PackageIdentifier" : "Microsoft.DotNet.Runtime.5"
+          "PackageIdentifier": "Microsoft.DotNet.Runtime.5"
         },
         {
-          "PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.5"
+          "PackageIdentifier": "Microsoft.DotNet.DesktopRuntime.5"
         },
         {
-          "PackageIdentifier" : "Microsoft.DotNet.Runtime.6"
+          "PackageIdentifier": "Microsoft.DotNet.Runtime.6"
         },
         {
-          "PackageIdentifier" : "Microsoft.DotNet.DesktopRuntime.6"
+          "PackageIdentifier": "Microsoft.DotNet.DesktopRuntime.6"
         },
         {
-          "PackageIdentifier" : "Microsoft.WindowsInstallationAssistant"
+          "PackageIdentifier": "Microsoft.WindowsInstallationAssistant"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2010.x64"
+          "PackageIdentifier": "Microsoft.VCRedist.2010.x64"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2012.x86"
+          "PackageIdentifier": "Microsoft.VCRedist.2012.x86"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2015+.x64"
+          "PackageIdentifier": "Microsoft.VCRedist.2015+.x64"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
+          "PackageIdentifier": "Microsoft.VCRedist.2013.x86"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2010.x86"
+          "PackageIdentifier": "Microsoft.VCRedist.2010.x86"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2015+.x86"
+          "PackageIdentifier": "Microsoft.VCRedist.2015+.x86"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2012.x64"
+          "PackageIdentifier": "Microsoft.VCRedist.2012.x64"
         },
         {
-          "PackageIdentifier" : "Microsoft.VCRedist.2013.x86"
+          "PackageIdentifier": "Microsoft.VCRedist.2013.x86"
         },
         {
-          "PackageIdentifier" : "Git.Git"
+          "PackageIdentifier": "Git.Git"
         },
         {
-          "PackageIdentifier" : "GitHub.GitLFS"
+          "PackageIdentifier": "GitHub.GitLFS"
         },
         {
-          "PackageIdentifier" : "Microsoft.VisualStudioCode"
+          "PackageIdentifier": "Microsoft.VisualStudioCode"
         },
         {
-          "PackageIdentifier" : "Neovim.Neovim"
+          "PackageIdentifier": "Neovim.Neovim"
         },
         {
-          "PackageIdentifier" : "Microsoft.WindowsTerminal"
+          "PackageIdentifier": "DenoLand.Deno"
         },
         {
-          "PackageIdentifier" : "Microsoft.WindowsTerminal.Preview"
+          "PackageIdentifier": "Microsoft.WindowsTerminal"
         },
         {
-          "PackageIdentifier" : "JanDeDobbeleer.OhMyPosh"
+          "PackageIdentifier": "Microsoft.WindowsTerminal.Preview"
+        },
+        {
+          "PackageIdentifier": "JanDeDobbeleer.OhMyPosh"
         }
       ],
-      "SourceDetails" : 
-      {
-        "Argument" : "https://cdn.winget.microsoft.com/cache",
-        "Identifier" : "Microsoft.Winget.Source_8wekyb3d8bbwe",
-        "Name" : "winget",
-        "Type" : "Microsoft.PreIndexed.Package"
+      "SourceDetails": {
+        "Argument": "https://cdn.winget.microsoft.com/cache",
+        "Identifier": "Microsoft.Winget.Source_8wekyb3d8bbwe",
+        "Name": "winget",
+        "Type": "Microsoft.PreIndexed.Package"
       }
     }
   ],
-  "WinGetVersion" : "1.3.2691"
+  "WinGetVersion": "1.3.2691"
 }
-
