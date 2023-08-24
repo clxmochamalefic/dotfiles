@@ -15,11 +15,17 @@ function sh()
   pwsh $args 
 }
 
+# import completions
+# git
 Import-Module posh-git
 oh-my-posh init pwsh --config $env:POSH_THEMES_PATH/paradox.omp.json | Invoke-Expression
 
+# volta
+Get-ChildItem "${PSScriptRoot}\Completions" | ForEach-Object { . $_ }
+
 Import-Module PSReadline
 Set-PSReadLineOption -EditMode Emacs
+
 
 $OutputEncoding = [System.Text.Encoding]::GetEncoding('utf-8')
 
