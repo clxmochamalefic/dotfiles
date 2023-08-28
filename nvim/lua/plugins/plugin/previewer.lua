@@ -29,6 +29,41 @@ return {
   },
 --  {
 --    lazy = true,
+--    'shuntaka9576/preview-swagger.nvim',
+--    cmd = { "SwaggerPreview" },
+--    build = 'yarn install',
+--    ft = { 'yaml', 'yml', },
+--    config = function()
+--      -- set to node path
+--      g.pswag_node_path = g.node_host_prog
+--
+--      -- set to lunch port
+--      g.pswag_lunch_port='6060'
+--
+--      -- set to lunch address
+--      g.pswag_lunch_ip='localhost'
+--    end,
+--  },
+  {
+    "vinnymeller/swagger-preview.nvim",
+    cmd = {
+      "SwaggerPreview",
+      "SwaggerPreviewStop",
+      "SwaggerPreviewToggle",
+    },
+    build = "npm install -g swagger-ui-watcher",
+    ft = { 'yaml', 'yml', },
+    config = function()
+      require("swagger-preview").setup({
+        -- The port to run the preview server on
+        port = 6060,
+        -- The host to run the preview server on
+        host = "localhost",
+      })
+    end,
+  },
+--  {
+--    lazy = true,
 --    "vinnymeller/swagger-preview.nvim",
 --    build = "npm install -g swagger-ui-watcher",
 --    config = function()

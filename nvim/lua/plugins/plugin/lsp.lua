@@ -171,10 +171,6 @@ return {
 
       myutils.end_debug("ddu ff")
     end,
-    pattern = { "lspinfo" },
-    callback = function ()
-      ddu_ff_my_settings()
-    end,
   },
   {
     lazy = true,

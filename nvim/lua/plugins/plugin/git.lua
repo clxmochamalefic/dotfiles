@@ -7,8 +7,10 @@ local keymap = vim.keymap
 return {
   {
     lazy = true,
-    depencencies = { 'vim-denops/denops.vim' },
     'lambdalisue/gin.vim',
+    dependencies = {
+      'vim-denops/denops.vim'
+    },
     event = { 'BufRead', 'FileReadPost' },
   },
 }

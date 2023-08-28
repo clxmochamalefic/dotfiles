@@ -4,7 +4,14 @@ vim.scriptencoding = 'utf-8'
 
 local utils = require('utils')
 
-local currentFont = 'Cica'
+local fav_font_map = {
+  Migu2M    = 'Migu 2M',
+  Migu2MPL  = 'Migu 2M for Powerline',
+  Cica      = 'Cica',
+  Hack      = 'Hack',
+}
+
+local currentFont = fav_font_map.Cica
 
 -- Neovim GTK --
 if vim.g.GtkGuiLoaded == 1 then
@@ -22,14 +29,8 @@ end
 -- Cica
 -- https://github.com/miiton/Cica
 
-local fav_font_map = {
-  Migu2M    = 'Migu 2M',
-  Migu2MPL  = 'Migu 2M for Powerline',
-  Cica      = 'Cica',
-  Hack      = 'Hack',
-}
-
-local fontsize = 13
+local default_fontsize = 16
+local fontsize = default_fontsize
 local min_fontsize = 7
 
 local function adjust_font_size(amount)
