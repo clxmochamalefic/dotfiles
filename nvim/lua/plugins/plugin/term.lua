@@ -24,13 +24,15 @@ return {
         group = augroup_id,
         pattern = 'floaterm',
         callback = function ()
-          keymap.set('n', 'q', '<Cmd>FloatermToggle<CR>', { noremap = true, silent = true, buffer = true })
+          keymap.set('n', 'q',    '<Cmd>FloatermToggle<CR>',  { noremap = true, silent = true, buffer = true })
+          keymap.set('n', '<F8>', '<Cmd>FloatermNew<CR>',     { noremap = true, silent = true, buffer = true })
+          keymap.set('n', '<F6>', '<Cmd>FloatermPrev<CR>',    { noremap = true, silent = true, buffer = true })
+          keymap.set('n', '<F7>', '<Cmd>FloatermNext<CR>',    { noremap = true, silent = true, buffer = true })
         end
       })
 
       api.nvim_create_user_command("Floaterm",  '<Cmd>FloatermToggle<CR>', {})
     end
-
   }
 }
 
