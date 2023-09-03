@@ -1,7 +1,8 @@
 #!/bin/bash
+
 # make repositories dirctory
 
-PARENT_DIR=$(cd $(dirname $0); cd ..;pwd)
+PARENT_DIR=$(cd "$(dirname "$0")"; cd ..;pwd)
 IS_WSL=false
 WSL_USER=""
 REPO_PATH="~/repos"
@@ -33,12 +34,12 @@ for opt in "$@"; do # in "$@" を省略して for opt と書くことも出来�
   esac
 done
 
-if [ $IS_WSL ] && [ $WSL_USER = "" ] ; then
-    echo $USAGE
+if [ "$IS_WSL" ] && [ "$WSL_USER" = "" ] ; then
+    echo "$USAGE"
     exit 1
 fi
 
-if [ $IS_WSL ] ; then
+if [ "$IS_WSL" ] ; then
   cd ~
   ln -s "/mnt/c/Users/${WSL_USER}/bin" bin
   ln -s "/mnt/c/Users/${WSL_USER}/repos" repos
@@ -53,6 +54,14 @@ fi
 mkdir ~/appimg
 mkdir ~/.config
 
+# apt update
+
+sudo apt update
+
+# install common-tools
+
+sudo apt install curl
+sudo apt install git
 
 # install FUSE
 
@@ -74,3 +83,5 @@ ln -s ~/appimg/nvim.appimage nvim
 cd ~/.config
 ln -s "${DOTFILES_PATH}/nvim/" nvim
 
+echo 'export PATH=/home/cocoalix/bin:$PATH' >> ~/.bashrc
+echo 'export DOCKER_HOST=unix:///mnt/wslg/runtime-dir/docker.sock' >> ~/.bashrc

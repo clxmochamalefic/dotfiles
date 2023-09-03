@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## 新しく作られたファイルのパーミッションがつねに 644 になるようにする。基本。
 umask 022
 
@@ -34,7 +36,7 @@ export LC_MESSAGES='ja_JP.UTF-8'
 # OS別設定読み込み
 if [ "$(uname)" == 'Darwin' ]; then
     source ~/.mac.bashrc
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+elif [ "$(expr substr "$(uname -s)" 1 5)" == 'Linux' ]; then
     source ~/.linux.bashrc
 else
   echo "Your platform ($(uname -a)) is not supported."
