@@ -15,8 +15,22 @@ return {
       'tpope/vim-dotenv',
       'kristijanhusak/vim-dadbod-ui'
     },
+    build = function()
+      utils.begin_debug("build: /plugins/db.lua")
+
+      local db_toml_dir = vim.fn.expand('~/.cache/vim_dadbod')
+      vim.g.dbs = {}
+
+      if vim.fn.isdirectory(db_toml_dir) ~= 1 then
+        local mkdircmd = '!mkdir ' .. db_toml_dir
+        utils.echo(mkdircmd)
+        vim.cmd(mkdircmd)
+      end
+
+      utils.end_debug("build: /plugins/db.lua")
+    end,
     config = function ()
-      utils.begin_debug("/plugins/db.lazy.post.source.vim")
+      utils.begin_debug("/plugins/db.lua")
 
       -- TOML FORMAT
       -- [local]
@@ -32,13 +46,6 @@ return {
       -- password = "PASSWD"
       -- identifier = ""
 
-      local db_toml_dir = vim.fn.expand('~/.cache/vim_dadbod')
-      vim.g.dbs = {}
-
-      if vim.fn.isdirectory(db_toml_dir) ~= 1 then
-        vim.cmd('!mkdir ' .. db_toml_dir)
-      end
-
       -- local filelist =  vim.fn.expand(db_toml_dir + "/*.toml")
       -- local splitted = vim.fn.split(filelist, "\n")
       -- for s:file in s:splitted
@@ -50,8 +57,7 @@ return {
       --   endfor
       -- endfor
 
-      utils.end_debug("/plugins/db.lazy.post.source.vim")
-
+      utils.end_debug("/plugins/db.lua")
     end
   }
 }
