@@ -7,7 +7,6 @@ sudo apt install -y gnome-keyring
 
 sudo apt install -y dbus-user-session
 sudo apt install -y docker-ce-rootless-extras
-sudo apt install -y uidmap
 sudo apt install -y uidmap fuse-overlayfs
 sudo apt install libsecret-1-0
 
@@ -25,10 +24,14 @@ sudo systemctl disable --now docker.service docker.socket
 
 dockerd-rootless-setuptool.sh install --skip-iptables
 
-# TODO: erase `--skip-iptables` by sed
-vim ~/.config/systemd/user/docker.service
+## rootless preference modify (erase `--iptables=false`)
+mv ~/.config/systemd/user/docker.service ~/.config/systemd/user/docker.service.old
+sed -i -e 's/--iptables=false//g' ~/.config/systemd/user/docker.service ~/.config/systemd/user/docker.service
 
+# restart docker daemon
 systemctl --user daemon-reload
 systemctl --user restart docker
 
 sudo setcap cap_net_bind_service=ep /home/cocoalix/bin/rootlesskit
+
+echo 'export DOCKER_HOST=unix:///mnt/wslg/runtime-dir/docker.sock' >> ~/.bashrc
