@@ -66,37 +66,37 @@ asdf global asdf-plugin-manager latest
 asdf-plugin-manager version
 
 
-asdf plugin install nodejs        lasest
-asdf plugin install php           latest
-asdf plugin install golang        latest
+asdf install nodejs        latest
+asdf install php           latest
+asdf install golang        latest
 
-asdf plugin install ruby          latest
-asdf plugin install python        latest
+asdf install ruby          latest
+asdf install python        latest
 
-asdf plugin install zig           latest
-asdf plugin install rust          latest
-asdf plugin install dotnet-core   latest
+asdf install zig           latest
+asdf install rust          latest
+asdf install dotnet-core   latest
 
-asdf plugin install deno          latest
-asdf plugin install flutter       latest
+asdf install deno          latest
+asdf install flutter       latest
 
-asdf plugin install kubectl       latest
+asdf install kubectl       latest
 
-asdf plugin install boundary      latest
-asdf plugin install consul        latest
-asdf plugin install levant        latest
-asdf plugin install nomad         latest
-asdf plugin install packer        latest
-asdf plugin install sentinel      latest
-asdf plugin install serf          latest
-asdf plugin install terraform     latest
-asdf plugin install terraform-ls  latest
-asdf plugin install tfc-agent     latest
-asdf plugin install vault         latest
-asdf plugin install waypoint      latest
+asdf install boundary      latest
+asdf install consul        latest
+asdf install levant        latest
+asdf install nomad         latest
+asdf install packer        latest
+asdf install sentinel      latest
+asdf install serf          latest
+asdf install terraform     latest
+asdf install terraform-ls  latest
+asdf install tfc-agent     latest
+asdf install vault         latest
+asdf install waypoint      latest
 
 
-asdf global nodejs        lasest
+asdf global nodejs        latest
 asdf global php           latest
 asdf global golang        latest
 
