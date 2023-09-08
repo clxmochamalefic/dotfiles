@@ -25,6 +25,7 @@ local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
 local servers = {
   "tsserver",
+  "denols",
   "prismals",
   "omnisharp",
   "dockerls",
@@ -40,8 +41,35 @@ local servers = {
   "marksman",
   "clangd",
   "vimls",
+  "lua-language-server",
 }
 
+local pattern_opts = {
+  ["tsserver"] = function(lspconfig, opts)
+    local is_node = require("lspconfig").util.find_node_modules_ancestor(".")
+    if is_node and (not enabled_vtsls) then
+      lspconfig["tsserver"].setup({})
+    end
+  end,
+  ["denols"] = function(lspconfig, opts)
+    lspconfig["denols"].setup({
+      root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
+      init_options = {
+        lint = true,
+        unstable = true,
+        suggest = {
+          imports = {
+            hosts = {
+              ["https://deno.land"] = true,
+              ["https://cdn.nest.land"] = true,
+              ["https://crux.land"] = true,
+            },
+          },
+        },
+      },
+    })
+  end,
+}
 
 local function enable_diagnostics_hover()
   api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
@@ -121,7 +149,7 @@ return {
 --        opts.handlers = {}
 --      end
 --      opts.handlers[1] = function(server)
---        require("utils.lsp").setup(server)
+--        require("myutils.lsp").setup(server)
 --      end
 --    end,
     config = function()
@@ -142,6 +170,10 @@ return {
       mason_lspconfig.setup({ ensure_installed = servers })
       mason_lspconfig.setup_handlers({
         function(server_name)
+          if myutils.isContainsInArray(pattern_opts, server_name) then
+            pattern_opts[server_name](lspconfig, opts)
+            return
+          end
           lspconfig[server_name].setup(opts)
         end,
       })
@@ -284,14 +316,14 @@ return {
           null_ls.builtins.formatting.eslint_d,
           null_ls.builtins.formatting.fish_indent,
           null_ls.builtins.formatting.goimports.with({
-            condition = function(utils)
+            condition = function(u)
               -- Try to detect if we are in a tailscale repo
-              return utils.root_has_file({ "go.toolchain.rev" })
+              return u.root_has_file({ "go.toolchain.rev" })
             end,
           }),
           null_ls.builtins.formatting.golines.with({
-            condition = function(utils)
-              return not utils.root_has_file({ "go.toolchain.rev" })
+            condition = function(u)
+              return not u.root_has_file({ "go.toolchain.rev" })
             end,
           }),
           null_ls.builtins.formatting.isort,

@@ -65,6 +65,10 @@ function M.file_exists(name)
   return f ~= nil and io.close(f)
 end
 
+function M.isContainsInArray(set, key)
+  return set[key] ~= nil
+end
+
 function M.try_catch(what)
   M.debug_echo("begin try --->")
   local status, exception = pcall(what.try)
