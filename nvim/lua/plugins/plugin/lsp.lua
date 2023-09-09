@@ -41,7 +41,7 @@ local servers = {
   "marksman",
   "clangd",
   "vimls",
-  "lua-language-server",
+  "lua_ls",
 }
 
 local pattern_opts = {
