@@ -71,28 +71,11 @@ local function win_all()
   return fn.range(1, fn.winnr("$"))
 end
 
---local function window_choose(args)
---  utils.begin_debug("window_choose")
---  utils.debug_echo("args", args)
---
---  utils.try_catch({
---    try = function()
---      local path = args.items[1].action.path
---      fn["choosewin#start"](win_all(), { auto_choose = true, hook_enable = false })
---      vim.cmd("edit " .. path)
---    end,
---    catch = function()
---      ddu.do_action("itemAction", args)
---    end,
---  })
---  utils.end_debug("window_choose")
---  return 0
---end
 local function window_choose(args)
   utils.begin_debug("window_choose")
   utils.debug_echo("args", args)
 
-  local my_winpick = require("individual.winpick")
+  local my_winpick = require("plugins.plugin.individual.winpick")
 
   utils.try_catch({
     try = function()
