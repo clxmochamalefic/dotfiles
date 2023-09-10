@@ -4,6 +4,8 @@ local opt = vim.opt
 local api = vim.api
 local keymap = vim.keymap
 
+local myWinPick = require("plugins.plugin.individual.winpick")
+
 return {
   {
     'Shougo/pum.vim',
@@ -41,14 +43,10 @@ return {
     keys = {
       { "-", "<cmd>WinPick<CR>", mode = "n" },
     },
-    init = function()
-      local myWinPick = require("individual.winpick")
-      api.nvim_create_user_command("WinPick", myWinPick.choose, {})
-    end,
     config = function()
-      local myWinPick = require("individual.winpick")
       myWinPick.setup({})
 
+      api.nvim_create_user_command("WinPick", myWinPick.choose, {})
       vim.keymap.set("n", "-", myWinPick.choose)
     end
   },
