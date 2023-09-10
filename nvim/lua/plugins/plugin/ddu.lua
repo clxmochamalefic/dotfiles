@@ -71,21 +71,40 @@ local function win_all()
   return fn.range(1, fn.winnr("$"))
 end
 
-local function my_ddu_choosewin(args)
-  utils.begin_debug("my_ddu_choosewin")
+--local function window_choose(args)
+--  utils.begin_debug("window_choose")
+--  utils.debug_echo("args", args)
+--
+--  utils.try_catch({
+--    try = function()
+--      local path = args.items[1].action.path
+--      fn["choosewin#start"](win_all(), { auto_choose = true, hook_enable = false })
+--      vim.cmd("edit " .. path)
+--    end,
+--    catch = function()
+--      ddu.do_action("itemAction", args)
+--    end,
+--  })
+--  utils.end_debug("window_choose")
+--  return 0
+--end
+local function window_choose(args)
+  utils.begin_debug("window_choose")
   utils.debug_echo("args", args)
+
+  local my_winpick = require("individual.winpick")
 
   utils.try_catch({
     try = function()
       local path = args.items[1].action.path
-      fn["choosewin#start"](win_all(), { auto_choose = true, hook_enable = false })
+      my_winpick.choose()
       vim.cmd("edit " .. path)
     end,
     catch = function()
       ddu.do_action("itemAction", args)
     end,
   })
-  utils.end_debug("my_ddu_choosewin")
+  utils.end_debug("window_choose")
   return 0
 end
 
@@ -125,11 +144,11 @@ local ddu_ui_params = {
 local function ddu_ff()
   utils.begin_debug("ddu ff")
 
-  ddu.action("kind", "file", "ff_mychoosewin", function(args)
-    my_ddu_choosewin(args)
+  ddu.action("kind", "file", "ff_window_choose", function(args)
+    window_choose(args)
   end)
-  ddu.action("kind", "word", "ff_mychoosewin", function(args)
-    my_ddu_choosewin(args)
+  ddu.action("kind", "word", "ff_window_choose", function(args)
+    window_choose(args)
   end)
 
   ddu.action("kind", "file", "ff_open_buffer", function()
@@ -342,7 +361,7 @@ local function ddu_ff()
     end
 
     keymap.set("n", "<CR>", function()
-      ddu.do_action("itemAction", { name = "ff_mychoosewin", quit = true })
+      ddu.do_action("itemAction", { name = "ff_window_choose", quit = true })
     end, km_opts.bn)
     keymap.set("n", "<Space>", function()
       ddu.do_action("toggleSelectItem")
@@ -475,7 +494,7 @@ local function ddu_lsp_actions()
   end, {})
 
   ddu.action("kind", "word", "lspactions", function(args)
-    my_ddu_choosewin(args)
+    window_choose(args)
   end)
 end
 
@@ -597,7 +616,7 @@ local function ddu_filer()
     -- change directory (path)
     keymap.set("n", "<CR>", function()
       return ddu.item.is_tree() and ddu.do_action("itemAction", { name = "narrow" })
-      or ddu.do_action("itemAction", { name = "filer_mychoosewin", quit = true })
+      or ddu.do_action("itemAction", { name = "filer_window_choose", quit = true })
     end, km_opts.bn)
     keymap.set("n", "h", function()
       return ddu.item.is_tree() and ddu.do_action("collapseItem")
@@ -666,8 +685,8 @@ local function ddu_filer()
     utils.end_debug("ddu_filer_my_settings")
   end
 
-  ddu.action("kind", "file", "filer_mychoosewin", function(args)
-    return my_ddu_choosewin(args)
+  ddu.action("kind", "file", "filer_window_choose", function(args)
+    return window_choose(args)
   end)
 
   local augroup_id = api.nvim_create_augroup("my_ddu_filer_preference", { clear = true })

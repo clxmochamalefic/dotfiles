@@ -269,8 +269,8 @@ return {
     event = { 'FileReadPost', 'InsertEnter' }
   },
   {
-    'rcarriga/nvim-notify',
     lazy = true,
+    'rcarriga/nvim-notify',
     event = { 'BufEnter' },
     init = function()
       vim.notify = require("notify")
@@ -278,8 +278,8 @@ return {
     end
   },
   {
-    'kwkarlwang/bufresize.nvim',
     lazy = true,
+    'kwkarlwang/bufresize.nvim',
     event = { 'FileReadPost', 'InsertEnter' },
     config = function()
       local bufresize = require("bufresize")
@@ -287,9 +287,10 @@ return {
     end
   },
   {
-    'Rasukarusan/nvim-popup-message',
     lazy = true,
-    event = { 'VimEnter' },
+    'Rasukarusan/nvim-popup-message',
+    -- event = { 'VimEnter' },
+    cmd = { 'PopMess' },
     config = function()
       vim.api.nvim_create_user_command(
       'PopMess',

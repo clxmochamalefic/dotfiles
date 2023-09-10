@@ -8,10 +8,10 @@ return {
   {
     lazy = true,
     'lambdalisue/gin.vim',
+    event = { 'BufRead', 'FileReadPost' },
     dependencies = {
       'vim-denops/denops.vim'
     },
-    event = { 'BufRead', 'FileReadPost' },
   },
 }
 
