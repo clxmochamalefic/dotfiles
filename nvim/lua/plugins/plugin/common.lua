@@ -6,7 +6,6 @@ local keymap = vim.keymap
 
 return {
   {
-    lazy = true,
     'Shougo/pum.vim',
     config = function()
       fn['pum#set_option']({
@@ -30,10 +29,27 @@ return {
       })
     end
   },
+  -- {
+  --   't9md/vim-choosewin',
+  --   init = function()
+  --     vim.keymap.set("n", "-", "<Plug>(choosewin)")
+  --   end
+  -- },
   {
-    't9md/vim-choosewin',
+    'gbrlsnchs/winpick.nvim',
+    cmd = { "WinPick", },
+    keys = {
+      { "-", "<cmd>WinPick<CR>", mode = "n" },
+    },
     init = function()
-      vim.keymap.set("n", "-", "<Plug>(choosewin)")
+      local myWinPick = require("individual.winpick")
+      api.nvim_create_user_command("WinPick", myWinPick.choose, {})
+    end,
+    config = function()
+      local myWinPick = require("individual.winpick")
+      myWinPick.setup({})
+
+      vim.keymap.set("n", "-", myWinPick.choose)
     end
   },
   {
@@ -47,24 +63,24 @@ return {
   },
   {
     -- completion [{()}]
-    'tpope/vim-surround',
     lazy = true,
+    'tpope/vim-surround',
     event = { 'BufEnter' }
   },
   {
-    'osyo-manga/vim-precious',
     lazy = true,
+    'osyo-manga/vim-precious',
     dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },
   {
-    'LeafCage/vimhelpgenerator',
     lazy = true,
+    'LeafCage/vimhelpgenerator',
 --    ft = { 'vimscript', 'lua', 'typescript' }
   },
   {
-    'Milly/windows-clipboard-history.vim',
     lazy = true,
+    'Milly/windows-clipboard-history.vim',
     enabled = function () return vim.fn.has("win32") end
   },
   {
@@ -78,8 +94,8 @@ return {
     end
   },
   {
-    'deris/vim-rengbang',
     lazy = true,
+    'deris/vim-rengbang',
     event = { 'InsertChange' },
     init = function()
       -- Following settings is default value.
@@ -97,8 +113,8 @@ return {
     end
   },
   {
-    'haya14busa/vim-asterisk',
     lazy = true,
+    'haya14busa/vim-asterisk',
     event = { 'FileReadPost', 'InsertLeave' },
     config = function()
       vim.g["asterisk#keeppos"] = 1
