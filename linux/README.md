@@ -4,21 +4,37 @@
 
 今のところ `Ubuntu` のみ対応
 
+## 前提
+
+### WSL2 で実行する場合
+
+事前に HOST(Windows/Powershell) で以下を実行する必要がおそらく有り
+
+```pwsh
+PS> Get-NetIPInterface -InterfaceAlias "vEthernet (WSL)" | Set-NetIPInterface -InterfaceMetric 1
+PS> Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConnect"} | Set-NetIPInterface -InterfaceMetric 6000
+```
+
 ## ファイル説明
 
-### init.sh
+### 1. init.wsl.sh
 
 初期設定
 
-#### 使い方例
-
-- ./init.sh --wsl <Windows のユーザ名>
-
-#### やってくれること
-
 - 少なくとも `.ssh` への `シンボリックリンク` は linux
   のホームディレクトリに貼ってくれます
-- neovim をインストールしてくれます
+- また、 /etc/\* の必要なものを展開してくれます
+
+```bash
+./init.wsl.sh --wsl <Windows のユーザ名>
+```
+
+> `init.wsl.sh` を実行した後は、必ず当該の `wsl` をシャットダウンし、再度 `wsl` コマンドで起動してください
+>
+> ```pwsh
+> PS> wsl --shutdown
+> PS> wsl
+> ```
 
 #### 関連ファイル
 
@@ -55,22 +71,47 @@ wsl 向けの `/etc/` の初期設定が含まれています
 
 > e.g. `-d /mnt/c/Users/takoyaki_mantoman/repos/dotfiles`
 
-##### --no-neovim
+### 2. init.depends.sh
 
-Neovim のインストールをスキップします
+`init.xxxx.sh` が依存する関係のパッケージ類を入れてくれます
 
-### init.asdf.sh
+```bash
+./init.depends.sh
+```
+
+### 3. init.neovim.sh
+
+neovim をインストールしてくれます
+
+```bash
+./init.neovim.sh
+```
+
+### 4. init.asdf.sh
 
 とりあえず `asdf` を入れてくれます
 
-#### 使い方例
+```bash
+./init.asdf.sh
+```
 
-- `./init.asdf.sh`
-
-### init.docker.sh
+### 5. init.docker.sh
 
 とりあえず `docker` を入れてくれます
 
-#### 使い方例
+```bash
+./init.docker.sh
+```
 
-- `./init.docker.sh`
+## 私向け
+
+clone してきたときに必ずこれやれ (`.sh` が実行できなくなるので)
+
+```bash
+$ git config --local core.autocrlf false
+```
+
+## 参考
+
+- [WSL2 に「ubuntu 20.04 LTS」をインストール後に更新できない場合](https://qiita.com/dmkd3006/items/ca6a9b34e60f9c04e361)
+- [なんか WSL2 がインターネットにつながらなくなったときの解決方法](https://qiita.com/kotauchisunsun/items/71fae973afa00ebb871a)

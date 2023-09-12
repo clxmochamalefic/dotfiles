@@ -66,3 +66,5 @@ vim.keymap.set('n', '<C-ScrollWheelDown>',  decrement_font_size, { noremap = tru
 vim.keymap.set('i', '<C-ScrollWheelUp>',    increment_font_size, { noremap = true })
 vim.keymap.set('i', '<C-ScrollWheelDown>',  decrement_font_size, { noremap = true })
 
+adjust_font_size(0)
+
