@@ -1,20 +1,11 @@
 #!/bin/bash
 
-sudo apt install -y zliblg-dev
-
 # git clone asdf
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
 
-# install asdf to .bashrc
 . "$HOME/.asdf/asdf.sh"
 
-# install asdf completions
 . "$HOME/.asdf/completions/asdf.bash"
-
-# install asdf plugins
-
-## install dependencies
-apt-get install dirmngr gpg curl gawk
 
 ## add plugins
 ### asdf plugin manager

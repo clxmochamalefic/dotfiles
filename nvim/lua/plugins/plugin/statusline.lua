@@ -54,20 +54,20 @@ return {
         },
         tabline = {},
         winbar = {
-          lualine_a = {},
+          lualine_a = { { 'filetype', icon_only = true } },
           lualine_b = {},
-          lualine_c = { 'filetype', { 'filename', path = 4 } },
+          lualine_c = { { 'filename', path = 4 } },
           lualine_x = {},
-          lualine_y = {},
-          lualine_z = {}
+          lualine_y = { { 'encoding' } },
+          lualine_z = { { 'fileformat' } }
         },
         inactive_winbar = {
-          lualine_a = {},
+          lualine_a = { { 'filetype', icon_only = true } },
           lualine_b = {},
-          lualine_c = { 'filetype', { 'filename', path = 4 } },
+          lualine_c = { { 'filename', path = 4 } },
           lualine_x = {},
-          lualine_y = {},
-          lualine_z = {}
+          lualine_y = { { 'encoding' } },
+          lualine_z = { { 'fileformat' } }
         },
         extensions = {},
       }
