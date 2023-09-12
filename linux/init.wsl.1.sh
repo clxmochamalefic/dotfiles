@@ -51,7 +51,8 @@ echo "REPO_PATH: ${REPO_PATH}"
 echo "DOTFILES_PATH: ${DOTFILES_PATH}"
 
 if [ "$IS_WSL" ] ; then
-  ln -s "/mnt/c/Users/${WSL_USER}/bin" bin -t $HOME
+  #ln -s "/mnt/c/Users/${WSL_USER}/bin" bin -t $HOME
+  mkdir ~/bin
   ln -s "/mnt/c/Users/${WSL_USER}/repos" repos -t $HOME
   ln -s "/mnt/c/Users/${WSL_USER}" winhome -t $HOME
   ln -s "/mnt/c/Users/${WSL_USER}" home -t $HOME
@@ -60,12 +61,12 @@ if [ "$IS_WSL" ] ; then
   chmod -R 600 ~/.ssh
 
   sudo mv /etc/wsl.conf /etc/wsl.conf.old
-  sudo mv /etc/resolv.conf /etc/resolv.conf.old
+  #sudo mv /etc/resolv.conf /etc/resolv.conf.old
   sudo mv /etc/sysctl.conf /etc/sysctl.conf.old
   #sudo mv /etc/hosts /etc/hosts.old
 
   sudo cp "${PARENT_DIR}/linux/wsl/wsl.conf" /etc/wsl.conf
-  sudo cp "${PARENT_DIR}/linux/wsl/resolv.conf" /etc/resolv.conf
+  #sudo cp "${PARENT_DIR}/linux/wsl/resolv.conf" /etc/resolv.conf
   sudo cp "${PARENT_DIR}/linux/wsl/sysctl.conf" /etc/sysctl.conf
 
   #sudo cp "${PARENT_DIR}/wsl/hosts" /etc/hosts
@@ -82,3 +83,8 @@ else
 fi
 
 echo 'export PATH=~/bin:$PATH' >> ~/.bashrc
+
+echo 'this script has been finished'
+echo 'PLZ => execute `sudo reboot` or `wsl --shutdown`, before exec `init.wsl.2.sh` ...'
+
+# sudo reboot
