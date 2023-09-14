@@ -7,6 +7,7 @@ local opt = vim.opt
 local keymap = vim.keymap
 
 local km_opts = require("const.keymap")
+--local lsplist = require("plugins.plugin.indevidual.lsplist")
 
 local ddu = {
   patch_global = fn["ddu#custom#patch_global"],
@@ -71,15 +72,24 @@ local function win_all()
   return fn.range(1, fn.winnr("$"))
 end
 
+local function win_count()
+  return fn.winnr("$")
+end
+
 local function window_choose(args)
   utils.begin_debug("window_choose")
   utils.debug_echo("args", args)
 
-  local my_winpick = require("plugins.plugin.individual.winpick")
 
   utils.try_catch({
     try = function()
       local path = args.items[1].action.path
+      if win_count() <= 1 then
+        vim.cmd("edit " .. path)
+        return
+      end
+
+      local my_winpick = require("plugins.plugin.individual.winpick")
       my_winpick.choose()
       vim.cmd("edit " .. path)
     end,
@@ -748,5 +758,10 @@ return {
     lazy = true,
     "kuuote/ddu-source-mr",
     dependencies = { "lambdalisue/mr.vim" },
+  },
+  {
+    lazy = true,
+    "uga-rosa/ddu-source-lsp",
+    dependencies = { "neovim/nvim-lspconfig" },
   },
 }
