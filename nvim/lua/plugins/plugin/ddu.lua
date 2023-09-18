@@ -28,12 +28,12 @@ local current_filer = 1
 local filers = { "filer_1", "filer_2", "filer_3", "filer_4" }
 
 local function show_ddu_filer()
-  utils.begin_debug("show_ddu_filer")
+  utils.io.begin_debug("show_ddu_filer")
 
-  utils.echom("ddu-filer: " .. filers[current_filer])
+  utils.io.echom("ddu-filer: " .. filers[current_filer])
   ddu.start({ name = filers[current_filer] })
 
-  utils.end_debug("show_ddu_filer")
+  utils.io.end_debug("show_ddu_filer")
   return 0
 end
 local function open_ddu_filer(window_id)
@@ -44,12 +44,12 @@ end
 -- ddu-ui-ff
 local current_ff_name = "buffer"
 local function show_ddu_ff()
-  utils.begin_debug("show_ddu_ff")
+  utils.io.begin_debug("show_ddu_ff")
 
-  utils.echom("ddu-ff: " .. current_ff_name)
+  utils.io.echom("ddu-ff: " .. current_ff_name)
   ddu.start({ name = current_ff_name })
 
-  utils.end_debug("show_ddu_ff")
+  utils.io.end_debug("show_ddu_ff")
   return 0
 end
 local function open_ddu_ff(name)
@@ -59,12 +59,12 @@ end
 
 -- lsp_actions
 local function show_ddu_lsp_actions()
-  utils.begin_debug("show_ddu_lsp_actions")
+  utils.io.begin_debug("show_ddu_lsp_actions")
 
-  utils.echom("show_ddu_lsp_actions")
+  utils.io.echom("show_ddu_lsp_actions")
   ddu.start({ name = "lsp_actions" })
 
-  utils.end_debug("show_ddu_lsp_actions")
+  utils.io.end_debug("show_ddu_lsp_actions")
   return 0
 end
 
@@ -77,8 +77,8 @@ local function win_count()
 end
 
 local function window_choose(args)
-  utils.begin_debug("window_choose")
-  utils.debug_echo("args", args)
+  utils.io.begin_debug("window_choose")
+  utils.io.debug_echo("args", args)
 
 
   utils.try_catch({
@@ -97,7 +97,7 @@ local function window_choose(args)
       ddu.do_action("itemAction", args)
     end,
   })
-  utils.end_debug("window_choose")
+  utils.io.end_debug("window_choose")
   return 0
 end
 
@@ -135,7 +135,7 @@ local ddu_ui_params = {
 }
 
 local function ddu_ff()
-  utils.begin_debug("ddu ff")
+  utils.io.begin_debug("ddu ff")
 
   ddu.action("kind", "file", "ff_window_choose", function(args)
     window_choose(args)
@@ -332,7 +332,7 @@ local function ddu_ff()
   end
 
   local function ddu_ff_my_settings()
-    utils.begin_debug("ddu_ff_my_settings")
+    utils.io.begin_debug("ddu_ff_my_settings")
 
     keymap.set("n", "<F5>", function()
       ddu.do_action("itemAction", { name = "ff_open_buffer", quit = true })
@@ -380,7 +380,7 @@ local function ddu_ff()
       ddu.do_action("itemAction", { name = "delete" })
     end, km_opts.bn)
 
-    utils.end_debug("ddu_ff_my_settings")
+    utils.io.end_debug("ddu_ff_my_settings")
   end
 
   local augroup_id = api.nvim_create_augroup("my_ddu_ff_preference", { clear = true })
@@ -392,7 +392,7 @@ local function ddu_ff()
     end,
   })
 
-  utils.end_debug("ddu ff")
+  utils.io.end_debug("ddu ff")
 end
 
 -- ddu-source-custom-list
@@ -492,7 +492,7 @@ local function ddu_lsp_actions()
 end
 
 local function ddu_filer()
-  utils.begin_debug("ddu filer")
+  utils.io.begin_debug("ddu filer")
 
   local ddu_filer_sources = {
     {
@@ -559,7 +559,7 @@ local function ddu_filer()
   end
 
   local function ddu_filer_my_settings()
-    utils.begin_debug("ddu_filer_my_settings")
+    utils.io.begin_debug("ddu_filer_my_settings")
 
     ddu.action("kind", "file", "open_filer1", function()
       return open_ddu_filer(1)
@@ -574,7 +574,7 @@ local function ddu_filer()
       return open_ddu_filer(4)
     end)
 
-    utils.debug_echo("basic keymaps")
+    utils.io.debug_echo("basic keymaps")
     -- basic actions
     keymap.set("n", "q", function()
       ddu.do_action("quit")
@@ -605,7 +605,7 @@ local function ddu_filer()
       ddu.do_action("itemAction", { name = "open_filer4", params = { id = 3 }, quit = true })
     end, km_opts.bn)
 
-    utils.debug_echo("change dir keymaps")
+    utils.io.debug_echo("change dir keymaps")
     -- change directory (path)
     keymap.set("n", "<CR>", function()
       return ddu.item.is_tree() and ddu.do_action("itemAction", { name = "narrow" })
@@ -614,7 +614,7 @@ local function ddu_filer()
     keymap.set("n", "h", function()
       return ddu.item.is_tree() and ddu.do_action("collapseItem")
     end, km_opts.bn)
-    --    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.echoe('cannot close this item')                                            end, km_opts.bn)
+    --    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.io.echoe('cannot close this item')                                            end, km_opts.bn)
     keymap.set("n", "l", function()
       return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
       or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
@@ -624,7 +624,7 @@ local function ddu_filer()
       or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
     end, km_opts.bn)
 
-    utils.debug_echo("change dir alias keymaps")
+    utils.io.debug_echo("change dir alias keymaps")
     -- change directory aliases
     keymap.set("n", "^", function()
       ddu.do_action("itemAction", { name = "narrow", params = { path = fn.expand(g.my_initvim_path) } })
@@ -675,7 +675,7 @@ local function ddu_filer()
       ddu.do_action("itemAction", { name = "rename" })
     end, km_opts.bns)
 
-    utils.end_debug("ddu_filer_my_settings")
+    utils.io.end_debug("ddu_filer_my_settings")
   end
 
   ddu.action("kind", "file", "filer_window_choose", function(args)
@@ -698,7 +698,7 @@ local function ddu_filer()
     end,
   })
 
-  utils.end_debug("ddu filer")
+  utils.io.end_debug("ddu filer")
 end
 
 return {

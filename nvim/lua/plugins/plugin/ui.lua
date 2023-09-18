@@ -6,6 +6,7 @@ local keymap = vim.keymap
 
 return {
   {
+    -- start page
     'goolord/alpha-nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
@@ -13,8 +14,9 @@ return {
     end
   },
   {
-    'RRethy/vim-illuminate',
+    -- word highlighting on cursor
     lazy = true,
+    'RRethy/vim-illuminate',
     event = { 'BufReadPost', 'FileReadPost' },
     config = function()
       require('illuminate').configure({
@@ -65,16 +67,18 @@ return {
     end
   },
   {
-    'norcalli/nvim-colorizer.lua',
+    -- html color chart previewer
     lazy = true,
+    'norcalli/nvim-colorizer.lua',
     event = { 'BufReadPost', 'FileReadPost' },
     config = function()
       require('colorizer').setup()
     end
   },
   {
-    'petertriho/nvim-scrollbar',
+    -- scroll bar
     lazy = true,
+    'petertriho/nvim-scrollbar',
     dependencies = {
       'kevinhwang91/nvim-hlslens',
       'lewis6991/gitsigns.nvim'
@@ -219,9 +223,9 @@ return {
         handlers = {
           cursor      = true,
           diagnostic  = true,
-          gitsigns    = false, -- Requires gitsigns
+          gitsigns    = true, -- Requires gitsigns
           handle      = true,
-          search      = false, -- Requires hlslens
+          search      = true, -- Requires hlslens
           ale         = false, -- Requires ALE
         },
       })

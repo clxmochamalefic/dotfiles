@@ -8,7 +8,7 @@ local api = vim.api
 local g = vim.g
 
 command.setup = function()
-  utils.begin_debug(fn["expand"]('%/h'))
+  utils.io.begin_debug(fn["expand"]('%/h'))
 
   --  -- +++++++++++++++
   --  --  define command
@@ -45,7 +45,7 @@ command.setup = function()
   api.nvim_create_user_command("ReloadAll", reload_all, {})
   api.nvim_create_user_command("Rea", reload_all, {})
 
-  utils.end_debug(fn["expand"]('%/h'))
+  utils.io.end_debug(fn["expand"]('%/h'))
 end
 
 return command
