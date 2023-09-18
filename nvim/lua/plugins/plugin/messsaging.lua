@@ -12,9 +12,9 @@ return {
       "SarahckDispChannel",
     },
     config = function()
-      local config = utils.read_secrets("messaging.json")
+      local config = utils.io.read_secrets("messaging.json")
       if config then
-        utils.echo("token : " .. config.tokens.slack)
+        utils.io.echo("token : " .. config.tokens.slack)
         g.slackToken = config.tokens.slack
       end
     end

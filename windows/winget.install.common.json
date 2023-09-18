@@ -11,6 +11,9 @@
           "PackageIdentifier": "GIMP.GIMP"
         },
         {
+          "PackageIdentifier": "gerardog.gsudo"
+        },
+        {
           "PackageIdentifier": "Google.Chrome"
         },
         {

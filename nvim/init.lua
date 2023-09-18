@@ -22,7 +22,7 @@ vim.g.is_enable_my_debug = false
 vim.g.my_home_preference_path = vim.fn.expand("~/.config/nvim")
 vim.g.my_initvim_path = vim.fn.expand(vim.g.preference_path)
 
-utils.debug_echo('load rc')
+utils.io.debug_echo('load rc')
 
 local base    = require("preferences.base")
 local path    = require("preferences.path")
@@ -33,9 +33,9 @@ local colour  = require("preferences.colour")
 
 local plugins = require("plugins")
 
-utils.begin_debug(vim.g.my_initvim_path)
+utils.io.begin_debug(vim.g.my_initvim_path)
 
-utils.debug_echo('load plugins')
+utils.io.debug_echo('load plugins')
 
 path.setup()
 
@@ -49,5 +49,5 @@ command.setup()
 
 colour.setup()
 
-utils.end_debug(vim.g.my_initvim_path)
+utils.io.end_debug(vim.g.my_initvim_path)
 

@@ -47,7 +47,10 @@ local servers = {
 local pattern_opts = {
   ["tsserver"] = function(lspconfig, opts)
     local is_node = require("lspconfig").util.find_node_modules_ancestor(".")
-    if is_node and (not enabled_vtsls) then
+    --if is_node and (not enabled_vtsls) then
+    --  lspconfig["tsserver"].setup({})
+    --end
+    if is_node then
       lspconfig["tsserver"].setup({})
     end
   end,
@@ -162,24 +165,9 @@ return {
 
       local lspconfig = require "lspconfig"
       local mason_lspconfig = require "mason-lspconfig"
-      local opts = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-      }
-
-      mason_lspconfig.setup({ ensure_installed = servers })
-      mason_lspconfig.setup_handlers({
-        function(server_name)
-          if myutils.isContainsInArray(pattern_opts, server_name) then
-            pattern_opts[server_name](lspconfig, opts)
-            return
-          end
-          lspconfig[server_name].setup(opts)
-        end,
-      })
 
       local on_attach = function(client, bufnr)
-        myutils.echo("LSP started")
+        myutils.io.echo("LSP started")
 
         local bufopts = { silent = true, buffer = bufnr }
         keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
@@ -192,6 +180,25 @@ return {
         keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
       end
 
+      local opts = {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      }
+
+      mason_lspconfig.setup({ 
+        ensure_installed = servers,
+        automatic_installation = true,
+      })
+      mason_lspconfig.setup_handlers({
+        function(server_name)
+          if myutils.isContainsInArray(pattern_opts, server_name) then
+            pattern_opts[server_name](lspconfig, opts)
+            return
+          end
+          lspconfig[server_name].setup(opts)
+        end,
+      })
+
       local augroup_id = api.nvim_create_augroup("my_lspinfo_preference", { clear = true })
       api.nvim_create_autocmd("FileType", {
         group = augroup_id,
@@ -201,7 +208,7 @@ return {
         end,
       })
 
-      myutils.end_debug("ddu ff")
+      myutils.io.end_debug("ddu ff")
     end,
   },
   {

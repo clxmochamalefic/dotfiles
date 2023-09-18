@@ -18,13 +18,13 @@ local ddcmanualcomp = false
 
 local function pumvisible()
   local r = fn["pum#visible"]()
-  utils.debug_echo("pumvisible: ", tostring(r))
+  utils.io.debug_echo("pumvisible: ", tostring(r))
   return r
 --  return fn["pum#visible"]()
 end
 
 local function pummap(k, f, a)
-  utils.debug_echo("args: ", a)
+  utils.io.debug_echo("args: ", a)
   if pumvisible() then
     if a then
       f(a)
@@ -39,7 +39,7 @@ local function pummap(k, f, a)
 end
 
 local function ddc_init()
-  utils.begin_debug("ddc_init")
+  utils.io.begin_debug("ddc_init")
 
   -- Customize global settings
   -- Use around source.
@@ -279,15 +279,15 @@ local function ddc_init()
   fn["ddc#enable_cmdline_completion"]()
   fn["ddc#enable_terminal_completion"]()
 
-  utils.end_debug("ddc_init")
+  utils.io.end_debug("ddc_init")
 end
 
 local function ddc_preference()
-  utils.begin_debug("ddc_preference")
+  utils.io.begin_debug("ddc_preference")
 
   --  Key mappings
   --  For insert mode completion
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-n>',
     rhs   = "",
@@ -305,7 +305,7 @@ local function ddc_preference()
       end
     }
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-p>',
     rhs   = "",
@@ -323,7 +323,7 @@ local function ddc_preference()
       end
     }
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-e>',
     rhs   = function()
@@ -336,7 +336,7 @@ local function ddc_preference()
     end,
     opts  = km_opts.e
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-y>',
     rhs   = function()
@@ -347,7 +347,7 @@ local function ddc_preference()
     end,
     opts  = km_opts.e
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<CR>',
     --rhs   = function()
@@ -367,7 +367,7 @@ local function ddc_preference()
     opts  = km_opts.e
   })
   -- Manually open the completion menu
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-Space>',
     rhs   = function()
@@ -384,7 +384,7 @@ local function ddc_preference()
       desc              = '[ddc.vim] Manually open popup menu'
     }
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-l>',
     rhs   = function()
@@ -397,7 +397,7 @@ local function ddc_preference()
     end,
     opts  = km_opts.ns
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<C-x><C-f>',
     rhs   = function()
@@ -411,21 +411,21 @@ local function ddc_preference()
     opts  = km_opts.ns
   })
 
-  utils.end_debug("ddc_preference")
+  utils.io.end_debug("ddc_preference")
 end
 
 local function snippet_preference()
-  utils.begin_debug("snippet_preference")
+  utils.io.begin_debug("snippet_preference")
 
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "s", },
     lhs   = '<Tab>',
     rhs   = function()
       if vsnip.expandable(1) == 1 then
-        utils.feedkey("<Plug>(vsnip-expand)", "")
+        utils.io.feedkey("<Plug>(vsnip-expand)", "")
         return ""
       elseif vsnip.available(1) == 1 then
-        utils.feedkey('<Plug>(vsnip-expand-or-jump)', "")
+        utils.io.feedkey('<Plug>(vsnip-expand-or-jump)', "")
         return ""
       else
         return '<Tab>'
@@ -433,12 +433,12 @@ local function snippet_preference()
     end,
     opts  = km_opts.e
   })
-  utils.keymap_set({
+  utils.io.keymap_set({
     mode  = { "i", "s", },
     lhs   = '<S-Tab>',
     rhs   = function()
       if vsnip.jumpable(-1) == 1 then
-        utils.feedkey('<Plug>(vsnip-jump-prev)', "")
+        utils.io.feedkey('<Plug>(vsnip-jump-prev)', "")
         return ""
       else
         return '<S-Tab>'
@@ -448,7 +448,7 @@ local function snippet_preference()
   })
 
 
-  utils.end_debug("snippet_preference")
+  utils.io.end_debug("snippet_preference")
 end
 
 

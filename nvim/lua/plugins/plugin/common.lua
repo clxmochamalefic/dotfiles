@@ -1,10 +1,12 @@
 local g = vim.g
 local fn = vim.fn
-local opt = vim.opt
+local uv = vim.uv
 local api = vim.api
+local opt = vim.opt
 local keymap = vim.keymap
 
 local myWinPick = require("plugins.plugin.individual.winpick")
+local utils = require("utils")
 
 return {
   {
@@ -55,6 +57,33 @@ return {
   },
   {
     'vim-denops/denops.vim',
+    build = function()
+      local denopsCliPath = g.denopsPath .. "/cli.ts"
+      if fn["has"]("win32") then
+        -- DenopsServiceが登録されているかチェック
+        local service = fn["strtrans"](vim.cmd("!pwsh -c Get-Service -Name DenopsService"))
+        utils.io.debug_echo("service: " .. service)
+        if string.find(service, 'ParseError', 1, true) ~= nil then
+          return
+        end
+
+        local serviceScriptPath = g.my_home_preference_path .. "/DenopsService.ps1"
+        utils.io.debug_echo("denops PATH: " .. denopsCliPath)
+
+        if not utils.fs.exists(serviceScriptPath) then
+          local body = "deno run -A --no-lock " .. denopsCliPath .. " hostname=0.0.0.0 port 33576"
+          io.open(serviceScriptPath, "w"):write(body):close()
+        end
+        -- gsudo: https://github.com/gerardog/gsudo
+        --vim.cmd("!gsudo New-Service -Name DenopsService -BinaryPathName " .. serviceScriptPath .. " -StartupType Automatic")
+        local cpcmd = [[!cp ]] .. serviceScriptPath .. [[ ~/AppData/Roaming/Microsoft/Windows/Start\ Menu/Programs/Startup/]]
+        vim.cmd(cpcmd)
+      end
+    end,
+    config = function()
+      g.denopsPath = fn["stdpath"]("data") .. "/lazy/denops.vim/denops/@denops-private"
+      g.denops_server_addr = '127.0.0.1:33576'
+    end,
   },
   {
     'nvim-tree/nvim-web-devicons'

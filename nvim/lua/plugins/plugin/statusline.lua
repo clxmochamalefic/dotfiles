@@ -52,7 +52,14 @@ return {
           lualine_y = {},
           lualine_z = {}
         },
-        tabline = {},
+        tabline = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = { { 'windows', show_filename_only = false, mode = 2 } },
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = {}
+        },
         winbar = {
           lualine_a = { { 'filetype', icon_only = true } },
           lualine_b = {},
@@ -130,7 +137,7 @@ return {
 --      -- bufferline
 --      local ok, bufferline = pcall(require, "bufferline")
 --      if not ok then
---        utils.echoe('"akinsho/bufferline.nvim" not available')
+--        utils.io.echoe('"akinsho/bufferline.nvim" not available')
 --        return
 --      end
 --      bufferline.setup({

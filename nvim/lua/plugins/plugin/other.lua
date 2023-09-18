@@ -16,7 +16,7 @@ return {
     cond = not not vim.g.started_by_firenvim,
     build = function()
       --require("lazy").load({ plugins = "firenvim", wait = true })
-      utils.echo("shell: " .. o.shell)
+      utils.io.echo("shell: " .. o.shell)
       vim.fn["firenvim#install"](0)
     end
   },

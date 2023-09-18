@@ -197,10 +197,10 @@ base.setup = function()
   g.float_window_row = 10
   g.float_window_width = 30
 
-  utils.resize_float_window_default()
+  utils.window.resize_float_window_default()
 
-  api.nvim_create_autocmd('VimResized', { callback = utils.resize_float_window_default })
-  api.nvim_create_user_command("ResizeFloatWindow", utils.resize_float_window_default, {})
+  api.nvim_create_autocmd('VimResized', { callback = utils.window.resize_float_window_default })
+  api.nvim_create_user_command("ResizeFloatWindow", utils.window.resize_float_window_default, {})
 end
 
 return base
