@@ -6,6 +6,18 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
+local colors = {
+  yellow = '#ECBE7B',
+  cyan = '#008080',
+  darkblue = '#081633',
+  green = '#98be65',
+  orange = '#FF8800',
+  violet = '#a9a1e1',
+  magenta = '#c678dd',
+  blue = '#51afef',
+  red = '#ec5f67'
+}
+
 return {
   {
     'nvim-lualine/lualine.nvim',
@@ -16,8 +28,8 @@ return {
     },
     config = function()
       opt.laststatus = 3
-      local ll = require('lualine')
-      ll.setup {
+
+      local config = {
         options = {
           icons_enabled = true,
           theme = 'palenight',
@@ -29,7 +41,7 @@ return {
           },
           ignore_focus = {},
           always_divide_middle = true,
-          globalstatus = true,  -- global line true
+          globalstatus = true,  -- global line enable
           refresh = {
             statusline = 1000,
             tabline = 1000,
@@ -56,30 +68,28 @@ return {
           lualine_a = {},
           lualine_b = {},
           lualine_c = { { 'windows', show_filename_only = false, mode = 2 } },
-          lualine_x = {},
+          lualine_x = { { 'tabs', mode = 2, } },
           lualine_y = {},
           lualine_z = {}
         },
         winbar = {
           lualine_a = { { 'filetype', icon_only = true } },
           lualine_b = {},
-          lualine_c = { { 'filename', path = 4 } },
-          lualine_x = {},
+          lualine_c = {},
+          lualine_x = { { 'filename', path = 4 } },
           lualine_y = { { 'encoding' } },
           lualine_z = { { 'fileformat' } }
         },
         inactive_winbar = {
           lualine_a = { { 'filetype', icon_only = true } },
           lualine_b = {},
-          lualine_c = { { 'filename', path = 4 } },
-          lualine_x = {},
+          lualine_c = {},
+          lualine_x = { { 'filename', path = 4 } },
           lualine_y = { { 'encoding' } },
           lualine_z = { { 'fileformat' } }
         },
         extensions = {},
       }
-
-      local config = ll.get_config()
 
       -- lualine-lsp-progress ------------------------------
       -- Inserts a component in lualine_c at left section
@@ -95,9 +105,30 @@ return {
       ins_left {
         'lsp_progress',
         display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' } },
+        colors = {
+          percentage  = colors.cyan,
+          title  = colors.cyan,
+          message  = colors.cyan,
+          spinner = colors.cyan,
+          lsp_client_name = colors.magenta,
+          use = true,
+        },
+        separators = {
+          component = ' ',
+          progress = ' | ',
+          message = { pre = '(', post = ')'},
+          percentage = { pre = '', post = '%% ' },
+          title = { pre = '', post = ': ' },
+          lsp_client_name = { pre = '[', post = ']' },
+          spinner = { pre = '', post = '' },
+          message = { commenced = 'In Progress', completed = 'Completed' },
+        },
         timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
         spinner_symbols = { '🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘' },
       }
+
+      local ll = require('lualine')
+      ll.setup(config)
 
       -- -- tabline.nvim ------------------------------
       -- require'tabline'.setup {
