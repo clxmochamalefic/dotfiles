@@ -45,22 +45,22 @@ local function ddc_init()
   -- Use around source.
   -- https://github.com/Shougo/ddc-around
   local sources = {
-    'around',
+    'tsnip',
+    'nvim-lsp',
     'buffer',
     'file',
-    'nvim-lsp',
 --    'vsnip',
-    'tsnip',
 --    'skkeleton',
+    'around',
   }
 
   local cmd_sources = {
     [':'] = { 'cmdline-history', 'around'},
     ['@'] = { 'cmdline-history', 'input', 'file', 'around'},
     ['>'] = { 'cmdline-history', 'input', 'file', 'around'},
-    ['/'] = { 'around', 'line'},
-    ['?'] = { 'around', 'line'},
-    ['-'] = { 'around', 'line'},
+    ['/'] = { 'line', 'around', },
+    ['?'] = { 'line', 'around', },
+    ['-'] = { 'line', 'around', },
     ['='] = { 'input'},
   }
 
@@ -164,15 +164,16 @@ local function ddc_init()
   }
   local source_options = {
     ["_"]               = source_option_default,
-    ["around"]          = source_option_around,
-    ['buffer']          = source_option_buffer,
-    ['file']            = source_option_file,
+    ['tsnip']           = source_option_tsnip,
     ["nvim-lsp"]        = source_option_nvimlsp,
     ["omni"]            = source_option_omni,
+    ['buffer']          = source_option_buffer,
+    ['file']            = source_option_file,
 --    ['vsnip']           = source_option_vsnip,
-    ['tsnip']           = source_option_tsnip,
     ["cmdline-history"] = source_option_cmdlinehistory,
     ["shell-history"]   = source_option_shellhistory,
+
+    ["around"]          = source_option_around,
   }
 
 
@@ -200,10 +201,10 @@ local function ddc_init()
   }
 
   local source_params = {
-    ['around']   = source_params_around,
+    ['nvim-lsp'] = source_params_nvimlsp,
     ['buffer']   = source_params_buffer,
     ['file']     = source_params_file,
-    ['nvim-lsp'] = source_params_nvimlsp,
+    ['around']   = source_params_around,
   }
   -- sourceParams['path'] = {
   --   "cmd"; {'fd', '--max-depth', '5'},
