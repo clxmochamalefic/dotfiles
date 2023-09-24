@@ -23,6 +23,12 @@ end
 
 local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
+local icons = {
+  package_installed = "✓",
+  package_uninstalled = "✗",
+  package_pending = "⟳",
+}
+
 local servers = {
   "tsserver",
   "denols",
@@ -108,13 +114,87 @@ end
 
 return {
   {
+    lazy = true,
+    "williamboman/mason.nvim",
+    dependencies = {
+      "vim-denops/denops.vim",
+      "mfussenegger/nvim-dap",
+      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
+    },
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog",
+    },
+    opts = {
+      ui = {
+        icons = icons,
+      },
+    },
+    config = function()
+      local capabilities = lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      }
+
+      local lspconfig = require "lspconfig"
+      local malspconfig = require "mason-lspconfig"
+
+      local on_attach = function(client, bufnr)
+        myutils.io.echo("LSP started")
+
+        local bufopts = { silent = true, buffer = bufnr }
+        keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
+        keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+        keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
+        keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
+        keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
+      end
+
+      local opts = {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      }
+
+      malspconfig.setup({ 
+        ensure_installed = servers,
+        automatic_installation = true,
+      })
+      malspconfig.setup_handlers({
+        function(server_name)
+          if myutils.isContainsInArray(pattern_opts, server_name) then
+            pattern_opts[server_name](lspconfig, opts)
+            return
+          end
+          lspconfig[server_name].setup(opts)
+        end,
+      })
+
+      --local augroup_id = api.nvim_create_augroup("my_lspinfo_preference", { clear = true })
+      --api.nvim_create_autocmd("FileType", {
+      --  group = augroup_id,
+      --  pattern = { "lspinfo" },
+      --  callback = function()
+      --    --ddu_ff_my_settings()
+      --  end,
+      --})
+
+      myutils.io.end_debug("ddu ff")
+    end,
+  },
+  {
     "neovim/nvim-lspconfig",
     cmd = {
       "LspInstall",
       "LspUninstall"
-    },
-    dependencies = {
-      "williamboman/mason-lspconfig.nvim",
     },
     config = function()
       -- general settings
@@ -156,84 +236,7 @@ return {
     --      end
     --    end,
     config = function()
-      local capabilities = lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = true
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
-
-      local lspconfig = require "lspconfig"
-      local mason_lspconfig = require "mason-lspconfig"
-
-      local on_attach = function(client, bufnr)
-        myutils.io.echo("LSP started")
-
-        local bufopts = { silent = true, buffer = bufnr }
-        keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-        keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
-        keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
-        keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
-      end
-
-      local opts = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-      }
-
-      mason_lspconfig.setup({ 
-        ensure_installed = servers,
-        automatic_installation = true,
-      })
-      mason_lspconfig.setup_handlers({
-        function(server_name)
-          if myutils.isContainsInArray(pattern_opts, server_name) then
-            pattern_opts[server_name](lspconfig, opts)
-            return
-          end
-          lspconfig[server_name].setup(opts)
-        end,
-      })
-
-      local augroup_id = api.nvim_create_augroup("my_lspinfo_preference", { clear = true })
-      api.nvim_create_autocmd("FileType", {
-        group = augroup_id,
-        pattern = { "lspinfo" },
-        callback = function()
-          --ddu_ff_my_settings()
-        end,
-      })
-
-      myutils.io.end_debug("ddu ff")
     end,
-  },
-  {
-    lazy = true,
-    "williamboman/mason.nvim",
-    dependencies = {
-      "vim-denops/denops.vim",
-      "mfussenegger/nvim-dap",
-    },
-    cmd = {
-      "Mason",
-      "MasonInstall",
-      "MasonUninstall",
-      "MasonUninstallAll",
-      "MasonLog",
-    },
-    opts = {
-      ui = {
-        icons = {
-          package_installed = "✓",
-          package_uninstalled = "✗",
-          package_pending = "⟳",
-        },
-      },
-    },
   },
   -- neodev.nvim ------------------------------
   {

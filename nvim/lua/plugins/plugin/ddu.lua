@@ -8,7 +8,7 @@ local keymap = vim.keymap
 
 local km_opts = require("const.keymap")
 --local lsplist = require("plugins.plugin.indevidual.lsplist")
-local dduInit = require("plugins.plugin.individual.ddu")
+local ddu = require("plugins.plugin.individual.ddu")
 
 return {
   {
@@ -28,7 +28,10 @@ return {
       "Shougo/ddu-source-file_old",
       "Shougo/ddu-source-file_rec",
       "kuuote/ddu-source-mr",
+
       "gamoutatsumi/ddu-source-nvim-lsp",
+      "uga-rosa/ddu-source-lsp",
+
       "4513ECHO/ddu-source-source",
 
       "Shougo/ddu-filter-matcher_substring",
@@ -45,13 +48,10 @@ return {
       "Milly/windows-clipboard-history.vim",
     },
     config = function()
-      dduInit.setup()
-      local ddu = dduInit
+      ddu.setup()
 
-      api.nvim_create_user_command("DduFiler", ddu.ui.filer.show, {})
-      api.nvim_create_user_command("DduFF", ddu.ui.ff.show, {})
-      api.nvim_create_user_command("DduLspActions", ddu.ui.lsp.show, {})
-
+      api.nvim_create_user_command("DduFiler",      ddu.ui.filer.util.show,  {})
+      api.nvim_create_user_command("DduFF",         ddu.ui.ff.util.show,     {})
 
       --fn["timer_start"](3, function()
       --  fn["ddu#start"]({ ui = "" })
