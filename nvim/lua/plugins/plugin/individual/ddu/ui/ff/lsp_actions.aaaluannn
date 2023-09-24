@@ -1,0 +1,119 @@
+local g = vim.g
+local fn = vim.fn
+local api = vim.api
+local opt = vim.opt
+local keymap = vim.keymap
+
+local utils = require("utils")
+local km_opts = require("const.keymap")
+local ddu = require("plugins.plugin.individual.ddu.util")
+
+local M = {}
+
+M.show = function()
+   utils.io.begin_debug("show_ddu_ff")
+ 
+   ddu.start({ name = "lsp_actions" })
+ 
+   utils.io.end_debug("show_ddu_ff")
+   return 0
+end
+
+function M.open()
+  return M.show()
+end
+
+M.lsp_actions = {
+  --    ['code_action'] = {
+  --      name    = 'code_action',
+  --      command = 'code_action',
+  --    },
+  ["declaration"] = {
+    name = "declaration",
+    command = "vim.lsp.buf.declaration()",
+  },
+  --    ['peek_definition'] = {
+  --      name    = 'peek_definition',
+  --      command = 'peek_definition',
+  --    },
+  ["definition"] = {
+    name = "definition",
+    command = "vim.lsp.buf.definition()",
+  },
+  ["formatting async"] = {
+    name = "formatting async",
+    command = "vim.lsp.buf.formatting{timeout_ms = 5000, async = true}",
+  },
+  ["hover doc"] = {
+    name = "hover document",
+    command = "vim.lsp.buf.hover()",
+  },
+  ["implementation"] = {
+    name = "implementation",
+    command = "vim.lsp.buf.implementation()",
+  },
+  ["references"] = {
+    name = "reference",
+    command = "vim.lsp.buf.references()",
+  },
+  ["rename"] = {
+    name = "rename",
+    command = "vim.lsp.buf.rename()",
+  },
+  ["type definition"] = {
+    name = "type definition",
+    command = "vim.lsp.buf.type_definition()",
+  },
+  --    ['show_line_diagnostics'] = {
+  --      name    = 'show_line_diagnostics',
+  --      command = 'show_line_diagnostics',
+  --    },
+  --    ['diagnostic_jump_next'] = {
+  --      name    = 'diagnostic_jump_next',
+  --      command = 'diagnostic_jump_next',
+  --    },
+  --    ['diagnostic_jump_prev'] = {
+  --      name    = 'diagnostic_jump_prev',
+  --      command = 'diagnostic_jump_prev',
+  --    },
+  ["signature_help"] = {
+    name = "signature help",
+    command = "vim.lsp.buf.signature_help()",
+  },
+}
+
+-- ddu-source-custom-list
+function M.setup()
+  local keys = {}
+  for key, value in pairs(M.lsp_actions) do
+    keys[#keys + 1] = key
+  end
+
+  local lsp_custom_action_callback_id = fn["denops#callback#register"](function(key)
+    vim.cmd("lua " .. M.lsp_actions[key].command)
+  end, { once = true })
+
+  keymap.set("n", "<CR>", function() ddu.do_action("itemAction", { name = "callback", quit = true }) end, km_opts.bn)
+
+  ddu.patch_local("lsp_actions", {
+    ui = "ff",
+    sources = {
+      {
+        name = "custom-list",
+        params = {
+          texts = keys,
+          callbackId = lsp_custom_action_callback_id,
+        },
+      },
+    },
+    kindOptions = { ['custom-list'] = { defaultAction = 'callback' }, },
+    uiParams = { ['custom-list'] = ddu.uiParams, },
+    --kindOptions = { defaultAction = 'callback' },
+  })
+
+  ddu.action("kind", "word", "lspactions", function(args)
+    ddu.window_choose(args)
+  end)
+end
+
+return M
