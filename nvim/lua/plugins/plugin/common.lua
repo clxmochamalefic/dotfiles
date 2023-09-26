@@ -47,9 +47,10 @@ return {
     keys = {
       { "-", "<cmd>WinPick<CR>", mode = "n" },
     },
-    config = function()
+    init = function()
       myWinPick.setup({})
-
+    end,
+    config = function()
       api.nvim_create_user_command("WinPick", myWinPick.choose, {})
       vim.keymap.set("n", "-", myWinPick.choose)
     end
