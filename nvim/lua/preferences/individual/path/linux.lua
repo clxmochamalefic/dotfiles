@@ -30,7 +30,8 @@ function M.py()
     utils.io.debug_echo('python preference path' .. pypath)
     utils.io.debug_echo('python preference body' .. body)
 
-    io.open(pypath, "w"):write(body):close()
+    vim.cmd([[echo "]] .. body ..[[" > ]] .. pypath)
+    --io.open(pypath, "w"):write(body):close()
 
     g.python2_host_prog = py2path
     g.python3_host_prog = py3path
@@ -49,10 +50,10 @@ function M.node()
     utils.io.debug_echo('node preference path' .. path)
     utils.io.debug_echo('node preference body' .. body)
 
-    io.open(nodepath, "w"):write(body):close()
+    vim.cmd([[echo "]] .. body ..[[" > ]] .. nodepath)
+    --io.open(nodepath, "w"):write(body):close()
     g.node_host_prog = path
   end
 end
 
 return M
-

@@ -175,7 +175,7 @@ base.setup = function()
 
   -- ---------------------------------------------------------------------------
   --  terminal
-  if fn.has('win32') then
+  if fn.has('win32') and not fn.has('wsl') then
     o.shell = "pwsh"
     opt.shell = "pwsh"
     opt.shellcmdflag = "-c"
