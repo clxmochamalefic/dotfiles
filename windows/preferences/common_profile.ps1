@@ -29,3 +29,5 @@ Set-PSReadLineOption -EditMode Emacs
 
 $OutputEncoding = [System.Text.Encoding]::GetEncoding('utf-8')
 
+[Environment]::SetEnvironmentVariable('Startup', "$HOME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup")
+

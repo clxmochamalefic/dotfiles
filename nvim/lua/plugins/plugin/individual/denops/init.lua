@@ -16,8 +16,10 @@ local M = {
 
 function M.setup()
   -- hostとの競合回避想定
-  if fn["has"]("wsl") then
+  if fn["has"]("linux") == 1 then
     M.port = 33577
+  else
+    M.port = 33576
   end
 end
 
