@@ -26,6 +26,10 @@ initialize this windows USER env
 
 copy my-default pwsh profile to this windows USER env
 
+### init.after.winget.ps1
+
+update winget installed package settings
+
 ### init.wsl2.ps1
 
 enable WSL2 and install Ubuntu-22.04 LTS in WSL2

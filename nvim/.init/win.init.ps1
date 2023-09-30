@@ -73,5 +73,16 @@ Set-Content -Path ~/AppData/Local/nvim/ginit.lua -Value "vim.cmd([[luafile ${pre
 [System.Environment]::SetEnvironmentVariable("LUA_PATH",        $luaPathStr, "User")
 [System.Environment]::SetEnvironmentVariable("LUA_EXE_PATH",    $luaPathStr, "User")
 
+Write-Output "install depends:"
+Write-Output ""
+
+Write-Output 'python: neovim plugin'
+pip install neovim
+
+
+Write-Output "node: neovim"
+volta install node
+npm install -g neovim
+
 Write-Output "finished and all correct"
 
