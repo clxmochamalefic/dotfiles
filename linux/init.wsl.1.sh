@@ -1,8 +1,9 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # make repositories dirctory
 
-PARENT_DIR=$(cd "$(dirname "$0")"; cd ..;pwd)
+#PARENT_DIR=$(cd "$(dirname "$0")"; cd ..;pwd)
+PARENT_DIR=$(cd "$(dirname "$0")"; pwd)
 IS_WSL=false
 NO_NEOVIM=false
 WSL_USER=""
@@ -52,25 +53,27 @@ echo "DOTFILES_PATH: ${DOTFILES_PATH}"
 
 if [ "$IS_WSL" ] ; then
   #ln -s "/mnt/c/Users/${WSL_USER}/bin" bin -t $HOME
+  cd $HOME
   mkdir ~/bin
-  ln -s "/mnt/c/Users/${WSL_USER}/repos" repos -t $HOME
-  ln -s "/mnt/c/Users/${WSL_USER}" winhome -t $HOME
-  ln -s "/mnt/c/Users/${WSL_USER}" home -t $HOME
+  ln -s "/mnt/c/Users/${WSL_USER}/repos" repos
+  ln -s "/mnt/c/Users/${WSL_USER}" winhome
+  ln -s "/mnt/c/Users/${WSL_USER}" home
   #ln -s "/mnt/c/Users/${WSL_USER}/.ssh" .ssh -t $HOME
   cp -r "/mnt/c/Users/${WSL_USER}/.ssh" ~/.ssh
-  chmod -R 600 ~/.ssh
+  chmod 555 ./.ssh
+  chmod 600 ~/.ssh/*
 
   sudo mv /etc/wsl.conf /etc/wsl.conf.old
   #sudo mv /etc/resolv.conf /etc/resolv.conf.old
   sudo mv /etc/sysctl.conf /etc/sysctl.conf.old
   #sudo mv /etc/hosts /etc/hosts.old
 
-  sudo cp "${PARENT_DIR}/linux/wsl/wsl.conf" /etc/wsl.conf
-  #sudo cp "${PARENT_DIR}/linux/wsl/resolv.conf" /etc/resolv.conf
-  sudo cp "${PARENT_DIR}/linux/wsl/sysctl.conf" /etc/sysctl.conf
+  sudo cp "${PARENT_DIR}/wsl/etc/wsl.conf" /etc/wsl.conf
+  #sudo cp "${PARENT_DIR}/wsl/etc/resolv.conf" /etc/resolv.conf
+  sudo cp "${PARENT_DIR}/wsl/etc/sysctl.conf" /etc/sysctl.conf
 
-  #sudo cp "${PARENT_DIR}/wsl/hosts" /etc/hosts
-  #sudo sh -c "cat ${PARENT_DIR}/wsl/hosts >> /etc/hosts"
+  #sudo cp "${PARENT_DIR}/wsl/etc/hosts" /etc/hosts
+  #sudo sh -c "cat ${PARENT_DIR}/wsl/etc/hosts >> /etc/hosts"
   #sudo sh -c 'echo 127.0.1.1 $(hostname) >> /etc/hosts'
   #
 #  if [ "$dirname" ] ; then

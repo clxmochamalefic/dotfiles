@@ -1,21 +1,23 @@
-#!/bin/bash
+﻿#!/bin/bash -e
 
-docker -v
+DC_VERSION=2.20.3
 
-sudo systemctl disable --now docker.service docker.socket
+echo "### fetch docker-compose ###"
+echo "### VERSION: ${DC_VERSION} ###"
 
-# docker rootless
-curl -fsSL https://get.docker.com/rootless | sh
-dockerd-rootless-setuptool.sh install --skip-iptables
+DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+mkdir -p $DOCKER_CONFIG/cli-plugins
+curl -SL "https://github.com/docker/compose/releases/download/v${DC_VERSION}/docker-compose-linux-x86_64" -o $DOCKER_CONFIG/cli-plugins/docker-compose
 
-## rootless preference modify (erase `--iptables=false`)
-sudo cp ~/.config/systemd/user/docker.service ~/.config/systemd/user/docker.service.old
-sudo sed -i -e 's/--iptables=false//g' ~/.config/systemd/user/docker.service ~/.config/systemd/user/docker.service
+echo "mv: $HOME/.docker/cli-plugins/docker-compose => /usr/bin/docker-compose"
 
-# restart docker daemon
-sudo systemctl --user daemon-reload
-sudo systemctl --user restart docker
+sudo mv $HOME/.docker/cli-plugins/docker-compose /usr/bin/docker-compose
+sudo chmod +x /usr/bin/docker-compose
 
-sudo setcap cap_net_bind_service=ep $HOME/bin/rootlesskit
+echo "### INSTALL PATH CHECK ###"
+docker compose version
 
-echo 'export DOCKER_HOST=unix:///mnt/wslg/runtime-dir/docker.sock' >> ~/.bashrc
+echo '' >> ~/.bashrc
+echo 'export PATH=$PATH:/usr/bin' >> ~/.bashrc
+echo '' >> ~/.bashrc
+
