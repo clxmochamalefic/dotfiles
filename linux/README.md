@@ -1,4 +1,4 @@
-# dotfiles/linux
+﻿# dotfiles
 
 たぶんいい感じに linux をセットアップしてくれる
 
@@ -17,19 +17,15 @@ PS> Get-NetAdapter | Where-Object {$_.InterfaceDescription -Match "Cisco AnyConn
 
 ## ファイル説明
 
-### 1. init.wsl.sh
+### 1. init.wsl.1.sh
 
-初期設定
-
-- 少なくとも `.ssh` への `シンボリックリンク` は linux
-  のホームディレクトリに貼ってくれます
-- また、 /etc/\* の必要なものを展開してくれます
+初期設定です
 
 ```bash
-./init.wsl.sh --wsl <Windows のユーザ名>
+./init.wsl.1.sh --wsl <Windows のユーザ名>
 ```
 
-> `init.wsl.sh` を実行した後は、必ず当該の `wsl` をシャットダウンし、再度 `wsl` コマンドで起動してください
+> `init.wsl.1.sh` を実行した後は、必ず当該の `wsl` をシャットダウンし、再度 `wsl` コマンドで起動してください
 >
 > ```pwsh
 > PS> wsl --shutdown
@@ -71,15 +67,30 @@ wsl 向けの `/etc/` の初期設定が含まれています
 
 > e.g. `-d /mnt/c/Users/takoyaki_mantoman/repos/dotfiles`
 
-### 2. init.depends.sh
+### 2. init.wsl.2.sh
 
-`init.xxxx.sh` が依存する関係のパッケージ類を入れてくれます
+`init.wsl.1.sh` で足りない `wsl` 向けの設定を行ってくれます
+
+```bash
+./init.wsl.2.sh
+```
+
+> `init.wsl.1.sh` を実行した後は、必ず当該の `wsl` をシャットダウンし、再度 `wsl` コマンドで起動してください
+>
+> ```pwsh
+> PS> wsl --shutdown
+> PS> wsl
+> ```
+
+### 3. init.depends.sh
+
+`init.xxxx.sh` が依存する関係のパッケージ類を **すべて** 入れてくれます
 
 ```bash
 ./init.depends.sh
 ```
 
-### 3. init.neovim.sh
+### 4. init.neovim.sh
 
 neovim をインストールしてくれます
 
@@ -87,20 +98,30 @@ neovim をインストールしてくれます
 ./init.neovim.sh
 ```
 
-### 4. init.asdf.sh
+### 5. init.asdf.sh
 
-とりあえず `asdf` を入れてくれます
+`asdf` を入れてくれます
 
 ```bash
 ./init.asdf.sh
 ```
 
-### 5. init.docker.sh
+### 6. init.docker.sh
 
-とりあえず `docker` を入れてくれます
+`docker` を入れてくれます
+
+> ちょっと一部修正が必要な個所があるかもなので、その点は要注意です…
 
 ```bash
 ./init.docker.sh
+```
+
+### 7. init.aws.sh
+
+`aws` 関連ツールを入れてくれます
+
+```bash
+./init.aws.sh
 ```
 
 ## 私向け

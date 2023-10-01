@@ -1,31 +1,43 @@
-#!/bin/bash
+﻿#!/bin/bash
 
+echo ""
+echo "exec => init.depends.sh"
+
+echo ""
+echo '    apt update'
 sudo apt update
 
-sudo apt install -y make
-sudo apt install -y build-essential
-sudo apt install -y libssl-dev
-sudo apt install -y libyaml-dev
-sudo apt install -y zlib1g-dev
-sudo apt install -y gnome-keyring
-sudo apt install -y dirmngr gpg curl gawk
-sudo apt install -y zip
-sudo apt install -y jq
+echo ""
+echo '    apt install basic packages 1of2'
+sudo apt install -y make build-essential libssl-dev libyaml-dev
 
-sudo apt install -y curl
-sudo apt install -y git
+echo ""
+echo '    apt install basic packages 2of2'
+sudo apt install -y zlib1g-dev gnome-keyring dirmngr gpg curl gawk zip jq curl git
 
 # install FUSE
-sudo add-apt-repository universe
-sudo apt install -y libfuse2
+echo ""
+echo '    apt install FUSE'
+sudo add-apt-repository -y universe
+sudo apt install -y libfuse2 xvfb libgtk2.0-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libgbm-dev
 
 # docker
+echo ""
+echo '    apt install dbus-user-session'
 sudo apt install -y dbus-user-session
 #sudo apt install -y docker-ce-rootless-extras
-sudo apt install -y uidmap fuse-overlayfs
-sudo apt install -y libsecret-1-0
+echo ""
+echo '    apt install uidmap fuse-overlayfs libsecret-1-0'
+sudo apt install -y uidmap fuse-overlayfs libsecret-1-0
+
+echo ""
+echo '    apt install docker-ce containerd docker-compose-plugin'
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+echo ""
+echo 'finished script'
+echo ""
