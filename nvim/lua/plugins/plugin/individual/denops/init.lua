@@ -16,9 +16,11 @@ local M = {
 
 function M.setup()
   -- hostとの競合回避想定
-  if fn["has"]("linux") == 1 then
+  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
+    -- guest: wsl2 only
     M.port = 33577
   else
+    -- host: windows / linux / macOS
     M.port = 33576
   end
 end
@@ -28,7 +30,7 @@ function M.configure()
   g.denops_server_addr = M.addr .. ":" .. M.port
 end
 
-function M.build4Windows()
+function M.build4wsl()
   local denopsCliPath = g.denopsPath .. "/cli.ts"
   local serviceScriptPath = g.my_home_preference_path .. "/boot_denops.bat"
   utils.io.debug_echo("denops PATH: " .. denopsCliPath)
@@ -43,7 +45,7 @@ function M.build4Windows()
   io.open(startupBat, "w"):write([[Set ws = CreateObject("Wscript.Shell")\nws.run "cmd /c ]] .. serviceScriptPath .. [[", vbhide]]):close()
 end
 
-function M.build4Linux()
+function M.build4anyhost()
   local denopsCliPath = g.denopsPath .. "/cli.ts"
   local serviceScriptPath = g.my_home_preference_path .. "/boot_denops.bat"
   utils.io.debug_echo("denops PATH: " .. denopsCliPath)
@@ -53,10 +55,10 @@ function M.build4Linux()
 end
 
 function M.build()
-  if fn["has"]("win32") and not fn["has"]("wsl") then
-    M.build4Windows()
+  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
+    M.build4wsl()
   else
-    M.build4Linux()
+    M.build4anyhost()
   end
 end
 

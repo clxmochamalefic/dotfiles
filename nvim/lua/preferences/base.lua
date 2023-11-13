@@ -144,6 +144,7 @@ base.setup = function()
     -- 挿入モード・検索モードでのデフォルトのIME状態設定
     opt.iminsert = 0
     opt.imsearch = 0
+    --keymap.set("i", "<ESC>", "<ESC>:set iminsert=0<CR>")
     if fn.has('xim') and fn.has('GUI_GTK') then
       -- XIMの入力開始キーを設定:
       -- 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
