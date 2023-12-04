@@ -1,28 +1,23 @@
 local g = vim.g
 local fn = vim.fn
-local uv = vim.uv
-local api = vim.api
-local opt = vim.opt
-local keymap = vim.keymap
 
-local myWinPick = require("plugins.plugin.individual.winpick")
 local utils = require("utils")
 
 local M = {
-  addr="127.0.0.1",
-  host="0.0.0.0",
-  port=33576,
+  addr = "127.0.0.1",
+  host = "0.0.0.0",
+  port = 33576,
 }
 
 function M.setup()
   -- hostとの競合回避想定
-  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
-    -- guest: wsl2 only
-    M.port = 33577
-  else
+--  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
+--    -- guest: wsl2 only
+--    M.port = 33577
+--  else
     -- host: windows / linux / macOS
     M.port = 33576
-  end
+--  end
 end
 
 function M.configure()
@@ -56,7 +51,11 @@ end
 
 function M.build()
   if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
-    M.build4wsl()
+    if fn["has"]('linux') then
+      M.build4anyhost()
+    else
+      M.build4wsl()
+    end
   else
     M.build4anyhost()
   end

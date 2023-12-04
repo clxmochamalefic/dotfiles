@@ -14,7 +14,7 @@ local vsnip = {
   jumpable    = fn["vsnip#jumpable"],
 }
 
-local ddcmanualcomp = false
+-- local ddcmanualcomp = false
 
 local function pumvisible()
   local r = fn["pum#visible"]()
@@ -45,11 +45,11 @@ local function ddc_init()
   -- Use around source.
   -- https://github.com/Shougo/ddc-around
   local sources = {
-    'tsnip',
-    'nvim-lsp',
-    'buffer',
+--    'tsnip',
+    'lsp',
+--    'buffer',
     'file',
---    'vsnip',
+    'vsnip',
 --    'skkeleton',
     'around',
   }
@@ -132,20 +132,20 @@ local function ddc_init()
   --   minAutoCompleteLength = 2,
   --   sorters = ['sorter_fuzzy'],
   -- }
---  local source_option_vsnip = {
---    mark        = '   ',
---    dup         = true,
---    matchers    = {'matcher_fuzzy'},
---    sorters     = {'sorter_fuzzy'},
---    converters  = {'converter_fuzzy'}
---  }
-  local source_option_tsnip = {
+  local source_option_vsnip = {
     mark        = '   ',
     dup         = true,
     matchers    = {'matcher_fuzzy'},
     sorters     = {'sorter_fuzzy'},
     converters  = {'converter_fuzzy'}
   }
+--  local source_option_tsnip = {
+--    mark        = '   ',
+--    dup         = true,
+--    matchers    = {'matcher_fuzzy'},
+--    sorters     = {'sorter_fuzzy'},
+--    converters  = {'converter_fuzzy'}
+--  }
   local source_option_cmdlinehistory = {
     mark        = '   ',
     isVolatile  = true,
@@ -164,12 +164,12 @@ local function ddc_init()
   }
   local source_options = {
     ["_"]               = source_option_default,
-    ['tsnip']           = source_option_tsnip,
-    ["nvim-lsp"]        = source_option_nvimlsp,
+--    ['tsnip']           = source_option_tsnip,
+    ["lsp"]        = source_option_nvimlsp,
     ["omni"]            = source_option_omni,
-    ['buffer']          = source_option_buffer,
+--    ['buffer']          = source_option_buffer,
     ['file']            = source_option_file,
---    ['vsnip']           = source_option_vsnip,
+    ['vsnip']           = source_option_vsnip,
     ["cmdline-history"] = source_option_cmdlinehistory,
     ["shell-history"]   = source_option_shellhistory,
 
@@ -189,6 +189,8 @@ local function ddc_init()
     requireSameFiletype = false,
     fromAltBuf          = true,
     bufNameStyle        = 'basename',
+    limitBytes          = 5000000,
+    forceCollect        = true,
   }
 
   local source_params_file = {
@@ -197,12 +199,15 @@ local function ddc_init()
   }
 
   local source_params_nvimlsp = {
-    maxSize =    20,
+    maxSize                   =    20,
+    snippetEngine             = vim.fn["denops#callback#register"](function(body) vim.fn["vsnip#anonymous"](body) end),
+    enableResolveItem         = true,
+    enableAdditionalTextEdit  = true,
   }
 
   local source_params = {
-    ['nvim-lsp'] = source_params_nvimlsp,
-    ['buffer']   = source_params_buffer,
+    ['lsp'] = source_params_nvimlsp,
+--    ['buffer']   = source_params_buffer,
     ['file']     = source_params_file,
     ['around']   = source_params_around,
   }
@@ -213,9 +218,7 @@ local function ddc_init()
   -- if fn.has('win32') then
   --   source_params["windows-clipboard-history"] = {
   --     "maxSize"; 100,
-  --     "maxAbbrWidth"; 100,
-  --   }
-  -- end
+  --     "maxAbbrWidth"; 100
 
   local filter_params_matcher_fuzzy = {
     splitMode = 'word'
@@ -224,7 +227,6 @@ local function ddc_init()
   local filter_params_converter_fuzzy = {
     hlGroup = 'SpellBad'
   }
-
   local filter_params_truncate = {
     maxAbbrWidth = 40,
     maxInfoWidth = 40,
@@ -243,7 +245,7 @@ local function ddc_init()
   -- --  Filetype
   -- fn."ddc#custom#patch_filetype"]({'toml'}, {
   --   sourceOptions = {
-  --     ["nvim-lsp"] = { forceCompletionPattern = '\\.|[={[,"]\\s*' },
+  --     ["lsp"] = { forceCompletionPattern = '\\.|[={[,"]\\s*' },
   --   }
   -- })
 
@@ -252,7 +254,7 @@ local function ddc_init()
   --   'python', 'typescript', 'typescriptreact', 'rust', 'markdown', 'yaml',
   --   'json', 'sh', 'lua', 'toml', 'go'
   -- }, {
-  --   sources = { ['nvim-lsp'] = sources },
+  --   sources = { ['lsp'] = sources },
   -- })
 
 
@@ -295,10 +297,10 @@ local function ddc_preference()
     opts  = {
       callback = function()
         if pumvisible() then
-          ddcmanualcomp = false
+          -- ddcmanualcomp = false
           fn["pum#map#insert_relative"](1)
         elseif fn["ddc#map#can_complete"]() then
-          ddcmanualcomp = true
+          -- ddcmanualcomp = true
           fn["ddc#map#manual_complete"]()
         else
           return '<C-n>'
@@ -313,10 +315,10 @@ local function ddc_preference()
     opts  = {
       callback = function()
         if pumvisible() then
-          ddcmanualcomp = false
+          -- ddcmanualcomp = false
           fn["pum#map#insert_relative"](-1)
         elseif fn["ddc#map#can_complete"]() then
-          ddcmanualcomp = true
+          -- ddcmanualcomp = true
           fn["ddc#map#manual_complete"]()
         else
           return '<C-p>'
@@ -348,6 +350,20 @@ local function ddc_preference()
     end,
     opts  = km_opts.e
   })
+  -- Tab key select completion item
+  utils.io.keymap_set({
+    mode  = { "i", "c", "t" },
+    lhs   = '<Tab>',
+    rhs   = function()
+      if pumvisible() then
+        fn["pum#map#confirm"]()
+        return ""
+      end
+      return "<Tab>"
+    end,
+    opts  = km_opts.e
+  })
+  -- Enter key select completion item
   utils.io.keymap_set({
     mode  = { "i", "c", "t" },
     lhs   = '<CR>',
@@ -398,19 +414,19 @@ local function ddc_preference()
     end,
     opts  = km_opts.ns
   })
-  utils.io.keymap_set({
-    mode  = { "i", "c", "t" },
-    lhs   = '<C-x><C-f>',
-    rhs   = function()
-      if pumvisible() then
-        fn["ddc#map#manual_complete"]('path')
-        return ""
-      else
-        return '<C-x><C-f>'
-      end
-    end,
-    opts  = km_opts.ns
-  })
+--  utils.io.keymap_set({
+--    mode  = { "i", "c", "t" },
+--    lhs   = '<C-x><C-f>',
+--    rhs   = function()
+--      if pumvisible() then
+--        fn["ddc#map#manual_complete"]('path')
+--        return ""
+--      else
+--        return '<C-x><C-f>'
+--      end
+--    end,
+--    opts  = km_opts.ns
+--  })
 
   utils.io.end_debug("ddc_preference")
 end
@@ -463,9 +479,11 @@ return {
 
       'Shougo/pum.vim',
       'Shougo/ddc-ui-pum',
-      'Shougo/ddc-source-nvim-lsp',
+
+      'Shougo/ddc-source-lsp',
       'Shougo/ddc-source-around',
-      'Shougo/ddc-buffer',
+--      'Shougo/ddc-buffer',
+--      'matsui54/ddc-buffer',
       --  'ddc-dictionary',
       'LumaKernel/ddc-source-file',
       'tani/ddc-fuzzy',
@@ -475,10 +493,12 @@ return {
       'Shougo/ddc-source-omni',
       --  'ddc-path',
       'Shougo/ddc-sorter_rank',
-      'hrsh7th/vim-vsnip',
-      'hrsh7th/vim-vsnip-integ',
+--      'hrsh7th/vim-vsnip',
+--      'hrsh7th/vim-vsnip-integ',
       'rafamadriz/friendly-snippets',
-      'yuki-yano/tsnip.nvim',
+--      'yuki-yano/tsnip.nvim',
+      'hrsh7th/vim-vsnip',
+      'uga-rosa/ddc-source-vsnip',
 
       'Shougo/ddc-converter_remove_overlap',
       'matsui54/ddc-converter_truncate',
@@ -491,9 +511,9 @@ return {
       'matsui54/denops-signature_help',
     },
     config = function()
-        ddc_init()
-        ddc_preference()
-        snippet_preference()
+      ddc_init()
+      ddc_preference()
+      snippet_preference()
     end
   },
   {
@@ -503,17 +523,47 @@ return {
       'Shougo/pum.vim',
     },
   },
+
+--  {
+--    lazy = true,
+--    'matsui54/ddc-buffer',
+--  },
+
+-- deprecated
+--  {
+--    lazy = true,
+--    'yuki-yano/tsnip.nvim',
+--    dependencies = {
+--      'vim-denops/denops.vim',
+--    },
+--    config = function()
+--      if pcall(require, "nui.input") then
+--        g.tsnip_use_nui = true
+--      end
+--    end,
+--  },
+--
+
   {
     lazy = true,
-    'yuki-yano/tsnip.nvim',
+    'Shougo/ddc-source-lsp',
     dependencies = {
-      'vim-denops/denops.vim',
+      "vim-denops/denops.vim",
+    },
+  },
+  {
+    lazy = true,
+    'uga-rosa/ddc-source-vsnip',
+    dependencies = {
+      "vim-denops/denops.vim",
+      'hrsh7th/vim-vsnip',
     },
     config = function()
-      if pcall(require, "nui.input") then
-        g.tsnip_use_nui = true
-      end
-    end,
+    end
+  },
+  {
+    lazy = true,
+    'hrsh7th/vim-vsnip',
   },
   {
     lazy = true,
