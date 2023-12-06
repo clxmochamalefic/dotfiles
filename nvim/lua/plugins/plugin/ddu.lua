@@ -14,11 +14,18 @@ return {
   {
     lazy = true,
     "Shougo/ddu.vim",
+    tag = 'v3.7.0',
     dependencies = {
       "vim-denops/denops.vim",
 
-      "Shougo/ddu-ui-ff",
-      "Shougo/ddu-ui-filer",
+      { 
+        "Shougo/ddu-ui-ff",
+        tag = 'v1.1.0'
+      },
+      { 
+        "Shougo/ddu-ui-filer",
+        tag = 'v1.1.0'
+      },
 
       "Shougo/ddu-source-action",
       "Shougo/ddu-source-buffer",
@@ -58,11 +65,11 @@ return {
       --end)
     end,
     cmd = { "DduFiler", "DduFF", "DduLspActions" },
-    keys = {
-      { "z", "<cmd>DduFiler<CR>", mode = "n" },
-      { "Z", "<cmd>DduFF<CR>", mode = "n" },
-      { "<F2>", "<cmd>DduLspActions<CR>", mode = "n" },
-    },
+--    keys = {
+--      { "z", "<cmd>DduFiler<CR>", mode = "n" },
+--      { "Z", "<cmd>DduFF<CR>", mode = "n" },
+--      { "<F2>", "<cmd>DduLspActions<CR>", mode = "n" },
+--    },
   },
   {
     lazy = true,
