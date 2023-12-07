@@ -8,7 +8,7 @@ local keymap = vim.keymap
 
 local km_opts = require("const.keymap")
 --local lsplist = require("plugins.plugin.indevidual.lsplist")
-local ddu = require("plugins.plugin.individual.ddu")
+local ddu = require("plugins.plugin.config.ddu")
 
 return {
   {

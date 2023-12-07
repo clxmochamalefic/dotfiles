@@ -6,8 +6,8 @@ local keymap = vim.keymap
 
 local utils = require("utils")
 local km_opts = require("const.keymap")
-local ddu = require("plugins.plugin.individual.ddu.core")
-local filerUtils = require("plugins.plugin.individual.ddu.ui.filer.utils")
+local ddu = require("plugins.plugin.config.ddu.core")
+local filerUtils = require("plugins.plugin.config.ddu.ui.filer.utils")
 
 local M = {
   util = filerUtils,
