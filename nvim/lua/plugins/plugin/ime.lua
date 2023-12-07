@@ -5,10 +5,10 @@
 --local opt = vim.opt
 --local keymap = vim.keymap
 --
---local myWinPick = require("plugins.plugin.individual.winpick")
+--local myWinPick = require("plugins.plugin.config.winpick")
 --local utils = require("utils")
 --
---local myDenops = require("plugins.plugin.individual.denops")
+--local myDenops = require("plugins.plugin.config.denops")
 --
 return {
 --  {
