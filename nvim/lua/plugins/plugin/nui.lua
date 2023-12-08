@@ -42,11 +42,13 @@ return {
       vim.api.nvim_create_user_command('PopMess', function()
         -- mount/open the component
         messagePopup:mount()
-        local message = vim.cmd('messages')
+        local message = api.nvim_command('messages')
         if message == '' then
           message = "<Message is empty...>"
         end
         vim.api.nvim_buf_set_lines(messagePopup.bufnr, 0, 1, false, { message })
+
+        --keymap.set("n", "q", api.nvim_command('q'))
       end, { nargs = 0, })
 
       -- fine-cmdline by nui.nvim --------------------------------------------------

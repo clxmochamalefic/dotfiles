@@ -46,10 +46,14 @@ function M.on_attach(bufnr)
     keymap.set("n", "d", close_wrap(api.fs.remove), opts("Delete"))
     keymap.set("n", "r", close_wrap(api.fs.rename), opts("Rename"))
 
-    -- home 
+    -- parent
+    local goto_parent = (function() api.tree.change_root("..") end)
+    keymap.set("n", "<BS>",    goto_parent, opts("Change Directory to .."))
+
+    -- home
     local goto_home = (function() api.tree.change_root("~") end)
     keymap.set("n", "~",    goto_home, opts("Change Directory to HOME"))
-    -- -- setting 
+    -- -- setting
     local goto_config = (function() api.tree.change_root(g.my_initvim_path) end)
     keymap.set("n", "^",    goto_config, opts("Rename"))
     -- -- repository
