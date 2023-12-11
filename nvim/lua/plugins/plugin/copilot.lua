@@ -5,9 +5,12 @@ local api = vim.api
 local keymap = vim.keymap
 
 return {
- {
-   'github/copilot.vim',
-   lazy = true,
-   event = 'InsertEnter'
-  }
+  {
+    lazy = true,
+    'github/copilot.vim',
+    event = { 'InsertEnter', 'CursorHold' },
+    config = function()
+      g.copilot_no_maps = true
+    end
+  },
 }
