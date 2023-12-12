@@ -30,7 +30,13 @@ function M.py()
     utils.io.debug_echo('python preference path' .. pypath)
     utils.io.debug_echo('python preference body' .. body)
 
-    vim.cmd([[echo "]] .. body ..[[" > ]] .. pypath)
+    --vim.cmd([[echo "]] .. body ..[[" > ]] .. pypath)
+    fn.system({
+      "echo",
+      body,
+      ">",
+      pypath,
+    })
     --io.open(pypath, "w"):write(body):close()
 
     g.python2_host_prog = py2path
