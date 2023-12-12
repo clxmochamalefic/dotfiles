@@ -10,7 +10,7 @@ return {
     lazy = true,
     cmd = 'Floaterm',
     keys = {
-      { "^", "<cmd>FloatermToggle<CR>", mode = "n" },
+      { "_", "<cmd>FloatermToggle<CR>", mode = "n" },
     },
     config = function()
       g.floaterm_autoclose  = 1
