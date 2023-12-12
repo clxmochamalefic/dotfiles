@@ -590,12 +590,12 @@ return {
     },
     event = { 'User DenopsReady' },
     config = function()
-      --g.popup_preview_config = {
-      --  delay = 10,
-      --  maxWidth = 100,
-      --  winblend = 10,
-      --}
-      --api.nvim_call_function('popup_preview#enable', {})
+      g.popup_preview_config = {
+        delay = 10,
+        maxWidth = 100,
+        winblend = 10,
+      }
+      api.nvim_call_function('popup_preview#enable', {})
     end,
     init = function()
     end
@@ -609,11 +609,11 @@ return {
     },
     event = { 'User DenopsReady' },
     config = function()
-      --g.signature_help_config = {
-      --  contentsStyle = 'currentLabel',
-      --  viewStyle = 'virtual',
-      --}
-      --api.nvim_call_function('signature_help#enable', {})
+      g.signature_help_config = {
+        contentsStyle = 'currentLabel',
+        viewStyle = 'virtual',
+      }
+      api.nvim_call_function('signature_help#enable', {})
     end,
   },
 }
