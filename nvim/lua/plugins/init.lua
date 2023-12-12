@@ -15,7 +15,7 @@ plugins.setup = function()
       "clone",
       "--filter=blob:none",
       "https://github.com/folke/lazy.nvim.git",
-      "--branch=stable", -- latest stable release
+      "--branch=main",
       lazypath,
     })
   end
