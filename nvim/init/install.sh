@@ -34,8 +34,8 @@ echo "current path: ${CURRENT_PATH}"
 echo "    lua path: ${LUA_PATH}"
 echo ""
 
-echo "vim.opt.runtimepath:append(',${PARENT_PATH}')"            >  $HOME/.config/nvim/init.lua
-echo "vim.opt.runtimepath:append(',${LUA_PATH}')"               >> $HOME/.config/nvim/init.lua
+echo "vim.opt.runtimepath:append('${PARENT_PATH}')"            >  $HOME/.config/nvim/init.lua
+echo "vim.opt.runtimepath:append('${LUA_PATH}')"               >> $HOME/.config/nvim/init.lua
 echo "vim.g.preference_path = vim.fn.expand('${PARENT_PATH}')"  >> $HOME/.config/nvim/init.lua
 echo "vim.cmd([[luafile ${PARENT_PATH}/init.lua]])"             >> $HOME/.config/nvim/init.lua
 echo "vim.cmd([[luafile ${PARENT_PATH}/ginit.lua]])"            >> $HOME/.config/nvim/ginit.lua
