@@ -6,7 +6,7 @@ return {
   {
     lazy = true,
     'nvim-tree/nvim-tree.lua',
-    requires = 'nvim-treee/nvim-web-devicons',
+    requires = 'nvim-tree/nvim-web-devicons',
     dependecies = {
       "JMarkin/nvim-tree.lua-float-preview",
     },
@@ -14,6 +14,7 @@ return {
     keys = {
       { "z", "<cmd>NvimTreeOpen<CR>", mode = "n" },
     },
+    event = { "VimEnter" },
     config = function()
       g.loaded_netrw = 1
       g.loaded_netrwPlugin = 1
@@ -33,6 +34,12 @@ return {
           dotfiles = true,
         },
       })
+
+      local function open_nvim_tree()
+        require("nvim-tree.api").tree.open()
+      end
+
+      vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, { callback = open_nvim_tree })
     end
   },
   {
