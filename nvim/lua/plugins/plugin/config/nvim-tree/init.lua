@@ -35,6 +35,11 @@ function M.on_attach(bufnr)
     keymap.set("n", "y",      api.fs.copy.filename,           opts("Copy Name"))
     keymap.set("n", "Y",      api.fs.copy.relative_path,      opts("Copy Relative Path"))
     keymap.set("n", "gy",     api.fs.copy.absolute_path,      opts("Copy Absolute Path"))
+    keymap.set("n", ".", api.tree.toggle_hidden_filter, opts("toggle dotfile"))
+
+    keymap.set("n", "y", api.fs.copy.filename, opts("Copy Name"))
+    keymap.set("n", "Y", api.fs.copy.relative_path, opts("Copy Relative Path"))
+    keymap.set("n", "gy", api.fs.copy.absolute_path, opts("Copy Absolute Path"))
 
     keymap.set("n", "h",      api.node.navigate.parent_close, opts("Close Directory"))
 
