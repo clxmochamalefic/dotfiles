@@ -26,7 +26,7 @@ end
 
 -- debug preference
 function M.debug_echo(mes, args, stack)
-  if g.is_enable_my_debug then
+  if g.is_enable_my_debug == true then
     M.echom(mes)
     local this_stack = stack or 0
 

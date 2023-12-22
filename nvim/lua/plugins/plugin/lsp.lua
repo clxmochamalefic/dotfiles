@@ -160,7 +160,7 @@ return {
       local malspconfig = require "mason-lspconfig"
 
       local on_attach = function(client, bufnr)
-        myutils.io.echo("LSP started")
+        myutils.io.echom("LSP started")
 
         local bufopts = { silent = true, buffer = bufnr }
         keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)

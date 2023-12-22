@@ -17,6 +17,10 @@ return {
       'Telescope git_status',
       'Telescope git_commits',
     },
+    keys = {
+      { "Z", "Telescope buffers", mode = "n" },
+      { "<leader>f", "Telescope oldfiles", mode = "n" },
+    },
     event = {
       'VimEnter',
     },
