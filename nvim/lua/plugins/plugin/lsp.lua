@@ -116,6 +116,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      "nvim-lua/plenary.nvim",
+      "rcarriga/nvim-notify",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
@@ -160,7 +162,13 @@ return {
       local malspconfig = require "mason-lspconfig"
 
       local on_attach = function(client, bufnr)
-        myutils.io.echom("LSP started")
+        local async = require("plenary.async")
+        local notify = require("notify").async
+        myutils.io.debug_echo("LSP started" .. client.name)
+        async.run(function()
+          notify("LSP started: " .. client.name).events.close()
+        end)
+
 
         local bufopts = { silent = true, buffer = bufnr }
         keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
