@@ -274,15 +274,6 @@ return {
   },
   {
     lazy = true,
-    'rcarriga/nvim-notify',
-    event = { 'BufEnter' },
-    init = function()
-      vim.notify = require("notify")
-      vim.notify.setup({ background_colour = "#000000", })
-    end
-  },
-  {
-    lazy = true,
     'kwkarlwang/bufresize.nvim',
     event = { 'FileReadPost', 'InsertEnter' },
     config = function()
