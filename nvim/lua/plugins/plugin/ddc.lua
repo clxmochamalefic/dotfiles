@@ -438,7 +438,7 @@ local function snippet_preference()
     mode  = { "i", "s", },
     lhs   = '<Tab>',
     rhs   = function()
-      if vsnip.expandable(1) == 1 then
+      if vsnip.expandable() == 1 then
         utils.io.feedkey("<Plug>(vsnip-expand)", "")
         return ""
       elseif vsnip.available(1) == 1 then
