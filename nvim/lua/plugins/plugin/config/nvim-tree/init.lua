@@ -1,6 +1,8 @@
 local g = vim.g
 local keymap = vim.keymap
 
+local env = require('utils.sub.env')
+
 local M = {}
 
 function M.on_attach(bufnr)
@@ -20,9 +22,12 @@ function M.on_attach(bufnr)
     float_preview.attach_nvimtree(bufnr)
     local close_wrap = float_preview.close_wrap
 
-    keymap.set("n", "<C-t>",  close_wrap(api.node.open.tab),              opts("Open: New Tab"))
     keymap.set("n", "<C-v>",  close_wrap(api.node.open.vertical),         opts("Open: Vertical Split"))
     keymap.set("n", "<C-s>",  close_wrap(api.node.open.horizontal),       opts("Open: Horizontal Split"))
+    keymap.set("n", "[",      close_wrap(api.node.open.vertical),         opts("Open: Vertical Split"))
+    keymap.set("n", "]",      close_wrap(api.node.open.horizontal),       opts("Open: Horizontal Split"))
+
+    keymap.set("n", "<C-t>",  close_wrap(api.node.open.tab),              opts("Open: New Tab"))
     keymap.set("n", "<CR>",   close_wrap(api.node.open.edit),             opts("Open"))
     keymap.set("n", "o",      close_wrap(api.node.open.edit),             opts("Open"))
     keymap.set("n", "l",      close_wrap(api.node.open.edit),             opts("Open"))
@@ -35,11 +40,11 @@ function M.on_attach(bufnr)
     keymap.set("n", "y",      api.fs.copy.filename,           opts("Copy Name"))
     keymap.set("n", "Y",      api.fs.copy.relative_path,      opts("Copy Relative Path"))
     keymap.set("n", "gy",     api.fs.copy.absolute_path,      opts("Copy Absolute Path"))
-    keymap.set("n", ".", api.tree.toggle_hidden_filter, opts("toggle dotfile"))
+    keymap.set("n", ".",      api.tree.toggle_hidden_filter,  opts("toggle dotfile"))
 
-    keymap.set("n", "y", api.fs.copy.filename, opts("Copy Name"))
-    keymap.set("n", "Y", api.fs.copy.relative_path, opts("Copy Relative Path"))
-    keymap.set("n", "gy", api.fs.copy.absolute_path, opts("Copy Absolute Path"))
+    keymap.set("n", "y",      api.fs.copy.filename,           opts("Copy Name"))
+    keymap.set("n", "Y",      api.fs.copy.relative_path,      opts("Copy Relative Path"))
+    keymap.set("n", "gy",     api.fs.copy.absolute_path,      opts("Copy Absolute Path"))
 
     keymap.set("n", "h",      api.node.navigate.parent_close, opts("Close Directory"))
 
@@ -62,10 +67,10 @@ function M.on_attach(bufnr)
     local goto_config = (function() api.tree.change_root(g.my_initvim_path) end)
     keymap.set("n", "^",      goto_config,  opts("Rename"))
     -- repository
-    local goto_repos = (function() api.tree.change_root("~\\repos") end)
+    local goto_repos = (function() api.tree.change_root("~" .. env.get_path_splitter_for_current_env() .. "repos") end)
     keymap.set("n", "\\",     goto_repos,   opts("Rename"))
     -- documents
-    local goto_doc = (function() api.tree.change_root("~\\Documents") end)
+    local goto_doc = (function() api.tree.change_root("~" .. env.get_path_splitter_for_current_env() .. "Documents") end)
     keymap.set("n", "=",      goto_doc,     opts("Rename"))
 end
 
