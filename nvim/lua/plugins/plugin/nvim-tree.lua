@@ -32,7 +32,8 @@ return {
         },
         filters = {
           dotfiles = false,
-        },
+          exclude = { ".env", ".env.*" },
+        }
       })
 
       local function open_nvim_tree()
