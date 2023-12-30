@@ -39,7 +39,7 @@ function M.is_windows()
 end
 
 function M.get_path_splitter_for_current_env()
-  if M.is_linux() or M.is_unix() then
+  if M.is_linux() == 1 or M.is_unix() == 1 then
     return '/'
   end
 
