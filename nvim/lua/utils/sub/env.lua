@@ -48,12 +48,21 @@ end
 
 function M.join_path(...)
   local separator = M.get_path_splitter_for_current_env()
-  local path = table.concat(arg, separator)
+  local args = {}
+  for i = 1, select("#", ...) do
+    local arg = (select(i, ...))
+    args[i] = arg
+  end
+  local path = table.concat(args, separator)
   return path
 end
 
 function M.getHome()
   return os.getenv("HOME")
+end
+
+function M.test()
+  print(M.join_path(M.getHome(), ".lib", "sqlite"))
 end
 
 return M
