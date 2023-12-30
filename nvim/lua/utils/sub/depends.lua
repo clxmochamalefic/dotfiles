@@ -47,20 +47,27 @@ function M.has(name)
 end
 
 function M.install(name, verb)
-  if fn.executable(name) < 1 then
-    local installCommand = ''
-    if verb then
-      for k,v in pairs(pms) do
-        if fn.executable(v) > 0 then
-          get_pm_command_with_pm_name(v, k)
-          break
+  myutils.try_catch({
+    try = function()
+      if fn.executable(name) < 1 then
+        local installCommand = ''
+        if verb then
+          for k,v in pairs(pms) do
+            if fn.executable(v) > 0 then
+              get_pm_command_with_pm_name(v, k)
+              break
+            end
+          end
+        else
+          ---@diagnostic disable-next-line: cast-local-type
+          installCommand = get_pm_command(name)
         end
+        vim.cmd(installCommand)
       end
-    else
-      local installCommand = get_pm_command(name)
+    end,
+    catch = function()
     end
-    vim.cmd(installCommand)
-  end
+  })
 end
 
 return M
