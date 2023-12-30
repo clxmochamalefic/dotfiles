@@ -58,6 +58,9 @@ function M.join_path(...)
 end
 
 function M.getHome()
+  if M.is_windows() then
+    return os.getenv("UserProfile")
+  end
   return os.getenv("HOME")
 end
 
