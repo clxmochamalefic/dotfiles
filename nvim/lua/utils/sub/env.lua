@@ -26,6 +26,10 @@ function M.is_unix()
   return fn.has('unix')
 end
 
+function M.is_posix()
+  return M.is_unix() or M.is_linux()
+end
+
 function M.is_wsl()
   return fn.has('wsl')
 end
@@ -40,6 +44,16 @@ function M.get_path_splitter_for_current_env()
   end
 
   return '\\'
+end
+
+function M.join_path(...)
+  local separator = M.get_path_splitter_for_current_env()
+  local path = table.concat(arg, separator)
+  return path
+end
+
+function M.getHome()
+  return os.getenv("HOME")
 end
 
 return M

@@ -268,6 +268,34 @@ return {
     keys = { 'f', 'F', 't', 'T'}
   },
   {
+    -- scope visible by lines
+    "shellRaining/hlchunk.nvim",
+    event = { "UIEnter" },
+    config = function()
+      require("hlchunk").setup({
+        indent = {
+          chars = { "│", "¦", "┆", "┊", }, -- more code can be found in https://unicodeplus.com/
+
+          style = {
+            "#8B00FF",
+          },
+        },
+        blank = {
+          enable = false,
+        }
+      })
+    end
+  },
+  {
+    -- cursor jump shortcut
+    lazy = true,
+    'skanehira/jumpcursor.vim',
+    event = { 'FileReadPost', 'BufRead' },
+    keys = {
+      { "<leader>j", '<Plug>(jumpcursor-jump)', mode = "n" },
+    },
+  },
+  {
     lazy = true,
     'yutkat/wb-only-current-line.nvim',
     event = { 'FileReadPost', 'InsertEnter' }
@@ -287,11 +315,10 @@ return {
     -- event = { 'VimEnter' },
     cmd = { 'PopMess' },
     config = function()
-      vim.api.nvim_create_user_command(
-      'PopMess',
-      function(opts)
+      local function pop_mess(opts)
         vim.fn["popup_message#open"]("execute('messages')")
-      end, {})
+      end
+      vim.api.nvim_create_user_command('PopMess', pop_mess, {})
     end
   },
 }

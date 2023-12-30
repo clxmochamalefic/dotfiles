@@ -40,6 +40,7 @@ return {
         require("nvim-tree.api").tree.open()
       end
 
+      -- open nvim-tree on vim booted / nvim-treeをvim実行時に起動する
       vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, { callback = open_nvim_tree })
     end
   },
