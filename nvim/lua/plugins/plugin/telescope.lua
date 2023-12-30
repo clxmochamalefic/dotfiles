@@ -132,8 +132,8 @@ return {
       "kkharji/sqlite.lua",
     },
     init = function()
-      local sqliteZipPath = env.join_path(env.getHome(), ".cache", "sqlite-dll-win-x64.zip")
-      local sqliteDestPath = env.join_path(env.getHome(), ".lib", "sqlite")
+      local sqliteZipPath = env.join_path_slash(env.getHome(), ".cache", "sqlite-dll-win-x64.zip")
+      local sqliteDestPath = env.join_path_slash(env.getHome(), ".lib", "sqlite")
 
       myutils.io.echo(sqliteZipPath)
       myutils.io.echo(sqliteDestPath)
@@ -156,8 +156,8 @@ return {
       end
     end,
     config = function()
-      local sqliteDestPath = env.join_path(env.getHome(), ".lib", "sqlite")
-      local dllPath = env.join_path(sqliteDestPath, "sqlite3.dll")
+      local sqliteDestPath = env.join_path_slash(env.getHome(), ".lib", "sqlite")
+      local dllPath = env.join_path_slash(sqliteDestPath, "sqlite3.dll")
       g.sqlite_clib_path = dllPath
     end,
   },

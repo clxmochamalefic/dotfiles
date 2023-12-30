@@ -45,9 +45,7 @@ function M.get_path_splitter_for_current_env()
 
   return '\\'
 end
-
-function M.join_path(...)
-  local separator = M.get_path_splitter_for_current_env()
+function M.join_path_with_separator(separator, ...)
   local args = {}
   for i = 1, select("#", ...) do
     local arg = (select(i, ...))
@@ -55,6 +53,15 @@ function M.join_path(...)
   end
   local path = table.concat(args, separator)
   return path
+end
+
+function M.join_path(...)
+  local separator = M.get_path_splitter_for_current_env()
+  return M.join_path_with_separator(separator, ...)
+end
+
+function M.join_path_slash(...)
+  return M.join_path_with_separator('/', ...)
 end
 
 function M.getHome()
