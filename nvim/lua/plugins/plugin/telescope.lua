@@ -1,6 +1,13 @@
+local g = vim.g
 local fn = vim.fn
+
+local myutils = require("utils")
 local env = require("utils.sub.env")
 local depends = require("utils.sub.depends")
+
+local sqliteZipPath = env.join_path(env.getHome(), ".cache", "sqlite-dll-win-x64.zip")
+local sqliteDestPath = env.join_path(env.getHome(), ".lib", "sqlite")
+local sqliteLibPath = env.join_path(sqliteDestPath, 'sqlite3.dll')
 
 return {
   {
@@ -114,6 +121,11 @@ return {
     lazy = true,
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
+    init = function()
+      if not depends.has('fzf') then
+        depends.install('fzf', { winget = 'fzf' })
+      end
+    end,
     config = function()
     end
   },
@@ -123,7 +135,23 @@ return {
     dependencies = {
       "kkharji/sqlite.lua",
     },
+    init = function()
+      myutils.io.echo(sqliteZipPath)
+      myutils.io.echo(sqliteDestPath)
+      myutils.io.echo(sqliteLibPath)
+
+      if not depends.has('sqlite3') then
+        depends.install('sqlite3', {winget = 'SQLite.SQLite' })
+        if env.is_windows() then
+          local curlCmd = "Invoke-WebRequest -Uri https://www.sqlite.org/2023/sqlite-dll-win-x64-3440200.zip -outfile " ..  sqliteZipPath
+          local unzipCmd = "Expand-Archive -LiteralPath " ..  sqliteZipPath .. " -DestinationPath " .. sqliteDestPath .. " -Force"
+          vim.cmd(curlCmd)
+          vim.cmd(unzipCmd)
+        end
+      end
+    end,
     config = function()
+      g.sqlite_clib_path = sqliteLibPath
     end,
   },
   {
@@ -131,9 +159,10 @@ return {
     -- This will not install any breaking changes.
     -- For major updates, this must be adjusted manually.
     version = "^1.0.0",
+    
     init = function()
-      if not depends.has_depends('ripgrep') then
-        depends.install_depends('ripgrep')
+      if not depends.has('ripgrep') then
+        depends.install('ripgrep', { winget = 'BurntSushi.ripgrep.MSVC' })
       end
     end,
     config = function()
