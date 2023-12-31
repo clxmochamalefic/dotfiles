@@ -3,27 +3,27 @@ local fn = vim.fn
 local M = {}
 
 function M.is_pure_linux()
-  return fn.has('linux') and not fn.has('wsl')
+  return fn.has('linux') == 1 and fn.has('wsl') == 0
 end
 
 function M.is_wsl_linux()
-  return fn.has('linux') and fn.has('wsl')
+  return fn.has('linux') == 1 and fn.has('wsl') == 1
 end
 
 function M.is_linux()
-  return fn.has('linux')
+  return fn.has('linux') == 1
 end
 
 function M.is_mac_os()
-  return fn.has('mac')
+  return fn.has('mac') == 1
 end
 
 function M.is_pure_unix()
-  return fn.has('unix') and not fn.has('mac')
+  return fn.has('unix') == 1 and fn.has('mac') == 0
 end
 
 function M.is_unix()
-  return fn.has('unix')
+  return fn.has('unix') == 1
 end
 
 function M.is_posix()
@@ -31,15 +31,15 @@ function M.is_posix()
 end
 
 function M.is_wsl()
-  return fn.has('wsl')
+  return fn.has('wsl') == 1
 end
 
 function M.is_windows()
-  return vim.fn.has('win32')
+  return fn.has('win32') == 1
 end
 
 function M.get_path_splitter_for_current_env()
-  if M.is_linux() == 1 or M.is_unix() == 1 then
+  if M.is_linux() or M.is_unix() then
     return '/'
   end
 

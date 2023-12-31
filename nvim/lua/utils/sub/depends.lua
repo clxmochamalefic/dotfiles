@@ -12,6 +12,14 @@ local pms = {
   'winget',
 }
 
+local pms_prefix = {
+  apt = 'sudo',
+  yum = 'sudo',
+  brew = '',
+  apk = '',
+  winget = '',
+}
+
 local pms_args = {
   apt = 'install -y',
   yum = 'install -y',
@@ -29,7 +37,7 @@ local pms_suffix = {
 }
 
 local function get_pm_command_with_pm_name(name, pm_name)
-  return "!" .. pm_name .. " " .. pms_args[pm_name] .. " " .. name .. " " .. pms_suffix[pm_name]
+  return "!" .. pms_prefix[pm_name] .. " " .. pm_name .. " " .. pms_args[pm_name] .. " " .. name .. " " .. pms_suffix[pm_name]
 end
 
 local function get_pm_command(name)
@@ -44,6 +52,10 @@ end
 
 function M.has(name)
   return fn.executable(name) > 0
+end
+
+function M.which(name)
+  return fn.exepath(name)
 end
 
 function M.install(name, verb)
