@@ -1,5 +1,7 @@
 -- LSP ------------------------------
 
+---@diagnostic disable: unused-local
+
 local util = require 'vim.lsp.util'
 local myutils = require 'utils'
 
@@ -133,8 +135,16 @@ return {
           source = "always", -- Or "if_many"
         },
       })
-      lsp.handlers["textDocument/publishDiagnostics"] =
-          vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, { virtual_text = true })
+      lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+        lsp.diagnostic.on_publish_diagnostics,
+        {
+          virtual_text = {
+            format = function(diagnostic)
+              return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
+            end
+          }
+        }
+      )
       lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
         border = border,
         virtual_text = false,
@@ -263,140 +273,6 @@ return {
     lazy = true,
     'mfussenegger/nvim-dap',
   },
-  --  {
-  --    'jay-babu/mason-null-ls.nvim',
-  --    dependencies = {
-  --      'jose-elias-alvarez/null-ls.nvim',
-  --    },
-  --    config = function()
-  --      require('mason-null-ls').setup({
-  --        automatic_setup = true,
-  --        ensure_installed = nil,
-  --        automatic_installation = {
-  --          exclude = {
-  --            'textlint',
-  --          },
-  --        },
-  --        handlers = {
-  --          function(source_name, methods)
-  --            require("mason-null-ls.automatic_setup")(source_name, methods)
-  --          end,
-  --        },
-  --      })
-  --    end
-  --  },
-  --  {
-  --    --lazy = true,
-  --    "jose-elias-alvarez/null-ls.nvim",
-  --    --    dependencies = {
-  --    --      "nvim-lua/plenary.nvim",
-  --    --    },
-  --    config = function()
-  --      local null_ls = require("null-ls")
-  --      null_ls.setup({
-  --        on_attach = function(client, bufnr)
-  --          if client.supports_method("textDocument/formatting") then
-  --            vim.api.nvim_create_autocmd("BufWritePre", {
-  --              buffer = bufnr,
-  --              callback = function()
-  --                -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-  --                vim.lsp.buf.format({ bufnr = bufnr })
-  --              end,
-  --            })
-  --          end
-  --        end,
-  --        sources = {
-  --          null_ls.builtins.code_actions.eslint_d,
-  --          null_ls.builtins.code_actions.proselint,
-  --          null_ls.builtins.code_actions.shellcheck,
-  --          null_ls.builtins.code_actions.statix,
-  --          null_ls.builtins.completion.spell,
-  --          null_ls.builtins.diagnostics.editorconfig_checker.with({
-  --            command = "editorconfig-checker",
-  --          }),
-  --          null_ls.builtins.diagnostics.actionlint,
-  --          null_ls.builtins.diagnostics.commitlint,
-  --          null_ls.builtins.diagnostics.curlylint,
-  --          null_ls.builtins.diagnostics.deadnix,
-  --          null_ls.builtins.diagnostics.djlint,
-  --          null_ls.builtins.diagnostics.eslint_d,
-  --          null_ls.builtins.diagnostics.fish,
-  --          null_ls.builtins.diagnostics.gitlint,
-  --          null_ls.builtins.diagnostics.hadolint,
-  --          null_ls.builtins.diagnostics.proselint,
-  --          null_ls.builtins.diagnostics.pylama,
-  --          null_ls.builtins.diagnostics.shellcheck,
-  --          null_ls.builtins.diagnostics.staticcheck,
-  --          null_ls.builtins.diagnostics.statix,
-  --          null_ls.builtins.diagnostics.vale,
-  --          null_ls.builtins.diagnostics.write_good,
-  --          null_ls.builtins.diagnostics.tidy,
-  --          null_ls.builtins.formatting.alejandra,
-  --          null_ls.builtins.formatting.beautysh,
-  --          null_ls.builtins.formatting.black,
-  --          null_ls.builtins.formatting.cbfmt,
-  --          null_ls.builtins.formatting.clang_format,
-  --          null_ls.builtins.formatting.djlint,
-  --          null_ls.builtins.formatting.eslint_d,
-  --          null_ls.builtins.formatting.fish_indent,
-  --          null_ls.builtins.formatting.goimports.with({
-  --            condition = function(u)
-  --              -- Try to detect if we are in a tailscale repo
-  --              return u.root_has_file({ "go.toolchain.rev" })
-  --            end,
-  --          }),
-  --          null_ls.builtins.formatting.golines.with({
-  --            condition = function(u)
-  --              return not u.root_has_file({ "go.toolchain.rev" })
-  --            end,
-  --          }),
-  --          null_ls.builtins.formatting.isort,
-  --          null_ls.builtins.formatting.jq,
-  --          null_ls.builtins.formatting.tidy,
-  --          null_ls.builtins.formatting.prettierd,
-  --          null_ls.builtins.formatting.shellharden,
-  --          null_ls.builtins.formatting.swiftformat,
-  --          -- null_ls.builtins.formatting.terraform_fmt, -- Covered by LSP?
-  --          null_ls.builtins.formatting.trim_newlines,
-  --          null_ls.builtins.formatting.trim_whitespace,
-  --          null_ls.builtins.formatting.packer,
-  --          null_ls.builtins.hover.dictionary,
-  --        },
-  --      })
-  --    end,
-  --    --config = function(_, _)
-  --    --  -- https://github.com/jose-elias-alvarez/null-ls.nvim
-  --    --  local null_ls = require("null-ls")
-  --
-  --    --  local code_actions = null_ls.builtins.code_actions
-  --    --  local completion = null_ls.builtins.completion
-  --    --  local diagnostics = null_ls.builtins.diagnostics
-  --    --  local formatting = null_ls.builtins.formatting
-  --    --  local hover = null_ls.builtins.hover
-  --
-  --    --  local sources = {
-  --    --    code_actions.gitsigns,
-  --    --    completion.vsnip,
-  --    --    formatting.stylua,
-  --    --    formatting.taplo,
-  --    --    diagnostics.textlint.with({
-  --    --      filetypes = { 'markdown' },
-  --    --      prefer_local = 'node_modules/.bin',
-  --    --    }),
-  --    --    formatting.textlint.with({
-  --    --      filetypes = { 'markdown' },
-  --    --      prefer_local = 'node_modules/.bin',
-  --    --    }),
-  --    --    diagnostics.textlint.credo,
-  --    --  }
-  --
-  --    --  null_ls.setup({
-  --    --    border = 'single',
-  --    --    diagnostics_format = '#{m} (#{s}: #{c})',
-  --    --    sources = sources,
-  --    --  })
-  --    --end
-  --  },
   {
     lazy = true,
     "kevinhwang91/nvim-ufo",
