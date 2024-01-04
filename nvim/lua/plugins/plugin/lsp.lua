@@ -423,7 +423,7 @@ return {
   {
     lazy = true,
     "aznhe21/actions-preview.nvim",
-    events = { 'LspAttach' },
+    event = { 'LspAttach' },
     dependencies = {
       'kosayoda/nvim-lightbulb',
       "neovim/nvim-lspconfig",
