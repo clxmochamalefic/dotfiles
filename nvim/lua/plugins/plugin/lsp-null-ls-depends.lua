@@ -44,7 +44,7 @@ return {
     'MunifTanjim/prettier.nvim',
     dependencies = {
       'neovim/nvim-lspconfig',
-      'jose-elias-alvarez/none-ls.nvim',
+      "nvimtools/none-ls.nvim",
     },
     event = { 'FileReadPost', },
     build = 'npm install -g @fsouza/prettierd',

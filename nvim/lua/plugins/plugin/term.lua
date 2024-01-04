@@ -6,11 +6,11 @@ local keymap = vim.keymap
 
 return {
   {
-    'voldikss/vim-floaterm',
     lazy = true,
+    'voldikss/vim-floaterm',
     cmd = 'Floaterm',
     keys = {
-      { "_", "<cmd>FloatermToggle<CR>", mode = "n" },
+      -- { "_", "<cmd>FloatermToggle<CR>", mode = "n" },
     },
     config = function()
       g.floaterm_autoclose  = 1
@@ -32,6 +32,19 @@ return {
       })
 
       api.nvim_create_user_command("Floaterm",  '<Cmd>FloatermToggle<CR>', {})
+    end
+  },
+  {
+    lazy = true,
+    'akinsho/toggleterm.nvim',
+    cmd = 'ToggleTerm',
+    keys = {
+      { "_", "<cmd>ToggleTerm<CR>", mode = "n" },
+    },
+    opts = function()
+    end,
+    config = function()
+      require("toggleterm").setup()
     end
   }
 }

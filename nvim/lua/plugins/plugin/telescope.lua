@@ -5,6 +5,7 @@
 ---@diagnostic disable: unused-local
 local g = vim.g
 local fn = vim.fn
+local lsp = vim.lsp
 local keymap = vim.keymap
 
 local myutils = require("utils")
@@ -21,6 +22,7 @@ return {
       'nvim-telescope/telescope-fzf-native.nvim',
       "nvim-telescope/telescope-frecency.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
+      'nvim-telescope/telescope-ui-select.nvim',
     },
     cmd = {
       'Telescope',
@@ -45,7 +47,13 @@ return {
     },
     config = function ()
       local builtin = require('telescope.builtin')
-      keymap.set('n', '<leader>f',  builtin.find_files, { desc = 'Telescope: Find files', })
+      local function builtin_find_files_wrapper(opts)
+        opts = opts or {}
+        opts.cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+        require'telescope.builtin'.find_files(opts)
+      end
+
+      keymap.set('n', '<leader>f',  builtin_find_files_wrapper, { desc = 'Telescope: Find files', })
       --keymap.set('n', '<leader>g',  builtin.live_grep,  { desc = 'Telescope: live grep', })
       --keymap.set('n', '<C-g>',      builtin.live_grep,  { desc = 'Telescope: live grep', })
       keymap.set('n', 'Z',          builtin.buffers,    { desc = 'Telescope: buffers', })
@@ -108,6 +116,29 @@ return {
 --              ["wiki"]    = "/home/my_username/wiki"
             }
           },
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {
+              -- even more opts
+            },
+            layout_config = {
+              width = 0.4,
+              height = 16
+            }
+
+            -- pseudo code / specification for writing custom displays, like the one
+            -- for "codeactions"
+            -- specific_opts = {
+            --   [kind] = {
+            --     make_indexed = function(items) -> indexed_items, width,
+            --     make_displayer = function(widths) -> displayer
+            --     make_display = function(displayer) -> function(e)
+            --     make_ordinal = function(e) -> string
+            --   },
+            --   -- for example to disable the custom builtin "codeactions" display
+            --      do the following
+            --   codeactions = false,
+            -- }
+          }
         },
       }
 
@@ -135,10 +166,11 @@ return {
     init = function()
     end,
     config = function()
-      require("telescope").load_extension("frecency")
+      --require("telescope").load_extension("frecency")
     end,
   },
   {
+    lazy = true,
     "nvim-telescope/telescope-live-grep-args.nvim" ,
     -- This will not install any breaking changes.
     -- For major updates, this must be adjusted manually.
