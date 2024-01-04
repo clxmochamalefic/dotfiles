@@ -2,8 +2,8 @@
 
 ---@diagnostic disable: unused-local
 
-local util = require 'vim.lsp.util'
 local myutils = require 'utils'
+local nvim_lsputils = require'plugins.plugin.config.lsp.lsputils'
 
 local g = vim.g
 local o = vim.o
@@ -109,7 +109,7 @@ end
 
 local formatting_callback = function(client, bufnr)
   keymap.set("n", "<Leader>f", function()
-    local params = util.make_formatting_params({})
+    local params = require('vim.lsp.util').make_formatting_params({})
     client.request("textDocument/formatting", params, nil, bufnr)
   end, { buffer = bufnr })
 end
@@ -189,9 +189,12 @@ return {
         keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
         keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
         keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
+
+
+        keymap.set('n', '<leader>,',  lsp.buf.code_action,  { desc = 'show: code actions', })
       end
 
-      malspconfig.setup({ 
+      malspconfig.setup({
         ensure_installed = servers,
         automatic_installation = true,
       })
@@ -442,6 +445,63 @@ return {
     end,
     config = function()
       require("actions-preview").setup {}
+    end,
+  },
+  {
+    lazy = true,
+    'RishabhRD/nvim-lsputils',
+    event = {
+      'VimEnter',
+    },
+    dependencies = {
+      'RishabhRD/popfix',
+    },
+    config = function()
+      nvim_lsputils.setup()
+      --if fn.has('nvim-0.5.1') == 1 then
+      --  lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+      --  lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+      --  lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+      --  lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+      --  lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+      --  lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+      --  lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+      --  lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+      --else
+      --  local bufnr = vim.api.nvim_buf_get_number(0)
+
+      --  vim.lsp.handlers['textDocument/codeAction'] = function(_, _, actions)
+      --    require('lsputil.codeAction').code_action_handler(nil, actions, nil, nil, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/references'] = function(_, _, result)
+      --    require('lsputil.locations').references_handler(nil, result, { bufnr = bufnr }, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/definition'] = function(_, method, result)
+      --    require('lsputil.locations').definition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/declaration'] = function(_, method, result)
+      --    require('lsputil.locations').declaration_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/typeDefinition'] = function(_, method, result)
+      --    require('lsputil.locations').typeDefinition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/implementation'] = function(_, method, result)
+      --    require('lsputil.locations').implementation_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/documentSymbol'] = function(_, _, result, _, bufn)
+      --    require('lsputil.symbols').document_handler(nil, result, { bufnr = bufn }, nil)
+      --  end
+
+      --  vim.lsp.handlers['textDocument/symbol'] = function(_, _, result, _, bufn)
+      --    require('lsputil.symbols').workspace_handler(nil, result, { bufnr = bufn }, nil)
+      --  end
+      --end
     end,
   },
 }

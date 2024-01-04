@@ -2,6 +2,7 @@ local g = vim.g
 local fn = vim.fn
 
 local utils = require("utils")
+local env = require("utils.sub.env")
 
 local M = {
   addr = "127.0.0.1",
@@ -11,13 +12,13 @@ local M = {
 
 function M.setup()
   -- hostとの競合回避想定
---  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
---    -- guest: wsl2 only
---    M.port = 33577
---  else
+  if env.is_wsl() then
+    -- guest: wsl2 only
+    M.port = 33577
+  else
     -- host: windows / linux / macOS
     M.port = 33576
---  end
+  end
 end
 
 function M.configure()
@@ -25,7 +26,7 @@ function M.configure()
   g.denops_server_addr = M.addr .. ":" .. M.port
 end
 
-function M.build4wsl()
+function M.build4win()
   local denopsCliPath = g.denopsPath .. "/cli.ts"
   local serviceScriptPath = g.my_home_preference_path .. "/boot_denops.bat"
   utils.io.debug_echo("denops PATH: " .. denopsCliPath)
@@ -50,12 +51,8 @@ function M.build4anyhost()
 end
 
 function M.build()
-  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
-    if fn["has"]('linux') then
-      M.build4anyhost()
-    else
-      M.build4wsl()
-    end
+  if env.is_windows() then
+    M.build4win()
   else
     M.build4anyhost()
   end
