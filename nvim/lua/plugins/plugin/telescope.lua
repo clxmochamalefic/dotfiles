@@ -1,19 +1,15 @@
+--
+-- telescope (fuzzy finder / fzf)
+--
+
+---@diagnostic disable: unused-local
 local g = vim.g
 local fn = vim.fn
+local keymap = vim.keymap
 
 local myutils = require("utils")
 local env = require("utils.sub.env")
 local depends = require("utils.sub.depends")
-
-local sqliteZipPath = ""
-local sqliteDestPath = ""
-local sqliteLibPath = ""
-
-if env.is_windows() then
-  sqliteZipPath = env.join_path(env.getHome(), ".cache", "sqlite-dll-win-x64.zip")
-  sqliteDestPath = env.join_path(env.getHome(), ".lib", "sqlite")
-  sqliteLibPath = env.join_path(sqliteDestPath, 'sqlite3.dll')
-end
 
 return {
   {
@@ -48,20 +44,13 @@ return {
       'VimEnter',
     },
     config = function ()
-      require("telescope").load_extension("fzf")
-      require("telescope").load_extension("frecency")
-      require("telescope").load_extension("live_grep_args")
-
-      local lgas = require("telescope").extensions.live_grep_args.live_grep_args
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>f',  builtin.find_files, { desc = 'Telescope: Find files', })
-      --vim.keymap.set('n', '<leader>g',  builtin.live_grep,  { desc = 'Telescope: live grep', })
-      --vim.keymap.set('n', '<C-g>',      builtin.live_grep,  { desc = 'Telescope: live grep', })
-      vim.keymap.set('n', '<leader>g',  lgas,  { desc = 'Telescope: live grep args', })
-      vim.keymap.set('n', '<C-g>',      lgas,  { desc = 'Telescope: live grep args', })
-      vim.keymap.set('n', 'Z',          builtin.buffers,    { desc = 'Telescope: buffers', })
-      vim.keymap.set('n', '<leader>h',  builtin.help_tags,  { desc = 'Telescope: help tags', })
-      vim.keymap.set('n', '<leader>a',  "<Cmd>Telescope frecency workspace=CWD<CR>",  { desc = 'Telescope: frecency workspace=CWD', })
+      keymap.set('n', '<leader>f',  builtin.find_files, { desc = 'Telescope: Find files', })
+      --keymap.set('n', '<leader>g',  builtin.live_grep,  { desc = 'Telescope: live grep', })
+      --keymap.set('n', '<C-g>',      builtin.live_grep,  { desc = 'Telescope: live grep', })
+      keymap.set('n', 'Z',          builtin.buffers,    { desc = 'Telescope: buffers', })
+      keymap.set('n', '<leader>h',  builtin.help_tags,  { desc = 'Telescope: help tags', })
+      keymap.set('n', '<leader>a',  "<Cmd>Telescope frecency workspace=CWD<CR>",  { desc = 'Telescope: frecency workspace=CWD', })
 
 
       local actions = require('telescope.actions')
@@ -102,25 +91,26 @@ return {
             override_file_sorter = true,
             case_mode = "smart_case",
           },
---          frecency = {
---            db_root = env.join_path(env.getHome(), ".cache", "frecency"),
---            show_scores = false,
---            show_unindexed = true,
---            ignore_patterns = { "*.git/*", "*/tmp/*" },
---            disable_devicons = false,
---            workspaces = {
---              ["conf"]    = env.join_path(env.getHome(), ".cache"),
---              ["data"]    = env.join_path(env.getHome(), ".local", "share"),
---              ["project"] = env.join_path(env.getHome(), "repos"),
-----              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
-----              ["conf"]    = "/home/my_username/.config",
-----              ["data"]    = "/home/my_username/.local/share",
-----              ["project"] = "/home/my_username/projects",
-----              ["wiki"]    = "/home/my_username/wiki"
---            }
---          },
+          frecency = {
+            db_root = env.join_path(env.getHome(), ".cache", "frecency"),
+            show_scores = false,
+            show_unindexed = true,
+            ignore_patterns = { "*.git/*", "*/tmp/*" },
+            disable_devicons = false,
+            workspaces = {
+              ["conf"]    = env.join_path(env.getHome(), ".cache"),
+              ["data"]    = env.join_path(env.getHome(), ".local", "share"),
+              ["project"] = env.join_path(env.getHome(), "repos"),
+--              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
+--              ["conf"]    = "/home/my_username/.config",
+--              ["data"]    = "/home/my_username/.local/share",
+--              ["project"] = "/home/my_username/projects",
+--              ["wiki"]    = "/home/my_username/wiki"
+            }
+          },
         },
       }
+
     end
   },
   {
@@ -133,39 +123,19 @@ return {
       end
     end,
     config = function()
+      require("telescope").load_extension("fzf")
     end
   },
   {
     lazy = true,
     "nvim-telescope/telescope-frecency.nvim",
-    dependencies = {
-      "kkharji/sqlite.lua",
+    event = {
+      'VimEnter',
     },
     init = function()
-      local d = 'sqlite3'
-      myutils.io.echo(sqliteZipPath)
-      myutils.io.echo(sqliteDestPath)
-      myutils.io.echo(sqliteLibPath)
-
-      -- install dependencies (sqlite3.lib)
-      if not depends.has(d) then
-        depends.install(d, {winget = 'SQLite.SQLite' })
-        if env.is_windows() then
-          local curlCmd = "Invoke-WebRequest -Uri https://www.sqlite.org/2023/sqlite-dll-win-x64-3440200.zip -outfile " ..  sqliteZipPath
-          local unzipCmd = "Expand-Archive -LiteralPath " ..  sqliteZipPath .. " -DestinationPath " .. sqliteDestPath .. " -Force"
-          vim.cmd(curlCmd)
-          vim.cmd(unzipCmd)
-        else
-          depends.install('libsqlite3-dev')
-        end
-      end
     end,
     config = function()
-      if env.is_windows() then
-        g.sqlite_clib_path = sqliteLibPath
-      else
-        g.sqlite_clib_path = fn.system('dpkg -L libsqlite3-dev | grep .so')
-      end
+      require("telescope").load_extension("frecency")
     end,
   },
   {
@@ -173,12 +143,20 @@ return {
     -- This will not install any breaking changes.
     -- For major updates, this must be adjusted manually.
     version = "^1.0.0",
+    event = {
+      'VimEnter',
+    },
     init = function()
       if not depends.has('ripgrep') then
         depends.install('ripgrep', { winget = 'BurntSushi.ripgrep.MSVC' })
       end
     end,
     config = function()
+      require("telescope").load_extension("live_grep_args")
+      local lgas = require("telescope").extensions.live_grep_args.live_grep_args
+
+      keymap.set('n', '<leader>g',  lgas,  { desc = 'Telescope: live grep args', })
+      keymap.set('n', '<C-g>',      lgas,  { desc = 'Telescope: live grep args', })
     end,
   },
 }

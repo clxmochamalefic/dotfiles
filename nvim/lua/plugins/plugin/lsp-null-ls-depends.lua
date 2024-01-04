@@ -20,7 +20,7 @@ return {
     dependencies = {
       "nvimtools/none-ls.nvim",
     },
-    events = { 'FileReadPost', },
+    event = { 'FileReadPost', },
     opts = {},
     config = function()
       require('mason-null-ls').setup({
@@ -44,9 +44,9 @@ return {
     'MunifTanjim/prettier.nvim',
     dependencies = {
       'neovim/nvim-lspconfig',
-      'jose-elias-alvarez/null-ls.nvim',
+      'jose-elias-alvarez/none-ls.nvim',
     },
-    events = { 'FileReadPost', },
+    event = { 'FileReadPost', },
     build = 'npm install -g @fsouza/prettierd',
     opts = {},
     config = function()
