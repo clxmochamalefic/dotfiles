@@ -161,6 +161,10 @@ return {
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
+          -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
+          if args.filetype == 'NvimTree' or args.filetype == 'NeogitCommitMessage' then
+            return
+          end
           --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
           vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
           vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
