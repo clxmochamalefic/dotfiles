@@ -103,6 +103,8 @@ return {
           "noice",
           "prompt",
           "TelescopePrompt",
+          "NvimTree",
+          "toggleterm",
         },
         handle = {
           text                = " ",
