@@ -54,12 +54,14 @@ local servers = {
 
 local pattern_opts = {
   ["tsserver"] = function(lspconfig, opts)
-    local is_node = require("lspconfig").util.find_node_modules_ancestor(".")
+    local is_node = lspconfig.util.find_node_modules_ancestor
     --if is_node and (not enabled_vtsls) then
     --  lspconfig["tsserver"].setup({})
     --end
     if is_node then
-      lspconfig["tsserver"].setup({})
+      lspconfig["tsserver"].setup({
+        root_dir = lspconfig.util.root_pattern("package.json"),
+      })
     end
   end,
   ["denols"] = function(lspconfig, opts)
@@ -226,7 +228,7 @@ return {
             pattern_opts[server_name](lspconfig, opts)
             return
           end
-          lspconfig[server_name].setup(opts)
+          -- lspconfig[server_name].setup(opts)
         end,
       })
 
