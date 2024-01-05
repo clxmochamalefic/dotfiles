@@ -149,6 +149,7 @@ return {
         border = border,
         virtual_text = false,
         focus = false,
+        silent = true,
       })
       lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = border,
@@ -156,9 +157,24 @@ return {
       --        You will likely want to reduce updatetime which affects CursorHold
       --        note: this setting is global and should be set only once
       o.updatetime = 1000
-      --        api.nvim_set_option('updatetime', 1000)
+      api.nvim_set_option('updatetime', 1000)
 
-      vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+          vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+          vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+
+          --    local bufnr = args.buf
+          --    local client = vim.lsp.get_client_by_id(args.data.client_id)
+          --    if client.server_capabilities.completionProvider then
+          --      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+          --    end
+          --    if client.server_capabilities.definitionProvider then
+          --      vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
+          --    end
+        end,
+      })
 
       local capabilities = lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -181,17 +197,14 @@ return {
 
 
         local bufopts = { silent = true, buffer = bufnr }
-        keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-        keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        -- keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        -- keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        -- keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
+        -- keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
         keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
+        -- keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
         keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
         keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
-
-
-        keymap.set('n', '<leader>,',  lsp.buf.code_action,  { desc = 'show: code actions', })
       end
 
       malspconfig.setup({
@@ -445,63 +458,6 @@ return {
     end,
     config = function()
       require("actions-preview").setup {}
-    end,
-  },
-  {
-    lazy = true,
-    'RishabhRD/nvim-lsputils',
-    event = {
-      'VimEnter',
-    },
-    dependencies = {
-      'RishabhRD/popfix',
-    },
-    config = function()
-      nvim_lsputils.setup()
-      --if fn.has('nvim-0.5.1') == 1 then
-      --  lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-      --  lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
-      --  lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
-      --  lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-      --  lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-      --  lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-      --  lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-      --  lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
-      --else
-      --  local bufnr = vim.api.nvim_buf_get_number(0)
-
-      --  vim.lsp.handlers['textDocument/codeAction'] = function(_, _, actions)
-      --    require('lsputil.codeAction').code_action_handler(nil, actions, nil, nil, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/references'] = function(_, _, result)
-      --    require('lsputil.locations').references_handler(nil, result, { bufnr = bufnr }, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/definition'] = function(_, method, result)
-      --    require('lsputil.locations').definition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/declaration'] = function(_, method, result)
-      --    require('lsputil.locations').declaration_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/typeDefinition'] = function(_, method, result)
-      --    require('lsputil.locations').typeDefinition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/implementation'] = function(_, method, result)
-      --    require('lsputil.locations').implementation_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/documentSymbol'] = function(_, _, result, _, bufn)
-      --    require('lsputil.symbols').document_handler(nil, result, { bufnr = bufn }, nil)
-      --  end
-
-      --  vim.lsp.handlers['textDocument/symbol'] = function(_, _, result, _, bufn)
-      --    require('lsputil.symbols').workspace_handler(nil, result, { bufnr = bufn }, nil)
-      --  end
-      --end
     end,
   },
 }

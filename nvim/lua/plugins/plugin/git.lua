@@ -29,7 +29,7 @@ return {
       'Neogit',
     },
     keys = {
-      { "<leader>g", "<cmd>Neogit cwd=%:p:h<CR>", mode = "n" },
+      { "gi", "<cmd>Neogit cwd=%:p:h<CR>", mode = "n" },
     },
     config = function()
       local neogit = require('neogit')
