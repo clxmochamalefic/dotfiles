@@ -164,21 +164,12 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-          if args.filetype == 'NvimTree' or args.filetype == 'NeogitCommitMessage' then
+          local ft = vim.bo[args.buf].filetype
+          if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
             return
           end
-          --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
           vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
           vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-
-          --    local bufnr = args.buf
-          --    local client = vim.lsp.get_client_by_id(args.data.client_id)
-          --    if client.server_capabilities.completionProvider then
-          --      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-          --    end
-          --    if client.server_capabilities.definitionProvider then
-          --      vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
-          --    end
         end,
       })
 
@@ -227,8 +218,9 @@ return {
           if myutils.isContainsInArray(pattern_opts, server_name) then
             pattern_opts[server_name](lspconfig, opts)
             return
+          else
+            lspconfig[server_name].setup(opts)
           end
-          -- lspconfig[server_name].setup(opts)
         end,
       })
 
