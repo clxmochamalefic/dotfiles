@@ -30,6 +30,7 @@ local ft      = require("preferences.ft")
 local mapping = require("preferences.mapping")
 local command = require("preferences.command")
 local colour  = require("preferences.colour")
+local wnd     = require("preferences.window")
 
 local plugins = require("plugins")
 
@@ -48,6 +49,7 @@ mapping.setup()
 command.setup()
 
 colour.setup()
+wnd.setup()
 
 utils.io.end_debug(vim.g.my_initvim_path)
 

@@ -16,7 +16,7 @@ return {
     config = function()
       fn['pum#set_option']({
         max_width     = 100,
-        use_complete  = true,
+        --use_complete  = true,
         border        = 'rounded',
         padding       = true
       })
