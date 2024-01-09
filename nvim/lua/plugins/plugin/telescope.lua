@@ -12,6 +12,28 @@ local myutils = require("utils")
 local env = require("utils.sub.env")
 local depends = require("utils.sub.depends")
 
+local builtin = nil
+
+function GetBuiltin()
+  if builtin == nil then
+    builtin = require('telescope.builtin')
+  end
+  return builtin
+end
+
+function CallBuiltinFindFiles(opts)
+  opts = opts or {}
+  GetBuiltin().find_files(opts)
+end
+function CallBuiltinBuffer(opts)
+  opts = opts or {}
+  GetBuiltin().buffers(opts)
+end
+function CallBuiltinHelpTags(opts)
+  opts = opts or {}
+  GetBuiltin().help_tags()
+end
+
 return {
   {
     lazy = true,
@@ -39,27 +61,22 @@ return {
       'Telescope frecency',
     },
     keys = {
-      { "Z", "Telescope buffers", mode = "n" },
-      { "<leader>f", "Telescope oldfiles", mode = "n" },
+      { "Z",          CallBuiltinBuffer,                            { mode = "n", desc = 'Telescope: buffers', } },
+      { "<leader>f",  CallBuiltinFindFiles,                         { mode = "n", desc = 'Telescope: Find files', } },
+      { "<leader>h",  CallBuiltinHelpTags,                          { mode = "n", desc = 'Telescope: help tags', } },
+      { "<leader>a",  "<Cmd>Telescope frecency workspace=CWD<CR>",  { mode = "n", desc = 'Telescope: frecency workspace=CWD', } },
     },
     event = {
       'VimEnter',
     },
     config = function ()
-      local builtin = require('telescope.builtin')
-      local function builtin_find_files_wrapper(opts)
-        opts = opts or {}
-        opts.cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-        require'telescope.builtin'.find_files(opts)
-      end
 
-      keymap.set('n', '<leader>f',  builtin_find_files_wrapper, { desc = 'Telescope: Find files', })
-      --keymap.set('n', '<leader>g',  builtin.live_grep,  { desc = 'Telescope: live grep', })
-      --keymap.set('n', '<C-g>',      builtin.live_grep,  { desc = 'Telescope: live grep', })
-      keymap.set('n', 'Z',          builtin.buffers,    { desc = 'Telescope: buffers', })
-      keymap.set('n', '<leader>h',  builtin.help_tags,  { desc = 'Telescope: help tags', })
-      keymap.set('n', '<leader>a',  "<Cmd>Telescope frecency workspace=CWD<CR>",  { desc = 'Telescope: frecency workspace=CWD', })
+      --local builtin = require('telescope.builtin')
 
+      --keymap.set('n', '<leader>f',  BuiltinFindFilesWrapper, { desc = 'Telescope: Find files', })
+      --keymap.set('n', 'Z',          builtin.buffers,    { desc = 'Telescope: buffers', })
+      --keymap.set('n', '<leader>h',  builtin.help_tags,  { desc = 'Telescope: help tags', })
+      --keymap.set('n', '<leader>a',  "<Cmd>Telescope frecency workspace=CWD<CR>",  { desc = 'Telescope: frecency workspace=CWD', })
 
       local actions = require('telescope.actions')
       require('telescope').setup {
@@ -177,6 +194,9 @@ return {
     version = "^1.0.0",
     event = {
       'VimEnter',
+    },
+    keys = {
+--      { '<leader>g',  "<Cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { mode = 'n', desc = 'Telescope: live grep args', } },
     },
     init = function()
       if not depends.has('ripgrep') then

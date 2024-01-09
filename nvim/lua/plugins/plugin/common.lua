@@ -90,6 +90,7 @@ return {
 --    ft = { 'vimscript', 'lua', 'typescript' }
   },
   {
+    -- windows のクリップボード履歴の利用
     lazy = true,
     'Milly/windows-clipboard-history.vim',
     enabled = function () return vim.fn.has("win32") end
@@ -105,6 +106,7 @@ return {
     end
   },
   {
+    -- 連番の自動入力
     lazy = true,
     'deris/vim-rengbang',
     event = { 'InsertChange' },
@@ -136,6 +138,7 @@ return {
     end
   },
   {
+    -- line diff / 行にgitの変更箇所を表示する
     'AndrewRadev/linediff.vim',
     event = { 'FileReadPost', 'InsertChange' }
   },
@@ -144,5 +147,14 @@ return {
     "nvim-lua/plenary.nvim",
     build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
   },
+  -- trailing space / 行末の無意味なスペースを削除する
+  --{
+  --  lazy = true,
+  --  'lewis6991/spaceless.nvim',
+  --  event = { 'FileReadPost', 'InsertLeave' },
+  --  config = function()
+  --    require'spaceless'.setup()
+  --  end
+  --},
 }
 
