@@ -96,6 +96,17 @@ return {
     lazy = true,
     'rcarriga/nvim-notify',
     event = { 'BufEnter' },
+    dependencies = {
+      {
+        'nvim-telescope/telescope.nvim',
+        config = function()
+          local telescope = require 'telescope'
+          telescope.load_extension 'notify'
+
+          keymap.set('n', '<leader>n', telescope.extensions.notify.notify)
+        end,
+      },
+    },
     init = function()
       vim.notify = require("notify")
       vim.notify.setup({ background_colour = "#000000", })

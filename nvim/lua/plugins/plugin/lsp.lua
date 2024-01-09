@@ -161,17 +161,17 @@ return {
       o.updatetime = 1000
       api.nvim_set_option('updatetime', 1000)
 
-      vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-          -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-          local ft = vim.bo[args.buf].filetype
-          if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
-            return
-          end
-          vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
-          vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-        end,
-      })
+      --vim.api.nvim_create_autocmd("LspAttach", {
+      --  callback = function(args)
+      --    -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
+      --    local ft = vim.bo[args.buf].filetype
+      --    if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
+      --      return
+      --    end
+      --    vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+      --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
+      --  end,
+      --})
 
       local capabilities = lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -191,6 +191,14 @@ return {
         async.run(function()
           notify("LSP started: " .. client.name).events.close()
         end)
+
+        -- auto hover popup for loaded filetypes
+        if client.filetypes then
+          for i, v in ipairs(client.filetypes) do
+            vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ lua vim.diagnostic.open_float(nil, {focus=false})]])
+            vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
+          end
+        end
 
 
         local bufopts = { silent = true, buffer = bufnr }
