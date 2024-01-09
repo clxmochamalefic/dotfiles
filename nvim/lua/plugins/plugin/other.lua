@@ -18,7 +18,25 @@ return {
       --require("lazy").load({ plugins = "firenvim", wait = true })
       utils.io.echo("shell: " .. o.shell)
       vim.fn["firenvim#install"](0)
-    end
+    end,
+    config = function()
+      local enableFireNvim = {
+        selector = 'textarea',
+        priority = 1,
+      }
+
+      g.firenvim_config = {
+        localSettings = {
+          ['.*'] = {
+            selector = '',
+            priority = 0,
+          },
+          ["github\\.com"] = enableFireNvim,
+          ["developer\\.mozilla\\.org"] = enableFireNvim,
+          ['.*\\.console.aws.amazon.com'] = enableFireNvim,
+        }
+      }
+    end,
   },
   {
     lazy = true,
