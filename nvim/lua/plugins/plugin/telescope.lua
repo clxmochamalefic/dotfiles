@@ -4,12 +4,27 @@
 
 local g = vim.g
 local fn = vim.fn
+local fs = vim.fs
 local lsp = vim.lsp
 local keymap = vim.keymap
 
 local myutils = require("utils")
 
 local builtin = nil
+
+--
+-- ファイル名と親ディレクトリをタブ区切りで表示する
+--
+-- @param path string: ファイルパス
+--
+local function FileNameFirst(_, path)
+  local tail = vim.fs.basename(path)
+  local parent = vim.fs.dirname(path)
+  if parent == "." then
+    return tail
+  end
+  return string.format("%s\t\t%s", tail, parent)
+end
 
 --
 -- telescope.nvim ビルトインを取得する
@@ -133,16 +148,32 @@ return {
       'VimEnter',
     },
     config = function ()
-
-      --local builtin = require('telescope.builtin')
-
-      --keymap.set('n', '<leader>f',  BuiltinFindFilesWrapper, { desc = 'Telescope: Find files', })
-      --keymap.set('n', 'Z',          builtin.buffers,    { desc = 'Telescope: buffers', })
-      --keymap.set('n', '<leader>h',  builtin.help_tags,  { desc = 'Telescope: help tags', })
-      --keymap.set('n', '<leader>a',  "<Cmd>Telescope frecency workspace=CWD<CR>",  { desc = 'Telescope: frecency workspace=CWD', })
+      api.nvim_create_autocmd("FileType", {
+        pattern = "TelescopeResults",
+        callback = function(ctx)
+          api.nvim_buf_call(ctx.buf, function()
+            fn.matchadd("TelescopeParent", "\t\t.*$")
+            api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+          end)
+        end,
+      })
 
       local actions = require('telescope.actions')
       require('telescope').setup {
+        pickers = {
+          buffers = {
+            path_display = FileNameFirst,
+          },
+          find_files = {
+            path_display = FileNameFirst,
+          },
+          live_grep = {
+            path_display = FileNameFirst,
+          },
+          frecency = {
+            path_display = FileNameFirst,
+          },
+        },
         defaults = {
           mappings = {
             i = {
@@ -180,15 +211,15 @@ return {
             case_mode = "smart_case",
           },
           frecency = {
-            db_root = env.join_path(env.getHome(), ".cache", "frecency"),
+            db_root = myutils.env.join_path(myutils.env.getHome(), ".cache", "frecency"),
             show_scores = false,
             show_unindexed = true,
             ignore_patterns = { "*.git/*", "*/tmp/*" },
             disable_devicons = false,
             workspaces = {
-              ["conf"]    = env.join_path(env.getHome(), ".cache"),
-              ["data"]    = env.join_path(env.getHome(), ".local", "share"),
-              ["project"] = env.join_path(env.getHome(), "repos"),
+              ["conf"]    = myutils.env.join_path(myutils.env.getHome(), ".cache"),
+              ["data"]    = myutils.env.join_path(myutils.env.getHome(), ".local", "share"),
+              ["project"] = myutils.env.join_path(myutils.env.getHome(), "repos"),
 --              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
 --              ["conf"]    = "/home/my_username/.config",
 --              ["data"]    = "/home/my_username/.local/share",
