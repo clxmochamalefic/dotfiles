@@ -109,7 +109,11 @@ return {
     },
     init = function()
       vim.notify = require("notify")
-      vim.notify.setup({ background_colour = "#000000", })
+      vim.notify.setup({
+        max_width = 120,
+        background_colour = "#000000",
+        fps = 10,
+      })
     end
   },
   {
@@ -154,6 +158,61 @@ return {
             view = nil, -- when nil, use defaults from documentation
             ---@type NoiceViewOptions
             opts = {}, -- merged with defaults from documentation
+          },
+        },
+        routes = {
+          {
+            filter = {
+              event = 'msg_show',
+              any = {
+                { find = '%d+L, %d+B' },
+                { find = '^%d+ changes?; after #%d+' },
+                { find = '^%d+ changes?; before #%d+' },
+                { find = '^Hunk %d+ of %d+$' },
+                { find = '^%d+ fewer lines;?' },
+                { find = '^%d+ more lines?;?' },
+                { find = '^%d+ line less;?' },
+                { find = '^Already at newest change' },
+                { kind = 'wmsg' },
+                { kind = 'emsg', find = 'E486' },
+                { kind = 'quickfix' },
+              },
+            },
+            view = 'mini',
+          },
+          {
+            filter = {
+              event = 'msg_show',
+              any = {
+                { find = '^%d+ lines .ed %d+ times?$' },
+                { find = '^%d+ lines yanked$' },
+                { kind = 'emsg', find = 'E490' },
+                { kind = 'search_count' },
+
+                { kind = 'textDocument/hover' },
+                { kind = 'textDocument/formatting' },
+                { kind = 'textDocument/publishDiagnostics' },
+                { kind = 'textDocument/signatureHelp' },
+                { kind = 'textDocument/signatureHelp' },
+
+                { find = 'textDocument/hover' },
+                { find = 'textDocument/formatting' },
+                { find = 'textDocument/publishDiagnostics' },
+                { find = 'textDocument/signatureHelp' },
+                { find = 'textDocument/signatureHelp' },
+              },
+            },
+            opts = { skip = true },
+          },
+          {
+            filter = {
+              event = 'notify',
+              any = {
+                { find = '^No code actions available$' },
+                { find = '^No information available$' },
+              },
+            },
+            view = 'mini',
           },
         },
         -- you can enable a preset for easier configuration
