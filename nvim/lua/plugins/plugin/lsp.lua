@@ -161,17 +161,26 @@ return {
       o.updatetime = 1000
       api.nvim_set_option('updatetime', 1000)
 
-      --vim.api.nvim_create_autocmd("LspAttach", {
-      --  callback = function(args)
-      --    -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-      --    local ft = vim.bo[args.buf].filetype
-      --    if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
-      --      return
-      --    end
-      --    vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
-      --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --  end,
-      --})
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
+          local ft = vim.bo[args.buf].filetype
+          if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
+            return
+          end
+
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            callback = function(args)
+              vim.diagnostic.open_float(nil, { focus = false })
+            end
+          })
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            callback = function(args)
+              vim.lsp.buf.hover()
+            end
+          })
+        end,
+      })
 
       local capabilities = lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
