@@ -1,6 +1,6 @@
 local fn = vim.fn
 
-local myutils = require("utils")
+local myutils = require("utils.sub.util")
 
 local M = {}
 

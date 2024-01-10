@@ -4,7 +4,7 @@
 
 
 return {
-  Lazy = true,
+  lazy = true,
   'HiPhish/gradle.nvim',
   dependencies = {
     "neovim/nvim-lspconfig",

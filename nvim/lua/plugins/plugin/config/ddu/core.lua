@@ -77,7 +77,7 @@ function M.window_choose(args)
       end
 
       local my_winpick = require("plugins.plugin.config.winpick")
-      my_winpick.choose()
+      my_winpick.choose_for_focus()
       vim.cmd("edit " .. path)
     end,
     catch = function()
