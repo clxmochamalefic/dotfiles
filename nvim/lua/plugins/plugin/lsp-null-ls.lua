@@ -20,9 +20,14 @@ return {
       "vim-test/vim-test",
       'neovim/nvim-lspconfig',
     },
-    events = { 'FileReadPost', },
+    events = {
+      'FileReadPost',
+      'BufRead',
+    },
     opts = {},
-    config = null_ls_config.config,
+    config = function()
+      null_ls_config.setup()
+    end,
   }
 }
 
