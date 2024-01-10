@@ -52,6 +52,52 @@ local servers = {
   "lua_ls",
 }
 
+local pattern_opts2 = {
+  ["tsserver"] = function(baseLc, lc, opts)
+    local is_node = baseLc.util.find_node_modules_ancestor
+    --if is_node and (not enabled_vtsls) then
+    --  lspconfig["tsserver"].setup({})
+    --end
+    if is_node then
+      lc.setup({
+        root_dir = baseLc.util.root_pattern("package.json"),
+      })
+    end
+  end,
+  ["denols"] = function(baseLc, lc, opts)
+    lc.setup({
+      root_dir = baseLc.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
+      init_options = {
+        lint = true,
+        unstable = true,
+        suggest = {
+          imports = {
+            hosts = {
+              ["https://deno.land"] = true,
+              ["https://cdn.nest.land"] = true,
+              ["https://crux.land"] = true,
+            },
+          },
+        },
+      },
+    })
+  end,
+  ["jdtls"] = function(baseLc, lc, opts)
+    lc.setup({
+      root_dir = baseLc.util.root_pattern("build.gradle"),
+    })
+  end,
+  ["java_language_server"] = function(baseLc, lc, opts)
+    lc.setup({
+      root_dir = baseLc.util.root_pattern("build.gradle"),
+    })
+  end,
+}
+
+local function SetupByServerName(lspconfig, name, opts)
+  pattern_opts2[name](lspconfig, lspconfig[name], opts)
+end
+
 local pattern_opts = {
   ["tsserver"] = function(lspconfig, opts)
     local is_node = lspconfig.util.find_node_modules_ancestor
@@ -80,6 +126,16 @@ local pattern_opts = {
           },
         },
       },
+    })
+  end,
+  ["jdtls"] = function(lspconfig, opts)
+    lspconfig["jdtls"].setup({
+      root_dir = lspconfig.util.root_pattern("build.gradle"),
+    })
+  end,
+  ["java_language_server"] = function(lspconfig, opts)
+    lspconfig["java_language_server"].setup({
+      root_dir = lspconfig.util.root_pattern("build.gradle"),
     })
   end,
 }
@@ -161,17 +217,26 @@ return {
       o.updatetime = 1000
       api.nvim_set_option('updatetime', 1000)
 
-      --vim.api.nvim_create_autocmd("LspAttach", {
-      --  callback = function(args)
-      --    -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-      --    local ft = vim.bo[args.buf].filetype
-      --    if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
-      --      return
-      --    end
-      --    vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
-      --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --  end,
-      --})
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
+          local ft = vim.bo[args.buf].filetype
+          if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
+            return
+          end
+
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            callback = function(args)
+              vim.diagnostic.open_float(nil, { focus = false })
+            end
+          })
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            callback = function(args)
+              vim.lsp.buf.hover()
+            end
+          })
+        end,
+      })
 
       local capabilities = lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -224,7 +289,9 @@ return {
           }
 
           if myutils.isContainsInArray(pattern_opts, server_name) then
-            pattern_opts[server_name](lspconfig, opts)
+            -- TODO: この形にしたい: pattern_opts[server_name](lspconfig[server_name], opts)
+            --pattern_opts[server_name](lspconfig, opts)
+            SetupByServerName(lspconfig, server_name, opts)
             return
           else
             lspconfig[server_name].setup(opts)

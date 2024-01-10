@@ -5,11 +5,16 @@ local keymap = vim.keymap
 
 require("utils.string")
 
+local sub_util = require("utils.sub.util")
+
 local M = {}
 
 M.fs = require("utils.sub.fs")
 M.io = require("utils.sub.io")
+M.env = require("utils.sub.env")
 M.window = require("utils.sub.window")
+M.depends = require("utils.sub.depends")
+M.util = sub_util
 
 -- key exists in array
 function M.isContainsInArray(set, key)
@@ -17,24 +22,7 @@ function M.isContainsInArray(set, key)
 end
 
 -- 疑似trycatch
-function M.try_catch(what)
-  M.io.debug_echo("begin try --->")
-  local status, exception = pcall(what.try)
-  if not status then
-    M.io.debug_echo("#### begin catch --->")
-    what.catch(exception)
-    M.io.debug_echo("<--- end catch ####")
-  else
-    M.io.debug_echo("<--- end try")
-  end
-  if what.finally then
-    M.io.debug_echo("begin finally --->")
-    what.finally()
-    M.io.debug_echo("<--- end finally")
-  end
-
-  return exception
-end
+M.try_catch = M.util.try_catch
 
 -- 型チェック
 -- super thx for @paulcuth!!: https://gist.github.com/paulcuth/1270733
