@@ -137,6 +137,7 @@ return {
     event = { 'FileReadPost', 'InsertLeave' },
     config = function()
       require'spaceless'.setup()
+      g.lessspace_normal = 0
     end
   },
 }
