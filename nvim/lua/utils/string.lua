@@ -34,3 +34,29 @@ end
 function string:insert(pos, text)
   return self:sub(1, pos - 1) .. text .. self:sub(pos)
 end
+
+function string:split(sep)
+  if sep == nil then
+    sep = "%s"
+  end
+  local t = {}
+  for str in self:gmatch("([^"..sep.."]+)") do
+    table.insert(t, str)
+  end
+  return t
+end
+
+local M = {}
+
+function M.split(istr, sep)
+  if sep == nil then
+    sep = "%s"
+  end
+  local t = {}
+  for str in string.gmatch(istr, "([^"..sep.."]+)") do
+    table.insert(t, str)
+  end
+  return t
+end
+
+return M
