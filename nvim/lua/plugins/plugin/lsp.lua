@@ -1,6 +1,6 @@
--- LSP ------------------------------
-
----@diagnostic disable: unused-local
+-- ---------------------------------------------------------------------------
+-- LSP PLUGINS
+-- ---------------------------------------------------------------------------
 
 local myutils = require 'utils'
 local nvim_lsputils = require'plugins.plugin.config.lsp.lsputils'
@@ -197,8 +197,8 @@ return {
         lsp.diagnostic.on_publish_diagnostics,
         {
           virtual_text = {
-            format = function(diagnostic)
-              return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
+            format = function(diag)
+              return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
             end
           }
         }
@@ -226,12 +226,12 @@ return {
           end
 
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-            callback = function(args)
+            callback = function(_)
               vim.diagnostic.open_float(nil, { focus = false })
             end
           })
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-            callback = function(args)
+            callback = function(_)
               vim.lsp.buf.hover()
             end
           })
@@ -259,7 +259,7 @@ return {
 
         -- auto hover popup for loaded filetypes
         if client.filetypes then
-          for i, v in ipairs(client.filetypes) do
+          for _, v in ipairs(client.filetypes) do
             vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ lua vim.diagnostic.open_float(nil, {focus=false})]])
             vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
           end
@@ -360,58 +360,6 @@ return {
   },
   {
     lazy = true,
-    'mfussenegger/nvim-dap',
-    dependencies = {
-      "jay-babu/mason-nvim-dap.nvim",
-      'rcarriga/nvim-dap-ui',             -- UI for nvim-dap
-      'theHamsta/nvim-dap-virtual-text',  -- Variable values as virtual text
-    },
-    events = {
-      'LspAttach'
-    },
-    keys = {
-      { "<F5>",     "<Cmd>DapContinue<CR>",         { mode = "n", silent = true, desc = 'dap: continue', } },
-      { "<F10>",    "<Cmd>DapStepOver<CR>",         { mode = "n", silent = true, desc = 'dap: step over', } },
-      { "<F11>",    "<Cmd>DapStepInto<CR>",         { mode = "n", silent = true, desc = 'dap: step into', } },
-      { "<S-F10>",  "<Cmd>DapOut<CR>",              { mode = "n", silent = true, desc = 'dap: step out', } },
-      { "<F9>",     "<Cmd>DapToggleBreakpoint<CR>", { mode = "n", silent = true, desc = 'dap: breakpoint toggle', } },
-      { "<S-F9>",   '<Cmd>lua require("dap").set_breakpoint(nil, nil, vim.fn.input("Breakpoint condition: "))<CR>', { mode = "n", silent = true, desc = 'dap: breakpoint with condition', } },
-      { "<C-F9>",   '<Cmd>lua require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',    { mode = "n", silent = true, desc = 'dap: breakpoint with log point message', } },
-    },
-    config = function()
-      vim.api.nvim_set_keymap('n', '<leader>dr', ':lua require("dap").repl.open()<CR>', { silent = true, desc = 'dap: repl open', })
-      vim.api.nvim_set_keymap('n', '<leader>dl', ':lua require("dap").run_last()<CR>',  { silent = true, desc = 'dap: run last', })
-
-      -- dap-ui
-      require("dapui").setup({
-        icons = { expanded = "", collapsed = "" },
-        layouts = {
-          {
-            elements = {
-              { id = "watches", size = 0.20 },
-              { id = "stacks", size = 0.20 },
-              { id = "breakpoints", size = 0.20 },
-              { id = "scopes", size = 0.40 },
-            },
-            size = 64,
-            position = "right",
-          },
-          {
-            elements = {
-              "repl",
-              "console",
-            },
-            size = 0.20,
-            position = "bottom",
-          },
-        },
-      })
-      vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("dapui").toggle()<CR>', {})
-      vim.api.nvim_set_keymap('n', '<leader>.', ':lua require("dapui").eval()<CR>', {})
-    end,
-  },
-  {
-    lazy = true,
     "kevinhwang91/nvim-ufo",
     dependencies = {
       "kevinhwang91/promise-async",
@@ -420,7 +368,7 @@ return {
   {
     lazy = true,
     'kosayoda/nvim-lightbulb',
-    events = { 'BufRead' },
+    event = { 'BufRead' },
     dependencies = {
       "neovim/nvim-lspconfig",
     },
