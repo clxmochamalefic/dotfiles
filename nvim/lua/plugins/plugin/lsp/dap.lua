@@ -5,7 +5,7 @@
 local api = vim.api
 
 local myio = require('utils.sub.io')
-local mydap = require('plugins.plugin.config.lsp-dap')
+local mydap = require('plugins.plugin.lsp.config.dap')
 local mystr = require('utils.string')
 
 -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
@@ -87,5 +87,24 @@ return {
       -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
       api.nvim_create_user_command("DapStart", dap_start, dap_start_complete)
     end,
+  },
+  {
+    lazy = true,
+    'folke/neodev.nvim',
+    event = { 'LspAttach' },
+    dependencies = {
+      'mfussenegger/nvim-dap',
+      'rcarriga/nvim-dap-ui',             -- UI for nvim-dap
+    },
+    config = function()
+      require("neodev").setup({
+        library = {
+          plugins = {
+            "nvim-dap-ui",
+          },
+          types = true
+        },
+      })
+    end
   },
 }

@@ -1,6 +1,6 @@
---
--- null-ls関係のLSP設定
---
+-- ---------------------------------------------------------------------------
+-- NULL-LS (NONE-LS) PLUGINS
+-- ---------------------------------------------------------------------------
 
 --
 -- HOW TO USE: null-ls
@@ -9,7 +9,7 @@
 -- https://zenn.dev/fukakusa_kadoma/articles/32884de923fca1
 --
 
-local null_ls_config = require'plugins.plugin.config.lsp.null-ls'
+local null_ls_config = require'plugins.plugin.lsp.config.null-ls'
 
 return {
   {

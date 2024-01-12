@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------
 -- JAVA-DAP (debug adapter protocol) CONFIGS
 -- ---------------------------------------------------------------------------
+--
+local myutils = require('utils')
 
 local M = {
   dap = nil
@@ -38,6 +40,7 @@ M.setup = function(dap, opt)
       name = "Debug (Attach) - Remote";
       hostName = h;
       port = p;
+      javaExec = myutils.depends.which('java'),
 
       ---- You need to extend the classPath to list your dependencies.
       ---- `nvim-jdtls` would automatically add the `classPaths` property if it is missing

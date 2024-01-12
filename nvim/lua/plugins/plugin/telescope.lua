@@ -295,6 +295,9 @@ return {
       if not myutils.depends.has('ripgrep') then
         myutils.depends.install('ripgrep', { winget = 'BurntSushi.ripgrep.MSVC' })
       end
+      if not myutils.depends.has('fd') then
+        myutils.depends.install('fd', { apt = 'find_fd', winget = 'sharkdp.fd' })
+      end
     end,
     config = function()
       require("telescope").load_extension("live_grep_args")
