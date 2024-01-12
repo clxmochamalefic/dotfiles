@@ -5,7 +5,7 @@
 local M = {
   dap = nil,
   lang = {
-    java = require('plugins.plugin.config.lsp-dap.lang.java'),
+    java = require('plugins.plugin.lsp.config.dap.lang.java'),
   }
 }
 

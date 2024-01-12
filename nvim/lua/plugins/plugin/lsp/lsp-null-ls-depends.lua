@@ -1,6 +1,6 @@
---
--- null-ls依存のLSP設定
---
+-- ---------------------------------------------------------------------------
+-- NULL-LS (NONE-LS) DEPENDENCIES PLUGINS
+-- ---------------------------------------------------------------------------
 
 local ft = {
   "css",
@@ -39,25 +39,25 @@ return {
       })
     end
   },
-  {
-    lazy = true,
-    'MunifTanjim/prettier.nvim',
-    dependencies = {
-      'neovim/nvim-lspconfig',
-      "nvimtools/none-ls.nvim",
-    },
-    event = { 'FileReadPost', },
-    build = 'npm install -g @fsouza/prettierd',
-    opts = {},
-    config = function()
-      local status, prettier = pcall(require, "prettier")
-      if (not status) then return end
+  --{
+  --  lazy = true,
+  --  'MunifTanjim/prettier.nvim',
+  --  dependencies = {
+  --    'neovim/nvim-lspconfig',
+  --    "nvimtools/none-ls.nvim",
+  --  },
+  --  event = { 'FileReadPost', },
+  --  build = 'npm install -g @fsouza/prettierd',
+  --  opts = {},
+  --  config = function()
+  --    local status, prettier = pcall(require, "prettier")
+  --    if (not status) then return end
 
-      prettier.setup {
-        bin = 'prettierd',
-        filetypes = ft
-      }
-    end,
-  }
+  --    prettier.setup {
+  --      bin = 'prettierd',
+  --      filetypes = ft
+  --    }
+  --  end,
+  --}
 }
 

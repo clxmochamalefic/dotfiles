@@ -60,11 +60,17 @@ end
 -- choose window for window move
 --
 function M.choose_for_move()
-  local bufnr = fn["bufnr"]('%')
+  local bufnr = M.getBufnr()
   local winid = M.winpick.select()
   if winid then
     vim.api.nvim_set_current_win(winid)
   end
 end
+
+function M.getBufnr()
+  return fn["bufnr"]('%')
+end
+
+
 
 return M
