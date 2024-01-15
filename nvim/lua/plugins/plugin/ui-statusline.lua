@@ -26,6 +26,7 @@ return {
       -- 'kdheepak/tabline.nvim',
       "arkav/lualine-lsp-progress",
       "akinsho/bufferline.nvim",
+      "nvim-tree/nvim-web-devicons",
     },
     config = function()
       opt.laststatus = 3
@@ -54,8 +55,10 @@ return {
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = { { "filename", path = 4 }, "lsp_progress" },
           lualine_x = { "encoding", "fileformat" },
-          lualine_y = { "progress", "filetype", color = colour.sub2 },
-          lualine_z = { "location", "filetype", color = colour.sub3 },
+          --lualine_y = { { "progress", color = colour.sub2 }, { "filetype", color = colour.sub2 } },
+          --lualine_z = { { "location", color = colour.sub3 }, { "filetype", color = colour.sub3 } },
+          lualine_y = { { "progress" }, { "filetype" } },
+          lualine_z = { { "location" }, { "filetype" } },
         },
         inactive_sections = {
           lualine_a = {},
@@ -73,23 +76,32 @@ return {
           lualine_y = {},
           lualine_z = {},
         },
-        winbar = {
-          lualine_a = { { "filetype", icon_only = true } },
-          lualine_b = {},
-          lualine_c = {},
-          lualine_x = { { "filename", path = 4 } },
-          lualine_y = { { "encoding" } },
-          lualine_z = { { "fileformat" } },
+        ---- winbar はほかのプラグインと競合するので使わない
+        --winbar = {
+        --  lualine_a = { { "filetype", icon_only = true } },
+        --  lualine_b = {},
+        --  lualine_c = {},
+        --  lualine_x = { { "filename", path = 4 } },
+        --  lualine_y = { { "encoding" } },
+        --  lualine_z = { { "fileformat" } },
+        --},
+        --inactive_winbar = {
+        --  lualine_a = { { "filetype", icon_only = true } },
+        --  lualine_b = {},
+        --  lualine_c = {},
+        --  lualine_x = { { "filename", path = 4 } },
+        --  lualine_y = { { "encoding" } },
+        --  lualine_z = { { "fileformat" } },
+        --},
+        extensions = {
+          "fzf",
+          "lazy",
+          "man",
+          "mason",
+          "nvim-tree",
+          "nvim-dap-ui",
+          "toggleterm",
         },
-        inactive_winbar = {
-          lualine_a = { { "filetype", icon_only = true } },
-          lualine_b = {},
-          lualine_c = {},
-          lualine_x = { { "filename", path = 4 } },
-          lualine_y = { { "encoding" } },
-          lualine_z = { { "fileformat" } },
-        },
-        extensions = {},
       }
 
       -- lualine-lsp-progress ------------------------------
