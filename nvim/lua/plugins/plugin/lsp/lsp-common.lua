@@ -63,6 +63,18 @@ local formatting_callback = function(client, bufnr)
 	end, { buffer = bufnr })
 end
 
+local suppressFileTypes = {
+	"NvimTree",
+	"NeogitCommitMessage",
+	"toggleterm",
+}
+
+local function isShowable(t)
+	local ft = vim.bo[t.buf].filetype
+	--return ft ~= "NvimTree" and ft ~= "NeogitCommitMessage" and ft ~= "toggleterm"
+	return myutils.table.is_value_exists(suppressFileTypes, ft)
+end
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -108,19 +120,22 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					-- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-					local ft = vim.bo[args.buf].filetype
-					if ft == "NvimTree" or ft == "NeogitCommitMessage" or ft == "toggleterm" then
+					if not isShowable(args) then
 						return
 					end
 
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-						callback = function(_)
-							vim.diagnostic.open_float(nil, { focus = false })
+						callback = function(t)
+							if isShowable(t) then
+								vim.diagnostic.open_float(nil, { focus = false })
+							end
 						end,
 					})
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-						callback = function(_)
-							vim.lsp.buf.hover()
+						callback = function(t)
+							if isShowable(t) then
+								vim.lsp.buf.hover()
+							end
 						end,
 					})
 				end,

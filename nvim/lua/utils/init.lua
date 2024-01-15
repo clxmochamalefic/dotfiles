@@ -15,10 +15,11 @@ M.env = require("utils.sub.env")
 M.window = require("utils.sub.window")
 M.depends = require("utils.sub.depends")
 M.util = sub_util
+M.table = require("utils.table")
 
 -- key exists in array
 function M.isContainsInArray(set, key)
-  return set[key] ~= nil
+	return set[key] ~= nil
 end
 
 -- 疑似trycatch
@@ -27,17 +28,19 @@ M.try_catch = M.util.try_catch
 -- 型チェック
 -- super thx for @paulcuth!!: https://gist.github.com/paulcuth/1270733
 function M.instance_of(subject, super)
-
 	super = tostring(super)
 	local mt = getmetatable(subject)
 
 	while true do
-		if mt == nil then return false end
-		if tostring(mt) == super then return true end
+		if mt == nil then
+			return false
+		end
+		if tostring(mt) == super then
+			return true
+		end
 
 		mt = getmetatable(mt)
-	end	
+	end
 end
 
 return M
-
