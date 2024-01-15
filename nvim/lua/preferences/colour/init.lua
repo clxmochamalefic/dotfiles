@@ -2,7 +2,8 @@
 --  COLORSCHEME PREFERENCE
 
 local utils = require("utils")
-local onepoint_colours = require("preferences.colour.define")
+local colours = require("preferences.colour.define")
+local onepoint_colours = colours.azure
 
 local opt = vim.opt
 local fn = vim.fn
@@ -181,7 +182,6 @@ colour.setup = function()
   opt.cursorline = true
 
   --  define colorscheme load function for lazyload
-
   local my_colorscheme = colour.get_my_colorscheme()
   local my_highlight = colour.get_highlight()
 

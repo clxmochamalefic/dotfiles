@@ -32,7 +32,7 @@ end
 --
 function GetBuiltin()
   if builtin == nil then
-    builtin = require('telescope.builtin')
+    builtin = require("telescope.builtin")
   end
   return builtin
 end
@@ -42,7 +42,7 @@ end
 --
 function GetDefaultOpts()
   return {
-    search_dirs = { myutils.fs.get_project_root_current_buf() }
+    search_dirs = { myutils.fs.get_project_root_current_buf() },
   }
 end
 
@@ -107,47 +107,58 @@ function CallFrecencyCurrentDir()
   vim.cmd("Telescope frecency workspace=" .. project_root .. "<CR>")
 end
 
-
 return {
   {
     lazy = true,
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.5',
+    "nvim-telescope/telescope.nvim",
+    tag = "0.1.5",
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-fzf-native.nvim',
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-fzf-native.nvim",
       "nvim-telescope/telescope-frecency.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
-      'nvim-telescope/telescope-ui-select.nvim',
+      "nvim-telescope/telescope-ui-select.nvim",
     },
     cmd = {
-      'Telescope',
-      'Telescope buffers',
+      "Telescope",
+      "Telescope buffers",
 
-      'Telescope oldfiles',
-      'Telescope find_files',
+      "Telescope oldfiles",
+      "Telescope find_files",
 
-      'Telescope live_grep',
+      "Telescope live_grep",
 
-      'Telescope git_status',
-      'Telescope git_commits',
+      "Telescope git_status",
+      "Telescope git_commits",
 
-      'Telescope frecency',
+      "Telescope frecency",
     },
     keys = {
-      { "Z",          CallBuiltinBuffer,                            { mode = "n", desc = 'Telescope: buffers', } },
-      { "<leader>f",  CallBuiltinFindFiles,                         { mode = "n", desc = 'Telescope: Find files', } },
-      { "<leader>h",  CallBuiltinHelpTags,                          { mode = "n", desc = 'Telescope: help tags', } },
-      { "<leader>b",  CallFrecencyCurrentDir,                       { mode = "n", desc = 'Telescope: frecency workspace={project_root}', } },
-      { '<leader>g',  CallBuiltinLiveGrep,                          { mode = 'n', desc = 'Telescope: live grep', } },
-      { '<leader>G',  CallBuiltinLiveGrepArgs,                      { mode = 'n', desc = 'Telescope: live grep args', } },
-      { "<leader>a",  "<Cmd>Telescope frecency<CR>",                { mode = "n", desc = 'Telescope: frecency', } },
-      { "<leader>s",  "<Cmd>Telescope frecency workspace=CWD<CR>",  { mode = "n", desc = 'Telescope: frecency workspace=CWD', } },
+      { "Z", CallBuiltinBuffer, { mode = "n", desc = "Telescope: buffers" } },
+      { "<leader>f", CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
+      { "<leader>h", CallBuiltinHelpTags, { mode = "n", desc = "Telescope: help tags" } },
+      {
+        "<leader>b",
+        CallFrecencyCurrentDir,
+        { mode = "n", desc = "Telescope: frecency workspace={project_root}" },
+      },
+      { "<leader>g", CallBuiltinLiveGrep, { mode = "n", desc = "Telescope: live grep" } },
+      {
+        "<leader>G",
+        CallBuiltinLiveGrepArgs,
+        { mode = "n", desc = "Telescope: live grep args" },
+      },
+      { "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
+      {
+        "<leader>s",
+        "<Cmd>Telescope frecency workspace=CWD<CR>",
+        { mode = "n", desc = "Telescope: frecency workspace=CWD" },
+      },
     },
     event = {
-      'VimEnter',
+      "VimEnter",
     },
-    config = function ()
+    config = function()
       api.nvim_create_autocmd("FileType", {
         pattern = "TelescopeResults",
         callback = function(ctx)
@@ -158,8 +169,8 @@ return {
         end,
       })
 
-      local actions = require('telescope.actions')
-      require('telescope').setup {
+      local actions = require("telescope.actions")
+      require("telescope").setup({
         pickers = {
           buffers = {
             path_display = FileNameFirst,
@@ -178,6 +189,15 @@ return {
           mappings = {
             i = {
               ["<esc>"] = actions.close,
+            },
+            n = {
+              -- vertical split show
+              ["["] = actions.select_vertical,
+              ["v"] = actions.select_vertical,
+              -- horizontal split show
+              ["]"] = actions.select_horizontal,
+              ["s"] = actions.select_horizontal,
+              ["<Tab>"] = actions.select_default,
             },
           },
           file_ignore_patterns = {
@@ -217,24 +237,24 @@ return {
             ignore_patterns = { "*.git/*", "*/tmp/*" },
             disable_devicons = false,
             workspaces = {
-              ["conf"]    = myutils.env.join_path(myutils.env.getHome(), ".cache"),
-              ["data"]    = myutils.env.join_path(myutils.env.getHome(), ".local", "share"),
+              ["conf"] = myutils.env.join_path(myutils.env.getHome(), ".cache"),
+              ["data"] = myutils.env.join_path(myutils.env.getHome(), ".local", "share"),
               ["project"] = myutils.env.join_path(myutils.env.getHome(), "repos"),
---              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
---              ["conf"]    = "/home/my_username/.config",
---              ["data"]    = "/home/my_username/.local/share",
---              ["project"] = "/home/my_username/projects",
---              ["wiki"]    = "/home/my_username/wiki"
-            }
+              --              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
+              --              ["conf"]    = "/home/my_username/.config",
+              --              ["data"]    = "/home/my_username/.local/share",
+              --              ["project"] = "/home/my_username/projects",
+              --              ["wiki"]    = "/home/my_username/wiki"
+            },
           },
           ["ui-select"] = {
-            require("telescope.themes").get_dropdown {
+            require("telescope.themes").get_dropdown({
               -- even more opts
-            },
+            }),
             layout_config = {
               width = 0.4,
-              height = 16
-            }
+              height = 16,
+            },
 
             -- pseudo code / specification for writing custom displays, like the one
             -- for "codeactions"
@@ -249,54 +269,51 @@ return {
             --      do the following
             --   codeactions = false,
             -- }
-          }
+          },
         },
-      }
-
-    end
+      })
+    end,
   },
   {
     lazy = true,
-    'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
+    "nvim-telescope/telescope-fzf-native.nvim",
+    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     init = function()
-      if not myutils.depends.has('fzf') then
-        myutils.depends.install('fzf', { winget = 'fzf' })
+      if not myutils.depends.has("fzf") then
+        myutils.depends.install("fzf", { winget = "fzf" })
       end
     end,
     config = function()
       require("telescope").load_extension("fzf")
-    end
+    end,
   },
   {
     lazy = true,
     "nvim-telescope/telescope-frecency.nvim",
     event = {
-      'VimEnter',
+      "VimEnter",
     },
-    init = function()
-    end,
+    init = function() end,
     config = function()
       --require("telescope").load_extension("frecency")
     end,
   },
   {
     lazy = true,
-    "nvim-telescope/telescope-live-grep-args.nvim" ,
+    "nvim-telescope/telescope-live-grep-args.nvim",
     -- This will not install any breaking changes.
     -- For major updates, this must be adjusted manually.
     version = "^1.0.0",
     event = {
-      'VimEnter',
+      "VimEnter",
     },
-    keys = {
-    },
+    keys = {},
     init = function()
-      if not myutils.depends.has('ripgrep') then
-        myutils.depends.install('ripgrep', { winget = 'BurntSushi.ripgrep.MSVC' })
+      if not myutils.depends.has("ripgrep") then
+        myutils.depends.install("ripgrep", { winget = "BurntSushi.ripgrep.MSVC" })
       end
-      if not myutils.depends.has('fd') then
-        myutils.depends.install('fd', { apt = 'find_fd', winget = 'sharkdp.fd' })
+      if not myutils.depends.has("fd") then
+        myutils.depends.install("fd", { apt = "find_fd", winget = "sharkdp.fd" })
       end
     end,
     config = function()

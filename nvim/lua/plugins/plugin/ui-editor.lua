@@ -110,7 +110,7 @@ return {
         },
         handle = {
           text = " ",
-          color = colour.g.sub2.bg,
+          color = colour.azure.g.sub2.bg,
           color_nr = nil, -- cterm
           highlight = "CursorColumn",
           hide_if_all_visible = true, -- Hides handle if all lines are visible
