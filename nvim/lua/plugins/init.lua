@@ -21,8 +21,13 @@ plugins.setup = function()
   end
   opt.rtp:prepend(lazypath)
 
-  require('lazy').setup("plugins.plugin")
-  api.nvim_set_keymap('n', '<S-F12>', '<Cmd>Lazy<CR>',  { silent = true, desc = 'lazy', })
+  api.nvim_create_autocmd("VimEnter", {
+    callback = function(_)
+      --api.nvim_set_keymap("n", "<leader>l", ":Lazy<CR>", { silent = true, desc = "lazy" })
+    end,
+  })
+
+  require("lazy").setup("plugins.plugin")
 end
 
 return plugins
