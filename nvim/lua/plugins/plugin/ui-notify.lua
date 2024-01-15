@@ -8,18 +8,19 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
- return {
+return {
+  {
     lazy = true,
-    'rcarriga/nvim-notify',
-    event = { 'VimEnter' },
+    "rcarriga/nvim-notify",
+    event = { "VimEnter" },
     dependencies = {
       {
-        'nvim-telescope/telescope.nvim',
+        "nvim-telescope/telescope.nvim",
         config = function()
-          local telescope = require 'telescope'
-          telescope.load_extension 'notify'
+          local telescope = require("telescope")
+          telescope.load_extension("notify")
 
-          keymap.set('n', '<leader>n', telescope.extensions.notify.notify)
+          keymap.set("n", "<leader>n", telescope.extensions.notify.notify)
         end,
       },
     },
@@ -30,12 +31,12 @@ local keymap = vim.keymap
         background_colour = "#000000",
         fps = 10,
       })
-    end
+    end,
   },
   {
     lazy = true,
     "folke/noice.nvim",
-    event = { 'VimEnter' },
+    event = { "VimEnter" },
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
@@ -51,8 +52,8 @@ local keymap = vim.keymap
       require("noice").setup({
         lsp = {
           override = {
-            ["vim.lsp.handlers['textDocument/hover']"] = false,
-            ["vim.lsp.handlers['textDocument/signatureHelp']"] = false,
+            --["vim.lsp.handlers['textDocument/hover']"] = false,
+            --["vim.lsp.handlers['textDocument/signatureHelp']"] = false,
           },
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
           --override = {
@@ -83,58 +84,58 @@ local keymap = vim.keymap
         routes = {
           {
             filter = {
-              event = 'msg_show',
+              event = "msg_show",
               any = {
-                { find = '%d+L, %d+B' },
-                { find = '^%d+ changes?; after #%d+' },
-                { find = '^%d+ changes?; before #%d+' },
-                { find = '^Hunk %d+ of %d+$' },
-                { find = '^%d+ fewer lines;?' },
-                { find = '^%d+ more lines?;?' },
-                { find = '^%d+ line less;?' },
-                { find = '^Already at newest change' },
-                { kind = 'wmsg' },
-                { kind = 'emsg', find = 'E486' },
-                { kind = 'quickfix' },
+                { find = "%d+L, %d+B" },
+                { find = "^%d+ changes?; after #%d+" },
+                { find = "^%d+ changes?; before #%d+" },
+                { find = "^Hunk %d+ of %d+$" },
+                { find = "^%d+ fewer lines;?" },
+                { find = "^%d+ more lines?;?" },
+                { find = "^%d+ line less;?" },
+                { find = "^Already at newest change" },
+                { kind = "wmsg" },
+                { kind = "emsg", find = "E486" },
+                { kind = "quickfix" },
               },
             },
-            view = 'mini',
+            view = "mini",
           },
           {
             filter = {
-              event = 'msg_show',
+              event = "msg_show",
               any = {
-                { find = '^%d+ lines .ed %d+ times?$' },
-                { find = '^%d+ lines yanked$' },
-                { kind = 'emsg', find = 'E490' },
-                { kind = 'search_count' },
+                { find = "^%d+ lines .ed %d+ times?$" },
+                { find = "^%d+ lines yanked$" },
+                { kind = "emsg", find = "E490" },
+                { kind = "search_count" },
 
-                { kind = '.*textDocument/hover.*' },
-                { kind = '.*textDocument/formatting.*' },
-                { kind = '.*textDocument/publishDiagnostics.*' },
-                { kind = '.*textDocument/signatureHelp.*' },
-                { kind = '.*textDocument/signatureHelp.*' },
-                { kind = '.*WinResized Autocommands.*' },
+                { kind = ".*textDocument/hover.*" },
+                { kind = ".*textDocument/formatting.*" },
+                { kind = ".*textDocument/publishDiagnostics.*" },
+                { kind = ".*textDocument/signatureHelp.*" },
+                { kind = ".*textDocument/signatureHelp.*" },
+                { kind = ".*WinResized Autocommands.*" },
 
-                { find = '.*textDocument/hover.*' },
-                { find = '.*textDocument/formatting.*' },
-                { find = '.*textDocument/publishDiagnostics.*' },
-                { find = '.*textDocument/signatureHelp.*' },
-                { find = '.*textDocument/signatureHelp.*' },
-                { find = '.*WinResized Autocommands.*' },
+                { find = ".*textDocument/hover.*" },
+                { find = ".*textDocument/formatting.*" },
+                { find = ".*textDocument/publishDiagnostics.*" },
+                { find = ".*textDocument/signatureHelp.*" },
+                { find = ".*textDocument/signatureHelp.*" },
+                { find = ".*WinResized Autocommands.*" },
               },
             },
             opts = { skip = true },
           },
           {
             filter = {
-              event = 'notify',
+              event = "notify",
               any = {
-                { find = '^No code actions available$' },
-                { find = '^No information available$' },
+                { find = "^No code actions available$" },
+                { find = "^No information available$" },
               },
             },
-            view = 'mini',
+            view = "mini",
           },
         },
         -- you can enable a preset for easier configuration
@@ -146,6 +147,6 @@ local keymap = vim.keymap
           lsp_doc_border = false, -- add a border to hover docs and signature help
         },
       })
-    end
-  }
-
+    end,
+  },
+}

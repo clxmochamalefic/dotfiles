@@ -4,7 +4,7 @@
 
 local M = {}
 
-local lsp = require("plugins.plugin.lsp.lsp-common")
+local lsp = require("plugins.plugin.lsp.lsp")
 local lss = require("plugins.plugin.lsp.lspsaga")
 local nls = require("plugins.plugin.lsp.lsp-null-ls")
 local nld = require("plugins.plugin.lsp.lsp-null-ls-depends")
