@@ -6,6 +6,7 @@ M.suppressFileTypes = {
   "NvimTree",
   "NeogitCommitMessage",
   "toggleterm",
+  "gitrebase",
 }
 
 function M.isShowable(t)

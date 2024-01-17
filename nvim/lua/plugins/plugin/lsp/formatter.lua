@@ -7,15 +7,15 @@
 return {
   {
     lazy = true,
-    'mhartington/formatter.nvim',
+    "mhartington/formatter.nvim",
     dependencies = {
       "williamboman/mason.nvim",
     },
-    event = { 'LspAttach' },
+    event = { "LspAttach" },
     config = function()
-      local util = require "formatter.util"
+      local util = require("formatter.util")
       -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-      require("formatter").setup {
+      require("formatter").setup({
         -- Enable or disable logging
         logging = true,
         -- Set the log level
@@ -49,7 +49,7 @@ return {
                 },
                 stdin = true,
               }
-            end
+            end,
           },
 
           -- Use the special "*" filetype for defining formatter configurations on
@@ -57,19 +57,18 @@ return {
           ["*"] = {
             -- "formatter.filetypes.any" defines default configurations for any
             -- filetype
-            require("formatter.filetypes.any").remove_trailing_whitespace
-          }
-        }
-      }
+            require("formatter.filetypes.any").remove_trailing_whitespace,
+          },
+        },
+      })
 
       local augroup = vim.api.nvim_create_augroup
       local autocmd = vim.api.nvim_create_autocmd
       augroup("__formatter__", { clear = true })
-      autocmd("BufWritePost", {
+      autocmd("BufWritePre", {
         group = "__formatter__",
         command = ":FormatWrite",
       })
     end,
   },
 }
-
