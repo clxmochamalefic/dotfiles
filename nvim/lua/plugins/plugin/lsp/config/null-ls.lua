@@ -2,7 +2,9 @@ local M = {}
 
 function M.setup()
   local status, null_ls = pcall(require, "null-ls")
-  if (not status) then return end
+  if not status then
+    return
+  end
 
   local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
   local event = "BufWritePost" -- BufWritePre or "BufWritePost"
@@ -36,17 +38,18 @@ function M.setup()
     end,
     sources = {
       null_ls.builtins.diagnostics.eslint_d.with({
-        diagnostics_format = '[eslint] #{m}\n(#{c})'
+        diagnostics_format = "[eslint] #{m}\n(#{c})",
       }),
       null_ls.builtins.diagnostics.prettier,
+      null_ls.builtins.formatting.prettier,
       null_ls.builtins.completion.tags,
       null_ls.builtins.completion.spell,
       null_ls.builtins.completion.vsnip,
     },
-    debug = false
+    debug = false,
   })
 
-  local lspconfig = require "lspconfig"
+  local lspconfig = require("lspconfig")
   lspconfig["null-ls"].setup({})
 end
 

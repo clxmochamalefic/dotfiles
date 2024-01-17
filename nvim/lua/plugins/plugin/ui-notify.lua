@@ -94,6 +94,8 @@ return {
                 { find = "^%d+ more lines?;?" },
                 { find = "^%d+ line less;?" },
                 { find = "^Already at newest change" },
+                { find = ".*modifiable.*" },
+
                 { kind = "wmsg" },
                 { kind = "emsg", find = "E486" },
                 { kind = "quickfix" },
@@ -123,6 +125,12 @@ return {
                 { find = ".*textDocument/signatureHelp.*" },
                 { find = ".*textDocument/signatureHelp.*" },
                 { find = ".*WinResized Autocommands.*" },
+
+                { kind = ".*nvim_opts\\.lua.*" },
+                { find = ".*nvim_opts\\.lua.*" },
+
+                { kind = ".*\\[ddc\\] Not found source.*" },
+                { find = ".*\\[ddc\\] Not found source.*" },
               },
             },
             opts = { skip = true },
