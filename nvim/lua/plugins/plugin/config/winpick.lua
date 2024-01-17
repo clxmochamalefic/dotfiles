@@ -10,6 +10,7 @@ local opt = vim.opt
 local keymap = vim.keymap
 
 local utils = require("utils")
+local wndutil = require("utils.sub.window")
 
 local M = {}
 
@@ -60,17 +61,11 @@ end
 -- choose window for window move
 --
 function M.choose_for_move()
-  local bufnr = M.getBufnr()
+  local bufnr = wndutil.getBufnr()
   local winid = M.winpick.select()
   if winid then
     vim.api.nvim_set_current_win(winid)
   end
 end
-
-function M.getBufnr()
-  return fn["bufnr"]('%')
-end
-
-
 
 return M

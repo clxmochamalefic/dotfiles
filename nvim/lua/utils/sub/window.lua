@@ -23,5 +23,9 @@ function M.resize_float_window(col, height)
   g.float_window_width  = M.get_vim_columns() - (g.float_window_col * 2)
 end
 
+function M.getBufnr()
+  return fn["bufnr"]('%')
+end
+
 return M
 

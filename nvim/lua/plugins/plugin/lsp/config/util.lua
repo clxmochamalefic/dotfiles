@@ -1,5 +1,7 @@
 local M = {}
 
+local wndutil = require('utils.sub.window')
+
 function M.setup()
   vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
   vim.opt.shortmess = "c"
@@ -72,14 +74,14 @@ function M.setup()
         vim.opt.updatetime = 1000
 
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-          buffer = bufnr,
+          buffer = wndutil.getBufnr(),
           group = group,
           callback = function()
             vim.lsp.buf.document_highlight()
           end,
         })
         vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-          buffer = bufnr,
+          buffer = wndutil.getBufnr(),
           group = group,
           callback = function()
             vim.lsp.buf.clear_references()

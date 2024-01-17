@@ -4,28 +4,28 @@
 
 local g = vim.g
 local o = vim.o
-local fn = vim.fn
+--local fn = vim.fn
 local api = vim.api
 local lsp = vim.lsp
-local opt = vim.opt
+--local opt = vim.opt
 local keymap = vim.keymap
 local diagnostic = vim.diagnostic
 
 local myutils = require("utils")
-local nvim_lsputils = require("plugins.plugin.lsp.config.util")
+--local nvim_lsputils = require("plugins.plugin.lsp.config.util")
 local myserver = require("plugins.plugin.lsp.config.server")
 
 local myignore = require("plugins.plugin.lsp.config.ignore")
 
 local border = "rounded"
 
-local function on_cursor_hold()
-  if lsp.buf.server_ready() then
-    diagnostic.open_float()
-  end
-end
+--local function on_cursor_hold()
+--  if lsp.buf.server_ready() then
+--    diagnostic.open_float()
+--  end
+--end
 
-local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
+--local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
 local icons = {
   package_installed = "✓",
@@ -33,43 +33,41 @@ local icons = {
   package_pending = "⟳",
 }
 
-local function enable_diagnostics_hover()
-  api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
-  api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+--local function enable_diagnostics_hover()
+--  api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
+--  api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+--end
+--
+--local function disable_diagnostics_hover()
+--  api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
+--end
+
+--local function on_hover()
+--  disable_diagnostics_hover()
+--
+--  lsp.buf.hover()
+--
+--  api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
+--  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
+--  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+--    group = "lspconfig-enable-diagnostics-hover",
+--    callback = function()
+--      api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
+--      enable_diagnostics_hover()
+--    end,
+--  })
+--end
+
+--local formatting_callback = function(client, bufnr)
+--  keymap.set("n", "<Leader>f", function()
+--    local params = require("vim.lsp.util").make_formatting_params({})
+--    client.request("textDocument/formatting", params, nil, bufnr)
+--  end, { buffer = bufnr })
+--end
+--
+local function text_document_format(diag)
+  return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
 end
-
-local function disable_diagnostics_hover()
-  api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
-end
-
-local function on_hover()
-  disable_diagnostics_hover()
-
-  lsp.buf.hover()
-
-  api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
-  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
-  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-    group = "lspconfig-enable-diagnostics-hover",
-    callback = function()
-      api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
-      enable_diagnostics_hover()
-    end,
-  })
-end
-
-local formatting_callback = function(client, bufnr)
-  keymap.set("n", "<Leader>f", function()
-    local params = require("vim.lsp.util").make_formatting_params({})
-    client.request("textDocument/formatting", params, nil, bufnr)
-  end, { buffer = bufnr })
-end
-
-local suppressFileTypes = {
-  "NvimTree",
-  "NeogitCommitMessage",
-  "toggleterm",
-}
 
 return {
   {
@@ -86,6 +84,8 @@ return {
       "LspInfo",
     },
     config = function()
+      g.mason_ready = false
+
       -- general settings
       diagnostic.config({
         float = {
@@ -94,9 +94,7 @@ return {
       })
       lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, {
         virtual_text = {
-          format = function(diag)
-            return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
-          end,
+          format = text_document_format,
         },
       })
       lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -116,7 +114,7 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-          if myignore.isShowable(args) then
+          if not myignore.isShowable(args) then
             return
           end
 
@@ -168,42 +166,40 @@ return {
         end
 
         local bufopts = { silent = true, buffer = bufnr }
-        -- keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        -- keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        -- keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-        -- keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
         keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-        -- keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
         keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
         keymap.set("n", "<F3>", function()
           vim.lsp.buf.format({ async = true })
         end, bufopts)
+        -- keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
+        -- keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+        -- keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        -- keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
+        -- keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
       end
 
+      -- mason-lspconfig setup
       malspconfig.setup({
         --ensure_installed = servers,
         ensure_installed = myserver.servers,
         automatic_installation = true,
       })
+
+      -- setup ensure installed LSP servers in mason registry
+      local opts = {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      }
       malspconfig.setup_handlers({
         function(server_name)
-          local opts = {
-            on_attach = on_attach,
-            capabilities = capabilities,
-          }
-
-          myserver.setupByServerName(lspconfig, server_name, opts)
+          myserver.setupToServerByName(lspconfig, server_name, opts)
         end,
       })
 
-      --local augroup_id = api.nvim_create_augroup("my_lspinfo_preference", { clear = true })
-      --api.nvim_create_autocmd("FileType", {
-      --  group = augroup_id,
-      --  pattern = { "lspinfo" },
-      --  callback = function()
-      --    --ddu_ff_my_settings()
-      --  end,
-      --})
+      -- setup ensure installed LSP servers out of mason registry
+      myserver.setupToServerForNoMasons(lspconfig, opts)
+
+      g.mason_ready = true
 
       myutils.io.end_debug("ddu ff")
     end,
