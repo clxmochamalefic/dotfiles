@@ -19,6 +19,7 @@ return {
       "nvim-lua/plenary.nvim",
       "vim-test/vim-test",
       'neovim/nvim-lspconfig',
+      "jay-babu/mason-null-ls.nvim",
     },
     events = {
       'FileReadPost',
@@ -27,7 +28,7 @@ return {
     opts = {},
     config = function()
       null_ls_config.setup()
-    end,
-  }
+  end,
+}
 }
 
