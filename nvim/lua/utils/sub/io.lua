@@ -6,7 +6,8 @@ local keymap = vim.keymap
 local M = {}
 
 function M._echo(t, mes)
-  vim.cmd("echo" .. t .. " '" .. mes .. "'")
+  --vim.cmd("echo" .. t .. " '" .. mes .. "'")
+  print("'" .. mes .. "'")
 end
 
 function M.echo(mes)
@@ -27,25 +28,37 @@ end
 -- debug preference
 function M.debug_echo(mes, args, stack)
   if g.is_enable_my_debug == true then
-    M.echom(mes)
-    local this_stack = stack or 0
+    M.echo_table(mes, args, stack)
+  end
+end
 
-    local tabshift = ""
-    for _ = 0,this_stack do
-      tabshift = tabshift .. "  "
+--
+-- echo_table
+-- print prefix(mes) and args(table)
+--
+-- @param {string} mes prefix message
+-- @param {string|integer|float|table} args any object
+-- @param {integer} stack stacking count for tabwhidth
+--
+function M.echo_table(mes, args, stack)
+  M.echom(mes)
+  local this_stack = stack or 0
+
+  local tabshift = ""
+  for _ = 0, this_stack do
+    tabshift = tabshift .. "  "
+  end
+
+  if args then
+    if type(args) ~= "table" then
+      M.echom(tabshift .. " : " .. args)
+      return
     end
-
-    if args then
-      if type(args) ~= "table" then
-        M.echom(tabshift .. " : " .. args)
-        return
-      end
-      for i, v in ipairs(args) do
-        if type(v) == "table" then
-          M.debug_echo(i, v, this_stack + 1)
-        else
-          M.echom(tabshift .. i .. " : " .. v)
-        end
+    for i, v in ipairs(args) do
+      if type(v) == "table" then
+        M.echo_table(i, v, this_stack + 1)
+      else
+        M.echom(tabshift .. i .. " : " .. v)
       end
     end
   end
@@ -59,10 +72,10 @@ function M.end_debug(mes)
 end
 
 function M.keymap_set(t)
-  local mode  = t.mode
-  local lhs   = t.lhs
-  local rhs   = t.rhs
-  local opts  = t.opts
+  local mode = t.mode
+  local lhs = t.lhs
+  local rhs = t.rhs
+  local opts = t.opts
 
   if type(mode) ~= "table" then
     mode = { t.mode }
@@ -82,7 +95,7 @@ function M.read_secrets(filename)
 end
 
 function M.feedkey(key, mode)
-	api.nvim_feedkeys(api.nvim_replace_termcodes(key, true, true, true), mode, true)
+  api.nvim_feedkeys(api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
 
 function M.read_json(filename)

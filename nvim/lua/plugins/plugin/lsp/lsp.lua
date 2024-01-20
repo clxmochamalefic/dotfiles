@@ -93,6 +93,7 @@ return {
         },
       })
       lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+        border = border,
         virtual_text = {
           format = text_document_format,
         },
@@ -103,9 +104,42 @@ return {
         focus = false,
         silent = true,
       })
+      --lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+      --  local diag = vim.lsp.diagnostic.get_line_diagnostics()
+      --  config = config or {}
+      --  config.focus_id = ctx.method
+      --  if not (result and result.contents) then
+      --    -- vim.notify("No information available")
+      --    return
+      --  end
+      --  myutils.io.echo_table("result.contents", result.contents)
+
+      --  local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+      --  markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+      --  if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
+      --    -- vim.notify('No information available')
+      --    return
+      --  end
+
+      --  --local floatWndWidth = config.width
+      --  --local separator = string.rep("-", floatWndWidth)
+
+      --  config.border = border
+
+      --  return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
+      --end
+
       lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = border,
       })
+      --local signatureHelpStack = {}
+      --lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
+      --  local bufnr = myutils.window.getBufnr(ctx.bufnr)
+      --  local cid = ctx.client_id
+      --  local line = vim.fn["line"](".")
+      --  signatureHelpStack[bufnr .. "_" .. cid .. "_" .. "l" .. line] = result
+      --end
+
       --        You will likely want to reduce updatetime which affects CursorHold
       --        note: this setting is global and should be set only once
       o.updatetime = 1000

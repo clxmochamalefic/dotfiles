@@ -9,26 +9,26 @@
 -- https://zenn.dev/fukakusa_kadoma/articles/32884de923fca1
 --
 
-local null_ls_config = require'plugins.plugin.lsp.config.null-ls'
+local null_ls_config = require("plugins.plugin.lsp.config.null-ls")
 
 return {
   {
     lazy = true,
+    cond = false, -- disable because that usage test for `stevearc/conform.nvim`
     "nvimtools/none-ls.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "vim-test/vim-test",
-      'neovim/nvim-lspconfig',
+      "neovim/nvim-lspconfig",
       "jay-babu/mason-null-ls.nvim",
     },
     events = {
-      'FileReadPost',
-      'BufRead',
+      "FileReadPost",
+      "BufRead",
     },
     opts = {},
     config = function()
       null_ls_config.setup()
-  end,
+    end,
+  },
 }
-}
-

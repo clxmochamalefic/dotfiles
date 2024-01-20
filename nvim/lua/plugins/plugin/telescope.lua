@@ -193,11 +193,12 @@ return {
             n = {
               -- vertical split show
               ["["] = actions.select_vertical,
-              ["v"] = actions.select_vertical,
+              ["<C-v>"] = actions.select_vertical,
               -- horizontal split show
               ["]"] = actions.select_horizontal,
-              ["s"] = actions.select_horizontal,
+              ["<C-s>"] = actions.select_horizontal,
               ["<Tab>"] = actions.select_default,
+              ["<CR>"] = actions.select_tab,
             },
           },
           file_ignore_patterns = {

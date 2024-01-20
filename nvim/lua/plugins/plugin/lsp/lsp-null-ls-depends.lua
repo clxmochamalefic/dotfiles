@@ -10,25 +10,26 @@ local ft = {
   "typescriptreact",
   "json",
   "scss",
-  "less"
+  "less",
 }
 
 return {
   {
     lazy = true,
-    'jay-babu/mason-null-ls.nvim',
+    cond = false, -- disable because that usage test for `stevearc/conform.nvim`
+    "jay-babu/mason-null-ls.nvim",
     dependencies = {
       "nvimtools/none-ls.nvim",
     },
-    event = { 'FileReadPost', },
+    event = { "FileReadPost" },
     opts = {},
     config = function()
-      require('mason-null-ls').setup({
+      require("mason-null-ls").setup({
         automatic_setup = true,
         ensure_installed = nil,
         automatic_installation = {
           exclude = {
-            'textlint',
+            "textlint",
           },
         },
         handlers = {
@@ -37,7 +38,7 @@ return {
           end,
         },
       })
-    end
+    end,
   },
   --{
   --  lazy = true,
@@ -60,4 +61,3 @@ return {
   --  end,
   --}
 }
-

@@ -1,5 +1,9 @@
 -- thanks to https://gist.github.com/kgriffs/124aae3ac80eefe57199451b823c24ec
 
+function string:is_null_or_empty(s)
+  return s == nil or s == ""
+end
+
 function string:contains(sub)
   return self:find(sub, 1, true) ~= nil
 end
@@ -18,7 +22,7 @@ function string:replace(old, new)
 
   while true do
     local start_idx, end_idx = s:find(old, search_start_idx, true)
-    if (not start_idx) then
+    if not start_idx then
       break
     end
 
@@ -40,7 +44,7 @@ function string:split(sep)
     sep = "%s"
   end
   local t = {}
-  for str in self:gmatch("([^"..sep.."]+)") do
+  for str in self:gmatch("([^" .. sep .. "]+)") do
     table.insert(t, str)
   end
   return t
@@ -48,12 +52,16 @@ end
 
 local M = {}
 
+function M.is_null_or_empty(s)
+  return s == nil or s == ""
+end
+
 function M.split(istr, sep)
   if sep == nil then
     sep = "%s"
   end
   local t = {}
-  for str in string.gmatch(istr, "([^"..sep.."]+)") do
+  for str in string.gmatch(istr, "([^" .. sep .. "]+)") do
     table.insert(t, str)
   end
   return t
