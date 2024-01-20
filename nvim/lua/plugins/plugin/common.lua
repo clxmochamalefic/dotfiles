@@ -131,14 +131,14 @@ return {
     build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
   },
   -- trailing space / 行末の無意味なスペースを削除する
-  {
-    lazy = true,
-    'lewis6991/spaceless.nvim',
-    event = { 'FileReadPost', 'InsertLeave' },
-    config = function()
-      require'spaceless'.setup()
-      g.lessspace_normal = 0
-    end
-  },
+  --{
+  --  lazy = true,
+  --  'lewis6991/spaceless.nvim',
+  --  event = { 'FileReadPost', 'InsertLeave' },
+  --  config = function()
+  --    require'spaceless'.setup()
+  --    g.lessspace_normal = 0
+  --  end
+  --},
 }
 

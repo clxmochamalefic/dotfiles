@@ -40,6 +40,7 @@ return {
     end,
   },
   {
+    -- RESTapi testing tool
     lazy = true,
     'rest-nvim/rest.nvim',
     dependencies = {

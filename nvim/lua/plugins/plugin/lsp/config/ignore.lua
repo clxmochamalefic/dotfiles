@@ -3,10 +3,12 @@ local tbl = require("utils.table")
 local M = {}
 
 M.suppressFileTypes = {
+  "",
   "NvimTree",
   "NeogitCommitMessage",
   "toggleterm",
   "gitrebase",
+  "nofile",
 }
 
 function M.isShowable(t)

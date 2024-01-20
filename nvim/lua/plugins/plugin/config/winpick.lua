@@ -15,15 +15,25 @@ local wndutil = require("utils.sub.window")
 local M = {}
 
 local excluded_filetypes = {
-  "nofile"
+  "",
+  "NvimTree",
+  "NeogitCommitMessage",
+  "toggleterm",
+  "gitrebase",
+  "nofile",
 }
+
+function M.import_depends()
+  M.winpick = require("winpick")
+end
 
 --
 -- setup winpick config
 -- @param opts options for winpick.setup() default is empty object => {}
 --
 function M.setup(opts)
-  M.winpick = require("winpick")
+  M.import_depends()
+
   local defaults = {
     border = "double",
     filter = nil, -- doesn't ignore any window by default
