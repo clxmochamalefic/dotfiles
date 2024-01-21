@@ -5,8 +5,9 @@ vim.scriptencoding = "utf-8"
 local utils = require("utils")
 
 local fav_font_map = {
-  Migu2M = "Migu 2M",
-  Migu2MPL = "Migu 2M for Powerline",
+  -- Migu2M = "Migu 2M",
+  -- Migu2MPL = "Migu 2M for Powerline",
+  -- above Migu series fonts are came to EOL probably, THANK YOU FOR AWESOME FONT THAT PRESENT TO ME!!!
   Cica = "Cica",
   Hack = "Hack",
   IntelOneMono = "IntoneMono Nerd Font Mono",
@@ -26,6 +27,8 @@ end
 
 -- Migu 2M
 -- https://osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-2m-20150712.zip/
+-- @deprecated
+-- Migu series fonts are came to EOL probably, THANK YOU FOR AWESOME FONT THAT PRESENT TO ME!!!
 --
 -- Cica
 -- https://github.com/miiton/Cica
