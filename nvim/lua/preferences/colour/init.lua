@@ -2,8 +2,8 @@
 --  COLORSCHEME PREFERENCE
 
 local utils = require("utils")
-local colours = require("preferences.colour.define")
-local onepoint_colours = colours.azure
+local colours = require("const.colour")
+local theme = colours.azure
 
 local opt = vim.opt
 local fn = vim.fn
@@ -28,50 +28,50 @@ local onepoint_colours_term = {}
 local onepoint_colours_term_nc = {}
 
 if is_nvim_version_gt_08 then
-  onepoint_colours_cui_primary = { bg = onepoint_colours.g.primary.bg, fg = onepoint_colours.g.primary.fg }
-  onepoint_colours_cui_secondary = { bg = onepoint_colours.g.sub3.bg, fg = onepoint_colours.g.sub3.fg }
-  onepoint_colours_primary = onepoint_colours.g.primary
-  onepoint_colours_secondary = onepoint_colours.g.secondary
-  onepoint_colours_sub2 = onepoint_colours.g.sub2
-  onepoint_colours_sub3 = onepoint_colours.g.sub3
-  onepoint_colours_none = onepoint_colours.cn
+  onepoint_colours_cui_primary = { bg = theme.g.primary.bg, fg = theme.g.primary.fg }
+  onepoint_colours_cui_secondary = { bg = theme.g.sub3.bg, fg = theme.g.sub3.fg }
+  onepoint_colours_primary = theme.g.primary
+  onepoint_colours_secondary = theme.g.secondary
+  onepoint_colours_sub2 = theme.g.sub2
+  onepoint_colours_sub3 = theme.g.sub3
+  onepoint_colours_none = theme.cn
 
-  onepoint_colours_term = onepoint_colours.g.terminal
+  onepoint_colours_term = theme.g.terminal
   onepoint_colours_term_nc = { fg = "gray" }
 else
-  onepoint_colours_cui_primary = { ctermbg = onepoint_colours.c.fg, ctermfg = onepoint_colours.c.zero }
-  onepoint_colours_cui_secondary = { ctermbg = onepoint_colours.c.bg, ctermfg = onepoint_colours.c.fg }
+  onepoint_colours_cui_primary = { ctermbg = theme.c.fg, ctermfg = theme.c.zero }
+  onepoint_colours_cui_secondary = { ctermbg = theme.c.bg, ctermfg = theme.c.fg }
   onepoint_colours_primary = {
-    ctermbg = onepoint_colours.c.bg,
-    ctermfg = onepoint_colours.c.fg,
-    guibg = onepoint_colours.g.primary.bg,
-    guifg = onepoint_colours.g.primary.fg,
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.primary.bg,
+    guifg = theme.g.primary.fg,
   }
   onepoint_colours_secondary = {
-    ctermbg = onepoint_colours.c.bg,
-    ctermfg = onepoint_colours.c.fg,
-    guibg = onepoint_colours.g.secondary.bg,
-    guifg = onepoint_colours.g.secondary.fg,
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.secondary.bg,
+    guifg = theme.g.secondary.fg,
   }
   onepoint_colours_sub2 = {
-    ctermbg = onepoint_colours.c.bg,
-    ctermfg = onepoint_colours.c.fg,
-    guibg = onepoint_colours.g.sub2.bg,
-    guifg = onepoint_colours.g.sub2.fg,
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.sub2.bg,
+    guifg = theme.g.sub2.fg,
   }
   onepoint_colours_sub3 = {
-    ctermbg = onepoint_colours.c.bg,
-    ctermfg = onepoint_colours.c.fg,
-    guibg = onepoint_colours.g.sub3.bg,
-    guifg = onepoint_colours.g.sub3.fg,
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.sub3.bg,
+    guifg = theme.g.sub3.fg,
   }
-  onepoint_colours_none = { ctermbg = onepoint_colours.cn.bg, ctermfg = onepoint_colours.cn.fg }
+  onepoint_colours_none = { ctermbg = theme.cn.bg, ctermfg = theme.cn.fg }
 
   onepoint_colours_term = {
-    ctermbg = onepoint_colours.c.bg,
-    ctermfg = onepoint_colours.c.fg,
-    guibg = onepoint_colours.g.terminal.bg,
-    guifg = onepoint_colours.g.terminal.fg,
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.terminal.bg,
+    guifg = theme.g.terminal.fg,
   }
   onepoint_colours_term_nc = { guifg = "gray" }
 end

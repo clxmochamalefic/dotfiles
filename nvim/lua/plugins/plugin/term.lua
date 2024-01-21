@@ -1,3 +1,7 @@
+-- ---------------------------------------------------------------------------
+-- TERMINAl PLUGINS
+-- ---------------------------------------------------------------------------
+
 local g = vim.g
 local o = vim.o
 local fn = vim.fn
@@ -5,45 +9,46 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
+local colour = require("const.colour")
+
 return {
   {
     lazy = true,
-    'voldikss/vim-floaterm',
-    cmd = 'Floaterm',
+    "voldikss/vim-floaterm",
+    cmd = "Floaterm",
     keys = {
       -- { "_", "<cmd>FloatermToggle<CR>", mode = "n" },
     },
     config = function()
-      g.floaterm_autoclose  = 1
-      g.floaterm_height     = 0.3
-      g.floaterm_width      = 0.8
-      g.floaterm_position   = "bottom"
-      g.floaterm_title      = 'floaterm $1/$2'
+      g.floaterm_autoclose = 1
+      g.floaterm_height = 0.3
+      g.floaterm_width = 0.8
+      g.floaterm_position = "bottom"
+      g.floaterm_title = "floaterm $1/$2"
 
-      local augroup_id = api.nvim_create_augroup('floaterm', {})
-      api.nvim_create_autocmd('FileType', {
+      local augroup_id = api.nvim_create_augroup("floaterm", {})
+      api.nvim_create_autocmd("FileType", {
         group = augroup_id,
-        pattern = 'floaterm',
-        callback = function ()
-          keymap.set('n', 'q',    '<Cmd>FloatermToggle<CR>',  { noremap = true, silent = true, buffer = true })
-          keymap.set('n', '<F8>', '<Cmd>FloatermNew<CR>',     { noremap = true, silent = true, buffer = true })
-          keymap.set('n', '<F6>', '<Cmd>FloatermPrev<CR>',    { noremap = true, silent = true, buffer = true })
-          keymap.set('n', '<F7>', '<Cmd>FloatermNext<CR>',    { noremap = true, silent = true, buffer = true })
-        end
+        pattern = "floaterm",
+        callback = function()
+          keymap.set("n", "q", "<Cmd>FloatermToggle<CR>", { noremap = true, silent = true, buffer = true })
+          keymap.set("n", "<F8>", "<Cmd>FloatermNew<CR>", { noremap = true, silent = true, buffer = true })
+          keymap.set("n", "<F6>", "<Cmd>FloatermPrev<CR>", { noremap = true, silent = true, buffer = true })
+          keymap.set("n", "<F7>", "<Cmd>FloatermNext<CR>", { noremap = true, silent = true, buffer = true })
+        end,
       })
 
-      api.nvim_create_user_command("Floaterm",  '<Cmd>FloatermToggle<CR>', {})
-    end
+      api.nvim_create_user_command("Floaterm", "<Cmd>FloatermToggle<CR>", {})
+    end,
   },
   {
     lazy = true,
-    'akinsho/toggleterm.nvim',
-    cmd = 'ToggleTerm',
+    "akinsho/toggleterm.nvim",
+    cmd = "ToggleTerm",
     keys = {
       { "_", "<cmd>ToggleTerm<CR>", mode = "n" },
     },
-    opts = function()
-    end,
+    opts = function() end,
     config = function()
       require("toggleterm").setup({
         -- size can be a number or function which is passed the current terminal
@@ -66,20 +71,21 @@ return {
         hide_numbers = true, -- hide the number column in toggleterm buffers
         --shade_filetypes = {},
         autochdir = false, -- when neovim changes it current directory the terminal will change it's own when next it's opened
-        --highlights = {
-        --  -- highlights which map to a highlight group name and a table of it's values
-        --  -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
-        --  Normal = {
-        --    guibg = "<VALUE-HERE>",
-        --  },
-        --  NormalFloat = {
-        --    link = 'Normal'
-        --  },
-        --  FloatBorder = {
-        --    guifg = "<VALUE-HERE>",
-        --    guibg = "<VALUE-HERE>",
-        --  },
-        --},
+        highlights = {
+          -- highlights which map to a highlight group name and a table of it's values
+          -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
+          Normal = {
+            guibg = colour.azure.g.secondary.bg,
+            guifg = colour.azure.g.secondary.fg,
+          },
+          --NormalFloat = {
+          --  link = 'Normal'
+          --},
+          --FloatBorder = {
+          --  guifg = "<VALUE-HERE>",
+          --  guibg = "<VALUE-HERE>",
+          --},
+        },
         shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
         --shading_factor = '<number>', -- the percentage by which to lighten terminal background, default: -30 (gets multiplied by -3 if background is light)
         start_in_insert = true,
@@ -87,7 +93,7 @@ return {
         terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
         persist_size = true,
         persist_mode = true, -- if set to true (default) the previous terminal mode will be remembered
-        direction = 'horizontal', -- vertical' | 'horizontal' | 'tab' | 'float',
+        direction = "horizontal", -- vertical' | 'horizontal' | 'tab' | 'float',
         close_on_exit = true, -- close the terminal window when the process exits
         -- Change the default shell. Can be a string or a function returning a string
         shell = o.shell,
@@ -110,10 +116,9 @@ return {
           enabled = false,
           name_formatter = function(term) --  term: Terminal
             return term.name
-          end
+          end,
         },
       })
-    end
+    end,
   },
 }
-

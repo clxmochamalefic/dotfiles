@@ -4,7 +4,7 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
-local colour = require("preferences.colour.define")
+local colour = require("const.colour")
 
 return {
   --{

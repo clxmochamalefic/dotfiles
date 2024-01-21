@@ -1,5 +1,5 @@
 local utils = require("utils")
-local colour = require("preferences.colour.define")
+local colour = require("const.colour")
 
 local g = vim.g
 local fn = vim.fn
