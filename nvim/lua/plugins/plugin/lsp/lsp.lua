@@ -90,10 +90,10 @@ return {
       diagnostic.config({
         float = {
           source = "if_many", -- Or "if_many"
+          border = border,
         },
       })
       lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, {
-        border = border,
         virtual_text = {
           format = text_document_format,
         },

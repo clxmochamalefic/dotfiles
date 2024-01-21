@@ -1,4 +1,6 @@
--- OnePoint Colours
+-- ---------------------------------------------------------------------------
+-- ONEPOINT COLOURS
+-- ---------------------------------------------------------------------------
 
 local vivid = {
   -- cui
@@ -35,12 +37,17 @@ local azure = {
   },
   -- gui
   g = {
-    primary = { bg = "#16437d", fg = "#D8D8D8" },
-    secondary = { bg = "#345891", fg = "#F2F2F2" },
-    sub1 = { bg = "#7ea8e0", fg = "#1a1a1a" },
+
+    --primary = { bg = "#16437d", fg = "#D8D8D8" },
+    --secondary = { bg = "#345891", fg = "#F2F2F2" },
+    --sub1 = { bg = "#7ea8e0", fg = "#1a1a1a" },
+    primary = { bg = "#132345", fg = "#D8D8D8" },
+    secondary = { bg = "#16437d", fg = "#F2F2F2" },
+    sub1 = { bg = "#345891", fg = "#1a1a1a" },
     sub2 = { bg = "#97b9f0", fg = "#1a1a1a" },
     sub3 = { bg = "#b1d1fa", fg = "#1a1a1a" },
-    terminal = { bg = "#191d30", fg = "#D8D8D8" },
+    --terminal = { bg = "#191d30", fg = "#D8D8D8" },
+    terminal = { bg = "#2f446e", fg = "#D8D8D8" },
   },
 }
 
