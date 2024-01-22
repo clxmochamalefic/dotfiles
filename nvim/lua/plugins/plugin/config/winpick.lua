@@ -61,10 +61,17 @@ end
 -- choose window for window focus
 --
 function M.choose_for_focus()
-  local winid = M.winpick.select()
-  if winid then
-    vim.api.nvim_set_current_win(winid)
-  end
+  utils.try_catch({
+    try = function()
+      local winid = M.winpick.select()
+      if winid then
+        vim.api.nvim_set_current_win(winid)
+      end
+    end,
+    catch = function()
+      opt.laststatus = 3
+    end,
+  })
 end
 
 --
