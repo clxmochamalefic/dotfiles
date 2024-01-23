@@ -1,3 +1,6 @@
+-- debug mode
+vim.g.is_enable_my_debug = false
+
 local utils = require("utils")
 
 -- this init.vim is using utf-8
@@ -11,11 +14,6 @@ vim.o.compatible = false
 
 -- reset augroup
 vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
-
--- ------------------------------------------------------------
--- debug mode
--- ------------------------------------------------------------
-vim.g.is_enable_my_debug = false
 
 -- get preference file path
 -- `vim.g.preference_path` defined on ~/.cache/nvim/init.vim
