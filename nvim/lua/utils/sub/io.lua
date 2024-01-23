@@ -27,7 +27,7 @@ end
 
 -- debug preference
 function M.debug_echo(mes, args, stack)
-  if g.is_enable_my_debug == true then
+  if vim.g.is_enable_my_debug then
     M.echo_table(mes, args, stack)
   end
 end
