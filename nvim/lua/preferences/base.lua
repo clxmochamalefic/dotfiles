@@ -25,6 +25,7 @@ local function config_vim()
   -- vim compatible
   opt.compatible = false
 
+  opt.ignorecase = true
   -- vim language menu
   --  opt.langmenu = 'en_US'
 end

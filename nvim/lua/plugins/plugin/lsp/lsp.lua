@@ -185,10 +185,9 @@ return {
 
       local on_attach = function(client, bufnr)
         local async = require("plenary.async")
-        local notify = require("notify").async
         myutils.io.debug_echo("LSP started" .. client.name)
         async.run(function()
-          notify("LSP started: " .. client.name).events.close()
+          vim.notify("LSP started: " .. client.name, vim.log.levels.INFO)
         end)
 
         -- auto hover popup for loaded filetypes

@@ -10,6 +10,18 @@ local function suppressMessage(pattern, kind)
     opts = { skip = true },
   }
 end
+local function suppressLsp(pattern, kind)
+  kind = kind or ""
+  return {
+    view = "mini",
+    filter = {
+      event = "lsp",
+      kind = kind,
+      find = pattern,
+    },
+    opts = { skip = true },
+  }
+end
 local function miniMessage(pattern, kind)
   kind = kind or ""
   return {
@@ -33,18 +45,42 @@ local suppressMessages = {
   suppressMessage(".*textDocument/formatting.*"),
   suppressMessage(".*textDocument/publishDiagnostics.*"),
   suppressMessage(".*textDocument/signatureHelp.*"),
-  suppressMessage(".*textDocument/signatureHelp.*"),
   suppressMessage(".*WinResized Autocommands.*"),
+  suppressLsp(".*textDocument/hover.*"),
+  suppressLsp(".*textDocument/formatting.*"),
+  suppressLsp(".*textDocument/publishDiagnostics.*"),
+  suppressLsp(".*textDocument/signatureHelp.*"),
+  suppressLsp(".*WinResized Autocommands.*"),
+
   suppressMessage(".*W*%s*%[1/1%].*"),
+
   suppressMessage(".*nvim_opts%.lua.*", "echo"),
   suppressMessage(".*nvim_opts%.lua.*", "echomsg"),
+
   suppressMessage(".*%[ddc%] Not found source.*", "echo"),
   suppressMessage(".*%[ddc%] Not found source.*", "echomsg"),
+  suppressMessage(".*%[ddc%] Not found source.*", "emsg"),
+
   suppressMessage("^No code actions available$", "notify"),
   suppressMessage("^No information available$", "notify"),
   suppressMessage("^LSP%sstarted:.*", "notify"),
-  suppressMessage("LSP started", "notify"),
   suppressMessage(".*nvim_opts%.lua.*", "lua_error"),
+
+  suppressMessage("^LSP%sstarted.*"),
+  suppressMessage("^LSP%sstarted.*", "notify"),
+  suppressMessage("LSP started", "notify"),
+  suppressMessage("^LSP%sstarted.*", "echo"),
+  suppressMessage("^LSP%sstarted.*", "echomsg"),
+  suppressMessage("^LSP%sstarted.*", "emsg"),
+  suppressLsp("^LSP%sstarted.*"),
+  suppressLsp("^LSP%sstarted.*", "notify"),
+  suppressLsp("^LSP%sstarted.*", "echo"),
+  suppressLsp("^LSP%sstarted.*", "echomsg"),
+  suppressLsp("^LSP%sstarted.*", "emsg"),
+  --suppressMessage("^LSP started.*", "notify"),
+  --suppressMessage("^LSP started.*", "echo"),
+  --suppressMessage("^LSP started.*", "echomsg"),
+  --suppressMessage("^LSP started.*", "emsg"),
 }
 
 local miniMessages = {
@@ -57,7 +93,7 @@ local miniMessages = {
   miniMessage("^%d+ line less;?"),
   miniMessage("^Already at newest change"),
   miniMessage(".*modifiable.*"),
-  miniMessage(".*Pick%sa%swindow.*"),
+  miniMessage(".*Pick a window.*"),
   miniMessage("%[denops%]"),
   miniMessage("%[hlchunk%.chunk%]"),
 
@@ -73,7 +109,6 @@ local miniMessages = {
   miniMessage("%[hlchunk%.chunk%]", "notify"),
 
   { kind = "wmsg", view = "mini" },
-  { kind = "emsg", find = ".*E486.*", view = "mini" },
   { kind = "quickfix", view = "mini" },
   { kind = "winpick", view = "mini" },
 }
