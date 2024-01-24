@@ -25,6 +25,14 @@ local function FileNameFirst(_, path)
     return tail
   end
   return string.format("%s\t\t%s", tail, parent)
+
+  --local splitted = myutils.string.split(parent, "/")
+  --local reverse = {}
+  --for _, v in ipairs(splitted) do
+  --  table.insert(reverse, 1, v)
+  --end
+  --local inversePath = table.concat(reverse, ".")
+  --return string.format("%s\t\t%s", tail, inversePath)
 end
 
 --
