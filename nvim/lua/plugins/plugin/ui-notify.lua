@@ -8,7 +8,7 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
-local noice_config = require("plugins.plugin.config.noice-nvim")
+local noice_config = require("plugins.plugin.config.nui.noice-nvim")
 
 return {
   {
@@ -16,15 +16,7 @@ return {
     "rcarriga/nvim-notify",
     event = { "VeryLazy" },
     dependencies = {
-      {
-        "nvim-telescope/telescope.nvim",
-        config = function()
-          local telescope = require("telescope")
-          telescope.load_extension("notify")
-
-          keymap.set("n", "<leader>n", telescope.extensions.notify.notify)
-        end,
-      },
+      "nvim-telescope/telescope.nvim",
     },
     init = function()
       vim.notify = require("notify")
@@ -33,6 +25,12 @@ return {
         background_colour = "#000000",
         fps = 10,
       })
+    end,
+    config = function()
+      local telescope = require("telescope")
+      telescope.load_extension("notify")
+
+      keymap.set("n", "<leader>n", telescope.extensions.notify.notify)
     end,
   },
   {

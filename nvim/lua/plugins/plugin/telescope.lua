@@ -5,6 +5,7 @@
 local g = vim.g
 local fn = vim.fn
 local fs = vim.fs
+local api = vim.api
 local lsp = vim.lsp
 local keymap = vim.keymap
 
@@ -188,7 +189,7 @@ return {
         defaults = {
           mappings = {
             i = {
-              ["<esc>"] = actions.close,
+              --["<esc>"] = actions.close,
             },
             n = {
               -- vertical split show
