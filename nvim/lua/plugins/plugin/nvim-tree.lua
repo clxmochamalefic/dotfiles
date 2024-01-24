@@ -1,6 +1,6 @@
 local g = vim.g
 
-local nt = require("plugins.plugin.config.nvim-tree")
+local ntconfig = require("plugins.plugin.config.nvim-tree")
 
 return {
   {
@@ -19,8 +19,9 @@ return {
       g.loaded_netrw = 1
       g.loaded_netrwPlugin = 1
 
+---@diagnostic disable-next-line: different-requires
       require("nvim-tree").setup({
-        on_attach = nt.on_attach,
+        on_attach = ntconfig.on_attach,
         sort = {
           sorter = "case_sensitive",
         },

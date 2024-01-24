@@ -1,6 +1,6 @@
---
--- CONFIG 4 lspsaga.nvim
---
+-- ---------------------------------------------------------------------------
+-- LSPSAGA CONFIGS
+-- ---------------------------------------------------------------------------
 
 local keymap = vim.keymap
 
@@ -43,7 +43,9 @@ local keymap = vim.keymap
 
 return {
   {
+    lazy = true,
     'nvimdev/lspsaga.nvim',
+    event = { 'LspAttach' },
     dependencies = {
       -- 'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',

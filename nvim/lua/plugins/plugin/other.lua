@@ -9,10 +9,11 @@ local keymap = vim.keymap
 
 return {
   {
-    'glacambre/firenvim',
-
     -- Lazy load firenvim
     -- Explanation: https://github.com/folke/lazy.nvim/discussions/463#discussioncomment-4819297
+    lazy = not g.started_by_firenvim,
+    'glacambre/firenvim',
+    module = false,
     cond = not not vim.g.started_by_firenvim,
     build = function()
       --require("lazy").load({ plugins = "firenvim", wait = true })
@@ -39,12 +40,13 @@ return {
     end,
   },
   {
+    -- RESTapi testing tool
     lazy = true,
     'rest-nvim/rest.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-    event = { 'BufRead' },
+    event = { 'VeryLazy' },
     cmd = {
       'RestNvim',         -- can be use with <Plug>RestNvim
       'RestNvimPreview',  -- can be use with <Plug>RestNvimPreview
