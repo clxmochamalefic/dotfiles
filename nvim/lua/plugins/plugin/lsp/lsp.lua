@@ -286,21 +286,21 @@ return {
       "kevinhwang91/promise-async",
     },
   },
-  {
-    -- vscode like 💡 sign
-    lazy = true,
-    condition = false,
-    "kosayoda/nvim-lightbulb",
-    event = { "BufRead" },
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
-    config = function()
-      --local default_config = require("plugins.lsp.config.lightbulb")
-      local default_config = {}
-      require("nvim-lightbulb").setup(default_config)
-    end,
-  },
+  --{
+  --  -- vscode like 💡 sign
+  --  lazy = true,
+  --  cond = false,
+  --  "kosayoda/nvim-lightbulb",
+  --  event = { "BufRead" },
+  --  dependencies = {
+  --    "neovim/nvim-lspconfig",
+  --  },
+  --  config = function()
+  --    --local default_config = require("plugins.lsp.config.lightbulb")
+  --    local default_config = {}
+  --    require("nvim-lightbulb").setup(default_config)
+  --  end,
+  --},
   {
     lazy = true,
     "aznhe21/actions-preview.nvim",

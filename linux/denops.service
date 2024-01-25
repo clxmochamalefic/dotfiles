@@ -1,0 +1,11 @@
+[Unit]
+Description=execute deno server for denops on 33577
+
+[Service]
+Type=simple
+Restart=no
+ExecStart={deno_path} run -A --no-lock {HOME}/.local/share/nvim/lazy/denops.vim/denops/@denops-private/cli.ts --hostname 127.0.0.1 --port 33577
+
+[Install]
+WantedBy=default.target
+
