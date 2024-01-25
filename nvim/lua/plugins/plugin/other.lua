@@ -2,6 +2,7 @@ local utils = require('utils')
 
 local g = vim.g
 local o = vim.o
+local v = vim.v
 local fn = vim.fn
 local opt = vim.opt
 local api = vim.api
@@ -15,18 +16,39 @@ return {
     'glacambre/firenvim',
     module = false,
     cond = not not vim.g.started_by_firenvim,
+    --cond = not not vim.g.started_by_firenvim,
     build = function()
-      --require("lazy").load({ plugins = "firenvim", wait = true })
+      require("lazy").load({ plugins = "firenvim", wait = true })
       utils.io.echo("shell: " .. o.shell)
       vim.fn["firenvim#install"](0)
     end,
     config = function()
+      --if g.started_by_firenvim == true then
+      --  o.laststatus = 0
+      --else
+      --  o.laststatus = 2
+      --end
+      api.nvim_create_autocmd({'UIEnter'}, {
+        callback = function(event)
+          local client = api.nvim_get_chan_info(v.event.chan).client
+          if client ~= nil and client.name == "Firenvim" then
+            o.laststatus = 0
+          end
+        end
+      })
+
       local enableFireNvim = {
+        cmdline  = "neovim",
         selector = 'textarea',
-        priority = 1,
+        takeover = 'always',
+        content  = "text",
+        priority = 100,
       }
 
       g.firenvim_config = {
+        globalSettings = {
+          alt = "all",
+        },
         localSettings = {
           ['.*'] = {
             selector = '',
@@ -34,7 +56,7 @@ return {
           },
           ["github\\.com"] = enableFireNvim,
           ["developer\\.mozilla\\.org"] = enableFireNvim,
-          ['.*\\.console.aws.amazon.com'] = enableFireNvim,
+          ['ap-northeast-1.console.aws.amazon.com'] = enableFireNvim,
         }
       }
     end,
