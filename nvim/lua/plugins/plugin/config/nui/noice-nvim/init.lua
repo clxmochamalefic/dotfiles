@@ -107,6 +107,7 @@ local miniMessages = {
   miniMessage("%[hlchunk%.chunk%]", "echomsg"),
   miniMessage("winpick", "echomsg"),
   miniMessage("%[hlchunk%.chunk%]", "notify"),
+  miniMessage("LSP started"),
 
   { kind = "wmsg", view = "mini" },
   { kind = "quickfix", view = "mini" },
@@ -121,9 +122,34 @@ for _, v in pairs(miniMessages) do
   table.insert(routes, v)
 end
 
+--local M = {
+--  routes = {
+--    filter = routes,
+--  },
+--}
 local M = {
   routes = {
-    filter = routes,
+    --{
+    --  event = "msg_show",
+    --  filter = {
+    --    any = miniMessages,
+    --    --view = "mini",
+    --  },
+    --  view = "mini",
+    --},
+    --filter = {
+    --  --event = "msg_show",
+    --  any = miniMessages,
+    --  --view = "mini",
+    --},
+    --view = "mini",
+    --{
+    --  filter = {
+    --    event = "msg_show",
+    --    suppressMessages,
+    --  },
+    --  opts = { skip = true },
+    --},
   },
 }
 
