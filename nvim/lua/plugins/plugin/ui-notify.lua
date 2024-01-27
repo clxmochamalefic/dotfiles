@@ -48,6 +48,7 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
+      "nvim-telescope/telescope.nvim",
     },
     opts = function(_, opts)
       -- add any options here
@@ -87,22 +88,20 @@ return {
           view = "mini",
         },
       }
-      --opts.views = {
-      --  popup = {
-      --    backend = "popup",
-      --    close = {
-      --      events = { "BufLeave" },
-      --      keys = { "q" },
-      --    },
-      --    size = {
-      --      width = "20%",
-      --      height = "10%",
-      --    },
-      --    win_options = {
-      --      winhighlight = { Normal = "NoicePopup", FloatBorder = "NoicePopupBorder" },
-      --    },
-      --  },
-      --}
+      opts.messages = {
+        -- NOTE: If you enable messages, then the cmdline is enabled automatically.
+        -- This is a current Neovim limitation.
+        enabled = true, -- enables the Noice messages UI
+        view = "notify", -- default view for messages
+        view_error = "notify", -- view for errors
+        view_warn = "notify", -- view for warnings
+        view_history = "messages", -- view for :messages
+        view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+      }
+      opts.redirect = {
+        view = "popup",
+        filter = { event = "msg_show" },
+      }
       opts.presets = {
         bottom_search = true, -- use a classic bottom cmdline for search
         command_palette = true, -- position the cmdline and popupmenu together
@@ -113,6 +112,7 @@ return {
     end,
     config = function(_, opts)
       require("noice").setup(opts)
+      require("telescope").load_extension("notify")
     end,
   },
 }
