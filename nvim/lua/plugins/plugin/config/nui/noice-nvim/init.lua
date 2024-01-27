@@ -1,42 +1,29 @@
-local function noiceWrapper(pattern, kind, event, opts)
+local function noiceWrapper(pattern, kind)
   kind = kind or ""
-  opts = opts or {}
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = event,
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --  opts = opts,
-  --}
   return {
     filter = {
-      view = "mini",
-      event = event,
       kind = kind,
       find = pattern,
-      opts = opts,
     },
   }
 end
 local function suppressMessage(pattern, kind)
-  return noiceWrapper(pattern, kind, "msg_show", { skip = true })
+  return noiceWrapper(pattern, kind)
 end
 local function suppressLsp(pattern, kind)
-  return noiceWrapper(pattern, kind, "lsp", { skip = true })
+  return noiceWrapper(pattern, kind)
 end
 local function suppressNotify(pattern, kind)
-  return noiceWrapper(pattern, kind, "notify", { skip = true })
+  return noiceWrapper(pattern, kind)
 end
 local function miniMessage(pattern, kind)
-  return noiceWrapper(pattern, kind, "msg_show")
+  return noiceWrapper(pattern, kind)
 end
 local function miniLsp(pattern, kind)
-  return noiceWrapper(pattern, kind, "lsp")
+  return noiceWrapper(pattern, kind)
 end
 local function miniNotify(pattern, kind)
-  return noiceWrapper(pattern, kind, "notify")
+  return noiceWrapper(pattern, kind)
 end
 
 local suppressMessages = {
@@ -123,10 +110,10 @@ local miniMessages = {
   miniMessage("winpick", "echomsg"),
   miniMessage("%[hlchunk%.chunk%]", "notify"),
   miniMessage("LSP started"),
-
-  --{ kind = "wmsg", view = "mini" },
-  --{ kind = "quickfix", view = "mini" },
-  --{ kind = "winpick", view = "mini" },
+  miniMessage(nil, "wmsg"),
+  miniMessage(nil, "quickfix"),
+  miniMessage(nil, "quickfix"),
+  miniMessage(nil, "winpick"),
 }
 
 local miniLsps = {
