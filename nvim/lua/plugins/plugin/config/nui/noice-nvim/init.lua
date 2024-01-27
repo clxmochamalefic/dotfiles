@@ -1,90 +1,42 @@
 local function noiceWrapper(pattern, kind, event, opts)
   kind = kind or ""
   opts = opts or {}
+  --return {
+  --  view = "mini",
+  --  filter = {
+  --    event = event,
+  --    kind = kind,
+  --    find = pattern,
+  --  },
+  --  opts = opts,
+  --}
   return {
-    view = "mini",
     filter = {
+      view = "mini",
       event = event,
       kind = kind,
       find = pattern,
+      opts = opts,
     },
-    opts = opts,
   }
 end
 local function suppressMessage(pattern, kind)
   return noiceWrapper(pattern, kind, "msg_show", { skip = true })
-  --kind = kind or ""
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = "msg_show",
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --  opts = { skip = true },
-  --}
 end
 local function suppressLsp(pattern, kind)
   return noiceWrapper(pattern, kind, "lsp", { skip = true })
-  --kind = kind or ""
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = "lsp",
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --  opts = { skip = true },
-  --}
 end
 local function suppressNotify(pattern, kind)
   return noiceWrapper(pattern, kind, "notify", { skip = true })
-  --kind = kind or ""
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = "notify",
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --  opts = { skip = true },
-  --}
 end
 local function miniMessage(pattern, kind)
   return noiceWrapper(pattern, kind, "msg_show")
-  --kind = kind or ""
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = "msg_show",
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --}
 end
 local function miniLsp(pattern, kind)
   return noiceWrapper(pattern, kind, "lsp")
-  --kind = kind or ""
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = "lsp",
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --}
 end
 local function miniNotify(pattern, kind)
   return noiceWrapper(pattern, kind, "notify")
-  --kind = kind or ""
-  --return {
-  --  view = "mini",
-  --  filter = {
-  --    event = "notify",
-  --    kind = kind,
-  --    find = pattern,
-  --  },
-  --}
 end
 
 local suppressMessages = {
@@ -172,9 +124,9 @@ local miniMessages = {
   miniMessage("%[hlchunk%.chunk%]", "notify"),
   miniMessage("LSP started"),
 
-  { kind = "wmsg", view = "mini" },
-  { kind = "quickfix", view = "mini" },
-  { kind = "winpick", view = "mini" },
+  --{ kind = "wmsg", view = "mini" },
+  --{ kind = "quickfix", view = "mini" },
+  --{ kind = "winpick", view = "mini" },
 }
 
 local miniLsps = {
@@ -195,69 +147,51 @@ for _, v in pairs(miniMessages) do
   table.insert(routes, v)
 end
 
---local M = {
---  routes = {
---    filter = routes,
---  },
---}
 local M = {
   routes = {
-    filter = {
-      {
+    {
+      filter = {
         event = "msg_show",
         any = suppressMessages,
         opts = { skip = true },
       },
-      {
+    },
+    {
+      filter = {
         event = "lsp",
         any = suppressLsps,
         opts = { skip = true },
       },
-      {
+    },
+    {
+      filter = {
         event = "notify",
         any = suppressNotifies,
         opts = { skip = true },
       },
-      {
+    },
+    {
+      filter = {
         event = "msg_show",
         any = miniMessages,
         view = "mini",
       },
-      {
+    },
+    {
+      filter = {
         event = "lsp",
         any = miniLsps,
         view = "mini",
       },
-      {
+    },
+    {
+      filter = {
         event = "notify",
         any = miniNotifies,
         view = "mini",
       },
     },
   },
-  --routes = {
-  --  {
-  --    event = "msg_show",
-  --    filter = {
-  --      any = miniMessages,
-  --      --view = "mini",
-  --    },
-  --    view = "mini",
-  --  },
-  --  --filter = {
-  --  --  --event = "msg_show",
-  --  --  any = miniMessages,
-  --  --  --view = "mini",
-  --  --},
-  --  --view = "mini",
-  --  --{
-  --  --  filter = {
-  --  --    event = "msg_show",
-  --  --    suppressMessages,
-  --  --  },
-  --  --  opts = { skip = true },
-  --  --},
-  --},
 }
 
 --function M.setup(noice) end
