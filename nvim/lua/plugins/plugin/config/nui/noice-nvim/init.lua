@@ -1,129 +1,119 @@
 local function noiceWrapper(pattern, kind)
   kind = kind or ""
   return {
-    filter = {
-      kind = kind,
-      find = pattern,
-    },
+    event = "msg_show",
+    kind = kind,
+    find = pattern,
   }
-end
-local function suppressMessage(pattern, kind)
-  return noiceWrapper(pattern, kind)
-end
-local function suppressLsp(pattern, kind)
-  return noiceWrapper(pattern, kind)
-end
-local function suppressNotify(pattern, kind)
-  return noiceWrapper(pattern, kind)
-end
-local function miniMessage(pattern, kind)
-  return noiceWrapper(pattern, kind)
-end
-local function miniLsp(pattern, kind)
-  return noiceWrapper(pattern, kind)
-end
-local function miniNotify(pattern, kind)
-  return noiceWrapper(pattern, kind)
 end
 
 local suppressMessages = {
-  suppressMessage("^%d+ lines .ed %d+ times?$"),
-  suppressMessage("^%d+ lines yanked$"),
-  suppressMessage(".*E490.*", "emsg"),
-  suppressMessage("search_count"),
+  noiceWrapper("^%d+ lines .ed %d+ times?$"),
+  noiceWrapper("^%d+ lines yanked$"),
+  noiceWrapper(".*E490.*", "emsg"),
+  noiceWrapper("search_count"),
 
-  suppressMessage(".*E539.*", "emsg"),
-  suppressMessage(".*textDocument/hover.*"),
-  suppressMessage(".*textDocument/formatting.*"),
-  suppressMessage(".*textDocument/publishDiagnostics.*"),
-  suppressMessage(".*textDocument/signatureHelp.*"),
-  suppressMessage(".*WinResized Autocommands.*"),
+  noiceWrapper(".*E539.*", "emsg"),
+  noiceWrapper(".*textDocument/hover.*"),
+  noiceWrapper(".*textDocument/formatting.*"),
+  noiceWrapper(".*textDocument/publishDiagnostics.*"),
+  noiceWrapper(".*textDocument/signatureHelp.*"),
+  noiceWrapper(".*WinResized Autocommands.*"),
 
-  suppressMessage(".*W*%s*%[1/1%].*"),
+  noiceWrapper(".*W*%s*%[1/1%].*"),
 
-  suppressMessage(".*nvim_opts%.lua.*", "echo"),
-  suppressMessage(".*nvim_opts%.lua.*", "echomsg"),
+  noiceWrapper(".*nvim_opts%.lua.*", "echo"),
+  noiceWrapper(".*nvim_opts%.lua.*", "echomsg"),
 
-  suppressMessage(".*%[ddc%] Not found source.*", "echo"),
-  suppressMessage(".*%[ddc%] Not found source.*", "echomsg"),
-  suppressMessage(".*%[ddc%] Not found source.*", "emsg"),
+  noiceWrapper(".*%[ddc%] Not found source.*", "echo"),
+  noiceWrapper(".*%[ddc%] Not found source.*", "echomsg"),
+  noiceWrapper(".*%[ddc%] Not found source.*", "emsg"),
 
-  suppressMessage("^No code actions available$", "notify"),
-  suppressMessage("^No information available$", "notify"),
-  suppressMessage("^LSP%sstarted:.*", "notify"),
-  suppressMessage(".*nvim_opts%.lua.*", "lua_error"),
+  noiceWrapper("^No code actions available$", "notify"),
+  noiceWrapper("^No information available$", "notify"),
+  --noiceWrapper("^LSP%sstarted:.*", "notify"),
+  noiceWrapper(".*LSP.*"),
+  noiceWrapper(".*nvim_opts%.lua.*", "lua_error"),
 
-  suppressMessage("^LSP%sstarted.*"),
-  suppressMessage("^LSP%sstarted.*", "notify"),
-  suppressMessage("LSP started", "notify"),
-  suppressMessage("^LSP%sstarted.*", "echo"),
-  suppressMessage("^LSP%sstarted.*", "echomsg"),
-  suppressMessage("^LSP%sstarted.*", "emsg"),
-  --suppressMessage("^LSP started.*", "notify"),
-  --suppressMessage("^LSP started.*", "echo"),
-  --suppressMessage("^LSP started.*", "echomsg"),
-  --suppressMessage("^LSP started.*", "emsg"),
+  --noiceWrapper("^LSP%sstarted.*"),
+  --noiceWrapper("^LSP%sstarted.*", "notify"),
+  --noiceWrapper("LSP started", "notify"),
+  --noiceWrapper(".*LSP started.*"),
+  --noiceWrapper("^LSP%sstarted.*", "echo"),
+  --noiceWrapper("^LSP%sstarted.*", "echomsg"),
+  --noiceWrapper("^LSP%sstarted.*", "emsg"),
+  --noiceWrapper("^LSP started.*", "notify"),
+  --noiceWrapper("^LSP started.*", "echo"),
+  --noiceWrapper("^LSP started.*", "echomsg"),
+  --noiceWrapper("^LSP started.*", "emsg"),
 }
 
 local suppressLsps = {
-  suppressLsp("textDocument/hover"),
-  suppressLsp("textDocument/formatting"),
-  suppressLsp("textDocument/publishDiagnostics"),
-  suppressLsp("textDocument/signatureHelp"),
-  suppressLsp("WinResized Autocommands"),
-  suppressLsp("LSP started"),
+  noiceWrapper(".*textDocument/hover.*"),
+  noiceWrapper(".*textDocument/formatting.*"),
+  noiceWrapper(".*textDocument/publishDiagnostics.*"),
+  noiceWrapper(".*textDocument/signatureHelp.*"),
+  noiceWrapper("WinResized Autocommands"),
+  --noiceWrapper(".*LSP started.*"),
+  noiceWrapper(".*LSP.*"),
+  --noiceWrapper("LSP started"),
 }
 
 local suppressNotifies = {
-  suppressNotify("textDocument/hover"),
-  suppressNotify("textDocument/formatting"),
-  suppressNotify("textDocument/publishDiagnostics"),
-  suppressNotify("textDocument/signatureHelp"),
-  suppressNotify("WinResized Autocommands"),
-  suppressNotify("%[ddc%] Not found source"),
-  suppressNotify("nvim_opts%.lua"),
-  suppressNotify("LSP started"),
+  noiceWrapper(".*textDocument/hover.*"),
+  noiceWrapper(".*textDocument/formatting.*"),
+  noiceWrapper(".*textDocument/publishDiagnostics.*"),
+  noiceWrapper(".*textDocument/signatureHelp.*"),
+  noiceWrapper("WinResized Autocommands"),
+  noiceWrapper("^%[ddc%] Not found source"),
+  noiceWrapper("nvim_opts%.lua"),
+  --noiceWrapper("LSP started"),
+  noiceWrapper(".*LSP.*"),
+  --noiceWrapper(".*LSP started.*"),
 }
 
 local miniMessages = {
-  miniMessage("%d+L, %d+B"),
-  miniMessage("^%d+ changes?; after #%d+"),
-  miniMessage("^%d+ changes?; before #%d+"),
-  miniMessage("^Hunk %d+ of %d+$"),
-  miniMessage("^%d+ fewer lines;?"),
-  miniMessage("^%d+ more lines?;?"),
-  miniMessage("^%d+ line less;?"),
-  miniMessage("^Already at newest change"),
-  miniMessage(".*modifiable.*"),
-  miniMessage(".*Pick a window.*"),
-  miniMessage("%[denops%]"),
-  miniMessage("%[hlchunk%.chunk%]"),
+  noiceWrapper("%d+L, %d+B"),
+  noiceWrapper("^%d+ changes?; after #%d+"),
+  noiceWrapper("^%d+ changes?; before #%d+"),
+  noiceWrapper("^Hunk %d+ of %d+$"),
+  noiceWrapper("^%d+ fewer lines;?"),
+  noiceWrapper("^%d+ more lines?;?"),
+  noiceWrapper("^%d+ line less;?"),
+  noiceWrapper("^Already at newest change"),
+  noiceWrapper(".*modifiable.*"),
+  noiceWrapper(".*Pick a window.*"),
 
-  miniMessage("E486", "emsg"),
-  miniMessage(".*W*%s*%[1/1%].*", "search_count"),
+  noiceWrapper(".*%[denops%].*"),
+  noiceWrapper(".*%[hlchunk%.chunk%].*"),
+  noiceWrapper(".*%[lspconfig%].*"),
 
-  miniMessage(".*Pick%sa%swindow.*", "echo"),
-  miniMessage("%[hlchunk%.chunk%]", "echo"),
-  miniMessage("winpick", "echo"),
-  miniMessage(".*Pick%sa%swindow.*", "echomsg"),
-  miniMessage("%[hlchunk%.chunk%]", "echomsg"),
-  miniMessage("winpick", "echomsg"),
-  miniMessage("%[hlchunk%.chunk%]", "notify"),
-  miniMessage("LSP started"),
-  miniMessage(nil, "wmsg"),
-  miniMessage(nil, "quickfix"),
-  miniMessage(nil, "quickfix"),
-  miniMessage(nil, "winpick"),
+  noiceWrapper("E486", "emsg"),
+  noiceWrapper(".*W*%s*%[1/1%].*", "search_count"),
+
+  noiceWrapper(".*Pick%sa%swindow.*", "echo"),
+  noiceWrapper("winpick", "echo"),
+  noiceWrapper(".*Pick%sa%swindow.*", "echomsg"),
+  noiceWrapper("winpick", "echomsg"),
+  --noiceWrapper("LSP started"),
+  noiceWrapper(".*LSP.*"),
+  --noiceWrapper(".*LSP started.*"),
+
+  noiceWrapper("", "wmsg"),
+  noiceWrapper("", "quickfix"),
+  noiceWrapper("", "quickfix"),
+  noiceWrapper("", "winpick"),
 }
 
 local miniLsps = {
-  miniLsp("%[lspconfig%]"),
+  noiceWrapper(".*%[lspconfig%].*"),
+  noiceWrapper(".*%[hlchunk%.chunk%].*"),
 }
 
 local miniNotifies = {
-  miniNotify("%[denops%]"),
-  miniNotify("%[hlchunk%.chunk%]"),
-  miniNotify("%[lspconfig%]"),
+  noiceWrapper(".*%[denops%].*"),
+  noiceWrapper(".*%[hlchunk%.chunk%].*"),
+  noiceWrapper(".*%[lspconfig%].*"),
 }
 
 local routes = {}
@@ -140,43 +130,43 @@ local M = {
       filter = {
         event = "msg_show",
         any = suppressMessages,
-        opts = { skip = true },
       },
+      opts = { skip = true },
     },
     {
       filter = {
         event = "lsp",
         any = suppressLsps,
-        opts = { skip = true },
       },
+      opts = { skip = true },
     },
     {
       filter = {
         event = "notify",
         any = suppressNotifies,
-        opts = { skip = true },
       },
+      opts = { skip = true },
     },
     {
       filter = {
         event = "msg_show",
         any = miniMessages,
-        view = "mini",
       },
+      view = "mini",
     },
     {
       filter = {
         event = "lsp",
         any = miniLsps,
-        view = "mini",
       },
+      view = "mini",
     },
     {
       filter = {
         event = "notify",
         any = miniNotifies,
-        view = "mini",
       },
+      view = "mini",
     },
   },
 }
