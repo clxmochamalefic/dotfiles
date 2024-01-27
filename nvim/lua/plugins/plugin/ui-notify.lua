@@ -68,9 +68,11 @@ return {
         },
         hover = {
           enabled = false,
+          --view = "mini",
         },
         signature = {
           enabled = false,
+          --view = "mini",
         },
         message = {
           enabled = false,
@@ -79,13 +81,14 @@ return {
         },
         documentation = {
           enabled = false,
+          --view = "mini",
         },
         progress = {
           enabled = true,
           format = "lsp_progress",
           format_done = "lsp_progress_done",
           throttle = 1000 / 30,
-          view = "mini",
+          --view = "mini",
         },
       }
       opts.messages = {
@@ -96,14 +99,14 @@ return {
         view_error = "notify", -- view for errors
         view_warn = "notify", -- view for warnings
         view_history = "messages", -- view for :messages
-        view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
+        view_search = false, -- view for search count messages. Set to `false` to disable
       }
       opts.redirect = {
         view = "popup",
         filter = { event = "msg_show" },
       }
       opts.presets = {
-        bottom_search = true, -- use a classic bottom cmdline for search
+        bottom_search = false, -- use a classic bottom cmdline for search
         command_palette = true, -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = false, -- enables an input dialog for inc-rename.nvim
@@ -112,7 +115,7 @@ return {
     end,
     config = function(_, opts)
       require("noice").setup(opts)
-      require("telescope").load_extension("notify")
+      --require("telescope").load_extension("notify")
     end,
   },
 }
