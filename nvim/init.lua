@@ -49,4 +49,6 @@ command.setup()
 colour.setup()
 wnd.setup()
 
+-- debug plugin
+
 utils.io.end_debug(vim.g.my_initvim_path)

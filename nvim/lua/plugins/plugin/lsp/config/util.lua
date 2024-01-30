@@ -1,17 +1,15 @@
 local M = {}
 
-local wndutil = require('utils.sub.window')
+local wndutil = require("utils.sub.window")
 
 function M.setup()
   vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
   vim.opt.shortmess = "c"
 
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    { update_in_insert = true }
-  )
+  vim.lsp.handlers["textDocument/publishDiagnostics"] =
+    vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, { update_in_insert = true })
 
-  vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+  vim.lsp.handlers["textDocument/implementation"] = require("lsputil.locations").implementation_handler
 
   local lsputils = {
     float = {
@@ -47,16 +45,16 @@ function M.setup()
         "InsertCharPre",
         "WinLeave",
         "InsertEnter",
-        "InsertLeave"
+        "InsertLeave",
       },
     },
   }
 
   local diagnostic_signs = {
-    { name = "DiagnosticSignError", text = "" },
-    { name = "DiagnosticSignWarn", text = "" },
-    { name = "DiagnosticSignHint", text = "" },
-    { name = "DiagnosticSignInfo", text = "" },
+    { name = "DiagnosticSignError", text = " " },
+    { name = "DiagnosticSignWarn", text = " " },
+    { name = "DiagnosticSignHint", text = " " },
+    { name = "DiagnosticSignInfo", text = " " },
   }
   for _, sign in ipairs(diagnostic_signs) do
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
@@ -65,7 +63,7 @@ function M.setup()
   vim.diagnostic.config(lsputils.diagnostic)
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, lsputils.float)
 
-  vim.api.nvim_create_autocmd('LspAttach', {
+  vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       if client.server_capabilities.documentHighlightProvider then
