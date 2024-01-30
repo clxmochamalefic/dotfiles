@@ -5,9 +5,9 @@ local ntconfig = require("plugins.plugin.config.nvim-tree")
 return {
   {
     lazy = true,
-    'nvim-tree/nvim-tree.lua',
+    "nvim-tree/nvim-tree.lua",
     dependencies = {
-      'nvim-tree/nvim-web-devicons',
+      "nvim-tree/nvim-web-devicons",
       "JMarkin/nvim-tree.lua-float-preview",
     },
     cmd = { "NvimTreeOpen" },
@@ -19,14 +19,14 @@ return {
       g.loaded_netrw = 1
       g.loaded_netrwPlugin = 1
 
----@diagnostic disable-next-line: different-requires
+      ---@diagnostic disable-next-line: different-requires
       require("nvim-tree").setup({
         on_attach = ntconfig.on_attach,
         sort = {
           sorter = "case_sensitive",
         },
         view = {
-          width = 30,
+          width = 40,
         },
         renderer = {
           group_empty = true,
@@ -34,7 +34,7 @@ return {
         filters = {
           dotfiles = false,
           exclude = { ".env", ".env.*" },
-        }
+        },
       })
 
       local function open_nvim_tree()
@@ -43,7 +43,7 @@ return {
 
       -- open nvim-tree on vim booted / nvim-treeをvim実行時に起動する
       vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, { callback = open_nvim_tree })
-    end
+    end,
   },
   {
     lazy = true,

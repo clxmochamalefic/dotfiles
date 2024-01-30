@@ -5,7 +5,7 @@ local M = {}
 local Table = require("nui.table")
 local Text = require("nui.text")
 
-function M.show()
+function M.show(bufnr)
   local tbl = Table({
     bufnr = bufnr,
     columns = {
@@ -15,7 +15,7 @@ function M.show()
         columns = {
           {
             accessor_key = "shortcut",
-            header = "Key"
+            header = "Key",
           },
           {
             accessor_key = "name",
@@ -36,9 +36,11 @@ function M.show()
       },
     },
     data = {
-      { shortcut = "D", name = "declaration", desc = "" }
+      { shortcut = "D", name = "declaration", desc = "" },
     },
   })
 
   tbl:render()
 end
+
+return M

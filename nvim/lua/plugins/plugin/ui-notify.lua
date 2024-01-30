@@ -98,12 +98,12 @@ return {
         view = "notify", -- default view for messages
         view_error = "notify", -- view for errors
         view_warn = "notify", -- view for warnings
-        view_history = "messages", -- view for :messages
+        --view_history = "messages", -- view for :messages
         view_search = false, -- view for search count messages. Set to `false` to disable
       }
       opts.redirect = {
-        view = "popup",
-        filter = { event = "msg_show" },
+        view = "notify",
+        filter = { event = { "msg_show", "lsp", "notify" } },
       }
       opts.presets = {
         bottom_search = false, -- use a classic bottom cmdline for search
