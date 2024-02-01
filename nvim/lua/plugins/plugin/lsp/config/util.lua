@@ -61,7 +61,7 @@ function M.setup()
   end
 
   vim.diagnostic.config(lsputils.diagnostic)
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, lsputils.float)
+  --vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, lsputils.float)
 
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)

@@ -191,12 +191,12 @@ return {
         end)
 
         -- auto hover popup for loaded filetypes
-        if client.filetypes then
-          for _, v in ipairs(client.filetypes) do
-            vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ lua vim.diagnostic.open_float(nil, {focus=false})]])
-            vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
-          end
-        end
+        --if client.filetypes then
+        --  for _, v in ipairs(client.filetypes) do
+        --    vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ lua vim.diagnostic.open_float(nil, {focus=false})]])
+        --    vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
+        --  end
+        --end
 
         local bufopts = { silent = true, buffer = bufnr }
         keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
