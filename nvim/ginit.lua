@@ -10,7 +10,7 @@ local fav_font_map = {
   -- above Migu series fonts are came to EOL probably, THANK YOU FOR AWESOME FONT THAT PRESENT TO ME!!!
   Cica = "Cica",
   Hack = "Hack",
-  IntelOneMono = "IntoneMono Nerd Font Mono",
+  IntelOneMono = "IntoneMono NFM",
 }
 
 local currentFont = fav_font_map.IntelOneMono
