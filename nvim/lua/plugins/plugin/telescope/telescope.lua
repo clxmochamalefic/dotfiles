@@ -112,8 +112,8 @@ return {
               -- horizontal split show
               ["]"] = actions.select_horizontal,
               ["<C-s>"] = actions.select_horizontal,
-              ["<Tab>"] = actions.select_default,
-              ["<CR>"] = actions.select_tab,
+              ["<Tab>"] = actions.select_tab,
+              ["<CR>"] = actions.select_default,
             },
           },
           file_ignore_patterns = {

@@ -9,7 +9,7 @@ local keymap = vim.keymap
 --
 -- # DEFAULT Options
 -- These are default options in finder section:
--- 
+--
 -- - max_height = 0.5
 --    - max_height of the finder window (float layout)
 -- - left_width = 0.3
@@ -27,10 +27,10 @@ local keymap = vim.keymap
 --    - Keys are LSP methods. Values are a filter handler. Function parameter are client_id and result
 -- - silent = false
 --    - If it’s true, it will disable show the no response message
--- 
+--
 -- # DEFAULT Keymap
 -- These are default keymaps in finder.keys table section:
--- 
+--
 -- - shuttle = '[w' shuttle bettween the finder layout window
 -- - toggle_or_open = 'o' toggle expand or open
 -- - vsplit = 's' open in vsplit
@@ -44,33 +44,33 @@ local keymap = vim.keymap
 return {
   {
     lazy = true,
-    'nvimdev/lspsaga.nvim',
-    event = { 'LspAttach' },
+    "nvimdev/lspsaga.nvim",
+    event = { "LspAttach" },
     dependencies = {
       -- 'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons',
+      "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require('lspsaga').setup({
+      require("lspsaga").setup({
         finder = {
           max_height = 0.6,
-          default = 'tyd+ref+imp+def',
+          default = "tyd+ref+imp+def",
           keys = {
-            toggle_or_open = '<CR>',
-            vsplit = 'v',
-            split = 's',
-            tabnew = 't',
-            tab = 'T',
-            quit = 'q',
-            close = '<Esc>',
+            toggle_or_open = "<CR>",
+            vsplit = { "v", "[" },
+            split = { "s", "}" },
+            tabnew = "t",
+            tab = "T",
+            quit = "q",
+            close = "<Esc>",
           },
           methods = {
-            tyd = 'textDocument/typeDefinition',
-          }
-        }
+            tyd = "textDocument/typeDefinition",
+          },
+        },
       })
 
-      keymap.set('n', '<leader>,',  "<Cmd>Lspsaga finder<CR>",  { desc = 'Telescope: live grep args', })
+      keymap.set("n", "<leader>,", "<Cmd>Lspsaga finder<CR>", { desc = "Telescope: live grep args" })
     end,
-  }
+  },
 }
