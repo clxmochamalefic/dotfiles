@@ -12,109 +12,7 @@ local keymap = vim.keymap
 local myutils = require("utils")
 
 local builtin = nil
-
---
--- ファイル名と親ディレクトリをタブ区切りで表示する
---
--- @param path string: ファイルパス
---
-local function FileNameFirst(_, path)
-  local tail = vim.fs.basename(path)
-  local parent = vim.fs.dirname(path)
-  if parent == "." then
-    return tail
-  end
-  return string.format("%s\t\t%s", tail, parent)
-
-  --local splitted = myutils.string.split(parent, "/")
-  --local reverse = {}
-  --for _, v in ipairs(splitted) do
-  --  table.insert(reverse, 1, v)
-  --end
-  --local inversePath = table.concat(reverse, ".")
-  --return string.format("%s\t\t%s", tail, inversePath)
-end
-
---
--- telescope.nvim ビルトインを取得する
--- 純粋に毎回 `require` 書くの面倒くさかった
---
-function GetBuiltin()
-  if builtin == nil then
-    builtin = require("telescope.builtin")
-  end
-  return builtin
-end
-
---
--- telescope builtin 向けのデフォルト設定
---
-function GetDefaultOpts()
-  return {
-    search_dirs = { myutils.fs.get_project_root_current_buf() },
-  }
-end
-
---
--- telescope.nvim ビルトインの `find_files` をコールする
---
--- @param opts options: default => GetDefaultOpts()
---
-function CallBuiltinFindFiles(opts)
-  opts = opts or GetDefaultOpts()
-  GetBuiltin().find_files(opts)
-end
---
--- telescope.nvim ビルトインの `live_grep` をコールする
---
--- @param opts options: default => default_opts
---
-function CallBuiltinLiveGrep(opts)
-  opts = opts or GetDefaultOpts()
-  GetBuiltin().live_grep(opts)
-end
---
--- telescope.nvim 拡張の `live_grep_args` をコールする
---
--- @param opts options: default => GetDefaultOpts()
---
-function CallBuiltinLiveGrepArgs(opts)
-  opts = opts or GetDefaultOpts()
-  require("telescope").extensions.live_grep_args.live_grep_args(opts)
-end
-
---
--- telescope.nvim ビルトインの `buffer` をコールする
--- bufferの一覧をfzfする
---
--- @param opts options: default => default_opts
---
-function CallBuiltinBuffer(opts)
-  opts = opts or {}
-  GetBuiltin().buffers(opts)
-end
-
---
--- telescope.nvim 拡張の `help_tags` をコールする
--- vimヘルプをfzfする
---
--- @param opts options: default => default_opts
---
-function CallBuiltinHelpTags(opts)
-  opts = opts or {}
-  GetBuiltin().help_tags(opts)
-end
-
---
--- telescope.nvim 拡張の `frecency` をコールする
--- 開いた際のバッファのファイルが管理されている `.git` フォルダの位置を親フォルダとしてfzfする
---
--- @param opts options: default => default_opts
---
-function CallFrecencyCurrentDir()
-  local project_root = myutils.fs.get_project_root_current_buf()
-  vim.cmd("Telescope frecency workspace=" .. project_root .. "<CR>")
-end
+local tu = require("plugins.plugin.telescope.util")
 
 return {
   {
@@ -127,6 +25,8 @@ return {
       "nvim-telescope/telescope-frecency.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
+
+      "delphinus/telescope-memo.nvim",
     },
     cmd = {
       "Telescope",
@@ -141,20 +41,26 @@ return {
       "Telescope git_commits",
 
       "Telescope frecency",
+
+      -- memolist
+      "Telescope memo list",
+      "Telescope memo grep",
+      "Telescope memo live_grep",
+      "Telescope memo grep_string",
     },
     keys = {
-      { "Z", CallBuiltinBuffer, { mode = "n", desc = "Telescope: buffers" } },
-      { "<leader>f", CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
-      { "<leader>h", CallBuiltinHelpTags, { mode = "n", desc = "Telescope: help tags" } },
+      { "Z", tu.CallBuiltinBuffer, { mode = "n", desc = "Telescope: buffers" } },
+      { "<leader>f", tu.CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
+      { "<leader>h", tu.CallBuiltinHelpTags, { mode = "n", desc = "Telescope: help tags" } },
       {
         "<leader>b",
-        CallFrecencyCurrentDir,
+        tu.CallFrecencyCurrentDir,
         { mode = "n", desc = "Telescope: frecency workspace={project_root}" },
       },
-      { "<leader>g", CallBuiltinLiveGrep, { mode = "n", desc = "Telescope: live grep" } },
+      { "<leader>g", tu.CallBuiltinLiveGrep, { mode = "n", desc = "Telescope: live grep" } },
       {
         "<leader>G",
-        CallBuiltinLiveGrepArgs,
+        tu.CallBuiltinLiveGrepArgs,
         { mode = "n", desc = "Telescope: live grep args" },
       },
       { "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
@@ -182,16 +88,16 @@ return {
       require("telescope").setup({
         pickers = {
           buffers = {
-            path_display = FileNameFirst,
+            path_display = tu.FileNameFirst,
           },
           find_files = {
-            path_display = FileNameFirst,
+            path_display = tu.FileNameFirst,
           },
           live_grep = {
-            path_display = FileNameFirst,
+            path_display = tu.FileNameFirst,
           },
           frecency = {
-            path_display = FileNameFirst,
+            path_display = tu.FileNameFirst,
           },
         },
         defaults = {
@@ -231,7 +137,6 @@ return {
             "-uu",
           },
         },
-
         extensions = {
           -- ソート性能を大幅に向上させるfzfを使う
           fzf = {
@@ -282,52 +187,6 @@ return {
           },
         },
       })
-    end,
-  },
-  {
-    lazy = true,
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-    init = function()
-      if not myutils.depends.has("fzf") then
-        myutils.depends.install("fzf", { winget = "fzf" })
-      end
-    end,
-    config = function()
-      require("telescope").load_extension("fzf")
-    end,
-  },
-  {
-    lazy = true,
-    "nvim-telescope/telescope-frecency.nvim",
-    event = {
-      "VimEnter",
-    },
-    init = function() end,
-    config = function()
-      --require("telescope").load_extension("frecency")
-    end,
-  },
-  {
-    lazy = true,
-    "nvim-telescope/telescope-live-grep-args.nvim",
-    -- This will not install any breaking changes.
-    -- For major updates, this must be adjusted manually.
-    version = "^1.0.0",
-    event = {
-      "VimEnter",
-    },
-    keys = {},
-    init = function()
-      if not myutils.depends.has("ripgrep") then
-        myutils.depends.install("ripgrep", { winget = "BurntSushi.ripgrep.MSVC" })
-      end
-      if not myutils.depends.has("fd") then
-        myutils.depends.install("fd", { apt = "find_fd", winget = "sharkdp.fd" })
-      end
-    end,
-    config = function()
-      require("telescope").load_extension("live_grep_args")
     end,
   },
 }
