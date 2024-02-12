@@ -8,7 +8,7 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
-local noice_config = require("plugins.plugin.config.nui.noice-nvim")
+local noice_config = require("plugins.plugin.ui.config.nui.noice-nvim")
 
 return {
   {
@@ -18,14 +18,6 @@ return {
     dependencies = {
       "nvim-telescope/telescope.nvim",
     },
-    init = function()
-      --vim.notify = require("notify")
-      --vim.notify.setup({
-      --  max_width = 120,
-      --  background_colour = "#000000",
-      --  fps = 10,
-      --})
-    end,
     config = function()
       vim.notify = require("notify")
       vim.notify.setup({

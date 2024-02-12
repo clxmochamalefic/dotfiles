@@ -6,18 +6,18 @@ local keymap = vim.keymap
 
 return {
   {
-    'VonHeikemen/fine-cmdline.nvim',
+    "VonHeikemen/fine-cmdline.nvim",
     lazy = true,
     dependencies = {
-      'MunifTanjim/nui.nvim',
+      "MunifTanjim/nui.nvim",
     },
-    event = { 'VimEnter' },
+    event = { "VimEnter" },
     config = function()
       -- nui.nvim --------------------------------------------------
-      local Popup = require("nui.popup")
+      local popup = require("nui.popup")
       local event = require("nui.utils.autocmd").event
 
-      local messagePopup = Popup({
+      local messagePopup = popup({
         enter = true,
         focusable = true,
         border = {
@@ -39,38 +39,38 @@ return {
         messagePopup:unmount()
       end)
 
-      vim.api.nvim_create_user_command('PopMess', function()
+      vim.api.nvim_create_user_command("PopMess", function()
         -- mount/open the component
         messagePopup:mount()
-        local message = api.nvim_command('messages')
-        if message == '' then
+        local message = api.nvim_command("messages")
+        if message == "" then
           message = "<Message is empty...>"
         end
         vim.api.nvim_buf_set_lines(messagePopup.bufnr, 0, 1, false, { message })
 
         --keymap.set("n", "q", api.nvim_command('q'))
-      end, { nargs = 0, })
+      end, { nargs = 0 })
 
       -- fine-cmdline by nui.nvim --------------------------------------------------
-      require('fine-cmdline').setup({
+      require("fine-cmdline").setup({
         cmdline = {
           enable_keymaps = true,
           smart_history = true,
-          prompt = ' :  '
+          prompt = " :  ",
         },
         popup = {
           position = {
-            row = '10%',
-            col = '50%',
+            row = "10%",
+            col = "50%",
           },
           size = {
-            width = '60%',
+            width = "60%",
           },
           border = {
-            style = 'rounded',
+            style = "rounded",
           },
           win_options = {
-            winhighlight = 'Normal:Normal,FloatBorder:FloatBorder',
+            winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
           },
         },
         hooks = {
@@ -82,15 +82,14 @@ return {
           end,
           set_keymaps = function(imap, feedkeys)
             -- code
-          end
-        }
+          end,
+        },
       })
 
       -- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', { noremap = true })
     end,
     keys = {
       { ":", "<cmd>FineCmdline<CR>", mode = "n" },
-    }
+    },
   },
 }
-

@@ -3,27 +3,27 @@ local fn = vim.fn
 local M = {}
 
 function M.is_pure_linux()
-  return fn.has('linux') == 1 and fn.has('wsl') == 0
+  return fn.has("linux") == 1 and fn.has("wsl") == 0
 end
 
 function M.is_wsl_linux()
-  return fn.has('linux') == 1 and fn.has('wsl') == 1
+  return fn.has("linux") == 1 and fn.has("wsl") == 1
 end
 
 function M.is_linux()
-  return fn.has('linux') == 1
+  return fn.has("linux") == 1
 end
 
 function M.is_mac_os()
-  return fn.has('mac') == 1
+  return fn.has("mac") == 1
 end
 
 function M.is_pure_unix()
-  return fn.has('unix') == 1 and fn.has('mac') == 0
+  return fn.has("unix") == 1 and fn.has("mac") == 0
 end
 
 function M.is_unix()
-  return fn.has('unix') == 1
+  return fn.has("unix") == 1
 end
 
 function M.is_posix()
@@ -31,19 +31,19 @@ function M.is_posix()
 end
 
 function M.is_wsl()
-  return fn.has('wsl') == 1
+  return fn.has("wsl") == 1
 end
 
 function M.is_windows()
-  return fn.has('win32') == 1
+  return fn.has("win32") == 1
 end
 
 function M.get_path_splitter_for_current_env()
   if M.is_linux() or M.is_unix() then
-    return '/'
+    return "/"
   end
 
-  return '\\'
+  return "\\"
 end
 function M.join_path_with_separator(separator, ...)
   local args = {}
@@ -61,7 +61,7 @@ function M.join_path(...)
 end
 
 function M.join_path_slash(...)
-  return M.join_path_with_separator('/', ...)
+  return M.join_path_with_separator("/", ...)
 end
 
 function M.getHome()
