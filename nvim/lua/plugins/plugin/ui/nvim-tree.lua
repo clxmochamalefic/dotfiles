@@ -1,6 +1,6 @@
 local g = vim.g
 
-local ntconfig = require("plugins.plugin.config.nvim-tree")
+local ntconfig = require("plugins.plugin.ui.config.nvim-tree")
 
 return {
   {

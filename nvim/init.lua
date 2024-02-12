@@ -28,7 +28,8 @@ local ft = require("preferences.ft")
 local mapping = require("preferences.mapping")
 local command = require("preferences.command")
 local colour = require("preferences.colour")
-local wnd = require("preferences.window")
+local window = require("preferences.window")
+local for_windows = require("preferences.for-windows")
 
 local plugins = require("plugins")
 
@@ -47,7 +48,8 @@ mapping.setup()
 command.setup()
 
 colour.setup()
-wnd.setup()
+window.setup()
+for_windows.setup()
 
 -- debug plugin
 

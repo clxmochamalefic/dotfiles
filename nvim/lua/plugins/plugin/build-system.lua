@@ -2,10 +2,10 @@
 --  BUILD SYSTEM PREFERENCES
 -- ---------------------------------------------------------------------------
 
-
 return {
   lazy = true,
-  'HiPhish/gradle.nvim',
+  event = { "VeryLazy" },
+  "HiPhish/gradle.nvim",
   dependencies = {
     "neovim/nvim-lspconfig",
   },
@@ -17,6 +17,5 @@ return {
     -- Display a list of Gradle tasks
     "GradleTasks",
   },
-  config = function()
-  end,
+  config = function() end,
 }
