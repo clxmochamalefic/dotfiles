@@ -45,6 +45,9 @@ return {
       "ToggleBlameVirtual",
     },
     config = function()
+      --local blame = require("blame")
+      --blame.setup({ virtual_style = "float" })
+
       api.nvim_create_user_command("ToggleBlameVirtual", "ToggleBlame virtual", {})
       --api.nvim_create_user_command("ToggleBlameVirtual", "<Cmd>ToggleBlame virtual<CR>", {})
     end,

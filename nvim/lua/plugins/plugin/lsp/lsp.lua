@@ -66,7 +66,8 @@ local icons = {
 --end
 --
 local function text_document_format(diag)
-  return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
+  -- return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
+  return string.format("💡(%s)", diag.source)
 end
 
 return {
@@ -94,6 +95,7 @@ return {
         },
       })
       lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+        -- virtual_text = false,
         virtual_text = {
           format = text_document_format,
         },

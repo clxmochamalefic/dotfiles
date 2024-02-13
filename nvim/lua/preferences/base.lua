@@ -152,11 +152,11 @@ local function config_io()
     opt.iminsert = 0
     opt.imsearch = 0
     --keymap.set("i", "<ESC>", "<ESC>:set iminsert=0<CR>")
-    if fn.has("xim") and fn.has("GUI_GTK") then
-      -- XIMの入力開始キーを設定:
-      -- 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
-      -- opt.imactivatekey=s-space
-    end
+    --if fn.has("xim") and fn.has("GUI_GTK") then
+    --  -- XIMの入力開始キーを設定:
+    --  -- 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
+    --  -- opt.imactivatekey=s-space
+    --end
     -- 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
     -- inoremap <silent> <ESC> <ESC>:opt.iminsert=0<CR>
   end
