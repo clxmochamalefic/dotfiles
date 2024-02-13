@@ -8,7 +8,7 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
-local noice_config = require("plugins.plugin.ui.config.nui.noice-nvim")
+local nc = require("plugins.plugin.ui.config.nui.noice-nvim")
 
 return {
   {
@@ -44,66 +44,18 @@ return {
     },
     opts = function(_, opts)
       -- add any options here
-      opts.routes = noice_config.routes
-      opts.notify = {
-        enabled = true,
-        view = "notify",
-      }
-      opts.lsp = {
-        override = {
-          ---- override the default lsp markdown formatter with Noice
-          --["vim.lsp.util.convert_input_to_markdown_lines"] = false,
-          ---- override the lsp markdown formatter with Noice
-          --["vim.lsp.util.stylize_markdown"] = false,
-          ---- override cmp documentation with Noice (needs the other options to work)
-          --["cmp.entry.get_documentation"] = false,
-        },
-        hover = {
-          enabled = false,
-          --view = "mini",
-        },
-        signature = {
-          enabled = false,
-          --view = "mini",
-        },
-        message = {
-          enabled = false,
-          view = "notify",
-          opts = {},
-        },
-        documentation = {
-          enabled = false,
-          --view = "mini",
-        },
-        progress = {
-          enabled = true,
-          format = "lsp_progress",
-          format_done = "lsp_progress_done",
-          throttle = 1000 / 30,
-          --view = "mini",
-        },
-      }
-      opts.messages = {
-        -- NOTE: If you enable messages, then the cmdline is enabled automatically.
-        -- This is a current Neovim limitation.
-        enabled = true, -- enables the Noice messages UI
-        view = "notify", -- default view for messages
-        view_error = "notify", -- view for errors
-        view_warn = "notify", -- view for warnings
-        view_history = "messages", -- view for :messages
-        view_search = false, -- view for search count messages. Set to `false` to disable
-      }
-      opts.redirect = {
-        view = "popup",
-        filter = { event = "msg_show" },
-      }
-      opts.presets = {
-        bottom_search = false, -- use a classic bottom cmdline for search
-        command_palette = true, -- position the cmdline and popupmenu together
-        long_message_to_split = true, -- long messages will be sent to a split
-        inc_rename = false, -- enables an input dialog for inc-rename.nvim
-        lsp_doc_border = false, -- add a border to hover docs and signature help
-      }
+      opts.routes = nc.routes
+      opts.notify = nc.notify
+      opts.cmdline = nc.cmdline
+      opts.health = nc.health
+      opts.lsp = nc.lsp
+      opts.messages = nc.messages
+      --opts.redirect = {
+      --  view = "popup",
+      --  filter = { event = "msg_show" },
+      --}
+      opts.popupmenu = nc.popupmenu
+      opts.presets = nc.presets
     end,
     config = function(_, opts)
       require("noice").setup(opts)

@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------
--- CONFIGS FOR NOICE-NVIM
+-- HEALTH CONFIG FOR NOICE-NVIM
 -- ---------------------------------------------------------------------------
 
-return require("plugins.plugin.ui.config.nui.noice-nvim.sub")
+return {
+  checker = true,
+}

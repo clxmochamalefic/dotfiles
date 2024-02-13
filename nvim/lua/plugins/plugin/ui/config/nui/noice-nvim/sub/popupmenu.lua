@@ -1,5 +1,10 @@
 -- ---------------------------------------------------------------------------
--- CONFIGS FOR NOICE-NVIM
+-- POPUP MENU VIEW CONFIG FOR NOICE-NVIM
 -- ---------------------------------------------------------------------------
 
-return require("plugins.plugin.ui.config.nui.noice-nvim.sub")
+return {
+  enabled = true,
+  backend = "nui",
+  scrollbar = false,
+  -- kind_icons = {},
+}

@@ -1,5 +1,8 @@
 -- ---------------------------------------------------------------------------
--- CONFIGS FOR NOICE-NVIM
+-- CMDLINE POPUP VIEW CONFIG FOR NOICE-NVIM
 -- ---------------------------------------------------------------------------
 
-return require("plugins.plugin.ui.config.nui.noice-nvim.sub")
+return {
+  enabled = true,
+  view = "notify",
+}
