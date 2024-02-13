@@ -3,150 +3,159 @@
 -- ---------------------------------------------------------------------------
 
 local u = require("plugins.plugin.ui.config.nui.noice-nvim.util")
+local n = u.noice
 
 local suppressMessages = {
-  u.notnmsg("^%d+ lines .ed %d+ times?$"),
-  u.notnmsg("^%d+ lines yanked$"),
-  u.notnmsg(".*E490.*", "emsg"),
-  u.notnmsg("search_count"),
+  n.not_msg("^%d+ lines .ed %d+ times?$"),
+  n.not_msg("^%d+ lines yanked$"),
+  n.not_msg(".*E490.*", "emsg"),
+  n.not_msg("search_count"),
 
-  u.notnmsg(".*E539.*", "emsg"),
-  u.notnmsg(".*textDocument/hover.*"),
-  u.notnmsg(".*textDocument/formatting.*"),
-  u.notnmsg(".*textDocument/publishDiagnostics.*"),
-  u.notnmsg(".*textDocument/signatureHelp.*"),
-  u.notnmsg(".*WinResized Autocommands.*"),
+  n.not_msg(".*E539.*", "emsg"),
+  n.not_msg(".*textDocument/hover.*"),
+  n.not_msg(".*textDocument/formatting.*"),
+  n.not_msg(".*textDocument/publishDiagnostics.*"),
+  n.not_msg(".*textDocument/signatureHelp.*"),
+  n.not_msg(".*WinResized Autocommands.*"),
 
-  u.notnmsg(".*W*%s*%[1/1%].*"),
+  n.not_msg(".*W*%s*%[1/1%].*"),
 
-  u.notnmsg(".*nvim_opts%.lua.*", "echo"),
-  u.notnmsg(".*nvim_opts%.lua.*", "echomsg"),
+  n.not_msg(".*nvim_opts%.lua.*", "echo"),
+  n.not_msg(".*nvim_opts%.lua.*", "echomsg"),
 
-  u.notnmsg(".*%[ddc%] Not found source.*", "echo"),
-  u.notnmsg(".*%[ddc%] Not found source.*", "echomsg"),
-  u.notnmsg(".*%[ddc%] Not found source.*", "emsg"),
+  n.not_msg(".*%[ddc%] Not found source.*", "echo"),
+  n.not_msg(".*%[ddc%] Not found source.*", "echomsg"),
+  n.not_msg(".*%[ddc%] Not found source.*", "emsg"),
 
-  u.notnmsg("^No code actions available$", "notify"),
-  u.notnmsg("^No information available$", "notify"),
-  u.notnmsg(".*nvim_opts%.lua.*", "lua_error"),
+  n.not_msg("^No code actions available$", "notify"),
+  n.not_msg("^No information available$", "notify"),
+  n.not_msg(".*nvim_opts%.lua.*", "lua_error"),
 }
 
 local suppressLsps = {
-  u.notnlsp(".*textDocument/hover.*"),
-  u.notnlsp(".*textDocument/formatting.*"),
-  u.notnlsp(".*textDocument/publishDiagnostics.*"),
-  u.notnlsp(".*textDocument/signatureHelp.*"),
-  u.notnlsp("WinResized Autocommands"),
+  n.not_lsp(".*textDocument/hover.*"),
+  n.not_lsp(".*textDocument/formatting.*"),
+  n.not_lsp(".*textDocument/publishDiagnostics.*"),
+  n.not_lsp(".*textDocument/signatureHelp.*"),
+  n.not_lsp("WinResized Autocommands"),
 }
 
 local suppressNotifies = {
-  u.notnnotify(".*textDocument/hover.*"),
-  u.notnnotify(".*textDocument/formatting.*"),
-  u.notnnotify(".*textDocument/publishDiagnostics.*"),
-  u.notnnotify(".*textDocument/signatureHelp.*"),
-  u.notnnotify("WinResized Autocommands"),
-  u.notnnotify("^%[ddc%] Not found source"),
-  u.notnnotify("nvim_opts%.lua"),
+  n.not_notify(".*textDocument/hover.*"),
+  n.not_notify(".*textDocument/formatting.*"),
+  n.not_notify(".*textDocument/publishDiagnostics.*"),
+  n.not_notify(".*textDocument/signatureHelp.*"),
+  n.not_notify("WinResized Autocommands"),
+  n.not_notify("^%[ddc%] Not found source"),
+  n.not_notify("nvim_opts%.lua"),
 }
 
 local suppressNoices = {
-  u.notnnoice(".*textDocument/hover.*"),
-  u.notnnoice(".*textDocument/formatting.*"),
-  u.notnnoice(".*textDocument/publishDiagnostics.*"),
-  u.notnnoice(".*textDocument/signatureHelp.*"),
-  u.notnnoice("WinResized Autocommands"),
-  u.notnnoice("^%[ddc%] Not found source"),
-  u.notnnoice("nvim_opts%.lua"),
+  n.not_noice(".*textDocument/hover.*"),
+  n.not_noice(".*textDocument/formatting.*"),
+  n.not_noice(".*textDocument/publishDiagnostics.*"),
+  n.not_noice(".*textDocument/signatureHelp.*"),
+  n.not_noice("WinResized Autocommands"),
+  n.not_noice("^%[ddc%] Not found source"),
+  n.not_noice("nvim_opts%.lua"),
 }
 
 local miniMessages = {
-  u.nmsg("%d+L, %d+B"),
-  u.nmsg("^%d+ changes?; after #%d+"),
-  u.nmsg("^%d+ changes?; before #%d+"),
-  u.nmsg("^Hunk %d+ of %d+$"),
-  u.nmsg("^%d+ fewer lines;?"),
-  u.nmsg("^%d+ more lines?;?"),
-  u.nmsg("^%d+ line less;?"),
-  u.nmsg("^Already at newest change"),
-  u.nmsg(".*modifiable.*"),
-  u.nmsg(".*Pick a window.*"),
+  n.msg("%d+L, %d+B"),
+  n.msg("^%d+ changes?; after #%d+"),
+  n.msg("^%d+ changes?; before #%d+"),
+  n.msg("^Hunk %d+ of %d+$"),
+  n.msg("^%d+ fewer lines;?"),
+  n.msg("^%d+ more lines?;?"),
+  n.msg("^%d+ line less;?"),
+  n.msg("^Already at newest change"),
+  n.msg(".*modifiable.*"),
+  n.msg(".*Pick a window.*"),
 
-  u.nmsg(".*%[denops%].*"),
-  u.nmsg(".*%[hlchunk%.chunk%].*"),
-  u.nmsg(".*%[lspconfig%].*"),
+  n.msg(".*%[denops%].*"),
+  n.msg(".*%[hlchunk%.chunk%].*"),
+  n.msg(".*%[lspconfig%].*"),
 
-  u.nmsg("E486", "emsg"),
-  u.nmsg(".*W*%s*%[1/1%].*", "search_count"),
+  n.msg("E486", "emsg"),
+  n.msg(".*W*%s*%[1/1%].*", "search_count"),
 
-  u.nmsg(".*Pick%sa%swindow.*", "echo"),
-  u.nmsg("winpick", "echo"),
-  u.nmsg(".*Pick%sa%swindow.*", "echomsg"),
-  u.nmsg("winpick", "echomsg"),
-  u.nmsg(".*LSP.*"),
+  n.msg(".*Pick%sa%swindow.*", "echo"),
+  n.msg("winpick", "echo"),
+  n.msg(".*Pick%sa%swindow.*", "echomsg"),
+  n.msg("winpick", "echomsg"),
+  n.msg(".*LSP.*"),
 
-  u.nmsg("", "wmsg"),
-  u.nmsg("", "quickfix"),
-  u.nmsg("", "quickfix"),
-  u.nmsg("", "winpick"),
+  n.msg("", "winpick"),
 }
 
 local miniLsps = {
-  u.nlsp(".*LSP.*"),
-  u.nlsp(".*%[lspconfig%].*"),
-  u.nlsp(".*%[hlchunk%.chunk%].*"),
+  n.lsp(".*LSP.*"),
+  n.lsp(".*%[lspconfig%].*"),
+  n.lsp(".*%[hlchunk%.chunk%].*"),
 }
 
 local miniNotifies = {
-  u.nnotify(".*LSP.*"),
-  u.nnotify(".*%[denops%].*"),
-  u.nnotify(".*%[hlchunk%.chunk%].*"),
-  u.nnotify(".*%[lspconfig%].*"),
+  n.notify(".*LSP.*"),
+  n.notify(".*%[denops%].*"),
+  n.notify(".*%[hlchunk%.chunk%].*"),
+  n.notify(".*%[lspconfig%].*"),
+}
+
+local miniNoice = {
+  n.noice(".*LSP.*"),
+  n.noice(".*%[denops%].*"),
+  n.noice(".*%[hlchunk%.chunk%].*"),
+  n.noice(".*%[lspconfig%].*"),
 }
 
 local M = {
-  routes = {
-    {
-      filter = {
-        any = miniMessages,
-      },
-      view = "mini",
+  {
+    filter = {
+      any = miniMessages,
     },
-    {
-      filter = {
-        any = miniLsps,
-      },
-      view = "mini",
+    view = "mini",
+  },
+  {
+    filter = {
+      any = miniLsps,
     },
-    {
-      filter = {
-        any = miniNotifies,
-      },
-      view = "mini",
+    view = "mini",
+  },
+  {
+    filter = {
+      any = miniNotifies,
     },
+    view = "mini",
+  },
+  {
+    filter = {
+      any = miniNoice,
+    },
+    view = "mini",
+  },
 
-    {
-      opts = { skip = true },
-      filter = {
-        any = suppressMessages,
-      },
+  {
+    opts = { skip = true },
+    filter = {
+      any = suppressMessages,
     },
-    {
-      opts = { skip = true },
-      filter = {
-        any = suppressLsps,
-      },
+  },
+  {
+    opts = { skip = true },
+    filter = {
+      any = suppressLsps,
     },
-    {
-      opts = { skip = true },
-      filter = {
-        any = suppressNotifies,
-      },
+  },
+  {
+    opts = { skip = true },
+    filter = {
+      any = suppressNotifies,
     },
-    {
-      opts = { skip = true },
-      filter = {
-        any = suppressNoices,
-      },
+  },
+  {
+    opts = { skip = true },
+    filter = {
+      any = suppressNoices,
     },
   },
 }

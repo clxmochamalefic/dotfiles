@@ -50,10 +50,10 @@ return {
       opts.health = nc.health
       opts.lsp = nc.lsp
       opts.messages = nc.messages
-      --opts.redirect = {
-      --  view = "popup",
-      --  filter = { event = "msg_show" },
-      --}
+      opts.redirect = {
+        view = "notify",
+        filter = { event = "msg_show" },
+      }
       opts.popupmenu = nc.popupmenu
       opts.presets = nc.presets
     end,
