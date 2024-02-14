@@ -21,8 +21,8 @@ return {
     config = function()
       vim.notify = require("notify")
       vim.notify.setup({
-        render = "compact",
-        max_width = 120,
+        render = "wrapped-compact",
+        max_width = 60,
         background_colour = "#000000",
         fps = 10,
       })
