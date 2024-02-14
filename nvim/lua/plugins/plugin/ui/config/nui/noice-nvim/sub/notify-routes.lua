@@ -6,58 +6,58 @@ local u = require("plugins.plugin.ui.config.nui.noice-nvim.util")
 local n = u.noice
 
 local suppressMessages = {
-  n.not_msg("^%d+ lines .ed %d+ times?$"),
-  n.not_msg("^%d+ lines yanked$"),
-  n.not_msg(".*E490.*", "emsg"),
-  n.not_msg("search_count"),
+  n.msg("^%d+ lines .ed %d+ times?$"),
+  n.msg("^%d+ lines yanked$"),
+  n.msg(".*E490.*", "emsg"),
+  n.msg("search_count"),
 
-  n.not_msg(".*E539.*", "emsg"),
-  n.not_msg(".*textDocument/hover.*"),
-  n.not_msg(".*textDocument/formatting.*"),
-  n.not_msg(".*textDocument/publishDiagnostics.*"),
-  n.not_msg(".*textDocument/signatureHelp.*"),
-  n.not_msg(".*WinResized Autocommands.*"),
+  n.msg(".*E539.*", "emsg"),
+  n.msg(".*textDocument/hover.*"),
+  n.msg(".*textDocument/formatting.*"),
+  n.msg(".*textDocument/publishDiagnostics.*"),
+  n.msg(".*textDocument/signatureHelp.*"),
+  n.msg(".*WinResized Autocommands.*"),
 
-  n.not_msg(".*W*%s*%[1/1%].*"),
+  n.msg(".*W*%s*%[1/1%].*"),
 
-  n.not_msg(".*nvim_opts%.lua.*", "echo"),
-  n.not_msg(".*nvim_opts%.lua.*", "echomsg"),
+  n.msg(".*nvim_opts%.lua.*", "echo"),
+  n.msg(".*nvim_opts%.lua.*", "echomsg"),
 
-  n.not_msg(".*%[ddc%] Not found source.*", "echo"),
-  n.not_msg(".*%[ddc%] Not found source.*", "echomsg"),
-  n.not_msg(".*%[ddc%] Not found source.*", "emsg"),
+  n.msg(".*%[ddc%] Not found source.*", "echo"),
+  n.msg(".*%[ddc%] Not found source.*", "echomsg"),
+  n.msg(".*%[ddc%] Not found source.*", "emsg"),
 
-  n.not_msg("^No code actions available$", "notify"),
-  n.not_msg("^No information available$", "notify"),
-  n.not_msg(".*nvim_opts%.lua.*", "lua_error"),
+  n.msg("^No code actions available$", "notify"),
+  n.msg("^No information available$", "notify"),
+  n.msg(".*nvim_opts%.lua.*", "lua_error"),
 }
 
 local suppressLsps = {
-  n.not_lsp(".*textDocument/hover.*"),
-  n.not_lsp(".*textDocument/formatting.*"),
-  n.not_lsp(".*textDocument/publishDiagnostics.*"),
-  n.not_lsp(".*textDocument/signatureHelp.*"),
-  n.not_lsp("WinResized Autocommands"),
+  n.lsp(".*textDocument/hover.*"),
+  n.lsp(".*textDocument/formatting.*"),
+  n.lsp(".*textDocument/publishDiagnostics.*"),
+  n.lsp(".*textDocument/signatureHelp.*"),
+  n.lsp("WinResized Autocommands"),
 }
 
 local suppressNotifies = {
-  n.not_notify(".*textDocument/hover.*"),
-  n.not_notify(".*textDocument/formatting.*"),
-  n.not_notify(".*textDocument/publishDiagnostics.*"),
-  n.not_notify(".*textDocument/signatureHelp.*"),
-  n.not_notify("WinResized Autocommands"),
-  n.not_notify("^%[ddc%] Not found source"),
-  n.not_notify("nvim_opts%.lua"),
+  n.notify(".*textDocument/hover.*"),
+  n.notify(".*textDocument/formatting.*"),
+  n.notify(".*textDocument/publishDiagnostics.*"),
+  n.notify(".*textDocument/signatureHelp.*"),
+  n.notify("WinResized Autocommands"),
+  n.notify("^%[ddc%] Not found source"),
+  n.notify("nvim_opts%.lua"),
 }
 
 local suppressNoices = {
-  n.not_noice(".*textDocument/hover.*"),
-  n.not_noice(".*textDocument/formatting.*"),
-  n.not_noice(".*textDocument/publishDiagnostics.*"),
-  n.not_noice(".*textDocument/signatureHelp.*"),
-  n.not_noice("WinResized Autocommands"),
-  n.not_noice("^%[ddc%] Not found source"),
-  n.not_noice("nvim_opts%.lua"),
+  n.noice(".*textDocument/hover.*"),
+  n.noice(".*textDocument/formatting.*"),
+  n.noice(".*textDocument/publishDiagnostics.*"),
+  n.noice(".*textDocument/signatureHelp.*"),
+  n.noice("WinResized Autocommands"),
+  n.noice("^%[ddc%] Not found source"),
+  n.noice("nvim_opts%.lua"),
 }
 
 local miniMessages = {
