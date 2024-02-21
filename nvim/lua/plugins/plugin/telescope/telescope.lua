@@ -101,6 +101,10 @@ return {
           },
         },
         defaults = {
+          layout_config = {
+            height = 0.7,
+            anchor = "N",
+          },
           mappings = {
             i = {
               --["<esc>"] = actions.close,
@@ -109,10 +113,15 @@ return {
               -- vertical split show
               ["["] = actions.select_vertical,
               ["<C-v>"] = actions.select_vertical,
+              ["v"] = actions.select_vertical,
               -- horizontal split show
               ["]"] = actions.select_horizontal,
               ["<C-s>"] = actions.select_horizontal,
+              ["s"] = actions.select_horizontal,
+
               ["<Tab>"] = actions.select_tab,
+              ["t"] = actions.select_tab,
+
               ["<CR>"] = actions.select_default,
             },
           },
