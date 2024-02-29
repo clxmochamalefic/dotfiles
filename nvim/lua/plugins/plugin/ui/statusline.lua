@@ -71,8 +71,28 @@ return {
         tabline = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = { { "windows", show_filename_only = false, mode = 2 } },
-          lualine_x = { { "tabs", mode = 2 } },
+          lualine_c = {
+            {
+              "windows",
+              mode = 2,
+              show_filename_only = false,
+              show_modified_status = true, -- Shows indicator when the window is modified.
+              use_mode_colors = true,
+              --windows_color = {
+              --  active = colors.violet,
+              --},
+              disabled_buftypes = { "quickfix", "prompt" },
+            },
+          },
+          lualine_x = {
+            {
+              "tabs",
+              mode = 1,
+              --tabs_color = {
+              --  active = colors.violet,
+              --},
+            },
+          },
           lualine_y = {},
           lualine_z = {},
         },
