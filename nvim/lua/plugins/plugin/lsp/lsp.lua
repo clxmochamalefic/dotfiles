@@ -147,29 +147,29 @@ return {
       o.updatetime = 1000
       api.nvim_set_option("updatetime", 1000)
 
-      vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-          -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-          if not myignore.isShowable(args) then
-            return
-          end
+      --vim.api.nvim_create_autocmd("LspAttach", {
+      --  callback = function(args)
+      --    -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
+      --    if not myignore.isShowable(args) then
+      --      return
+      --    end
 
-          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-            callback = function(t)
-              if myignore.isShowable(t) then
-                vim.diagnostic.open_float(nil, { focus = false })
-              end
-            end,
-          })
-          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-            callback = function(t)
-              if myignore.isShowable(t) then
-                vim.lsp.buf.hover()
-              end
-            end,
-          })
-        end,
-      })
+      --    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      --      callback = function(t)
+      --        if myignore.isShowable(t) then
+      --          vim.diagnostic.open_float(nil, { focus = false })
+      --        end
+      --      end,
+      --    })
+      --    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      --      callback = function(t)
+      --        if myignore.isShowable(t) then
+      --          vim.lsp.buf.hover()
+      --        end
+      --      end,
+      --    })
+      --  end,
+      --})
 
       local capabilities = lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -199,9 +199,14 @@ return {
         --    vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
         --  end
         --end
+        --
+        local openDiagnostics = function()
+          vim.diagnostic.open_float(nil, { focus = false })
+        end
 
         local bufopts = { silent = true, buffer = bufnr }
         keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+        keymap.set("n", "I", openDiagnostics, bufopts)
         keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
         keymap.set("n", "<F3>", function()
           vim.lsp.buf.format({ async = true })

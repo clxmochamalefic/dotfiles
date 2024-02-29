@@ -22,7 +22,7 @@ return {
       ---@diagnostic disable-next-line: different-requires
       require("nvim-tree").setup({
         on_attach = ntconfig.on_attach,
-        sync_root_with_cwd = true,
+        sync_root_with_cwd = false,
         reload_on_bufenter = true,
         sort = {
           sorter = "case_sensitive",
