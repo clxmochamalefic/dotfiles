@@ -11,35 +11,35 @@ local keymap = vim.keymap
 local nc = require("plugins.plugin.ui.config.nui.noice-nvim")
 
 return {
-  --{
-  --  lazy = true,
-  --  "rcarriga/nvim-notify",
-  --  event = { "VeryLazy" },
-  --  dependencies = {
-  --    "nvim-telescope/telescope.nvim",
-  --  },
-  --  config = function()
-  --    vim.notify = require("notify")
-  --    vim.notify.setup({
-  --      render = "wrapped-compact",
-  --      max_width = 60,
-  --      background_colour = "#000000",
-  --      fps = 10,
-  --    })
+  {
+    lazy = true,
+    "rcarriga/nvim-notify",
+    event = { "VeryLazy" },
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      vim.notify = require("notify")
+      vim.notify.setup({
+        render = "wrapped-compact",
+        max_width = 60,
+        background_colour = "#000000",
+        fps = 10,
+      })
 
-  --    local telescope = require("telescope")
-  --    telescope.load_extension("notify")
+      local telescope = require("telescope")
+      telescope.load_extension("notify")
 
-  --    keymap.set("n", "<leader>n", telescope.extensions.notify.notify)
-  --  end,
-  --},
+      keymap.set("n", "<leader>n", telescope.extensions.notify.notify)
+    end,
+  },
   {
     lazy = true,
     "folke/noice.nvim",
     event = { "VeryLazy" },
     dependencies = {
       "MunifTanjim/nui.nvim",
-      --"rcarriga/nvim-notify",
+      "rcarriga/nvim-notify",
       "nvim-telescope/telescope.nvim",
     },
     opts = function(_, opts)
@@ -59,7 +59,7 @@ return {
     end,
     config = function(_, opts)
       require("noice").setup(opts)
-      --require("telescope").load_extension("notify")
+      require("telescope").load_extension("notify")
     end,
   },
 }
