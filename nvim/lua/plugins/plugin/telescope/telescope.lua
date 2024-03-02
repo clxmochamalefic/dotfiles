@@ -105,6 +105,16 @@ return {
             height = 0.7,
             anchor = "N",
           },
+          file_ignore_patterns = {
+            -- 検索から除外するものを指定
+            "^.git/",
+            "^.cache/",
+            "^Library/",
+            "Parallels",
+            "^Movies",
+            "^Music",
+            "node%_modules/.*",
+          },
           mappings = {
             i = {
               --["<esc>"] = actions.close,
@@ -124,15 +134,6 @@ return {
 
               ["<CR>"] = actions.select_default,
             },
-          },
-          file_ignore_patterns = {
-            -- 検索から除外するものを指定
-            "^.git/",
-            "^.cache/",
-            "^Library/",
-            "Parallels",
-            "^Movies",
-            "^Music",
           },
           vimgrep_arguments = {
             -- ripggrepコマンドのオプション
