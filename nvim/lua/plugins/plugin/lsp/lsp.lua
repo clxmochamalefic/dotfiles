@@ -3,7 +3,7 @@
 -- ---------------------------------------------------------------------------
 
 local g = vim.g
-local o = vim.o
+--local o = vim.o
 --local fn = vim.fn
 local api = vim.api
 local lsp = vim.lsp
@@ -74,10 +74,12 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      "vim-denops/denops.vim",
       "nvim-lua/plenary.nvim",
       "rcarriga/nvim-notify",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "mfussenegger/nvim-dap",
     },
     cmd = {
       "LspInstall",
@@ -100,51 +102,82 @@ return {
           format = text_document_format,
         },
       })
-      lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border,
-        virtual_text = false,
-        focus = false,
-        silent = true,
-      })
-      --lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
-      --  local diag = vim.lsp.diagnostic.get_line_diagnostics()
-      --  config = config or {}
-      --  config.focus_id = ctx.method
-      --  if not (result and result.contents) then
-      --    -- vim.notify("No information available")
-      --    return
-      --  end
-      --  myutils.io.echo_table("result.contents", result.contents)
+      --lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      --  border = border,
+      --  virtual_text = false,
+      --  focus = false,
+      --  silent = true,
+      --})
+      lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+        local diag = vim.lsp.diagnostic.get_line_diagnostics()
+        config = config or {}
+        config.focus_id = ctx.method
+        if not (result and result.contents) then
+          -- vim.notify("No information available: result")
+          return
+        end
+        -- myutils.io.echo_table("result.contents", result.contents)
 
-      --  local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
-      --  markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-      --  if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
-      --    -- vim.notify('No information available')
-      --    return
-      --  end
+        local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+        markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+        if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
+          -- vim.notify("No information available: diag")
+          return
+        end
 
-      --  --local floatWndWidth = config.width
-      --  --local separator = string.rep("-", floatWndWidth)
+        --local floatWndWidth = config.width
+        --local separator = string.rep("-", floatWndWidth)
 
-      --  config.border = border
+        config.border = border
+        config.focus = false
+        config.silent = true
 
-      --  return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
-      --end
+        local cid = ctx.client_id
+        local client = vim.lsp.get_client_by_id(cid)
+        config.title = "hover: " .. client.name
 
-      lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = border,
-      })
-      --local signatureHelpStack = {}
-      --lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
-      --  local bufnr = myutils.window.getBufnr(ctx.bufnr)
-      --  local cid = ctx.client_id
-      --  local line = vim.fn["line"](".")
-      --  signatureHelpStack[bufnr .. "_" .. cid .. "_" .. "l" .. line] = result
-      --end
+        return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
+      end
+
+      --lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+      --  border = border,
+      --})
+      local signatureHelpStack = {}
+      lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
+        local uri = result.uri
+        local bufnr = vim.uri_to_bufnr(uri)
+        if not bufnr then
+          return
+        end
+
+        local diagnostics = result.diagnostics
+        vim.lsp.diagnostic.set(diagnostics, bufnr, ctx.client_id)
+        if not vim.api.nvim_buf_is_loaded(bufnr) then
+          return
+        end
+
+        local cid = ctx.client_id
+        local line = vim.fn["line"](".")
+        local key = bufnr .. "_" .. cid .. "_" .. "l" .. line
+        if myutils.table.is_key_exists(signatureHelpStack, key) then
+          vim.notify("suppress lsp diag: " .. key)
+          return
+        end
+        signatureHelpStack[key] = result
+
+        config.border = border
+        config.focus = false
+        config.silent = true
+
+        local cid = ctx.client_id
+        local client = vim.lsp.get_client_by_id(cid)
+        config.title = "sigHelp: " .. client.name
+
+        vim.lsp.diagnostic.show(diagnostics, bufnr, ctx.client_id, config)
+      end
 
       --        You will likely want to reduce updatetime which affects CursorHold
       --        note: this setting is global and should be set only once
-      o.updatetime = 1000
       api.nvim_set_option("updatetime", 1000)
 
       --vim.api.nvim_create_autocmd("LspAttach", {
@@ -268,23 +301,6 @@ return {
     },
     config = function() end,
   },
-  {
-    --lazy = true,
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = {
-      "vim-denops/denops.vim",
-      "mfussenegger/nvim-dap",
-    },
-    --    opts = function(_, opts)
-    --      if not opts.handlers then
-    --        opts.handlers = {}
-    --      end
-    --      opts.handlers[1] = function(server)
-    --        require("myutils.lsp").setup(server)
-    --      end
-    --    end,
-    config = function() end,
-  },
   -- neodev.nvim ------------------------------
   {
     lazy = true,
@@ -293,21 +309,6 @@ return {
       "kevinhwang91/promise-async",
     },
   },
-  --{
-  --  -- vscode like 💡 sign
-  --  lazy = true,
-  --  cond = false,
-  --  "kosayoda/nvim-lightbulb",
-  --  event = { "BufRead" },
-  --  dependencies = {
-  --    "neovim/nvim-lspconfig",
-  --  },
-  --  config = function()
-  --    --local default_config = require("plugins.lsp.config.lightbulb")
-  --    local default_config = {}
-  --    require("nvim-lightbulb").setup(default_config)
-  --  end,
-  --},
   {
     lazy = true,
     "aznhe21/actions-preview.nvim",
