@@ -12,7 +12,7 @@ return {
     },
     cmd = { "NvimTreeOpen" },
     keys = {
-      { "z", "<cmd>NvimTreeOpen<CR>", mode = "n" },
+      { "Z", "<cmd>NvimTreeOpen<CR>", mode = "n" },
     },
     event = { "VimEnter" },
     config = function()
