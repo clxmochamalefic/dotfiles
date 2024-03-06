@@ -49,7 +49,7 @@ return {
       "Telescope memo grep_string",
     },
     keys = {
-      { "Z", tu.CallBuiltinBuffer, { mode = "n", desc = "Telescope: buffers" } },
+      { "z", tu.CallBuiltinBuffer, { mode = "n", desc = "Telescope: buffers" } },
       { "<leader>f", tu.CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
       { "<leader>h", tu.CallBuiltinHelpTags, { mode = "n", desc = "Telescope: help tags" } },
       {
