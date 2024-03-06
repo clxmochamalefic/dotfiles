@@ -17,6 +17,7 @@ local excluded_filetypes = {
   --"toggleterm",
   "gitrebase",
   "notify",
+  "noice",
 }
 local excluded_buftypes = {
   --"",
@@ -24,34 +25,46 @@ local excluded_buftypes = {
   "NeogitCommitMessage",
   --"toggleterm",
   "gitrebase",
-  "nofile",
+  --"nofile",
+  "notify",
+  "noice",
+}
+
+local exclude_create_label_filetypes = {
+  "",
+  "NvimTree",
 }
 
 M.opts = {
   border = "double",
-  filter = nil, -- doesn't ignore any window by default
-  --filter = function(winid, bufnr)
-  --  print("bufnr: " .. bufnr)
-  --  local bt = vim.api.nvim_buf_get_option(bufnr, "buftype")
-  --  print("buftype: " .. bt)
-  --  if vim.tbl_contains(excluded_buftypes, bt) then
-  --    return false
-  --  end
+  --filter = nil, -- doesn't ignore any window by default
+  ---@diagnostic disable-next-line: unused-local
+  filter = function(winid, bufnr)
+    local bt = vim.api.nvim_buf_get_option(bufnr, "buftype")
+    if vim.tbl_contains(excluded_buftypes, bt) then
+      return false
+    end
 
-  --  --local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  --  local ft = vim.bo[bufnr].filetype
-  --  print("filetype: " .. ft)
-  --  if vim.tbl_contains(excluded_filetypes, ft) then
-  --    return false
-  --  end
+    --local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    local ft = vim.bo[bufnr].filetype
+    if vim.tbl_contains(excluded_filetypes, ft) then
+      return false
+    end
 
-  --  return true
-  --end,
+    return true
+  end,
   prompt = "Pick a window: ",
   --format_label = M.winpick.defaults.format_label, -- formatted as "<label>: <buffer name>"
-  --format_label = function(label, y, z)
-  --  return string.format('%s', label)
-  --end,
+  ---@diagnostic disable-next-line: unused-local
+  format_label = function(label, winid, bufnr)
+    local ft = vim.bo[bufnr].filetype
+    if vim.tbl_contains(exclude_create_label_filetypes, ft) then
+      return string.format("%s: %s", label, ft)
+    end
+
+    local path = wndutil.getBufPathPartialyShorten(bufnr, 1, 3)
+    return string.format("%s: %s", label, path)
+  end,
   chars = nil,
 }
 
