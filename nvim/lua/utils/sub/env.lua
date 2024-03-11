@@ -18,6 +18,10 @@ function M.is_mac_os()
   return fn.has("mac") == 1
 end
 
+function M.is_macos()
+  return M.is_mac_os()
+end
+
 function M.is_pure_unix()
   return fn.has("unix") == 1 and fn.has("mac") == 0
 end
