@@ -11,8 +11,8 @@ function M.setup()
 end
 
 function M.setup_clipboard()
-  if myutils.env.is_wsl() then
-    vim.opt.clipboard = "unnamed"
+  if myutils.env.is_wsl() or myutils.env.is_windows() then
+    vim.opt.clipboard = "unnamedplus"
     vim.g.clipboard = {
       name = "win32yank-wsl",
       copy = {

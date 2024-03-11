@@ -16,7 +16,8 @@ local lnt = require("plugins.plugin.lsp.linter")
 table.insert(M, lsp)
 table.insert(M, lss)
 table.insert(M, nls)
-table.insert(M, nld)
+-- TODO: lightbulb💡が出る不具合
+--table.insert(M, nld)
 
 table.insert(M, dap)
 table.insert(M, fmt)

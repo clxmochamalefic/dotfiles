@@ -104,7 +104,7 @@ local M = {
   autocmd = {
     -- Whether or not to enable autocmd creation.
     --enabled = false,
-    enabled = true,
+    enabled = false,
     -- See |updatetime|.
     -- Set to a negative value to avoid setting the updatetime.
     updatetime = 200,
