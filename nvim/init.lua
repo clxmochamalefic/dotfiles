@@ -18,6 +18,8 @@ vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
 -- get preference file path
 -- `vim.g.preference_path` defined on ~/.cache/nvim/init.vim
 vim.g.my_home_preference_path = vim.fn.expand("~/.config/nvim")
+local my_home_path = vim.fn.expand("~")
+vim.g.my_home_path = my_home_path
 vim.g.my_initvim_path = vim.fn.expand(vim.g.preference_path)
 
 utils.io.debug_echo("load rc")
@@ -50,6 +52,10 @@ command.setup()
 colour.setup()
 window.setup()
 for_windows.setup()
+
+-- selfmade plugins development
+--vim.opt.runtimepath:append(my_home_path .. "/repos/denops/soil.denops")
+--vim.g["denops#debug"] = 1
 
 -- debug plugin
 
