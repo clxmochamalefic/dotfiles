@@ -55,7 +55,7 @@ local function ddc_init()
     --    'buffer',
     "file",
     "vsnip",
-    "skkeleton",
+    --"skkeleton",
     "around",
   }
 
@@ -124,13 +124,13 @@ local function ddc_init()
   local source_option_omni = {
     mark = "   ",
   }
-  local source_option_skkeleton = {
-    mark = " 🎌 ",
-    isVolatile = true,
-    matchers = { "skkeleton" },
-    sorters = {},
-    converters = {},
-  }
+  --local source_option_skkeleton = {
+  --  mark = " 🎌 ",
+  --  isVolatile = true,
+  --  matchers = { "skkeleton" },
+  --  sorters = {},
+  --  converters = {},
+  --}
 
   -- local source_option_path = {
   --   mark = '   ',
@@ -180,7 +180,7 @@ local function ddc_init()
     ["shell-history"] = source_option_shellhistory,
 
     ["around"] = source_option_around,
-    ["skkeleton"] = source_option_skkeleton,
+    --["skkeleton"] = source_option_skkeleton,
   }
 
   -- if has('win32')
@@ -571,24 +571,24 @@ return {
     lazy = true,
     "hrsh7th/vim-vsnip",
   },
-  {
-    lazy = true,
-    "vim-skk/skkeleton",
-    dependencies = {
-      "vim-denops/denops.vim",
-      {
-        "delphinus/skkeleton_indicator.nvim",
-        config = function()
-          require("skkeleton_indicator").setup()
-        end,
-      },
-      "ddc.vim",
-    },
-    event = { "InsertEnter", "CursorHold" },
-    config = function()
-      skk.setup()
-    end,
-  },
+  --{
+  --  lazy = true,
+  --  "vim-skk/skkeleton",
+  --  dependencies = {
+  --    "vim-denops/denops.vim",
+  --    {
+  --      "delphinus/skkeleton_indicator.nvim",
+  --      config = function()
+  --        require("skkeleton_indicator").setup()
+  --      end,
+  --    },
+  --    "ddc.vim",
+  --  },
+  --  event = { "InsertEnter", "CursorHold" },
+  --  config = function()
+  --    skk.setup()
+  --  end,
+  --},
   {
     lazy = true,
     "matsui54/denops-popup-preview.vim",

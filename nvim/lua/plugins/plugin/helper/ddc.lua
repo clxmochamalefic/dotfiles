@@ -9,7 +9,7 @@ local M = {}
 
 M.sources = {
   default = { "denippet", "lsp", "buffer", "dictionary" },
-  skkeleton = { "skkeleton" },
+  --skkeleton = { "skkeleton" },
   lua = { "denippet", "lsp", "nvim-lua", "buffer", "dictionary" },
   vim = { "denippet", "necovim", "buffer", "dictionary" },
   comment = { "buffer", "dictionary" },
