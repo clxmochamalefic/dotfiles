@@ -237,9 +237,10 @@ return {
           vim.diagnostic.open_float(nil, { focus = false })
         end
 
-        local bufopts = { silent = true, buffer = bufnr }
+        local bufopts = { silent = true, buffer = bufnr, noremap = true }
         keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
         keymap.set("n", "I", openDiagnostics, bufopts)
+        keymap.set("n", "<Space>", openDiagnostics, bufopts)
         keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
         keymap.set("n", "<F3>", function()
           vim.lsp.buf.format({ async = true })
