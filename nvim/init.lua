@@ -55,6 +55,7 @@ for_windows.setup()
 
 -- selfmade plugins development
 --vim.opt.runtimepath:append(my_home_path .. "/repos/denops/soil.denops")
+--vim.opt.runtimepath:append("/home/nao/repos/denops/soil.denops")
 --vim.g["denops#debug"] = 1
 
 -- debug plugin
