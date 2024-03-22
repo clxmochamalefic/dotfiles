@@ -3,13 +3,14 @@ local api = vim.api
 return {
   {
     lazy = true,
-    'nvim-neotest/neotest',
+    "nvim-neotest/neotest",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/nvim-nio",
 
-      'rcasia/neotest-java',
+      "rcasia/neotest-java",
     },
     cmd = {
       "NeotestNear",
@@ -32,14 +33,14 @@ return {
 
       -- https://github.com/nvim-neotest/neotest?tab=readme-ov-file#usage
       local function execTestForCursorNear()
-        require("neotest").run.run({strategy = "dap"})
+        require("neotest").run.run({ strategy = "dap" })
       end
       local function stopTest()
         require("neotest").run.stop()
       end
 
-      api.nvim_create_user_command("NeotestNear", execTestForCursorNear,  {})
-      api.nvim_create_user_command("NeotestStop", stopTest,  {})
-    end
+      api.nvim_create_user_command("NeotestNear", execTestForCursorNear, {})
+      api.nvim_create_user_command("NeotestStop", stopTest, {})
+    end,
   },
 }
