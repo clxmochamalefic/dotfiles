@@ -20,10 +20,9 @@ local M = {
 }
 
 M.setup = function(baseLc, lc, opts)
-  local root_dir = baseLc.util.root_pattern("gradle.properties", "build.gradle", "pom.xml", ".git")
-  lc.setup({
-    root_dir = root_dir,
-  })
+  opts = opts or {}
+  opts.root_dir = baseLc.util.root_pattern("gradle.properties", "build.gradle", "pom.xml", ".git")
+  lc.setup(opts)
   --lc.start_or_attach(M.config)
   M.baseLc = baseLc
   M.lc = lc

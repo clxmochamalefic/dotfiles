@@ -1,6 +1,6 @@
 local M = {}
 
-local wndutil = require('utils.sub.window')
+local wndutil = require("utils.sub.window")
 
 function M.setup()
   local mnl_stat, mason_null_ls = pcall(require, "mason-null-ls")
