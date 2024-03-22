@@ -39,6 +39,16 @@ return {
         },
       })
 
+      local augroup_id = vim.api.nvim_create_augroup("nvimtree", {})
+      vim.api.nvim_create_autocmd("FileType", {
+        group = augroup_id,
+        pattern = "NvimTree",
+        callback = function()
+          vim.keymap.set("n", ">", "<Cmd>vertical resize +10<CR>", { noremap = true })
+          vim.keymap.set("n", "<lt>", "<Cmd>vertical resize -10<CR>", { noremap = true })
+        end,
+      })
+
       local function open_nvim_tree()
         require("nvim-tree.api").tree.open()
       end

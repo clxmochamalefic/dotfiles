@@ -12,7 +12,7 @@ local keymap = vim.keymap
 local myutils = require("utils")
 
 local builtin = nil
-local tu = require("plugins.plugin.telescope.util")
+local tu = require("plugins.plugin.fzf.util")
 
 return {
   {
