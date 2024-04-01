@@ -44,8 +44,8 @@ return {
         group = augroup_id,
         pattern = "NvimTree",
         callback = function()
-          vim.keymap.set("n", ">", "<Cmd>vertical resize +10<CR>", { noremap = true })
-          vim.keymap.set("n", "<lt>", "<Cmd>vertical resize -10<CR>", { noremap = true })
+          vim.keymap.set("n", ">", "<Cmd>vertical resize +10<CR>", { noremap = true, buffer = true })
+          vim.keymap.set("n", "<lt>", "<Cmd>vertical resize -10<CR>", { noremap = true, buffer = true })
         end,
       })
 
