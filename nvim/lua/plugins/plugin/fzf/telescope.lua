@@ -26,6 +26,8 @@ return {
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
 
+      "xiyaowong/telescope-emoji.nvim",
+
       "delphinus/telescope-memo.nvim",
     },
     cmd = {
@@ -42,6 +44,8 @@ return {
 
       "Telescope frecency",
 
+      "Telescope emoji",
+
       -- memolist
       "Telescope memo list",
       "Telescope memo grep",
@@ -49,26 +53,36 @@ return {
       "Telescope memo grep_string",
     },
     keys = {
+      -- buffer
       { "z", tu.CallBuiltinBuffer, { mode = "n", desc = "Telescope: buffers" } },
+      -- find file
       { "<leader>f", tu.CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
+      -- find help
       { "<leader>h", tu.CallBuiltinHelpTags, { mode = "n", desc = "Telescope: help tags" } },
+      -- freecency in project root
       {
         "<leader>b",
         tu.CallFrecencyCurrentDir,
         { mode = "n", desc = "Telescope: frecency workspace={project_root}" },
       },
+      -- live grep
       { "<leader>g", tu.CallBuiltinLiveGrep, { mode = "n", desc = "Telescope: live grep" } },
+      -- live grep with args
       {
         "<leader>G",
         tu.CallBuiltinLiveGrepArgs,
         { mode = "n", desc = "Telescope: live grep args" },
       },
+      -- freecency
       { "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
+      -- freecency in current dir
       {
         "<leader>s",
         "<Cmd>Telescope frecency workspace=CWD<CR>",
         { mode = "n", desc = "Telescope: frecency workspace=CWD" },
       },
+      -- emoji
+      { "<leader>e", "<Cmd>Telescope emoji<CR>", { mode = "n", desc = "Telescope: emoji" } },
     },
     event = {
       "VimEnter",
