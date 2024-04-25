@@ -39,6 +39,7 @@ return {
         },
       })
 
+      local api = require("nvim-tree.api")
       local augroup_id = vim.api.nvim_create_augroup("nvimtree", {})
       vim.api.nvim_create_autocmd("FileType", {
         group = augroup_id,
@@ -46,6 +47,7 @@ return {
         callback = function()
           vim.keymap.set("n", ">", "<Cmd>vertical resize +10<CR>", { noremap = true, buffer = true })
           vim.keymap.set("n", "<lt>", "<Cmd>vertical resize -10<CR>", { noremap = true, buffer = true })
+          vim.keymap.set("n", "w", api.node.show_info_popup, { noremap = true, buffer = true })
         end,
       })
 
@@ -55,6 +57,7 @@ return {
 
       -- open nvim-tree on vim booted / nvim-treeをvim実行時に起動する
       vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, { callback = open_nvim_tree })
+      open_nvim_tree()
     end,
   },
   {
@@ -72,7 +75,7 @@ return {
         style = "minimal",
         relative = "win",
         border = "rounded",
-        wrap = false,
+        wrap = true,
       },
       -- window =  {
       --   wrap = false,
@@ -105,7 +108,7 @@ return {
         -- scroll up float buffer
         up = { "<C-e>", "<C-u>" },
         -- enable/disable float windows
-        toggle = { "<C-x>" },
+        toggle = { "<C-x>", "<Space>" },
       },
 
       -- hooks if return false preview doesn't shown
