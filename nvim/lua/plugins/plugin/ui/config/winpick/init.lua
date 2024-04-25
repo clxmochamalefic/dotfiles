@@ -58,12 +58,15 @@ M.opts = {
   ---@diagnostic disable-next-line: unused-local
   format_label = function(label, winid, bufnr)
     local ft = vim.bo[bufnr].filetype
+    local bt = vim.bo[bufnr].buftype
+    --local wbr = vim.bo[bufnr].wbr
     if vim.tbl_contains(exclude_create_label_filetypes, ft) then
       return string.format("%s: %s", label, ft)
     end
 
     local path = wndutil.getBufPathPartialyShorten(bufnr, 1, 3)
     return string.format("%s: %s", label, path)
+    --return string.format("%s: [%s/%s/%s] %s", label, ft, bt, wbr, path)
   end,
   chars = nil,
 }
