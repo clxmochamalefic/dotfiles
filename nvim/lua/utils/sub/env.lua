@@ -2,6 +2,19 @@ local fn = vim.fn
 
 local M = {}
 
+function M.get_env_name()
+  if M.is_windows() then
+    return "win"
+  elseif M.is_wsl() then
+    return "wsl"
+  elseif M.is_linux() then
+    return "linux"
+  elseif M.is_mac() then
+    return "mac"
+  end
+  return ""
+end
+
 function M.is_pure_linux()
   return fn.has("linux") == 1 and fn.has("wsl") == 0
 end
