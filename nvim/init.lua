@@ -31,7 +31,6 @@ local mapping = require("preferences.mapping")
 local command = require("preferences.command")
 local colour = require("preferences.colour")
 local window = require("preferences.window")
-local for_windows = require("preferences.for-windows")
 
 local plugins = require("plugins")
 
@@ -51,7 +50,6 @@ command.setup()
 
 colour.setup()
 window.setup()
-for_windows.setup()
 
 -- selfmade plugins development
 --vim.opt.runtimepath:append(my_home_path .. "/repos/denops/soil.denops")

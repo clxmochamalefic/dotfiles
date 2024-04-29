@@ -4,9 +4,11 @@
 
 local api = vim.api
 
+local myutils = require("utils")
 local myio = require("utils.sub.io")
-local mydap = require("plugins.plugin.lsp.config.dap")
 local mystr = require("utils.string")
+
+local mydap = require("plugins.plugin.lsp.config.dap")
 
 -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
 local function dap_start(opts)
@@ -59,6 +61,17 @@ return {
         { mode = "n", silent = true, desc = "dap: breakpoint with log point message" },
       },
     },
+    init = function()
+      if not myutils.depends.has("gdb") then
+        myutils.depends.install("gdb", {}, { myutils.env.is_windows })
+      end
+      if not myutils.depends.has("lldb") then
+        myutils.depends.install("lldb", { winget = "LLVM.LLVM" })
+      end
+      if not myutils.depends.has("rr") then
+        myutils.depends.install("rr", {}, { myutils.env.is_windows })
+      end
+    end,
     config = function()
       vim.api.nvim_set_keymap(
         "n",
@@ -102,6 +115,7 @@ return {
 
       local dap = require("dap")
       mydap.setup(dap)
+      --vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { noremap = true })
 
       -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
       api.nvim_create_user_command("DapStart", dap_start, dap_start_complete)
@@ -127,11 +141,30 @@ return {
     end,
   },
   {
+    "sakhnik/nvim-gdb",
+  },
+  {
     lazy = true,
-    event = { "LspAttach" },
+    event = { "VeryLazy", "LspAttach" },
     "rcarriga/nvim-dap-ui",
     dependencies = {
+      "mfussenegger/nvim-dap",
       "nvim-neotest/nvim-nio",
     },
+    config = function()
+      local dap = require("dap")
+    end,
+  },
+  {
+    -- virtual text for variable current value on debugger
+    "theHamsta/nvim-dap-virtual-text",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function() end,
+  },
+  {
+    "thinca/vim-quickrun",
   },
 }

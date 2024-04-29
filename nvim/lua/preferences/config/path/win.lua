@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = require("utils")
 
 local M = {}
 
@@ -9,14 +9,14 @@ local api = vim.api
 local keymap = vim.keymap
 
 function M.setup()
-  if vim.fn.has('win32') then
+  if vim.fn.has("win32") then
     M.py()
     M.node()
   end
 end
 
 function M.py()
-  local pypath = g.my_home_preference_path .. '/python.lua'
+  local pypath = g.my_home_preference_path .. "/python.lua"
   -- python path
   if not utils.fs.exists(pypath) then
     local py2path = ""
@@ -27,8 +27,8 @@ function M.py()
 
     local body = py2pref .. "\n" .. py3pref .. "\n"
 
-    utils.io.debug_echo('python preference path' .. pypath)
-    utils.io.debug_echo('python preference body' .. body)
+    utils.io.debug_echo("python preference path" .. pypath)
+    utils.io.debug_echo("python preference body" .. body)
 
     io.open(pypath, "w"):write(body):close()
 
@@ -38,7 +38,7 @@ function M.py()
 end
 
 function M.node()
-  local nodepath = g.my_home_preference_path .. '/node.lua'
+  local nodepath = g.my_home_preference_path .. "/node.lua"
   -- node path
   if not utils.fs.exists(nodepath) then
     local path = vim.cmd("!gcm node | Select-Object Source")
@@ -46,8 +46,8 @@ function M.node()
 
     local body = pref .. "\n"
 
-    utils.io.debug_echo('node preference path' .. path)
-    utils.io.debug_echo('node preference body' .. body)
+    utils.io.debug_echo("node preference path" .. path)
+    utils.io.debug_echo("node preference body" .. body)
 
     io.open(nodepath, "w"):write(body):close()
     g.node_host_prog = path
@@ -55,6 +55,3 @@ function M.node()
 end
 
 return M
-
-
-

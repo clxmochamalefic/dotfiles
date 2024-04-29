@@ -123,40 +123,7 @@ local function clipboard_config()
   keymap.set("n", "<S-Insert>", "<C-R>+")
   opt.clipboard = "unnamedplus"
 
-  if utils.env.is_mac_os() then
-    vim.g.clipboard = {
-      name = "macOS-clipboard",
-      copy = { ["+"] = "pbcopy", ["*"] = "pbcopy" },
-      paste = { ["+"] = "pbpaste", ["*"] = "pbpaste" },
-      cache_enabled = 0,
-    }
-  elseif utils.env.is_wsl() then
-    vim.g.clipboard = {
-      name = "win32yank-wsl",
-      copy = {
-        ["+"] = "win32yank.exe -i",
-        ["*"] = "win32yank.exe -i",
-      },
-      paste = {
-        ["+"] = "win32yank.exe -o",
-        ["*"] = "win32yank.exe -o",
-      },
-      cache_enabled = 0,
-    }
-  elseif utils.env.is_windows() then
-    vim.g.clipboard = {
-      name = "win32yank-wsl",
-      copy = {
-        ["+"] = "win32yank.exe -i",
-        ["*"] = "win32yank.exe -i",
-      },
-      paste = {
-        ["+"] = "win32yank.exe -o",
-        ["*"] = "win32yank.exe -o",
-      },
-      cache_enabled = 0,
-    }
-  end
+  require("preferences.config.env")
 end
 
 --
