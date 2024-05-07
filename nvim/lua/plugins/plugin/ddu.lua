@@ -14,17 +14,17 @@ return {
   {
     lazy = true,
     "Shougo/ddu.vim",
-    tag = 'v3.7.0',
+    tag = "v3.7.0",
     dependencies = {
       "vim-denops/denops.vim",
 
-      { 
+      {
         "Shougo/ddu-ui-ff",
-        tag = 'v1.1.0'
+        tag = "v1.1.0",
       },
-      { 
+      {
         "Shougo/ddu-ui-filer",
-        tag = 'v1.1.0'
+        tag = "v1.1.0",
       },
 
       "Shougo/ddu-source-action",
@@ -57,19 +57,19 @@ return {
     config = function()
       ddu.setup()
 
-      api.nvim_create_user_command("DduFiler",      ddu.ui.filer.util.show,  {})
-      api.nvim_create_user_command("DduFF",         ddu.ui.ff.util.show,     {})
+      api.nvim_create_user_command("DduFiler", ddu.ui.filer.util.show, {})
+      api.nvim_create_user_command("DduFF", ddu.ui.ff.util.show, {})
 
       --fn["timer_start"](3, function()
       --  fn["ddu#start"]({ ui = "" })
       --end)
     end,
     cmd = { "DduFiler", "DduFF", "DduLspActions" },
---    keys = {
---      { "z", "<cmd>DduFiler<CR>", mode = "n" },
---      { "Z", "<cmd>DduFF<CR>", mode = "n" },
---      { "<F2>", "<cmd>DduLspActions<CR>", mode = "n" },
---    },
+    --    keys = {
+    --      { "z", "<cmd>DduFiler<CR>", mode = "n" },
+    --      { "Z", "<cmd>DduFF<CR>", mode = "n" },
+    --      { "<F2>", "<cmd>DduLspActions<CR>", mode = "n" },
+    --    },
   },
   {
     lazy = true,

@@ -51,6 +51,12 @@ M.opts = {
       return false
     end
 
+    --local win = vim.api.win_findbuf(bufnr)
+    --local config = vim.api.nvim_win_get_config(win)
+    --if config.relative ~= "" then -- is_floating_window?
+    --  return false
+    --end
+
     return true
   end,
   prompt = "Pick a window: ",
