@@ -24,6 +24,7 @@ return {
       "nvim-telescope/telescope-fzf-native.nvim",
       "nvim-telescope/telescope-frecency.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
+      "pbogut/fzf-mru.vim",
       "nvim-telescope/telescope-ui-select.nvim",
 
       "xiyaowong/telescope-emoji.nvim",
@@ -43,6 +44,7 @@ return {
       "Telescope git_commits",
 
       "Telescope frecency",
+      "Telescope fzf_mru",
 
       "Telescope emoji",
 
@@ -81,6 +83,8 @@ return {
         "<Cmd>Telescope frecency workspace=CWD<CR>",
         { mode = "n", desc = "Telescope: frecency workspace=CWD" },
       },
+      -- mru
+      { "<leader>m", "<Cmd>Telescope fzf_mru<CR>", { mode = "n", desc = "Telescope: fzf_mru" } },
       -- emoji
       { "<leader>e", "<Cmd>Telescope emoji<CR>", { mode = "n", desc = "Telescope: emoji" } },
     },
