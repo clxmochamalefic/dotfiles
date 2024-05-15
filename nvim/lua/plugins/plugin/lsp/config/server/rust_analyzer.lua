@@ -12,8 +12,9 @@ M.setup = function(baseLc, lc, opts)
   opts.filetypes = { "rust" }
   opts.settings = {
     ["rust-analyzer"] = {
-      lruCapacity = 64,
-      enableEnhancedTyping = false,
+      lru = {
+        Capacity = 64,
+      },
       assist = {
         importGranularity = "module",
         importPrefix = "by_crate",
