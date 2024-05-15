@@ -27,6 +27,7 @@ local M = {
     vimls = nil,
     lua_ls = nil,
     prettierd = require("plugins.plugin.lsp.config.server.prettierd"),
+    rust = require("plugins.plugin.lsp.config.server.rust_analyzer"),
   },
   no_mason = {
     "prettierd",
