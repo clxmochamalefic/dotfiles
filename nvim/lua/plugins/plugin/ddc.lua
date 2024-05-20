@@ -286,6 +286,22 @@ local function ddc_init()
 
   fn["ddc#custom#patch_global"](patch_global)
 
+  --  noice commandline preferences.
+  local patch_nocie = {
+    ui = "pum",
+    --    uiParams            = ui_params,
+    --sources = cmd_sources,
+    sources = sources,
+    cmdlineSources = cmd_sources,
+    sourceOptions = source_options,
+    sourceParams = source_params,
+    filterParams = filter_params,
+    backspaceCompletion = true,
+    autoCompleteEvents = autocomplete_events,
+  }
+
+  fn["ddc#custom#patch_filetype"]({'noice'}, patch_nocie)
+
   --  use ddc.
   fn["ddc#enable"]()
   fn["ddc#enable_cmdline_completion"]()
@@ -364,11 +380,19 @@ local function ddc_preference()
     mode = { "i", "c", "t" },
     lhs = "<Tab>",
     rhs = function()
+      --if pumvisible() then
+      --  fn["pum#map#confirm"]()
+      --  return ""
+      --end
       if pumvisible() then
-        fn["pum#map#confirm"]()
-        return ""
+        -- ddcmanualcomp = false
+        fn["pum#map#insert_relative"](1)
+      --elseif fn["ddc#map#can_complete"]() then
+      --  -- ddcmanualcomp = true
+      --  fn["ddc#map#manual_complete"]()
+      else
+        return "<Tab>"
       end
-      return "<Tab>"
     end,
     opts = km_opts.e,
   })
