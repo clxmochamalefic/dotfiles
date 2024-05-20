@@ -44,7 +44,7 @@ lspsaga.setup({
 		enable = true,
 	},
 	code_action_lightbulb = {
-		enable = true,
+		enable = false,
 	},
 	show_outline = {
 		win_width = 50,
@@ -142,14 +142,14 @@ vim.o.updatetime = 500
 -- vim.cmd [[autocmd BufReadPost * silent lua vim.lsp.buf.hover()]]
 
 function IsActiveLspOnCurrentBuffer(bufNumber)
-  local isLoadLsp = false;
-  vim.lsp.for_each_buffer_client(bufNumber, function(client, client_id, bufnr)
-    if client.name ~= "null-ls" then
-      isLoadLsp = true
-    end
-  end)
+	local isLoadLsp = false
+	vim.lsp.for_each_buffer_client(bufNumber, function(client, client_id, bufnr)
+		if client.name ~= "null-ls" then
+			isLoadLsp = true
+		end
+	end)
 
-  return isLoadLsp
+	return isLoadLsp
 end
 
 --vim.api.nvim_create_autocmd("LspAttach", {

@@ -53,7 +53,7 @@ return {
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
-          lualine_c = { { "filename", path = 4 }, "lsp_progress" },
+          lualine_c = { { "filename", path = 4 } },
           lualine_x = {},
           --lualine_y = { { "progress", color = colour.sub2 }, { "filetype", color = colour.sub2 } },
           --lualine_z = { { "location", color = colour.sub3 }, { "filetype", color = colour.sub3 } },
@@ -135,29 +135,29 @@ return {
         table.insert(config.sections.lualine_x, component)
       end
 
-      ins_left({
-        "lsp_progress",
-        display_components = { "lsp_client_name", "spinner", { "title", "percentage", "message" } },
-        colors = {
-          percentage = colors.cyan,
-          title = colors.cyan,
-          message = colors.cyan,
-          spinner = colors.cyan,
-          lsp_client_name = colors.magenta,
-          use = true,
-        },
-        separators = {
-          component = " ",
-          progress = " | ",
-          percentage = { pre = "", post = "%% " },
-          title = { pre = "", post = ": " },
-          lsp_client_name = { pre = "[", post = "]" },
-          spinner = { pre = "", post = "" },
-          message = { pre = "(", post = ")", commenced = "In Progress", completed = "Completed" },
-        },
-        timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
-        spinner_symbols = { "🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘" },
-      })
+      --ins_left({
+      --  "lsp_progress",
+      --  display_components = { "lsp_client_name", "spinner", { "title", "percentage", "message" } },
+      --  colors = {
+      --    percentage = colors.cyan,
+      --    title = colors.cyan,
+      --    message = colors.cyan,
+      --    spinner = colors.cyan,
+      --    lsp_client_name = colors.magenta,
+      --    use = true,
+      --  },
+      --  separators = {
+      --    component = " ",
+      --    progress = " | ",
+      --    percentage = { pre = "", post = "%% " },
+      --    title = { pre = "", post = ": " },
+      --    lsp_client_name = { pre = "[", post = "]" },
+      --    spinner = { pre = "", post = "" },
+      --    message = { pre = "(", post = ")", commenced = "In Progress", completed = "Completed" },
+      --  },
+      --  timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
+      --  spinner_symbols = { "🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘" },
+      --})
 
       local ll = require("lualine")
       ll.setup(config)
@@ -188,9 +188,9 @@ return {
       -- ]]
     end,
   },
-  {
-    "arkav/lualine-lsp-progress",
-  },
+  --{
+  --  "arkav/lualine-lsp-progress",
+  --},
   --  {
   --    'akinsho/bufferline.nvim',
   --    dependencies = {
