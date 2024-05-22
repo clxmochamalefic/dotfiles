@@ -68,6 +68,11 @@ return {
             tyd = "textDocument/typeDefinition",
           },
         },
+        -- https://nvimdev.github.io/lspsaga/lightbulb/
+        -- hide lightbulb icon in anumber col  number col
+        ui = {
+          code_action = "",
+        },
       })
 
       keymap.set("n", "<leader>,", "<Cmd>Lspsaga finder<CR>", { desc = "Telescope: live grep args" })
