@@ -192,8 +192,8 @@ end
 --
 local function config_sound()
   --  enable mute
-  api.nvim_set_option("t_vb", "")
-  -- api.nvim_set_option("visualbell", true)
+  --api.nvim_set_option("t_vb", "")
+  api.nvim_set_option("visualbell", true)
   g.visualbell = true
   g.noerrorbells = true
 end
