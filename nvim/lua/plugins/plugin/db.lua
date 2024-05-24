@@ -10,7 +10,8 @@ return {
   {
     "tpope/vim-dadbod",
     lazy = true,
-    event = { "VeryLazy" },
+    event = { "VimEnter" },
+    cond = false,
     dependencies = {
       "tpope/vim-dotenv",
       "kristijanhusak/vim-dadbod-ui",

@@ -120,9 +120,19 @@ return {
 
         local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
         markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-        if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
-          -- vim.notify("No information available: diag")
-          return
+        local nvimver = myutils.env.get_nvim_version()
+        if nvimver.minor < 10 then
+          if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
+            -- vim.notify("No information available: diag")
+            return
+          end
+        else
+          -- TODO: もしかしたら nvim 0.10.0 以降で `vim.tbl_isempty` から `vim.empty` に変わるかもしれない
+          -- https://github.com/neovim/neovim/issues/24572
+          if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
+            -- vim.notify("No information available: diag")
+            return
+          end
         end
 
         --local floatWndWidth = config.width

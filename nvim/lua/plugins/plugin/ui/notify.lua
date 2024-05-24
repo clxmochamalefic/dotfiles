@@ -12,9 +12,11 @@ local nc = require("plugins.plugin.ui.config.nui.noice-nvim")
 
 return {
   {
-    lazy = true,
+    --lazy = true,
+    --event = { "VeryLazy" },
+    cond = true,
     "rcarriga/nvim-notify",
-    event = { "VeryLazy" },
+    tag = "v3.13.5",
     dependencies = {
       "nvim-telescope/telescope.nvim",
     },
@@ -34,9 +36,10 @@ return {
     end,
   },
   {
-    lazy = true,
+    --lazy = true,
+    --event = { "VeryLazy" },
+    cond = true,
     "folke/noice.nvim",
-    event = { "VeryLazy" },
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",

@@ -14,8 +14,10 @@ return {
     },
   },
   {
-    lazy = true,
+    --lazy = true,
+    --event = { "BufRead", "FileReadPost" },
     "NeogitOrg/neogit",
+    --branch = "nightly",
     dependencies = {
       "nvim-lua/plenary.nvim", -- required
       "sindrets/diffview.nvim", -- optional - Diff integration
@@ -24,17 +26,17 @@ return {
       "nvim-telescope/telescope.nvim", -- optional
       "ibhagwan/fzf-lua", -- optional
     },
-    event = { "BufRead", "FileReadPost" },
     cmd = {
       "Neogit",
     },
     keys = {
       { "gi", "<cmd>Neogit cwd=%:p:h<CR>", mode = "n" },
     },
-    config = function()
-      local neogit = require("neogit")
-      neogit.setup({})
-    end,
+    config = true,
+    --config = function()
+    --  local neogit = require("neogit")
+    --  neogit.setup({})
+    --end,
   },
   {
     lazy = true,
