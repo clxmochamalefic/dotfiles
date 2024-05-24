@@ -316,6 +316,7 @@ return {
   {
     lazy = true,
     "kevinhwang91/nvim-ufo",
+    tag = "v1.4.0",
     dependencies = {
       "kevinhwang91/promise-async",
     },

@@ -18,6 +18,7 @@ return {
     --event = { "BufRead", "FileReadPost" },
     "NeogitOrg/neogit",
     --branch = "nightly",
+    tag = "v1.0.0",
     dependencies = {
       "nvim-lua/plenary.nvim", -- required
       "sindrets/diffview.nvim", -- optional - Diff integration
@@ -25,6 +26,7 @@ return {
       -- Only one of these is needed, not both.
       "nvim-telescope/telescope.nvim", -- optional
       "ibhagwan/fzf-lua", -- optional
+      "kevinhwang91/nvim-ufo",
     },
     cmd = {
       "Neogit",
