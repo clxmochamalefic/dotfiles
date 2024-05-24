@@ -1,6 +1,44 @@
 local fn = vim.fn
 
-local M = {}
+--- @alias nvim_version
+---| api_compatible # [Integer] has api compatible API互換有無
+---| api_level = 12 # [Integer] api version
+---| api_prerelease # [Integer|nil] api prerelease APIプレリリース
+---| build # [String] build number ビルド番号 (git commit bash)
+---| major # [Integer] major メジャーバージョン
+---| minor # [Integer] minor マイナーバージョン
+---| patch # [Integer] patch パッチバージョン
+---| prerelease # [String] prerelease build type プレリリースビルドタイプ
+---
+--- e.g. vim.inspect(vim.version())
+--- {
+---   api_compatible = 0
+--- 
+---   api_level = 12
+--- 
+---   api_prerelease = vim.NIL
+---   build = "g27fb62988"
+---   major = 0
+---   minor = 10
+---   patch = 0
+---   prerelease = "dev"
+--- }
+
+local M = {
+  -- @type nvim_version neovim version
+  nvim = nil
+}
+
+-- get neovim version
+--
+-- @return nvim_version neovim version
+function M.get_nvim_version()
+  if nvim == nil then
+    M.nvim = vim.inspect(vim.version())
+  end
+
+  return M.nvim
+end
 
 function M.get_env_name()
   if M.is_windows() then
