@@ -58,7 +58,7 @@ local function config_draw()
   --  Windows でもパスの区切り文字を / にする
   --  2023-12-22: 一時的に `shellslash` をオフにする 👉 telescope.nvim がいまいち対応していないため
   --opt.shellslash = true
-  opt.shellslash = false
+  --opt.shellslash = false
 
   -- +++++++++++++++
   -- " display - line number
