@@ -4,4 +4,5 @@
 
 return {
   checker = true,
+  check = true,
 }
