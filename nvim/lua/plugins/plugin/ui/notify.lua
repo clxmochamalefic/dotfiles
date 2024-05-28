@@ -57,6 +57,7 @@ return {
         view = "notify",
         filter = { event = "msg_show" },
       }
+      opts.progress = nc.progress
       opts.popupmenu = nc.popupmenu
       opts.presets = nc.presets
     end,
