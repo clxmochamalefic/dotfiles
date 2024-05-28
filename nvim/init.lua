@@ -31,6 +31,10 @@ local mapping = require("preferences.mapping")
 local command = require("preferences.command")
 local colour = require("preferences.colour")
 local window = require("preferences.window")
+local gui = { setup = function() end }
+if vim.g.neovide then
+  gui = require("preferences.gui")
+end
 
 local plugins = require("plugins")
 
@@ -50,6 +54,9 @@ command.setup()
 
 colour.setup()
 window.setup()
+
+gui.setup()
+
 
 -- selfmade plugins development
 --vim.opt.runtimepath:append(my_home_path .. "/repos/denops/soil.denops")
