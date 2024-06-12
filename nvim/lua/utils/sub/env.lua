@@ -26,18 +26,50 @@ local fn = vim.fn
 
 local M = {
   -- @type nvim_version neovim version
-  nvim = nil
+  ver_raw = nil,
+
+  ver = {
+    major = 0,
+    minor = 0,
+    patch = 0,
+  }
 }
+
+function M.init_nvim_version()
+  if ver_raw == nil then
+    M.ver_raw = vim.version()
+    M.ver.major = M.ver_raw.major or 0
+    M.ver.minor = M.ver_raw.minor or 0
+    M.ver.patch = M.ver_raw.patch or 0
+  end
+end
 
 -- get neovim version
 --
 -- @return nvim_version neovim version
-function M.get_nvim_version()
-  if nvim == nil then
-    M.nvim = vim.inspect(vim.version())
-  end
+function M.get_nvim_version_raw()
+  M.init_nvim_version()
+  return M.ver_raw
+end
 
-  return M.nvim
+function M.get_nvim_version()
+  M.init_nvim_version()
+  return M.ver
+end
+
+function M.get_major()
+  M.init_nvim_version()
+  return M.ver.major
+end
+
+function M.get_minor()
+  M.init_nvim_version()
+  return M.ver.minor
+end
+
+function M.get_major()
+  M.init_nvim_version()
+  return M.ver.major
 end
 
 function M.get_env_name()
