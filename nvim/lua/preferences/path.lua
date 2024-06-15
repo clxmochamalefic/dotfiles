@@ -11,18 +11,19 @@ local M = {}
 local setupper = {}
 
 function M.setup()
-  if fn["has"]('win32') == 1 and fn["has"]('wsl') == 1 then
+  
+  if utils.env.is_wsl_linux() then
     -- wsl only
     setupper = require("preferences.config.path.linux")
-  elseif vim.fn.has('wsl') or vim.fn.has('linux') then
+  elseif utils.env.is_pure_linux() then
     -- host linux
     setupper = require("preferences.config.path.linux")
 
-  elseif vim.fn.has('win32') then
+  elseif utils.env.is_windows() then
     -- host windows
     setupper = require("preferences.config.path.win")
 
-  elseif vim.fn.has('mac') or vim.fn.has('unix') then
+  elseif utils.env.is_mac() then
     -- host macOS
     setupper = require("preferences.config.path.mac")
   else
