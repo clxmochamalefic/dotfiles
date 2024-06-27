@@ -8,7 +8,7 @@ return {
   opts = {
     cmdline_popup = {
       win_options = {
-        winblend = 0,
+        winblend = vim.g.blend,
       },
       scrollbar = false,
     },

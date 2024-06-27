@@ -72,6 +72,9 @@ local function config_draw()
   g.float_window_row = 10
   g.float_window_width = 30
 
+  -- blending
+  g.blend = 20
+
   utils.window.resize_float_window_default()
 
   api.nvim_create_autocmd("VimResized", { callback = utils.window.resize_float_window_default })

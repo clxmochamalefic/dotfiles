@@ -21,7 +21,7 @@ return {
         padding       = true
       })
 
-      local blend = 20
+      local blend = vim.g.blend
 
       api.nvim_set_option('pumblend', blend)
 
