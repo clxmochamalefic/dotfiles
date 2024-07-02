@@ -625,7 +625,7 @@ return {
       g.popup_preview_config = {
         delay = 10,
         maxWidth = 100,
-        winblend = 10,
+        winblend = vim.g.blend,
       }
       api.nvim_call_function("popup_preview#enable", {})
     end,
