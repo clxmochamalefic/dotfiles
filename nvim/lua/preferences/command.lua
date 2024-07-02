@@ -1,4 +1,4 @@
-local command = {}
+local M = {}
 
 local utils = require('utils')
 
@@ -7,7 +7,7 @@ local fn = vim.fn
 local api = vim.api
 local g = vim.g
 
-command.setup = function()
+M.setup = function()
   utils.io.begin_debug(fn["expand"]('%/h'))
 
   --  -- +++++++++++++++
@@ -28,6 +28,13 @@ command.setup = function()
   local ginitvim_filepath = g.my_initvim_path .. '/ginit.lua'
   local initvim_filepath  = g.my_initvim_path .. '/init.lua'
 
+  M.reloadPreference()
+  M.replaceUtility()
+
+  utils.io.end_debug(fn["expand"]('%/h'))
+end
+
+M.reloadPreference = function()
   --  init.vim reload
   local function reload_preference()
     if fn.has("gui_running") then
@@ -44,9 +51,21 @@ command.setup = function()
   api.nvim_create_user_command("Rer", reload_preference, {})
   api.nvim_create_user_command("ReloadAll", reload_all, {})
   api.nvim_create_user_command("Rea", reload_all, {})
-
-  utils.io.end_debug(fn["expand"]('%/h'))
 end
 
-return command
+M.replaceUtility = function()
+  -- erase spaces to line end
+  local function trimEnd()
+    vim.cmd([[%s#\v\s+$##g]])
+  end
+  api.nvim_create_user_command("TrimEnd", trimEnd, {})
+
+  -- erase spaces to line end
+  local function trimcrlf()
+    vim.cmd([[%s#\v\r\n##g]])
+  end
+  api.nvim_create_user_command("TrimCrlf", trimCRLF, {})
+end
+
+return M
 
