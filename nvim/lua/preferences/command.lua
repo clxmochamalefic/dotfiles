@@ -1,6 +1,6 @@
 local M = {}
 
-local utils = require('utils')
+local utils = require("utils")
 
 local opt = vim.opt
 local fn = vim.fn
@@ -8,7 +8,7 @@ local api = vim.api
 local g = vim.g
 
 M.setup = function()
-  utils.io.begin_debug(fn["expand"]('%/h'))
+  utils.io.begin_debug(fn["expand"]("%/h"))
 
   --  -- +++++++++++++++
   --  --  define command
@@ -25,13 +25,13 @@ M.setup = function()
   --  fn.command("Jq",  "!j+ '%:p'")
   --
   --  --  preference file open mapping
-  local ginitvim_filepath = g.my_initvim_path .. '/ginit.lua'
-  local initvim_filepath  = g.my_initvim_path .. '/init.lua'
+  local ginitvim_filepath = g.my_initvim_path .. "/ginit.lua"
+  local initvim_filepath = g.my_initvim_path .. "/init.lua"
 
   M.reloadPreference()
   M.replaceUtility()
 
-  utils.io.end_debug(fn["expand"]('%/h'))
+  utils.io.end_debug(fn["expand"]("%/h"))
 end
 
 M.reloadPreference = function()
@@ -40,7 +40,7 @@ M.reloadPreference = function()
     if fn.has("gui_running") then
       fn["execute"]("source " .. ginitvim_filepath)
     end
-      fn["execute"]("source " .. initvim_filepath)
+    fn["execute"]("source " .. initvim_filepath)
   end
 
   local function reload_all()
@@ -61,11 +61,10 @@ M.replaceUtility = function()
   api.nvim_create_user_command("TrimEnd", trimEnd, {})
 
   -- erase spaces to line end
-  local function trimcrlf()
+  local function trimCrlf()
     vim.cmd([[%s#\v\r\n##g]])
   end
-  api.nvim_create_user_command("TrimCrlf", trimCRLF, {})
+  api.nvim_create_user_command("TrimCrlf", trimCrlf, {})
 end
 
 return M
-
