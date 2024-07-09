@@ -1,6 +1,6 @@
 local g = vim.g
 
-local ntconfig = require("plugins.plugin.ui.config.nvim-tree")
+local ntconfig = require("plugins.plugin.ui.filer.config.nvim-tree")
 
 return {
   {
@@ -56,8 +56,8 @@ return {
       end
 
       -- open nvim-tree on vim booted / nvim-treeをvim実行時に起動する
-      vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, { callback = open_nvim_tree })
-      open_nvim_tree()
+      --vim.api.nvim_create_autocmd({ "VimEnter", "TabNewEntered" }, { callback = open_nvim_tree })
+      --open_nvim_tree()
     end,
   },
   {
