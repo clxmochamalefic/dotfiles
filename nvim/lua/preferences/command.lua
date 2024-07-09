@@ -61,6 +61,12 @@ M.replaceUtility = function()
   api.nvim_create_user_command("TrimEnd", trimEnd, {})
 
   -- erase spaces to line end
+  local function trimCr()
+    vim.cmd([[%s#\v\r##g]])
+  end
+  api.nvim_create_user_command("TrimCr", trimCr, {})
+
+  -- erase spaces to line end
   local function trimCrlf()
     vim.cmd([[%s#\v\r\n##g]])
   end
