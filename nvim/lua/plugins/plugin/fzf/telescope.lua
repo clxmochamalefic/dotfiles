@@ -87,6 +87,9 @@ return {
       { "<leader>m", "<Cmd>Telescope fzf_mru<CR>", { mode = "n", desc = "Telescope: fzf_mru" } },
       -- emoji
       { "<leader>e", "<Cmd>Telescope emoji<CR>", { mode = "n", desc = "Telescope: emoji" } },
+
+      -- symbol list
+      { "<leader>i", "<Cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", { mode = "n", desc = "Telescope: builtin lsp doc symbols" } },
     },
     event = {
       "VimEnter",
@@ -103,7 +106,8 @@ return {
       })
 
       local actions = require("telescope.actions")
-      require("telescope").setup({
+      local t = require("telescope")
+      t.setup({
         pickers = {
           buffers = {
             path_display = tu.FileNameFirst,
@@ -215,6 +219,8 @@ return {
           },
         },
       })
+
+      builtin = t.builtin
     end,
   },
 }
