@@ -4,13 +4,13 @@
 
 local M = {}
 
-local tls = require("plugins.plugin.fzf.telescope")
+local tls = require("plugins.plugin.ui.fzf.telescope")
 
-local ext_fzf = require("plugins.plugin.fzf.ext.fzf-native")
-local ext_lga = require("plugins.plugin.fzf.ext.live-grep-args")
-local ext_mem = require("plugins.plugin.fzf.ext.memo")
+local ext_fzf = require("plugins.plugin.ui.fzf.ext.fzf-native")
+local ext_lga = require("plugins.plugin.ui.fzf.ext.live-grep-args")
+local ext_mem = require("plugins.plugin.ui.fzf.ext.memo")
 
-local oth = require("plugins.plugin.fzf.other-nvim")
+local oth = require("plugins.plugin.ui.fzf.other-nvim")
 
 table.insert(M, tls)
 
