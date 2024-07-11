@@ -135,11 +135,12 @@ return {
                 nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use 
             },
             ["<2-LeftMouse>"] = "open",
-            ["<cr>"] = "open",
+            ["<cr>"] = "open_with_window_picker",
+            ["l"] = "open",
             ["<esc>"] = "cancel", -- close preview or floating neo-tree window
             ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
             -- Read `# Preview Mode` for more information
-            ["l"] = "focus_preview",
+            ["L"] = "focus_preview",
 
             --["s"] = "open_vsplit",
             --["S"] = "open_split",
