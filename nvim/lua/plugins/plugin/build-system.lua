@@ -5,7 +5,8 @@
 return {
   {
     lazy = true,
-    event = { "VeryLazy" },
+--    event = { "VeryLazy" },
+    ft = "gradle",
     "HiPhish/gradle.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
