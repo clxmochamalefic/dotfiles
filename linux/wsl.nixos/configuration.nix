@@ -31,6 +31,41 @@
     };
   };
 
+  # タイムゾーン
+  time.timeZone = "Asia/Tokyo";
+
+  # ロケール等の設定
+  i18n.defaultLocale = "en_US.utf8";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "ja_JP.utf8";
+    LC_IDENTIFICATION = "ja_JP.utf8";
+    LC_MEASUREMENT = "ja_JP.utf8";
+    LC_MONETARY = "ja_JP.utf8";
+    LC_NAME = "ja_JP.utf8";
+    LC_NUMERIC = "ja_JP.utf8";
+    LC_PAPER = "ja_JP.utf8";
+    LC_TELEPHONE = "ja_JP.utf8";
+    LC_TIME = "ja_JP.utf8";
+  };
+ 
+  # システム全体向けにインストールするパッケージ
+  environment.systemPackages = with pkgs; [
+    containerd
+    #docker
+    #docker-compose
+    gnupg
+    #make
+    cmake
+    python3
+    nodejs
+    nodePackages."npm"
+    nodePackages."yarn"
+    nodePackages."pnpm"
+    nodePackages."typescript"
+    zsh
+    git
+  ];
+
   # この説明めっちゃわかりやすくて吹いた
   # https://zenn.dev/asa1984/articles/nixos-is-the-best#flake%E5%8C%96
   programs = {
@@ -49,7 +84,13 @@
     zsh = {
       enable = true;
     };
+    #containerd = {
+    #  enable = true;
+    #};
   };
+
+  # Docker を有効化する
+  #virtualisation.containerd.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
