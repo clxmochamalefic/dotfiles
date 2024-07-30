@@ -153,9 +153,11 @@ return {
             -- ["t"] = "open_tab_drop",
             ["w"] = "open_with_window_picker",
             --["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
-            ["C"] = "close_node",
+            --["C"] = "close_node",
+            ["h"] = "close_node",
             -- ['C'] = 'close_all_subnodes',
-            ["z"] = "close_all_nodes",
+            --["z"] = "close_all_nodes",
+            ["H"] = "close_all_nodes",
             --["Z"] = "expand_all_nodes",
             ["b"] = { 
               "add",
@@ -182,8 +184,8 @@ return {
             ["q"] = "close_window",
             ["R"] = "refresh",
             ["?"] = "show_help",
-            ["<"] = "prev_source",
-            [">"] = "next_source",
+            --["<"] = "prev_source",
+            --[">"] = "next_source",
             ["i"] = "show_file_details",
           }
         },
@@ -234,7 +236,7 @@ return {
               ["."] = "set_root",
               ["<Tab>"] = "set_root",
               ["H"] = "toggle_hidden",
-              --["/"] = "fuzzy_finder",
+              ["/"] = "noop",
               ["D"] = "fuzzy_finder_directory",
               ["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
               -- ["D"] = "fuzzy_sorter_directory",
