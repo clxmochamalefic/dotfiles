@@ -63,6 +63,7 @@ return {
     build = function()
       myDenops.setup()
       myDenops.build()
+      myDenops.update()
     end,
     config = function()
       myDenops.setup()

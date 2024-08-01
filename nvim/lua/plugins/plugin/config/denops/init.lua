@@ -52,12 +52,18 @@ function M.build4anyhost()
   --vim.cmd("sudo echo \"bash -c 'deno run -A --no-lock " .. denopsCliPath .. " --hostname=" .. M.host .. " --port " .. M.port .. " >> /dev/null &' \" >> /etc/rc.local ")
 end
 
+-- function for denops build to env
 function M.build()
   if env.is_windows() then
     M.build4win()
   else
     M.build4anyhost()
   end
+end
+
+-- function for denops updated
+function M.update()
+  vim.cmd([[call denops#cache#update(#{reload: v:true})]]);
 end
 
 return M
