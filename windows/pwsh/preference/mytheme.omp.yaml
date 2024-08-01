@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+version: 2
+final_space: true
+auto_upgrade: true
+blocks:
+- type: prompt
+  alignment: left
+  segments:
+  - type: root
+    style: powerline
+    powerline_symbol: 
+    template: " \uf0e7 "
+    background: "#ffe9aa"
+    foreground: "#100e23"
+    text: ""
+    duration: 0s
+    namelength: 0
+  - type: session
+    style: powerline
+    powerline_symbol: 
+    template: " {{ .UserName }}@{{ .HostName }} "
+    background: "#ffffff"
+    foreground: "#100e23"
+    text: ""
+    duration: 0s
+    namelength: 0
+  - type: path
+    style: powerline
+    powerline_symbol: 
+    template: " {{ .Path }} "
+    properties:
+      folder_icon: 
+      folder_separator_icon: " \ue0b1 "
+      style: full
+    background: "#91ddff"
+    foreground: "#100e23"
+    text: ""
+    duration: 0s
+    namelength: 0
+  - type: git
+    style: powerline
+    powerline_symbol: 
+    template: " {{ .HEAD }} "
+    background: "#95ffa4"
+    foreground: "#193549"
+    text: ""
+    duration: 0s
+    namelength: 0
+  - type: python
+    style: powerline
+    powerline_symbol: 
+    template: " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} "
+    background: "#906cff"
+    foreground: "#100e23"
+    text: ""
+    duration: 0s
+    namelength: 0
+  - type: status
+    style: powerline
+    powerline_symbol: 
+    template: " \ue20f "
+    background: "#ff8080"
+    foreground: "#ffffff"
+    text: ""
+    duration: 0s
+    namelength: 0
+- type: prompt
+  alignment: left
+  segments:
+  - type: text
+    style: plain
+    template: "❯ "
+    background: ""
+    foreground: "#007ACC"
+    text: ""
+    duration: 0s
+    namelength: 0
+  newline: true
