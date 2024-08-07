@@ -11,7 +11,7 @@
           "PackageIdentifier": "Google.AndroidStudio"
         },
         {
-          "PackageIdentifier" : "Kitware.CMake"
+          "PackageIdentifier": "Kitware.CMake"
         },
         {
           "PackageIdentifier": "Canonical.Ubuntu.2204"
@@ -83,6 +83,9 @@
           "PackageIdentifier": "dbeaver.dbeaver"
         },
         {
+          "PackageIdentifier": "zig.zig"
+        },
+        {
           "PackageIdentifier": "MSYS2.MSYS2"
         }
       ],
@@ -94,5 +97,5 @@
       }
     }
   ],
-  "WinGetVersion" : "1.8.1911"
+  "WinGetVersion": "1.8.1911"
 }
