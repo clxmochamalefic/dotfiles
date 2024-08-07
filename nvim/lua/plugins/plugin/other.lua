@@ -126,4 +126,25 @@ return {
   --    })
   --  end
   --},
+  {
+    lazy = true,
+    event = { "VeryLazy" },
+    "eiji03aero/quick-notes",
+    dependencies = {
+      'junegunn/fzf',
+      'tpope/vim-fugitive',
+    },
+    cmd = {
+      "QuickNotesNew",
+      "QuickNotesDiary",
+      "QuickNotesNewGitBranch",
+      "QuickNotesLsNotes",
+      "QuickNotesLsDiary",
+      "QuickNotesFzf",
+    },
+    config = function()
+      vim.g.quick_notes_directory = vim.g.my_home_cache_path .. "/quick-notes/"
+      vim.g.quick_notes_suffix = 'md'
+    end,
+  }
 }

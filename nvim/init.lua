@@ -18,6 +18,7 @@ vim.api.nvim_create_augroup("MyAutoCmd", { clear = true })
 -- get preference file path
 -- `vim.g.preference_path` defined on ~/.cache/nvim/init.vim
 vim.g.my_home_preference_path = vim.fn.expand("~/.config/nvim")
+vim.g.my_home_cache_path = vim.fn.expand("~/.cache")
 local my_home_path = vim.fn.expand("~")
 vim.g.my_home_path = my_home_path
 vim.g.my_initvim_path = vim.fn.expand(vim.g.preference_path)
