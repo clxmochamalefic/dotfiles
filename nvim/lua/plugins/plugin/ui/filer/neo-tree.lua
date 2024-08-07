@@ -3,7 +3,7 @@
 -- ---------------------------------------------------------------------------
 
 -- no load
--- local myconfig = require("plugins.plugin.ui.config.neo-tree")
+local myconfig = require("plugins.plugin.ui.filer.config.neo-tree")
 
 return {
   {
@@ -311,7 +311,7 @@ return {
         }
       })
 
-      vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
+      myconfig.setup()
     end,
   },
   {
