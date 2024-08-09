@@ -2,8 +2,35 @@ local env = require("utils.sub.env")
 
 local M = {}
 
+function M.get_require()
+  local nc = M.nc or require('neo-tree.command')
+  if (not M.nc) then
+    M.nc = nc
+  end
+  return nc
+end
+
+--function M.cd(path)
+--  local nc = M.get_require()
+--  nc.execute({
+--    reveal_file = path,           -- path to file or folder to reveal
+--    reveal_force_cwd = true,      -- change cwd without asking if needed
+--  })
+--end
+
+function M.cd(path)
+  local nc = M.get_require()
+  nc.execute({
+    dir = path,
+    reveal = true,
+    --reveal_file = path,           -- path to file or folder to reveal
+    reveal_force_cwd = false,      -- change cwd without asking if needed
+  })
+end
+
 function M.setup()
-  local nc = require('neo-tree.command')
+  local nc = M.get_require()
+  local cd = M.cd
 
   local function opts(desc)
     local bufnr = vim.fn["bufnr"]()
@@ -23,12 +50,6 @@ function M.setup()
     --reveal_file = reveal_file, -- path to file or folder to reveal
     --reveal_force_cwd = true,   -- change cwd without asking if needed
   --})
-  local cd = function (path)
-    nc.execute({
-      reveal_file = path,           -- path to file or folder to reveal
-      reveal_force_cwd = true,      -- change cwd without asking if needed
-    })
-  end
 
   local cd_preference = function()
     cd(vim.g.my_initvim_path)
