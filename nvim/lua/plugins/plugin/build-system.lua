@@ -6,7 +6,7 @@ return {
   {
     lazy = true,
 --    event = { "VeryLazy" },
-    ft = ["gradle", "java", "kotlin", "scala", "groovy"],
+    ft = {"gradle", "java", "kotlin", "scala", "groovy"},
     "HiPhish/gradle.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
