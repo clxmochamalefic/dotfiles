@@ -145,6 +145,41 @@ return {
     config = function()
       vim.g.quick_notes_directory = vim.g.my_home_cache_path .. "/quick-notes/"
       vim.g.quick_notes_suffix = 'md'
+
+      local function opts(desc)
+        local bufnr = vim.fn["bufnr"]()
+        return {
+          desc = "quick-notes: " .. desc,
+          buffer = bufnr,
+          noremap = true,
+          silent = true,
+          nowait = true,
+        }
+      end
+
+      api.nvim_create_user_command("QuickNotesNew", function() vim.cmd([[call QuickNotesNew]]) end, {})
+      api.nvim_create_user_command("QuickNotesDiary", function() vim.cmd([[call QuickNotesDiary]]) end, {})
+      api.nvim_create_user_command("QuickNotesNewGitBranch", function() vim.cmd([[call QuickNotesNewGitBranch]]) end, {})
+      api.nvim_create_user_command("QuickNotesLsNotes", function() vim.cmd([[call QuickNotesLsNotes]]) end, {})
+      api.nvim_create_user_command("QuickNotesLsDiary", function() vim.cmd([[call QuickNotesLsDiary]]) end, {})
+      api.nvim_create_user_command("QuickNotesFzf", function() vim.cmd([[call QuickNotesFzf]]) end, {})
+
+      --local augroup_id = vim.api.nvim_create_augroup("quick-notes", {})
+      --vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+      --  group = augroup_id,
+      --  pattern = "*",
+      --  callback = function()
+      --    --vim.keymap.set("n", "<C-v>", close_wrap(api.node.open.vertical), opts("Open: Vertical Split"))
+
+      --    vim.keymap.set("n", "^", cd_preference, opts("Open: my preference"))
+      --    vim.keymap.set("n", "~", cd_home, opts("Open: $HOME"))
+      --    vim.keymap.set("n", "\\", cd_repos, opts("Open: repos"))
+      --    vim.keymap.set("n", "=", cd_docs, opts("Open: Documents"))
+
+      --    vim.keymap.set("n", ">", "<Cmd>vertical resize +10<CR>", { noremap = true, buffer = true })
+      --    vim.keymap.set("n", "<lt>", "<Cmd>vertical resize -10<CR>", { noremap = true, buffer = true })
+      --  end,
+      --})
     end,
   }
 }
