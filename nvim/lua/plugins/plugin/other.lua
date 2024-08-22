@@ -157,12 +157,12 @@ return {
         }
       end
 
-      api.nvim_create_user_command("QuickNotesNew", function() vim.cmd([[call QuickNotesNew]]) end, {})
-      api.nvim_create_user_command("QuickNotesDiary", function() vim.cmd([[call QuickNotesDiary]]) end, {})
-      api.nvim_create_user_command("QuickNotesNewGitBranch", function() vim.cmd([[call QuickNotesNewGitBranch]]) end, {})
-      api.nvim_create_user_command("QuickNotesLsNotes", function() vim.cmd([[call QuickNotesLsNotes]]) end, {})
-      api.nvim_create_user_command("QuickNotesLsDiary", function() vim.cmd([[call QuickNotesLsDiary]]) end, {})
-      api.nvim_create_user_command("QuickNotesFzf", function() vim.cmd([[call QuickNotesFzf]]) end, {})
+      api.nvim_create_user_command("QuickNotesNew", function() vim.cmd([[call QuickNotesNew()]]) end, {})
+      api.nvim_create_user_command("QuickNotesDiary", function() vim.cmd([[call QuickNotesDiary()]]) end, {})
+      api.nvim_create_user_command("QuickNotesNewGitBranch", function() vim.cmd([[call QuickNotesNewGitBranch()]]) end, {})
+      api.nvim_create_user_command("QuickNotesLsNotes", function() vim.cmd([[call QuickNotesLsNotes()]]) end, {})
+      api.nvim_create_user_command("QuickNotesLsDiary", function() vim.cmd([[call QuickNotesLsDiary()]]) end, {})
+      api.nvim_create_user_command("QuickNotesFzf", function() vim.cmd([[call QuickNotesFzf()]]) end, {})
 
       --local augroup_id = vim.api.nvim_create_augroup("quick-notes", {})
       --vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
