@@ -22,7 +22,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-fzf-native.nvim",
-      "nvim-telescope/telescope-frecency.nvim",
+      --"nvim-telescope/telescope-frecency.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "pbogut/fzf-mru.vim",
       "nvim-telescope/telescope-ui-select.nvim",
@@ -43,7 +43,7 @@ return {
       "Telescope git_status",
       "Telescope git_commits",
 
-      "Telescope frecency",
+      --"Telescope frecency",
       "Telescope fzf_mru",
 
       "Telescope emoji",
@@ -62,11 +62,11 @@ return {
       -- find help
       { "<leader>h", tu.CallBuiltinHelpTags, { mode = "n", desc = "Telescope: help tags" } },
       -- freecency in project root
-      {
-        "<leader>b",
-        tu.CallFrecencyCurrentDir,
-        { mode = "n", desc = "Telescope: frecency workspace={project_root}" },
-      },
+      --{
+      --  "<leader>b",
+      --  tu.CallFrecencyCurrentDir,
+      --  { mode = "n", desc = "Telescope: frecency workspace={project_root}" },
+      --},
       -- live grep
       { "<leader>g", tu.CallBuiltinLiveGrep, { mode = "n", desc = "Telescope: live grep" } },
       -- live grep with args
@@ -75,14 +75,14 @@ return {
         tu.CallBuiltinLiveGrepArgs,
         { mode = "n", desc = "Telescope: live grep args" },
       },
-      -- freecency
-      { "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
-      -- freecency in current dir
-      {
-        "<leader>s",
-        "<Cmd>Telescope frecency workspace=CWD<CR>",
-        { mode = "n", desc = "Telescope: frecency workspace=CWD" },
-      },
+      ---- freecency
+      --{ "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
+      ---- freecency in current dir
+      --{
+      --  "<leader>s",
+      --  "<Cmd>Telescope frecency workspace=CWD<CR>",
+      --  { mode = "n", desc = "Telescope: frecency workspace=CWD" },
+      --},
       -- mru
       { "<leader>m", "<Cmd>Telescope fzf_mru<CR>", { mode = "n", desc = "Telescope: fzf_mru" } },
       -- emoji
@@ -118,9 +118,9 @@ return {
           live_grep = {
             path_display = tu.FileNameFirst,
           },
-          frecency = {
-            path_display = tu.FileNameFirst,
-          },
+          --frecency = {
+          --  path_display = tu.FileNameFirst,
+          --},
         },
         defaults = {
           layout_config = {
@@ -177,23 +177,23 @@ return {
             override_file_sorter = true,
             case_mode = "smart_case",
           },
-          frecency = {
-            db_root = myutils.env.join_path(myutils.env.getHome(), ".cache", "frecency"),
-            show_scores = false,
-            show_unindexed = true,
-            ignore_patterns = { "*.git/*", "*/tmp/*" },
-            disable_devicons = false,
-            workspaces = {
-              ["conf"] = myutils.env.join_path(myutils.env.getHome(), ".cache"),
-              ["data"] = myutils.env.join_path(myutils.env.getHome(), ".local", "share"),
-              ["project"] = myutils.env.join_path(myutils.env.getHome(), "repos"),
-              --              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
-              --              ["conf"]    = "/home/my_username/.config",
-              --              ["data"]    = "/home/my_username/.local/share",
-              --              ["project"] = "/home/my_username/projects",
-              --              ["wiki"]    = "/home/my_username/wiki"
-            },
-          },
+          --frecency = {
+          --  db_root = myutils.env.join_path(myutils.env.getHome(), ".cache", "frecency"),
+          --  show_scores = false,
+          --  show_unindexed = true,
+          --  ignore_patterns = { "*.git/*", "*/tmp/*" },
+          --  disable_devicons = false,
+          --  workspaces = {
+          --    ["conf"] = myutils.env.join_path(myutils.env.getHome(), ".cache"),
+          --    ["data"] = myutils.env.join_path(myutils.env.getHome(), ".local", "share"),
+          --    ["project"] = myutils.env.join_path(myutils.env.getHome(), "repos"),
+          --    --              ["wiki"]    = env.join_path(env.getHome(), "wiki"),
+          --    --              ["conf"]    = "/home/my_username/.config",
+          --    --              ["data"]    = "/home/my_username/.local/share",
+          --    --              ["project"] = "/home/my_username/projects",
+          --    --              ["wiki"]    = "/home/my_username/wiki"
+          --  },
+          --},
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
               -- even more opts
