@@ -27,6 +27,13 @@ local onepoint_colours_none = {}
 local onepoint_colours_term = {}
 local onepoint_colours_term_nc = {}
 
+local opc_diff_add     = {}
+local opc_diff_delete  = {}
+local opc_diff_changed  = {}
+local opc_diff_text    = {}
+
+
+
 if is_nvim_version_gt_08 then
   onepoint_colours_cui_primary = { bg = theme.g.primary.bg, fg = theme.g.primary.fg }
   onepoint_colours_cui_secondary = { bg = theme.g.sub3.bg, fg = theme.g.sub3.fg }
@@ -74,6 +81,29 @@ else
     guifg = theme.g.terminal.fg,
   }
   onepoint_colours_term_nc = { guifg = "gray" }
+
+
+  opc_diff_add = {
+    cterm = bold,
+    ctermfg = 10,
+    ctermbg = 22,
+  }
+
+  opc_diff_delete = {
+    cterm = bold,
+    ctermfg = 10,
+    ctermbg = 52,
+  }
+  opc_diff_changed  = {
+    cterm = bold,
+    ctermfg = 10,
+    ctermbg = 17,
+  }
+  opc_diff_text    = {
+    cterm = bold,
+    ctermfg = 10,
+    ctermbg = 21,
+  }
 end
 
 local colour = {}
@@ -109,49 +139,47 @@ colour.get_my_colorscheme = function()
   return my_colorscheme
 end
 
+local function get_highlight_table(is_nvim_ver_gt_08, key, val)
+  if (is_nvim_ver_gt_08) then
+    return{ 0, key, val }
+  end
+
+  return { key, val, false }
+end
+
 colour.get_highlight = function()
   utils.io.begin_debug("colour.get_highlight")
+
+  local highlight_table = {
+    RegistersWindow = onepoint_colours_primary,
+    Pmenu           = onepoint_colours_primary,
+    PmenuSel        = onepoint_colours_secondary,
+    PmenuSbar       = onepoint_colours_sub2,
+    PmenuThumb      = onepoint_colours_sub3,
+
+    NormalFloat = onepoint_colours_primary,
+    FloatBorder = onepoint_colours_primary,
+    FloatShadow = onepoint_colours_primary,
+    FloatShadowThrough = onepoint_colours_primary,
+
+    TermCursor = onepoint_colours_secondary,
+    TermCursorNC = onepoint_colours_primary,
+
+    Floaterm = onepoint_colours_term,
+    FloatermBorder = onepoint_colours_term,
+    FloatermNC = onepoint_colours_term_nc,
+
+    DiffAdd         = opc_diff_add,
+    DiffDelete      = opc_diff_delete,
+    DiffChange      = opc_diff_changed,
+    DiffText        = opc_diff_text,
+  }
+
+
   local my_highlight = {}
 
-  if is_nvim_version_gt_08 then
-    utils.io.debug_echo("nvim-version: 0.8")
-    -- pmenus
-    table.insert(my_highlight, { 0, "RegistersWindow", onepoint_colours_primary })
-    table.insert(my_highlight, { 0, "Pmenu", onepoint_colours_primary })
-    table.insert(my_highlight, { 0, "PmenuSel", onepoint_colours_secondary })
-    table.insert(my_highlight, { 0, "PmenuSbar", onepoint_colours_sub2 })
-    table.insert(my_highlight, { 0, "PmenuThumb", onepoint_colours_sub3 })
-    -- floating window
-    table.insert(my_highlight, { 0, "NormalFloat", onepoint_colours_primary })
-    table.insert(my_highlight, { 0, "FloatBorder", onepoint_colours_primary })
-    table.insert(my_highlight, { 0, "FloatShadow", onepoint_colours_primary })
-    table.insert(my_highlight, { 0, "FloatShadowThrough", onepoint_colours_primary })
-    -- terminal window
-    table.insert(my_highlight, { 0, "TermCursor", onepoint_colours_secondary })
-    table.insert(my_highlight, { 0, "TermCursorNC", onepoint_colours_primary })
-    -- floaterm
-    table.insert(my_highlight, { 0, "Floaterm", onepoint_colours_term })
-    table.insert(my_highlight, { 0, "FloatermBorder", onepoint_colours_term })
-    table.insert(my_highlight, { 0, "FloatermNC", onepoint_colours_term_nc })
-  else
-    -- pmenus
-    table.insert(my_highlight, { "RegistersWindow", onepoint_colours_primary, false })
-    table.insert(my_highlight, { "Pmenu", onepoint_colours_primary, false })
-    table.insert(my_highlight, { "PmenuSel", onepoint_colours_secondary, false })
-    table.insert(my_highlight, { "PmenuSbar", onepoint_colours_sub2, false })
-    table.insert(my_highlight, { "PmenuThumb", onepoint_colours_sub3, false })
-    -- floating window
-    table.insert(my_highlight, { "NormalFloat", onepoint_colours_primary, false })
-    table.insert(my_highlight, { "FloatBorder", onepoint_colours_primary, false })
-    table.insert(my_highlight, { "FloatShadow", onepoint_colours_primary, false })
-    table.insert(my_highlight, { "FloatShadowThrough", onepoint_colours_primary, false })
-    -- terminal window
-    table.insert(my_highlight, { "TermCursor", onepoint_colours_secondary, false })
-    table.insert(my_highlight, { "TermCursorNC", onepoint_colours_primary, false })
-    -- floaterm
-    table.insert(my_highlight, { "Floaterm", onepoint_colours_term, false })
-    table.insert(my_highlight, { "FloatermBorder", onepoint_colours_term, false })
-    table.insert(my_highlight, { "FloatermNC", onepoint_colours_term_nc, false })
+  for key, val in pairs(highlight_table) do
+    table.insert(my_highlight, get_highlight_table(is_nvim_version_gt_08, key, val))
   end
 
   utils.io.end_debug("colour.get_highlight")
