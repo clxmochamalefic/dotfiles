@@ -73,8 +73,7 @@ M.replaceUtility = function()
   api.nvim_create_user_command("TrimCrlf", trimCrlf, {})
 
   local function trimEnd()
-    trimCr()
-    trimEndSpace()
+    vim.cmd([[%s#\v\s*\r##g]])
   end
   api.nvim_create_user_command("TrimEnd", trimEnd, {})
 end
