@@ -27,15 +27,16 @@ return {
       local blend = vim.g.blend
 
       api.nvim_set_option('pumblend', blend)
+      api.nvim_set_option('winblend', blend)
 
-      local augroup_id = api.nvim_create_augroup('transparent-windows', { clear = true })
-      api.nvim_create_autocmd('FileType', {
-        group = augroup_id,
-        pattern = '*',
-        callback = function ()
-          api.nvim_set_option('winblend', blend)
-        end
-      })
+      --local augroup_id = api.nvim_create_augroup('transparent-windows', { clear = true })
+      --api.nvim_create_autocmd('FileType', {
+      --  group = augroup_id,
+      --  pattern = '*',
+      --  callback = function ()
+      --    api.nvim_set_option('winblend', blend)
+      --  end
+      --})
     end
   },
   {
