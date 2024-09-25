@@ -2,10 +2,14 @@
 -- DAP (debug adapter protocol) CONFIGS
 -- ---------------------------------------------------------------------------
 
+local cs = require('plugins.plugin.lsp.config.dap.lang.csharp')
+
 local M = {
   dap = nil,
   lang = {
     java = require('plugins.plugin.lsp.config.dap.lang.java'),
+    cs = cs,
+    csharp = cs,
   }
 }
 

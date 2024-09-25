@@ -89,7 +89,7 @@ function M.choose_for_focus()
       end
     end,
     catch = function()
-      opt.laststatus = 3
+      --opt.laststatus = 3
     end,
   })
 end
