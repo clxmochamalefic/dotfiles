@@ -29,7 +29,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      opt.laststatus = 3
+      --opt.laststatus = 3
 
       local config = {
         options = {
