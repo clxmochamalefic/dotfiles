@@ -1,5 +1,8 @@
 -- ---------------------------------------------------------------------------
 --  COLORSCHEME PREFERENCE
+--  cterm colors => https://www.ditig.com/publications/256-colors-cheat-sheet
+--
+-- ---------------------------------------------------------------------------
 
 local utils = require("utils")
 local colours = require("const.colour")
@@ -83,26 +86,48 @@ else
   onepoint_colours_term_nc = { guifg = "gray" }
 
 
-  opc_diff_add = {
-    cterm = bold,
-    ctermfg = 10,
-    ctermbg = 22,
-  }
+  -- reference => https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff
+  --
+  -- cterm   - sets the style
+  -- ctermfg - set the text color
+  -- ctermbg - set the highlighting
+  --
+  -- DiffAdd    - line was added
+  -- DiffDelete - line was removed
+  -- DiffChange - part of the line was changed (highlights the whole line)
+  --            - 行の一部が変更されました（行全体を強調表示）
+  -- DiffText   - the exact part of the line that changed
+  --            - 行の変更された正確な部分
 
+  opc_diff_add = {
+    cterm = "bold",
+    --ctermfg = 10, -- Lime
+    --ctermbg = 22, -- DarkGreen
+    ctermfg = 253, -- Grey85
+    ctermbg = 31, -- DeepSkyBlue3
+    guifg = "#dadada",
+    guibg = "#0087af",
+  }
   opc_diff_delete = {
-    cterm = bold,
-    ctermfg = 10,
-    ctermbg = 52,
+    cterm = "bold",
+    ctermfg = 253, -- Grey85
+    ctermbg = 52, -- DarkRed
+    guifg = "#dadada",
+    guibg = "#5f0000",
   }
   opc_diff_changed  = {
-    cterm = bold,
-    ctermfg = 10,
-    ctermbg = 17,
+    cterm = "bold",
+    ctermfg = 253, -- Grey85
+    ctermbg = 54, -- Purple4
+    guifg = "#dadada",
+    guibg = "#5f00af",
   }
   opc_diff_text    = {
-    cterm = bold,
-    ctermfg = 10,
-    ctermbg = 21,
+    cterm = "bold",
+    ctermfg = 15, -- White
+    ctermbg = 13, -- Fuchsia
+    guifg = "#ffffff",
+    guibg = "#ff00ff",
   }
 end
 
