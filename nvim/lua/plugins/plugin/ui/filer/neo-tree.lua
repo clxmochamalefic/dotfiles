@@ -319,8 +319,8 @@ return {
       myconfig.setup()
 
       -- 初期ディレクトリ移動
-      local currentDir = vim.fn["fnamemodify"]("", ":p")
-      myconfig.cd(currentDir)
+      --local currentDir = vim.fn["fnamemodify"]("", ":p")
+      --myconfig.cd(currentDir)
     end,
   },
   {
