@@ -183,10 +183,12 @@ return {
       api.nvim_create_user_command("QuickNotesLsDiary", quicknotes_ls_diary, {})
       api.nvim_create_user_command("QuickNotesFzf", quicknotes_fzf, {})
 
+      api.nvim_create_user_command("Qn", quicknotes_ls_notes, {})
+
       api.nvim_create_user_command("Qnn", quicknotes_new, {})
       api.nvim_create_user_command("Qnd", quicknotes_new_diary, {})
-      api.nvim_create_user_command("Qln", quicknotes_new_diary, {})
-      api.nvim_create_user_command("Qld", quicknotes_new_diary, {})
+      api.nvim_create_user_command("Qln", quicknotes_ls_notes, {})
+      api.nvim_create_user_command("Qld", quicknotes_ls_diary, {})
 
       --local augroup_id = vim.api.nvim_create_augroup("quick-notes", {})
       --vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {

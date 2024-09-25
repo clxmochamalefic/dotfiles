@@ -23,18 +23,18 @@ return {
       require("telescope").load_extension("fzf")
     end,
   },
-  {
-    lazy = true,
-    "nvim-telescope/telescope-frecency.nvim",
-    event = {
-      "VimEnter",
-    },
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-    init = function() end,
-    config = function()
-      require("telescope").load_extension("frecency")
-    end,
-  },
+  --{
+  --  lazy = true,
+  --  "nvim-telescope/telescope-frecency.nvim",
+  --  event = {
+  --    "VimEnter",
+  --  },
+  --  dependencies = {
+  --    "nvim-telescope/telescope.nvim",
+  --  },
+  --  init = function() end,
+  --  config = function()
+  --    require("telescope").load_extension("frecency")
+  --  end,
+  --},
 }
