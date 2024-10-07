@@ -18,6 +18,10 @@ PS> .\win.init.ps1
   ```pwsh
   PS> pip install pynvim
   ```
+  or
+  ```pwsh
+  PS> python3 -m pip install pynvim
+  ```
 
 ### Mac
 
