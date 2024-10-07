@@ -31,6 +31,10 @@ M.setup = function()
   M.reloadPreference()
   M.replaceUtility()
 
+
+  -- other commands and shortcuts
+  require("preferences.command")
+
   utils.io.end_debug(fn["expand"]("%/h"))
 end
 
