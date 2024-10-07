@@ -11,7 +11,7 @@ return {
     event = { "InsertEnter", "CursorHold" },
     config = function()
       local keymap_opt = { noremap = true, script = true, expr = true, silent = true, replace_keycodes = false }
-      vim.keymap.set("i", "<C-\\>", "copilot#Accept()", keymap_opt)
+      vim.keymap.set("i", "<C-l>", "copilot#Accept()", keymap_opt)
       g.copilot_no_tab_map = true
     end,
   },
