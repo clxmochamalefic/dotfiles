@@ -2,6 +2,15 @@
 
 any env initialization 4 me
 
+## YOU MUST DO AFTER CLONED
+
+PLZ SET CONFIG TO THIS LOCAL REPOS 4 KEEP 2 UR SAVE THE INTERNET LIFE
+
+```bash
+$ git config --local user.name ""
+$ git config --local user.email ""
+```
+
 ## common
 
 1. vscode: https://code.visualstudio.com/
