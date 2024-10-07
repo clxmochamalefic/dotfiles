@@ -246,7 +246,6 @@ return {
   {
     "kevinhwang91/nvim-hlslens",
     lazy = true,
-    --dependencies = { "kevinhwang91/nvim-ufo" },
     event = { "BufReadPost", "FileReadPost" },
     config = function()
       require("hlslens").setup()

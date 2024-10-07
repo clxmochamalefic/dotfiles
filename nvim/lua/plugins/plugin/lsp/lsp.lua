@@ -315,14 +315,14 @@ return {
     config = function() end,
   },
   -- neodev.nvim ------------------------------
-  {
-    lazy = true,
-    "kevinhwang91/nvim-ufo",
-    tag = "v1.4.0",
-    dependencies = {
-      "kevinhwang91/promise-async",
-    },
-  },
+  --{
+  --  lazy = true,
+  --  "kevinhwang91/nvim-ufo",
+  --  tag = "v1.4.0",
+  --  dependencies = {
+  --    "kevinhwang91/promise-async",
+  --  },
+  --},
   {
     lazy = true,
     "aznhe21/actions-preview.nvim",
