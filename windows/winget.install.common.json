@@ -71,7 +71,7 @@
           "PackageIdentifier": "Microsoft.VCRedist.2013.x86"
         },
         {
-          "PackageIdentifier" : "Logitech.OptionsPlus"
+          "PackageIdentifier": "Logitech.OptionsPlus"
         },
         {
           "PackageIdentifier": "Git.Git"
@@ -83,7 +83,7 @@
           "PackageIdentifier": "Microsoft.VisualStudioCode"
         },
         {
-          "PackageIdentifier" : "Neovide.Neovide"
+          "PackageIdentifier": "Neovide.Neovide"
         },
         {
           "PackageIdentifier": "Neovim.Neovim"
@@ -98,6 +98,9 @@
           "PackageIdentifier": "Microsoft.WindowsTerminal.Preview"
         },
         {
+          "PackageIdentifier": "Python.Python.3.10"
+        },
+        {
           "PackageIdentifier": "JanDeDobbeleer.OhMyPosh"
         }
       ],
@@ -109,5 +112,5 @@
       }
     }
   ],
-  "WinGetVersion" : "1.8.1911"
+  "WinGetVersion": "1.8.1911"
 }
