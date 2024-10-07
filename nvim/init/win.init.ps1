@@ -1,52 +1,63 @@
 Write-Output "make dir: ~/.config/nvim"
 
-if (!(Test-Path '~/.config')) {
-    mkdir ~/.config
-    Write-Output "success mkdir ~/.config"
+if (!(Test-Path '~/.config'))
+{
+  mkdir ~/.config
+  Write-Output "success mkdir ~/.config"
 }
 
-if (!(Test-Path '~/.config/nvim')) {
-    mkdir ~/.config/nvim
-    Write-Output "success mkdir ~/.config"
+if (!(Test-Path '~/.config/nvim'))
+{
+  mkdir ~/.config/nvim
+  Write-Output "success mkdir ~/.config"
 }
 
 Write-Output "make dir: ~/AppData/Local/nvim"
 
-if (!(Test-Path '~/AppData/Local/nvim')) {
-    mkdir ~/AppData/Local/nvim
-    Write-Output "success mkdir ~/AppData/Local/nvim"
+if (!(Test-Path '~/AppData/Local/nvim'))
+{
+  mkdir ~/AppData/Local/nvim
+  Write-Output "success mkdir ~/AppData/Local/nvim"
 }
 
 Write-Output "remove nvim preference files what already exists"
 
-if (Test-Path '~/.config/nvim/init.vim') {
-    Remove-Item ~/.config/nvim/init.vim
+if (Test-Path '~/.config/nvim/init.vim')
+{
+  Remove-Item ~/.config/nvim/init.vim
 }
-if (Test-Path '~/.config/nvim/ginit.vim') {
-    Remove-Item ~/.config/nvim/ginit.vim
-}
-
-if (Test-Path '~/AppData/Local/nvim/init.vim') {
-    Remove-Item ~/AppData/Local/nvim/init.vim
+if (Test-Path '~/.config/nvim/ginit.vim')
+{
+  Remove-Item ~/.config/nvim/ginit.vim
 }
 
-if (Test-Path '~/AppData/Local/nvim/ginit.vim') {
-    Remove-Item ~/AppData/Local/nvim/ginit.vim
+if (Test-Path '~/AppData/Local/nvim/init.vim')
+{
+  Remove-Item ~/AppData/Local/nvim/init.vim
 }
 
-if (Test-Path '~/.config/nvim/init.lua') {
-    Remove-Item ~/.config/nvim/init.lua
-}
-if (Test-Path '~/.config/nvim/ginit.lua') {
-    Remove-Item ~/.config/nvim/ginit.lua
+if (Test-Path '~/AppData/Local/nvim/ginit.vim')
+{
+  Remove-Item ~/AppData/Local/nvim/ginit.vim
 }
 
-if (Test-Path '~/AppData/Local/nvim/init.lua') {
-    Remove-Item ~/AppData/Local/nvim/init.lua
+if (Test-Path '~/.config/nvim/init.lua')
+{
+  Remove-Item ~/.config/nvim/init.lua
+}
+if (Test-Path '~/.config/nvim/ginit.lua')
+{
+  Remove-Item ~/.config/nvim/ginit.lua
 }
 
-if (Test-Path '~/AppData/Local/nvim/ginit.lua') {
-    Remove-Item ~/AppData/Local/nvim/ginit.lua
+if (Test-Path '~/AppData/Local/nvim/init.lua')
+{
+  Remove-Item ~/AppData/Local/nvim/init.lua
+}
+
+if (Test-Path '~/AppData/Local/nvim/ginit.lua')
+{
+  Remove-Item ~/AppData/Local/nvim/ginit.lua
 }
 
 Write-Output "write reference preference"
@@ -77,7 +88,7 @@ Write-Output "install depends:"
 Write-Output ""
 
 Write-Output 'python: neovim plugin'
-pip install neovim
+python3 -m pip install neovim
 
 
 Write-Output "node: neovim"
