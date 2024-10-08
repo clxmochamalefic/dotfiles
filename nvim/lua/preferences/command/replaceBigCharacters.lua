@@ -3,12 +3,11 @@
 -- ----------------------------------------
 
 local fn = function ()
-    local line = vim.fn.getline(".")
-    local col = vim.fn.getpos(".")[3]
-    local substring = line:sub(1, col - 1)
-    local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
-    return "<C-w>" .. result:upper()
-  end
+  local line = vim.fn.getline(".")
+  local col = vim.fn.getpos(".")[3]
+  local substring = line:sub(1, col - 1)
+  local result = vim.fn.matchstr(substring, [[\v<(\k(<)@!)*$]])
+  return "<C-w>" .. result:upper()
 end
 
 local M = {
