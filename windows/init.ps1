@@ -111,10 +111,6 @@ if ([System.IO.Directory]::Exists($pwshPreferencePath) -eq $true)
   Write-Output "    preference path not found: ${pwshPreferencePath}"
 }
 
-# wsl setup
-wsl --install
-wsl --set-default-version 2
-
 # ~/.wslconfig
 Write-Output ""
 Write-Output '  COPY .wslconfig'
