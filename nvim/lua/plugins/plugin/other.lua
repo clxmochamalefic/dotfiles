@@ -32,7 +32,7 @@ return {
         callback = function(event)
           local client = api.nvim_get_chan_info(v.event.chan).client
           if client ~= nil and client.name == "Firenvim" then
-            o.laststatus = 0
+            --o.laststatus = 0
           end
         end,
       })

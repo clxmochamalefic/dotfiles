@@ -4,6 +4,7 @@ local api = vim.api
 local keymap = vim.keymap
 
 local strutil = require("utils.string")
+local env = require("utils.sub.env")
 
 local M = {}
 
@@ -50,7 +51,14 @@ function M.getBufPathPartialyShorten(nr, first, last)
     return ""
   end
 
-  local splitted_path = strutil.split(path, "/")
+  if path:contains("neo-tree") then
+    path = "neo-tree"
+  end
+
+  -- get separator charactor
+  local s = env.get_path_splitter_for_current_env()
+
+  local splitted_path = strutil.split(path, s)
   local splitted_path_length = #splitted_path
   local shorten_path = ""
 
@@ -69,7 +77,7 @@ function M.getBufPathPartialyShorten(nr, first, last)
     ::continue::
   end
 
-  return shorten_path
+  return shorten_path:sub(1, -2)
 end
 
 return M
