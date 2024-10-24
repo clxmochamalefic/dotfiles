@@ -27,3 +27,5 @@ $myCommandAliases = "${pwshconfPath}\command_aliases.ps1"
 
 . $myCommandAliases
 
+$myCommand = "${pwshconfPath}\command.ps1"
+. $myCommand
