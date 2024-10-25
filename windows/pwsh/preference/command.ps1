@@ -7,6 +7,10 @@ function Set-EnvironmentFromPath($path)
   foreach($key in $PARAM.Keys)
   {
     $value = $PARAM[$key]
+    $value = $value.Trim('"')
+    if (Test-Path -Path "env:${key}") {
+      Remove-Item -Path "env:${key}"
+    }
     New-Item -Path "env:${key}" -Value $value
   }
 }
