@@ -1,6 +1,5 @@
 local g = vim.g
 local fn = vim.fn
-local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
@@ -41,19 +40,29 @@ return {
     end,
   },
   {
+    'FabijanZulj/blame.nvim',
     lazy = true,
-    "FabijanZulj/blame.nvim",
-    event = { "BufRead", "FileReadPost" },
+    event = { "VeryLazy" },
     cmd = {
-      "ToggleBlame virtual",
+      'ToggleBlame',
       "ToggleBlameVirtual",
     },
-    config = function()
-      --local blame = require("blame")
-      --blame.setup({ virtual_style = "float" })
-
-      api.nvim_create_user_command("ToggleBlameVirtual", "ToggleBlame virtual", {})
-      --api.nvim_create_user_command("ToggleBlameVirtual", "<Cmd>ToggleBlame virtual<CR>", {})
-    end,
+    -- stylua: ignore
+    keys = {
+      { 'tb', '<cmd>BlameToggle virtual<CR>', desc = 'Git blame' },
+      { 'tB', '<cmd>BlameToggle window<CR>', desc = 'Git blame (window)' },
+    },
+    opts = {
+      date_format = '%Y-%m-%d %H:%M',
+      merge_consecutive = false,
+      max_summary_width = 30,
+      mappings = {
+        commit_info = 'K',
+        stack_push = '>',
+        stack_pop = '<',
+        show_commit = '<CR>',
+        close = { '<Esc>', 'q' },
+      },
+    },
   },
 }

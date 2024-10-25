@@ -66,12 +66,14 @@ M.opts = {
     local ft = vim.bo[bufnr].filetype
     local bt = vim.bo[bufnr].buftype
     --local wbr = vim.bo[bufnr].wbr
+
     if vim.tbl_contains(exclude_create_label_filetypes, ft) then
-      return string.format("%s: %s", label, ft)
+      return string.format("[%s] %s", label, ft)
     end
 
-    local path = wndutil.getBufPathPartialyShorten(bufnr, 1, 3)
-    return string.format("%s: %s", label, path)
+    local path = wndutil.getBufPathPartialyShorten(bufnr, 1, 2)
+    --local name = wndutil.getBufName(bufnr)
+    return string.format("[%s] %s", label, path)
     --return string.format("%s: [%s/%s/%s] %s", label, ft, bt, wbr, path)
   end,
   chars = nil,
