@@ -71,6 +71,7 @@ local miniMessages = {
   n.msg("^Already at newest change"),
   n.msg(".*modifiable.*"),
   n.msg(".*Pick a window.*"),
+  n.msg(".*Pick window.*"),
 
   n.msg(".*%[denops%].*"),
   n.msg(".*%[hlchunk%.chunk%].*"),
