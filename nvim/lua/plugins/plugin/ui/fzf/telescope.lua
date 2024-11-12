@@ -44,15 +44,6 @@ return {
       "Telescope git_commits",
 
       --"Telescope frecency",
-      "Telescope fzf_mru",
-
-      "Telescope emoji",
-
-      -- memolist
-      "Telescope memo list",
-      "Telescope memo grep",
-      "Telescope memo live_grep",
-      "Telescope memo grep_string",
     },
     keys = {
       -- buffer
@@ -70,11 +61,6 @@ return {
       -- live grep
       { "<leader>g", tu.CallBuiltinLiveGrep, { mode = "n", desc = "Telescope: live grep" } },
       -- live grep with args
-      {
-        "<leader>G",
-        tu.CallBuiltinLiveGrepArgs,
-        { mode = "n", desc = "Telescope: live grep args" },
-      },
       ---- freecency
       --{ "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
       ---- freecency in current dir
@@ -90,9 +76,6 @@ return {
 
       -- symbol list
       { "<leader>i", "<Cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>", { mode = "n", desc = "Telescope: builtin lsp doc symbols" } },
-    },
-    event = {
-      "VimEnter",
     },
     config = function()
       api.nvim_create_autocmd("FileType", {

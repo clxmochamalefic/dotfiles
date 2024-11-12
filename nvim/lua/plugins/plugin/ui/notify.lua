@@ -10,10 +10,20 @@ local keymap = vim.keymap
 
 local nc = require("plugins.plugin.ui.config.nui.noice-nvim")
 
+local hasAlreadyLoaded = false
+local function open_telescope_notify()
+  if not hasAlreadyLoaded then
+    hasAlreadyLoaded = true
+    telescope.load_extension("notify")
+  end
+
+  telescope.extensions.notify.notify()
+end
+
 return {
   {
-    --lazy = true,
-    --event = { "VeryLazy" },
+    lazy = true,
+    event = { "VeryLazy" },
     cond = true,
     "rcarriga/nvim-notify",
     tag = "v3.13.5",
@@ -30,16 +40,23 @@ return {
       })
 
       local telescope = require("telescope")
-      telescope.load_extension("notify")
-
-      keymap.set("n", "<leader>n", telescope.extensions.notify.notify)
     end,
   },
   {
-    --lazy = true,
-    --event = { "VeryLazy" },
-    cond = true,
+    lazy = true,
     "folke/noice.nvim",
+    cond = true,
+    event = { "VeryLazy" },
+    keys = {
+      {
+        "<leader>n",
+        open_telescope_notify,
+        {
+          mode = "n",
+          desc = "Open Telescope Notify"
+        }
+      },
+    },
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
@@ -63,7 +80,6 @@ return {
     end,
     config = function(_, opts)
       require("noice").setup(opts)
-      require("telescope").load_extension("notify")
     end,
   },
 }

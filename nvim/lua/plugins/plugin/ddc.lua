@@ -504,7 +504,9 @@ return {
   {
     lazy = true,
     "Shougo/ddc.vim",
-    event = { "InsertEnter", "CursorHold" },
+    event = {
+      "InsertEnter"
+    },
     dependencies = {
       "vim-denops/denops.vim",
 
