@@ -26,6 +26,9 @@
           "PackageIdentifier": "zig.zig"
         },
         {
+          "PackageIdentifier": "DEVCOM.LuaJIT"
+        },
+        {
           "PackageIdentifier": "Volta.Volta"
         }
       ],
