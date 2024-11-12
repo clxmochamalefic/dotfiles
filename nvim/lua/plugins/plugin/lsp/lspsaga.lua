@@ -47,7 +47,7 @@ return {
     "nvimdev/lspsaga.nvim",
     event = { "LspAttach" },
     dependencies = {
-      -- 'nvim-treesitter/nvim-treesitter',
+      'nvim-treesitter/nvim-treesitter',
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
@@ -58,7 +58,7 @@ return {
           keys = {
             toggle_or_open = "<CR>",
             vsplit = { "v", "[" },
-            split = { "s", "}" },
+            split = { "s", "]" },
             tabnew = "t",
             tab = "T",
             quit = "q",
