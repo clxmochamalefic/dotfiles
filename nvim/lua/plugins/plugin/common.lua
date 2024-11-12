@@ -72,6 +72,7 @@ return {
     end,
   },
   {
+    lazy = true,
     'nvim-tree/nvim-web-devicons'
   },
   {

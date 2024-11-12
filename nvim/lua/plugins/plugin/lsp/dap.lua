@@ -10,6 +10,18 @@ local mystr = require("utils.string")
 
 local mydap = require("plugins.plugin.lsp.config.dap")
 
+local function init()
+  if not myutils.depends.has("gdb") then
+    myutils.depends.install("gdb", {}, { myutils.env.is_windows })
+  end
+  if not myutils.depends.has("lldb") then
+    myutils.depends.install("lldb", { winget = "LLVM.LLVM" })
+  end
+  if not myutils.depends.has("rr") then
+    myutils.depends.install("rr", {}, { myutils.env.is_windows })
+  end
+end
+
 -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
 local function dap_start(opts)
   local args = opts.fargs[1]:split(" ")
@@ -43,7 +55,7 @@ return {
       "rcarriga/nvim-dap-ui", -- UI for nvim-dap
       "theHamsta/nvim-dap-virtual-text", -- Variable values as virtual text
     },
-    event = { "LspAttach" },
+    --event = { "LspAttach" },
     keys = {
       { "<F5>", "<Cmd>DapContinue<CR>", { mode = "n", silent = true, desc = "dap: continue" } },
       { "<F10>", "<Cmd>DapStepOver<CR>", { mode = "n", silent = true, desc = "dap: step over" } },
@@ -61,18 +73,9 @@ return {
         { mode = "n", silent = true, desc = "dap: breakpoint with log point message" },
       },
     },
-    init = function()
-      if not myutils.depends.has("gdb") then
-        myutils.depends.install("gdb", {}, { myutils.env.is_windows })
-      end
-      if not myutils.depends.has("lldb") then
-        myutils.depends.install("lldb", { winget = "LLVM.LLVM" })
-      end
-      if not myutils.depends.has("rr") then
-        myutils.depends.install("rr", {}, { myutils.env.is_windows })
-      end
-    end,
     config = function()
+      init()
+
       vim.api.nvim_set_keymap(
         "n",
         "<leader>dr",
@@ -141,11 +144,11 @@ return {
     end,
   },
   {
+    lazy = true,
     "sakhnik/nvim-gdb",
   },
   {
     lazy = true,
-    event = { "VeryLazy", "LspAttach" },
     "rcarriga/nvim-dap-ui",
     dependencies = {
       "mfussenegger/nvim-dap",
@@ -157,6 +160,7 @@ return {
   },
   {
     -- virtual text for variable current value on debugger
+    lazy = true,
     "theHamsta/nvim-dap-virtual-text",
     dependencies = {
       "mfussenegger/nvim-dap",
@@ -165,6 +169,7 @@ return {
     config = function() end,
   },
   {
+    lazy = true,
     "thinca/vim-quickrun",
   },
 }

@@ -4,7 +4,9 @@ return {
   {
     lazy = true,
     "xiyaowong/telescope-emoji.nvim",
-    event = "VeryLazy",
+    cmd = {
+      "Telescope emoji",
+    }
     config = function()
       require("telescope").load_extension("emoji")
     end,

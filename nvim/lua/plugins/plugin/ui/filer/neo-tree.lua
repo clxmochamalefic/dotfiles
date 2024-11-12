@@ -7,6 +7,7 @@ local myconfig = require("plugins.plugin.ui.filer.config.neo-tree")
 
 return {
   {
+    lazy = true,
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     dependencies = {
@@ -19,7 +20,6 @@ return {
     keys = {
       { "Z", "<cmd>Neotree<CR>", mode = "n" },
     },
-    event = { "VimEnter" },
     config = function()
       -- If you want icons for diagnostic errors, you'll need to define them somewhere:
       vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })

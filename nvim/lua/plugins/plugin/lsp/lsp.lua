@@ -331,18 +331,29 @@ return {
       --"kosayoda/nvim-lightbulb",
       "neovim/nvim-lspconfig",
     },
-    init = function()
-      vim.api.nvim_create_autocmd("LspAttach", {
-        desc = "Setup code action preview",
-        callback = function(args)
-          local bufnr = args.buf
+    keys = {
+      {
+        "<leader><space>",
+        "<Cmd>lua require('actions-preview').code_actions()<CR>",
+        {
+          buffer = bufnr,
+          mode = "n",
+          desc = "LSP: Code action",
+        }
+      },
+    },
+    --init = function()
+    --  vim.api.nvim_create_autocmd("LspAttach", {
+    --    desc = "Setup code action preview",
+    --    callback = function(args)
+    --      local bufnr = args.buf
 
-          vim.keymap.set("n", "<leader><space>", function()
-            require("actions-preview").code_actions()
-          end, { buffer = bufnr, desc = "LSP: Code action" })
-        end,
-      })
-    end,
+    --      vim.keymap.set("n", "<leader><space>", function()
+    --        ()
+    --      end, { buffer = bufnr, desc = "LSP: Code action" })
+    --    end,
+    --  })
+    --end,
     config = function()
       require("actions-preview").setup({})
     end,

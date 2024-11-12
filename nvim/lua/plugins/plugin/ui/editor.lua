@@ -85,7 +85,9 @@ return {
       "kevinhwang91/nvim-hlslens",
       "lewis6991/gitsigns.nvim",
     },
-    event = { "BufReadPost", "FileReadPost", "CursorHold", "CursorHoldI" },
+    event = {
+      "FileReadPost",
+    },
     config = function()
       require("gitsigns").setup()
       require("scrollbar.handlers.gitsigns").setup()

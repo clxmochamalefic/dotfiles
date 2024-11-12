@@ -21,7 +21,11 @@ local colors = {
 
 return {
   {
+    lazy = true,
     "nvim-lualine/lualine.nvim",
+    event = {
+      "VeryLazy",
+    },
     dependencies = {
       -- 'kdheepak/tabline.nvim',
       "arkav/lualine-lsp-progress",
@@ -188,48 +192,12 @@ return {
       -- ]]
     end,
   },
-  --{
-  --  "arkav/lualine-lsp-progress",
-  --},
-  --  {
-  --    'akinsho/bufferline.nvim',
-  --    dependencies = {
-  --      'nvim-tree/nvim-web-devicons',
-  --    },
-  --    config = function()
-  --      -- bufferline
-  --      local ok, bufferline = pcall(require, "bufferline")
-  --      if not ok then
-  --        utils.io.echoe('"akinsho/bufferline.nvim" not available')
-  --        return
-  --      end
-  --      bufferline.setup({
-  --        options = {
-  --          mode = "buffers",
-  --          close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
-  --          left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-  --          indicator = {
-  --            icon = '▎', -- this should be omitted if indicator style is not 'icon'
-  --            style = 'icon',
-  --          },
-  --          buffer_close_icon = '',
-  --          modified_icon = '●',
-  --          close_icon = '',
-  --          left_trunc_marker = '',
-  --          right_trunc_marker = '',
-  --          diagnostics = "nvim_lsp",
-  --          offsets = {
-  --            {
-  --              filetype = "NvimTree",
-  --              text = "File Explorer",
-  --              text_align = "left",
-  --              separator = true,
-  --            },
-  --          },
-  --          separator_style = "slant",
-  --          enforce_regular_tabs = true,
-  --        },
-  --      })
-  --    end,
-  --  },
+  {
+    lazy = true,
+    "arkav/lualine-lsp-progress",
+  },
+  {
+    lazy = true,
+    "akinsho/bufferline.nvim",
+  },
 }
