@@ -30,3 +30,8 @@ $RECYCLE.BIN/
 *.msp
 # Windows shortcuts
 *.lnk
+#--------------------------------------------------
+# backup files
+.bak
+.swp
+.swo
