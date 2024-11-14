@@ -15,12 +15,6 @@ Set-PSReadLineOption -EditMode Emacs
 
 $OutputEncoding = [System.Text.Encoding]::GetEncoding('utf-8')
 
-$inshellisensePath = "${HOME}\.inshellisense\key-bindings-pwsh.ps1"
-if(Test-Path $inshellisensePath -PathType Leaf)
-{
-  . $inshellisensePath 
-}
-
 # load other preferences
 #   command aliases
 $myCommandAliases = "${pwshconfPath}\command_aliases.ps1"
