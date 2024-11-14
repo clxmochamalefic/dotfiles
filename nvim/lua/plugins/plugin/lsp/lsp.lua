@@ -81,6 +81,9 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "mfussenegger/nvim-dap",
     },
+    event = {
+      "FileReadPre",
+    },
     cmd = {
       "LspInstall",
       "LspUninstall",
@@ -304,6 +307,9 @@ return {
       "MasonUninstallAll",
       "MasonLog",
     },
+    event = {
+      "VeryLazy",
+    },
     keys = {
       { "<F12>", "<Cmd>Mason<CR>", { mode = "n", silent = true, desc = "mason" } },
     },
@@ -312,7 +318,7 @@ return {
         icons = icons,
       },
     },
-    config = function() end,
+    --config = function() end,
   },
   -- neodev.nvim ------------------------------
   --{
