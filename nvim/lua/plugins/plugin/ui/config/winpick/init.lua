@@ -17,7 +17,7 @@ local excluded_filetypes = {
   --"toggleterm",
   "gitrebase",
   "notify",
-  "noice",
+  --"noice",
 }
 local excluded_buftypes = {
   --"",
@@ -27,7 +27,7 @@ local excluded_buftypes = {
   "gitrebase",
   --"nofile",
   "notify",
-  "noice",
+  --"noice",
 }
 
 local exclude_create_label_filetypes = {
