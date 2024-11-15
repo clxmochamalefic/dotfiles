@@ -12,6 +12,10 @@ Get-ChildItem "${profilePath}\Completions" | ForEach-Object { . $_ }
 #   commandline use feel modifing to the bash
 Import-Module PSReadline
 Set-PSReadLineOption -EditMode Emacs
+# Remove-PSReadLineKeyHandler -Chord Ctrl+J Ctrl+H Ctrl+G
+Remove-PSReadLineKeyHandler -Chord Ctrl+j 
+Remove-PSReadLineKeyHandler -Chord Ctrl+h
+Remove-PSReadLineKeyHandler -Chord Ctrl+g
 
 $OutputEncoding = [System.Text.Encoding]::GetEncoding('utf-8')
 

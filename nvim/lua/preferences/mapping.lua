@@ -12,8 +12,8 @@ mapping.setup = function()
   keymap.set("n", ";", ":", { noremap = true, silent = true })
 
   -- tag jump
-  keymap.set("n", "<C-J>", "<C-]>", { noremap = true, silent = true })
-  keymap.set("t", "<C-J>", "<C-]>", { noremap = true, silent = true })
+  keymap.set("n", "<C-U>", "<C-]>", { noremap = true, silent = true })
+  keymap.set("t", "<C-U>", "<C-]>", { noremap = true, silent = true })
 
   -- create new tab
   keymap.set("n", "tn", "<Cmd>tabnew<CR>", { noremap = true, silent = true })
