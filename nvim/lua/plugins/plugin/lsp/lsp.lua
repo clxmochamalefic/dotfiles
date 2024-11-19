@@ -81,6 +81,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "mfussenegger/nvim-dap",
     },
+    lazy = true,
     event = {
       "FileReadPre",
     },
@@ -330,13 +331,13 @@ return {
   --  },
   --},
   {
-    lazy = true,
     "aznhe21/actions-preview.nvim",
-    event = { "LspAttach" },
     dependencies = {
       --"kosayoda/nvim-lightbulb",
       "neovim/nvim-lspconfig",
     },
+    lazy = true,
+    event = { "LspAttach" },
     keys = {
       {
         "<leader><space>",
