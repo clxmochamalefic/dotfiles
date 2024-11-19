@@ -2,16 +2,15 @@
 -- UI NOTIFY PLUGINS
 -- ---------------------------------------------------------------------------
 
-local g = vim.g
-local fn = vim.fn
-local api = vim.api
-local opt = vim.opt
-local keymap = vim.keymap
-
 local nc = require("plugins.plugin.ui.config.nui.noice-nvim")
 
 local hasAlreadyLoaded = false
+local telescope = nil
+
 local function open_telescope_notify()
+  if (telescope == nil) then
+    return
+  end
   if not hasAlreadyLoaded then
     hasAlreadyLoaded = true
     telescope.load_extension("notify")
@@ -39,7 +38,8 @@ return {
         fps = 10,
       })
 
-      local telescope = require("telescope")
+      local t = require("telescope")
+      telescope = t
     end,
   },
   {

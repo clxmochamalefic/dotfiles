@@ -15,8 +15,10 @@ return {
   {
     lazy = true,
     "nvim-telescope/telescope-live-grep-args.nvim",
-    -- This will not install any breaking changes.
-    -- For major updates, this must be adjusted manually.
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      'junegunn/fzf',
+    },
     version = "^1.0.0",
     keys = {
       {
@@ -24,7 +26,17 @@ return {
         tu.CallBuiltinLiveGrepArgs,
         { mode = "n", desc = "Telescope: live grep args" }
       },
+      -- live grep with args
+      ---- freecency
+      --{ "<leader>a", "<Cmd>Telescope frecency<CR>", { mode = "n", desc = "Telescope: frecency" } },
+      ---- freecency in current dir
+      --{
+      --  "<leader>s",
+      --  "<Cmd>Telescope frecency workspace=CWD<CR>",
+      --  { mode = "n", desc = "Telescope: frecency workspace=CWD" },
+      --},
     },
+    build = init,
     config = function()
       require("telescope").load_extension("live_grep_args")
     end,

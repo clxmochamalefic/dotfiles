@@ -5,6 +5,8 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "glidenote/memolist.vim",
+      "nvim-telescope/telescope.nvim",
+      'junegunn/fzf',
     },
     cmd = {
       -- memolist
