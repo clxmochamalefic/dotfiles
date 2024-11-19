@@ -1,12 +1,6 @@
-local preference = require("plugins.plugin.ui.statusline.config")
+--local preference = require("plugins.plugin.ui.statusline.config")
 local colours = require("plugins.plugin.ui.statusline.config.colour")
 local sl_util = require("plugins.plugin.ui.statusline.util")
-
-local g = vim.g
-local fn = vim.fn
-local api = vim.api
-local opt = vim.opt
-local keymap = vim.keymap
 
 return {
   {
@@ -14,14 +8,15 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-    lazy = true,
-    event = {
-      "VeryLazy",
-    },
-    config = function()
+    lazy = false,
+    --event = {
+    --  "VeryLazy",
+    --},
+    opts = require("plugins.plugin.ui.statusline.config"),
+    config = function(_, opts)
       --opt.laststatus = 3
       local ll = require("lualine")
-      ll.setup(preference)
+      ll.setup(opts)
     end,
   },
   {
@@ -89,10 +84,10 @@ return {
     config = function(_, opts)
       -- lualine-lsp-progress ------------------------------
       -- Inserts a component in lualine_c at left section
-
-      sl_util.ins_lual_c(preference, opts)
       local ll = require("lualine")
-      ll.setup(preference)
+      local p = ll.get_config()
+      sl_util.ins_lual_c(p, opts)
+      ll.setup(p)
     end,
   },
   {
@@ -119,9 +114,7 @@ return {
     },
     config = function(_, opts)
       -- vim.opt.termguicolors = true
-
       require("bufferline").setup(opts)
-
       --require("keybindings.bufferline-kb").basic()
     end,
   },
