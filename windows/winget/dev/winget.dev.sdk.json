@@ -8,19 +8,16 @@
           "PackageIdentifier": "Kitware.CMake"
         },
         {
-          "PackageIdentifier": "Microsoft.DotNet.SDK.6"
+          "PackageIdentifier": "Microsoft.DotNet.SDK.9"
         },
         {
-          "PackageIdentifier": "Microsoft.DotNet.AspNetCore.6"
+          "PackageIdentifier": "Microsoft.DotNet.AspNetCore.9"
         },
         {
-          "PackageIdentifier": "Microsoft.DotNet.HostingBundle.6"
+          "PackageIdentifier": "Microsoft.DotNet.HostingBundle.9"
         },
         {
           "PackageIdentifier": "Microsoft.WebDeploy"
-        },
-        {
-          "PackageIdentifier": "Microsoft.WindowsSDK"
         },
         {
           "PackageIdentifier": "Oracle.JDK.18"
