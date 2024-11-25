@@ -146,6 +146,9 @@ Write-Output 'INSTALL module'
 Write-Output '  posh-git'
 Install-Module posh-git
 
+Write-Output '  PsIni'
+Install-Module PsIni
+
 # reload profile
 Write-Output ""
 Write-Output 'RELOAD profile'
