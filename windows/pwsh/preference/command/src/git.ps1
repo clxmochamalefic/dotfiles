@@ -1,6 +1,20 @@
-$profileDir = "${env:USERPROFILE}\.config"
-$profileFileName = ".gituserprofile"
-$profilePath = "${profileDir}\${profileFileName}"
+<#
+ # Get-GitRepositoryByIdentity
+ # `git clone` with choice of any identity-file
+ #
+ # @param [string] $secretKeyPath - path to the identity-file
+ # @param [string] $url - git clone url
+#>
+function Get-ProfilePathMap()
+{
+  $profileDir = "${env:USERPROFILE}\.config"
+  $profileFileName = ".gituserprofile"
+  return @{
+    profileDir = $profileDir
+    profileFileName = $profileFileName
+    profilePath = "${profileDir}\${profileFileName}"
+  }
+}
 
 <#
  # Get-GitRepositoryByIdentity
@@ -9,18 +23,97 @@ $profilePath = "${profileDir}\${profileFileName}"
  # @param [string] $secretKeyPath - path to the identity-file
  # @param [string] $url - git clone url
 #>
-function Get-GitRepositoryByIdentity([mandantory]$secretKeyPath, [mandantory]$url)
+function Get-GitRepositoryByIdentity
 {
-  $cloneCommand = "git -c core.sshCommand='ssh -i ${secretKeyPath} -F /dev/null' clone ${url}"
-  $localConfigCommand = "git config --local core.sshCommand 'ssh -i ${secretKeyPath} -F /dev/null'"
+  [CmdletBinding(SupportsShouldProcess=$True)]
+  Param(
+    $secretKeyPath,
+    $url
+  )
+  begin
+  {
+    if (!$PSCmdlet.ShouldProcess($secretKeyPath) -or !$PSCmdlet.ShouldProcess($url))
+    {
+      Write-Output "### git clone with identity file alias ###"
+      Write-Output "Usage: Get-GitRepositoryByIdentity -secretKeyPath <path> -url <git clone url>"
+      Exit
+    }
+  }
+  process
+  {
+    $cloneCommand = "git -c core.sshCommand='ssh -i ${secretKeyPath} -F /dev/null' clone ${url}"
+    $localConfigCommand = "git config --local core.sshCommand 'ssh -i ${secretKeyPath} -F /dev/null'"
 
-  # clone
-  Write-Output "execute: $cloneCommand"
-  Invoke-Expression $cloneCommand
+    # clone
+    Write-Output "execute: $cloneCommand"
+    Invoke-Expression $cloneCommand
 
-  # config --local
-  Write-Output "execute: $localConfigCommand"
-  Invoke-Expression $localConfigCommand
+    # config --local
+    Write-Output "execute: $localConfigCommand"
+    Invoke-Expression $localConfigCommand
+
+  }
+
+  end
+  {
+
+  }
+}
+
+<#
+ # Add-GitProfile
+ # `git config --local user.(name|email)` with choice your profile
+ #
+ # @param [string] $secretKeyPath - path to the identity-file
+ # @param [string] $url - git clone url
+ #>
+
+function Add-GitProfile
+{
+  [CmdletBinding(SupportsShouldProcess=$True)]
+  Param($userProfileName, $name, $email)
+  begin
+  {
+    if (!$PSCmdlet.ShouldProcess($userProfileName) -or !$PSCmdlet.ShouldProcess($name) -or !$PSCmdlet.ShouldProcess($email))
+    {
+      Write-Output "### add profile for git clone user profile ###"
+      Write-Output "Usage: Add-GitProfile -userProfileName <user profile name> -name <git user name> -email <git user email>"
+      Exit
+    }
+  }
+
+  process
+  {
+    $profilePathMap = Get-ProfilePathMap
+    $profilePath = $profilePathMap['profilePath']
+
+    if (!(Test-Path $profilePathMap.profileDir))
+    {
+      New-Item -Path $profilePathMap.profileDir -ItemType Directory
+    }
+    if (!(Test-Path $profilePath))
+    {
+      New-Item -Path $profilePath -ItemType File
+    }
+
+    Import-Module PsIni
+    $ini = Get-IniContent $profilePath
+    $keys = $ini.psbase.Keys
+    if (!($keys -contains 'userProfileName'))
+    {
+      Write-Error "userProfileName: ${userProfileName} is already exists"
+      return
+    }
+
+    Set-IniContent -FilePath $profilePath -Sections $userProfileName -NameValuePairs @{
+      'name' = $name
+      ; 'email' = $email
+    } | Out-IniFile $profilePath -Force
+  }
+  end
+  {
+
+  }
 }
 
 <#
@@ -30,109 +123,137 @@ function Get-GitRepositoryByIdentity([mandantory]$secretKeyPath, [mandantory]$ur
  # @param [string] $secretKeyPath - path to the identity-file
  # @param [string] $url - git clone url
 #>
-function Add-GitProfile([mandantory]$key, [mandantory]$name, [mandantory]$email)
+function Show-GitProfile
 {
-  if (!(Test-Path $profileDir))
+  [CmdletBinding()]
+  Param()
+  begin
   {
-    New-Item -Path $profileDir -ItemType Directory
   }
-  if (!(Test-Path $profilePath))
+  process
   {
-    New-Item -Path $profilePath -ItemType File
+    $profilePathMap = Get-ProfilePathMap
+    $profilePath = $profilePathMap['profilePath']
+    $notfoundFileErrorMessage = "${profilePath} is not exists"
+
+    if (!(Test-Path $profilePathMap.profileDir))
+    {
+      Write-Error $notfoundFileErrorMessage
+    }
+    if (!(Test-Path $profilePath))
+    {
+      Write-Error $notfoundFileErrorMessage
+    }
+
+    Import-Module PsIni
+    $ini = Get-IniContent $profilePath
+
+    Write-Output $ini
+
+  }
+  end
+  {
   }
 
-  Import-Module PsIni
-  $ini = Get-IniContent $profilePath
-  if ($ini.ContainsKey($key))
-  {
-    Write-Error "key: ${key} is already exists"
-    return
-  }
-
-  Set-IniContent -FilePath $profilePath -Sections $key -NameValuePairs @{
-    'name' = $name
-    ; 'email' = $email
-  } | Out-IniFile $profilePath -Force
 }
 
 <#
  # Add-GitProfile
  # `git config --local user.(name|email)` with choice your profile
  #
- # @param [string] $secretKeyPath - path to the identity-file
- # @param [string] $url - git clone url
+ # @param [string] $userProfileName - remove target userProfile-name (user profile name)
 #>
-function Show-GitProfile()
+function Remove-GitProfile
 {
-  $notfoundFileErrorMessage = "${profilePath} is not exists"
-
-  if (!(Test-Path $profileDir))
+  [CmdletBinding(SupportsShouldProcess=$True)]
+  Param ($userProfileName)
+  begin
   {
-    Write-Error $notfoundFileErrorMessage
+    if (!$PSCmdlet.ShouldProcess($userProfileName))
+    {
+      Write-Output "### git user profile control:remove ###"
+      Write-Output "Usage: Remove-GitProfile -userProfile <user profile name>"
+      Exit
+    }
   }
-  if (!(Test-Path $profilePath))
+
+  process
   {
-    Write-Error $notfoundFileErrorMessage
+    $profilePathMap = Get-ProfilePathMap
+
+    $profilePath = $profilePathMap['profilePath']
+    $notfoundFileErrorMessage = "${profilePath} is not exists"
+    $notfoundUserProfileErrorMessage = "userProfileName: ${userProfileName} is not exists"
+
+    if (!(Test-Path $profilePathMap.profileDir))
+    {
+      Write-Error $notfoundFileErrorMessage
+    }
+    if (!(Test-Path profilePath))
+    {
+      Write-Error $notfoundFileErrorMessage
+    }
+
+    Import-Module PsIni
+    $ini = Get-IniContent profilePath
+    $keys = $ini.psbase.Keys
+
+    if (!($keys -contains 'userProfileName'))
+    {
+      Write-Error $notfoundUserProfileErrorMessage
+      return
+    }
+
+    Remove-IniEntry -FilePath $profilePath -Sections $userProfileName | Out-IniFile $profilePath -Force
   }
 
-  Import-Module PsIni
-  $ini = Get-IniContent $profilePath
-
-  Write-Output $ini
+  end
+  {
+  }
 }
 
 <#
- # Add-GitProfile
+ # Set-GitLocalUserProfile
  # `git config --local user.(name|email)` with choice your profile
  #
- # @param [string] $secretKeyPath - path to the identity-file
- # @param [string] $url - git clone url
+ # @param [string] $userProfileName - user profile
 #>
-function Remove-GitProfile([mandantory]$key)
+function Set-GitLocalUserProfile
 {
-  $notfoundFileErrorMessage = "${profilePath} is not exists"
-  $notfoundKeyErrorMessage = "key: ${key} is not exists"
-
-  if (!(Test-Path $profileDir))
+  [CmdletBinding(SupportsShouldProcess=$True)]
+  Param($userProfileName)
+  begin
   {
-    Write-Error $notfoundFileErrorMessage
+    if (!$PSCmdlet.ShouldProcess($userProfileName))
+    {
+      Write-Output "### set user profile of git LOCAL repository from local user profile dictionary ###"
+      Write-Output "Usage: Set-LocalUserProfile -userProfile <user profile name>"
+      Exit
+    }
   }
-  if (!(Test-Path $profilePath))
+  process
   {
-    Write-Error $notfoundFileErrorMessage
-  }
+    $notfoundKeyErrorMessage = "user profile: ${userProfileName} is not exists"
+    Import-Module PsIni
 
-  Import-Module PsIni
-  $ini = Get-IniContent $profilePath
+    $profilePathMap = Get-ProfilePathMap
+    $profilePath = $profilePathMap['profilePath']
 
-  if (!($ini.ContainsKey($key)))
-  {
-    Write-Error $notfoundKeyErrorMessage
-    return
-  }
+    $ini = Get-IniContent $profilePath
+    $keys = $ini.psbase.Keys
 
-  Remove-IniEntry -FilePath $profilePath -Sections $key | Out-IniFile $profilePath -Force
-}
+    if (!($keys -contains $userProfileName))
+    {
+      Write-Error $notfoundKeyErrorMessage
+      return
+    }
 
-<#
- # Set-LocalUserProfile
- # `git config --local user.(name|email)` with choice your profile
- #
- # @param [string] $secretKeyPath - path to the identity-file
- # @param [string] $url - git clone url
-#>
-function Set-LocalUserProfile([mandantory]$key)
-{
-  Import-Module PsIni
-  $ini = Get-IniContent $profilePath
-
-  if (!($ini.ContainsKey($key)))
-  {
-    Write-Error $notfoundKeyErrorMessage
-    return
+    $value = $ini[$userProfileName]
+    git config --local user.name $value['name']
+    git config --local user.email $value['email']
   }
 
-  $value = $ini[$key]
-  git config --local user.name $value['name']
-  git config --local user.email $value['email']
+  end
+  {
+  }
 }
