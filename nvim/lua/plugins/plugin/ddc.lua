@@ -7,52 +7,40 @@ local km_opts = require("const.keymap")
 
 local ddc_config = require("plugins.plugin.config.ddc")
 
-local g = vim.g
-local fn = vim.fn
-local api = vim.api
-local opt = vim.opt
-local keymap = vim.keymap
+local pum_insert_relative = vim.fn["pum#map#insert_relative"]
+local pum_select_relative = vim.fn["pum#map#select_relative"]
+local pum_confirm = vim.fn["pum#map#confirm"]
+local pum_cancel = vim.fn["pum#map#cancel"]
+local pum_visible = vim.fn["pum#visible"]
+local ddc_manual_complete = vim.fn["ddc#map#manual_complete"]
+local ddc_hide = vim.fn["ddc#hide"]
 
 local vsnip = {
-  expandable = fn["vsnip#expandable"],
-  available = fn["vsnip#available"],
-  jumpable = fn["vsnip#jumpable"],
+  expandable = vim.fn["vsnip#expandable"],
+  available = vim.fn["vsnip#available"],
+  jumpable = vim.fn["vsnip#jumpable"],
 }
 
 -- local ddcmanualcomp = false
 
 local function pumvisible()
-  local r = fn["pum#visible"]()
+  local r = vim.fn["pum#visible"]()
   utils.io.debug_echo("pumvisible: ", tostring(r))
   return r
-  --  return fn["pum#visible"]()
-end
-
-local function pummap(k, f, a)
-  utils.io.debug_echo("args: ", a)
-  if pumvisible() then
-    if a then
-      f(a)
-    else
-      f()
-    end
-    --    return " "
-    return ""
-  end
-
-  return k
+  --  return vim.fn["pum#visible"]()
 end
 
 local function ddc_init()
   utils.io.begin_debug("ddc_init")
 
-  fn["ddc#custom#patch_global"](ddc_config.global.get_config())
-  fn["ddc#custom#patch_filetype"]({'noice'}, ddc_config.notice.get_config())
+  vim.fn["ddc#custom#patch_global"](ddc_config.global.get_config())
+  vim.fn["ddc#custom#patch_filetype"]({'noice'}, ddc_config.notice.get_config())
+  
 
   --  use ddc.
-  fn["ddc#enable"]()
-  fn["ddc#enable_cmdline_completion"]()
-  fn["ddc#enable_terminal_completion"]()
+  vim.fn["ddc#enable"]()
+  vim.fn["ddc#enable_cmdline_completion"]()
+  vim.fn["ddc#enable_terminal_completion"]()
 
   utils.io.end_debug("ddc_init")
 end
@@ -70,10 +58,10 @@ local function ddc_preference()
       callback = function()
         if pumvisible() then
           -- ddcmanualcomp = false
-          fn["pum#map#insert_relative"](1)
-        elseif fn["ddc#map#can_complete"]() then
+          vim.fn["pum#map#insert_relative"](1)
+        elseif vim.fn["ddc#map#can_complete"]() then
           -- ddcmanualcomp = true
-          fn["ddc#map#manual_complete"]()
+          vim.fn["ddc#map#manual_complete"]()
         else
           return "<C-n>"
         end
@@ -88,10 +76,10 @@ local function ddc_preference()
       callback = function()
         if pumvisible() then
           -- ddcmanualcomp = false
-          fn["pum#map#insert_relative"](-1)
-        elseif fn["ddc#map#can_complete"]() then
+          vim.fn["pum#map#insert_relative"](-1)
+        elseif vim.fn["ddc#map#can_complete"]() then
           -- ddcmanualcomp = true
-          fn["ddc#map#manual_complete"]()
+          vim.fn["ddc#map#manual_complete"]()
         else
           return "<C-p>"
         end
@@ -103,7 +91,7 @@ local function ddc_preference()
     lhs = "<C-e>",
     rhs = function()
       if pumvisible() then
-        fn["pum#map#cancel"]()
+        vim.fn["pum#map#cancel"]()
         return ""
       else
         return "<C-e>"
@@ -116,7 +104,7 @@ local function ddc_preference()
     lhs = "<C-y>",
     rhs = function()
       if pumvisible() then
-        fn["pum#map#confirm"]()
+        vim.fn["pum#map#confirm"]()
         return ""
       end
     end,
@@ -128,15 +116,15 @@ local function ddc_preference()
     lhs = "<Tab>",
     rhs = function()
       --if pumvisible() then
-      --  fn["pum#map#confirm"]()
+      --  vim.fn["pum#map#confirm"]()
       --  return ""
       --end
       if pumvisible() then
         -- ddcmanualcomp = false
-        fn["pum#map#insert_relative"](1)
-      --elseif fn["ddc#map#can_complete"]() then
+        vim.fn["pum#map#insert_relative"](1)
+      --elseif vim.fn["ddc#map#can_complete"]() then
       --  -- ddcmanualcomp = true
-      --  fn["ddc#map#manual_complete"]()
+      --  vim.fn["ddc#map#manual_complete"]()
       else
         return "<Tab>"
       end
@@ -149,14 +137,14 @@ local function ddc_preference()
     lhs = "<CR>",
     --rhs   = function()
     --  if pumvisible() then
-    --    fn["ddc#map#manual_complete"]()
+    --    vim.fn["ddc#map#manual_complete"]()
     --  else
     --    return "<CR>"
     --  end
     --end,
     rhs = function()
       if pumvisible() then
-        fn["pum#map#confirm"]()
+        vim.fn["pum#map#confirm"]()
         return ""
       end
       return "<CR>"
@@ -169,7 +157,7 @@ local function ddc_preference()
     lhs = "<C-Space>",
     rhs = function()
       if pumvisible() then
-        fn["ddc#map#manual_complete"]()
+        vim.fn["ddc#map#manual_complete"]()
         return ""
       else
         return "<C-Space>"
@@ -186,7 +174,7 @@ local function ddc_preference()
     lhs = "<C-l>",
     rhs = function()
       if pumvisible() then
-        fn["ddc#map#extend"]()
+        vim.fn["ddc#map#extend"]()
         return ""
       else
         return "<C-l>"
@@ -199,7 +187,7 @@ local function ddc_preference()
   --    lhs   = '<C-x><C-f>',
   --    rhs   = function()
   --      if pumvisible() then
-  --        fn["ddc#map#manual_complete"]('path')
+  --        vim.fn["ddc#map#manual_complete"]('path')
   --        return ""
   --      else
   --        return '<C-x><C-f>'
@@ -249,11 +237,8 @@ end
 
 return {
   {
-    lazy = true,
     "Shougo/ddc.vim",
-    event = {
-      "InsertEnter"
-    },
+    lazy = true,
     dependencies = {
       "vim-denops/denops.vim",
 
@@ -290,18 +275,14 @@ return {
       "matsui54/denops-popup-preview.vim",
       "matsui54/denops-signature_help",
     },
+    event = {
+      "InsertEnter"
+    },
     config = function()
       ddc_init()
       ddc_preference()
       snippet_preference()
     end,
-  },
-  {
-    lazy = true,
-    "Shougo/ddc-ui-pum",
-    dependencies = {
-      "Shougo/pum.vim",
-    },
   },
 
   --  {
@@ -318,7 +299,7 @@ return {
   --    },
   --    config = function()
   --      if pcall(require, "nui.input") then
-  --        g.tsnip_use_nui = true
+  --        vim.g.tsnip_use_nui = true
   --      end
   --    end,
   --  },
@@ -353,12 +334,12 @@ return {
     },
     event = { "User DenopsReady" },
     config = function()
-      g.popup_preview_config = {
+      vim.g.popup_preview_config = {
         delay = 10,
         maxWidth = 100,
         winblend = vim.g.blend,
       }
-      api.nvim_call_function("popup_preview#enable", {})
+      vim.api.nvim_call_function("popup_preview#enable", {})
     end,
     init = function() end,
   },
@@ -371,11 +352,11 @@ return {
     },
     event = { "User DenopsReady" },
     config = function()
-      g.signature_help_config = {
+      vim.g.signature_help_config = {
         contentsStyle = "currentLabel",
         viewStyle = "virtual",
       }
-      api.nvim_call_function("signature_help#enable", {})
+      vim.api.nvim_call_function("signature_help#enable", {})
     end,
   },
 }
