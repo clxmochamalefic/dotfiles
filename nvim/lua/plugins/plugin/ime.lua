@@ -28,6 +28,7 @@ return {
       "delphinus/skkeleton_indicator.nvim",
       "ddc.vim",
     },
+    condition = false,
     lazy = true,
     event = { "InsertEnter", "CursorHold" },
     --keys = {
@@ -76,6 +77,7 @@ return {
   },
   {
     "delphinus/skkeleton_indicator.nvim",
+    condition = false,
     lazy = true,
     config = function()
       require("skkeleton_indicator").setup()

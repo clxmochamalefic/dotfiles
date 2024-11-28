@@ -2,30 +2,22 @@
 -- LSP COMMON PLUGINS
 -- ---------------------------------------------------------------------------
 
-local g = vim.g
---local o = vim.o
---local fn = vim.fn
-local api = vim.api
-local lsp = vim.lsp
---local opt = vim.opt
-local keymap = vim.keymap
-local diagnostic = vim.diagnostic
-
 local myutils = require("utils")
---local nvim_lsputils = require("plugins.plugin.lsp.config.util")
-local myserver = require("plugins.plugin.lsp.config.server")
 
+local myserver = require("plugins.plugin.lsp.config.server")
 local myignore = require("plugins.plugin.lsp.config.ignore")
+
+local myhelper = require("plugins.plugin.lsp.helper")
 
 local border = "rounded"
 
 --local function on_cursor_hold()
---  if lsp.buf.server_ready() then
---    diagnostic.open_float()
+--  if vim.lsp.buf.server_ready() then
+--    vim.diagnostic.open_float()
 --  end
 --end
 
---local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
+--local vim.diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
 local icons = {
   package_installed = "✓",
@@ -34,32 +26,32 @@ local icons = {
 }
 
 --local function enable_diagnostics_hover()
---  api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
---  api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
+--  vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
+--  vim.api.nvim_create_autocmd({ "CursorHold" }, { group = vim.diagnostic_hover_augroup_name, callback = on_cursor_hold })
 --end
 --
 --local function disable_diagnostics_hover()
---  api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
+--  vim.api.nvim_clear_autocmds({ group = vim.diagnostic_hover_augroup_name })
 --end
 
 --local function on_hover()
 --  disable_diagnostics_hover()
 --
---  lsp.buf.hover()
+--  vim.lsp.buf.hover()
 --
---  api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
+--  vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
 --  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
---  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+--  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 --    group = "lspconfig-enable-diagnostics-hover",
 --    callback = function()
---      api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
+--      vim.api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
 --      enable_diagnostics_hover()
 --    end,
 --  })
 --end
 
 --local formatting_callback = function(client, bufnr)
---  keymap.set("n", "<Leader>f", function()
+--  vim.keymap.set("n", "<Leader>f", function()
 --    local params = require("vim.lsp.util").make_formatting_params({})
 --    client.request("textDocument/formatting", params, nil, bufnr)
 --  end, { buffer = bufnr })
@@ -91,16 +83,16 @@ return {
       "LspInfo",
     },
     config = function()
-      g.mason_ready = false
+      vim.g.mason_ready = false
 
       -- general settings
-      diagnostic.config({
+      vim.diagnostic.config({
         float = {
           source = "if_many", -- Or "if_many"
           border = border,
         },
       })
-      lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
         -- virtual_text = false,
         virtual_text = {
           format = text_document_format,
@@ -112,7 +104,7 @@ return {
       --  focus = false,
       --  silent = true,
       --})
-      lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+      vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
         local diag = vim.lsp.diagnostic.get_line_diagnostics()
         config = config or {}
         config.focus_id = ctx.method
@@ -159,7 +151,7 @@ return {
       --  border = border,
       --})
       local signatureHelpStack = {}
-      lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
+      vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
         local uri = result.uri
         local bufnr = vim.uri_to_bufnr(uri)
         if not bufnr then
@@ -194,7 +186,7 @@ return {
 
       --        You will likely want to reduce updatetime which affects CursorHold
       --        note: this setting is global and should be set only once
-      api.nvim_set_option("updatetime", 1000)
+      vim.api.nvim_set_option("updatetime", 1000)
 
       --vim.api.nvim_create_autocmd("LspAttach", {
       --  callback = function(args)
@@ -220,7 +212,7 @@ return {
       --  end,
       --})
 
-      local capabilities = lsp.protocol.make_client_capabilities()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
@@ -241,31 +233,17 @@ return {
           vim.notify("LSP started: " .. client.name, vim.log.levels.INFO)
         end)
 
-        -- auto hover popup for loaded filetypes
-        --if client.filetypes then
-        --  for _, v in ipairs(client.filetypes) do
-        --    vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ lua vim.diagnostic.open_float(nil, {focus=false})]])
-        --    vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
-        --  end
-        --end
-        --
         local openDiagnostics = function()
           vim.diagnostic.open_float(nil, { focus = false })
         end
 
         local bufopts = { silent = true, buffer = bufnr, noremap = true }
-        keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-        keymap.set("n", "I", openDiagnostics, bufopts)
-        keymap.set("n", "<Space>", openDiagnostics, bufopts)
-        keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
-        keymap.set("n", "<F3>", function()
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+        vim.keymap.set("n", "I", openDiagnostics, bufopts)
+        vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
+        vim.keymap.set("n", "<F3>", function()
           vim.lsp.buf.format({ async = true })
         end, bufopts)
-        -- keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
-        -- keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        -- keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        -- keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-        -- keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
       end
 
       -- mason-lspconfig setup
@@ -289,9 +267,9 @@ return {
       -- setup ensure installed LSP servers out of mason registry
       myserver.setupToServerForNoMasons(lspconfig, opts)
 
-      g.mason_ready = true
+      myhelper.setup()
 
-      --myutils.io.end_debug("ddu ff")
+      vim.g.mason_ready = true
     end,
   },
   {
@@ -322,14 +300,6 @@ return {
     --config = function() end,
   },
   -- neodev.nvim ------------------------------
-  --{
-  --  lazy = true,
-  --  "kevinhwang91/nvim-ufo",
-  --  tag = "v1.4.0",
-  --  dependencies = {
-  --    "kevinhwang91/promise-async",
-  --  },
-  --},
   {
     "aznhe21/actions-preview.nvim",
     dependencies = {
@@ -349,18 +319,6 @@ return {
         }
       },
     },
-    --init = function()
-    --  vim.api.nvim_create_autocmd("LspAttach", {
-    --    desc = "Setup code action preview",
-    --    callback = function(args)
-    --      local bufnr = args.buf
-
-    --      vim.keymap.set("n", "<leader><space>", function()
-    --        ()
-    --      end, { buffer = bufnr, desc = "LSP: Code action" })
-    --    end,
-    --  })
-    --end,
     config = function()
       require("actions-preview").setup({})
     end,

@@ -51,7 +51,9 @@ local autocomplete_events = {
 }
 
 --  integrate preferences.
-local M = {}
+local M = {
+  autocomplete_events = autocomplete_events,
+}
 
 M.get_config = function()
   return {

@@ -57,12 +57,15 @@ local function ddc_preference()
     opts = {
       callback = function()
         if pumvisible() then
+          utils.io.end_debug("pum:visibled")
           -- ddcmanualcomp = false
           vim.fn["pum#map#insert_relative"](1)
         elseif vim.fn["ddc#map#can_complete"]() then
           -- ddcmanualcomp = true
+          utils.io.end_debug("ddc: manual completion")
           vim.fn["ddc#map#manual_complete"]()
         else
+          utils.io.end_debug("ddc: default")
           return "<C-n>"
         end
       end,
@@ -79,8 +82,10 @@ local function ddc_preference()
           vim.fn["pum#map#insert_relative"](-1)
         elseif vim.fn["ddc#map#can_complete"]() then
           -- ddcmanualcomp = true
+          utils.io.end_debug("ddc: manual completion")
           vim.fn["ddc#map#manual_complete"]()
         else
+          utils.io.end_debug("ddc: default")
           return "<C-p>"
         end
       end,
@@ -270,14 +275,12 @@ return {
 
       "Milly/windows-clipboard-history.vim",
 
-      'vim-skk/skkeleton',
+      --'vim-skk/skkeleton',
 
       "matsui54/denops-popup-preview.vim",
       "matsui54/denops-signature_help",
     },
-    event = {
-      "InsertEnter"
-    },
+    event = ddc_config.events,
     config = function()
       ddc_init()
       ddc_preference()
