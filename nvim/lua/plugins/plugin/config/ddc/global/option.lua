@@ -101,7 +101,7 @@ local source_options = {
   ["shell-history"] = source_option_shellhistory,
 
   ["around"] = source_option_around,
-  ["skkeleton"] = source_option_skkeleton,
+  --["skkeleton"] = source_option_skkeleton,
 }
 
 local filterOptions = {

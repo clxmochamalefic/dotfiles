@@ -8,7 +8,7 @@ local sources = {
   --    'buffer',
   "file",
   "vsnip",
-  "skkeleton",
+  --"skkeleton",
   "around",
 }
 
