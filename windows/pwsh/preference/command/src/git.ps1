@@ -70,16 +70,10 @@ function Get-GitRepositoryByIdentity
 
 function Add-GitProfile
 {
-  [CmdletBinding(SupportsShouldProcess=$True)]
+  [CmdletBinding()]
   Param($userProfileName, $name, $email)
   begin
   {
-    if (!$PSCmdlet.ShouldProcess($userProfileName) -or !$PSCmdlet.ShouldProcess($name) -or !$PSCmdlet.ShouldProcess($email))
-    {
-      Write-Output "### add profile for git clone user profile ###"
-      Write-Output "Usage: Add-GitProfile -userProfileName <user profile name> -name <git user name> -email <git user email>"
-      Exit
-    }
   }
 
   process
@@ -99,7 +93,7 @@ function Add-GitProfile
     Import-Module PsIni
     $ini = Get-IniContent $profilePath
     $keys = $ini.psbase.Keys
-    if (!($keys -contains 'userProfileName'))
+    if (($keys -contains 'userProfileName'))
     {
       Write-Error "userProfileName: ${userProfileName} is already exists"
       return
