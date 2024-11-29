@@ -67,7 +67,7 @@ local function ddc_preference()
         return "<C-n>"
       end
     end,
-    opts = km_opts.ebns,
+    opts = km_opts.n,
   })
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
@@ -86,7 +86,7 @@ local function ddc_preference()
         return "<C-p>"
       end
     end,
-    opts = km_opts.ebns,
+    opts = km_opts.n,
   })
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
@@ -100,7 +100,7 @@ local function ddc_preference()
         return "<C-e>"
       end
     end,
-    opts = km_opts.ebns,
+    opts = km_opts.n,
   })
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
@@ -112,7 +112,7 @@ local function ddc_preference()
         return ""
       end
     end,
-    opts = km_opts.ebns,
+    opts = km_opts.n,
   })
   -- Tab key select completion item
   utils.io.keymap_set({
@@ -134,11 +134,11 @@ local function ddc_preference()
         return "<Tab>"
       end
     end,
-    opts = km_opts.ebns,
+    opts = km_opts.n,
   })
-  -- Enter key select completion item
+  -- (ON INSERT MODE ONLY) Enter key select completion item
   utils.io.keymap_set({
-    mode = { "i", "c", "t" },
+    mode = { "i" },
     lhs = "<CR>",
     --rhs   = function()
     --  if pumvisible() then
@@ -155,7 +155,7 @@ local function ddc_preference()
       end
       return "<CR>"
     end,
-    opts = km_opts.ebns,
+    opts = {},
   })
   -- Manually open the completion menu
   utils.io.keymap_set({
@@ -188,7 +188,7 @@ local function ddc_preference()
         return "<C-l>"
       end
     end,
-    opts = km_opts.ns,
+    opts = km_opts.n,
   })
   --  utils.io.keymap_set({
   --    mode  = { "i", "c", "t" },
@@ -201,7 +201,7 @@ local function ddc_preference()
   --        return '<C-x><C-f>'
   --      end
   --    end,
-  --    opts  = km_opts.ns
+  --    opts  = km_opts.n
   --  })
 
   utils.io.end_debug("ddc_preference")
@@ -225,7 +225,9 @@ local function snippet_preference()
         return "<Tab>"
       end
     end,
-    opts = km_opts.e,
+    --opts = km_opts.en,
+    --opts = km_opts.ens,
+    opts = km_opts.n,
   })
   utils.io.keymap_set({
     mode = { "i", "s" },
@@ -239,7 +241,9 @@ local function snippet_preference()
         return "<S-Tab>"
       end
     end,
-    opts = km_opts.e,
+    --opts = km_opts.en,
+    --opts = km_opts.ens,
+    opts = km_opts.n,
   })
 
   utils.io.end_debug("snippet_preference")
