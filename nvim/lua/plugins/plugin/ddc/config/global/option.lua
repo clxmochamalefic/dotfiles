@@ -16,6 +16,7 @@ local source_option_default = {
 local source_option_around = {
   mark = "   ",
   isVolatile = true,
+  minAutoCompleteLength = 3,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
   converters = { "converter_fuzzy" },
@@ -31,7 +32,7 @@ local source_option_buffer = {
 local source_option_file = {
   mark = "   ",
   forceCompletionPattern = "[\\w@:~._-]/[\\w@:~._-]*",
-  minAutoCompleteLength = 1,
+  minAutoCompleteLength = 4,
   sorters = { "sorter_fuzzy" },
 }
 local source_option_nvimlsp = {
@@ -44,6 +45,10 @@ local source_option_nvimlsp = {
 }
 local source_option_omni = {
   mark = "   ",
+  isVolatile = true,
+  matchers = { "matcher_fuzzy" },
+  sorters = { "sorter_fuzzy" },
+  converters = { "converter_fuzzy" },
 }
 local source_option_skkeleton = {
   mark = " 🎌 ",
@@ -75,6 +80,8 @@ local source_option_vsnip = {
 --  }
 local source_option_cmdlinehistory = {
   mark = "   ",
+  minKeywordLength = 2,
+  maxKeywordLength = 50,
   isVolatile = true,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
@@ -83,7 +90,7 @@ local source_option_cmdlinehistory = {
 local source_option_shellhistory = {
   mark = "   ",
   isVolatile = true,
-  minKeywordLength = 1,
+  minKeywordLength = 2,
   maxKeywordLength = 50,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },

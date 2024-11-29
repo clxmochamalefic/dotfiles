@@ -7,7 +7,7 @@ local source_params_buffer = {
   fromAltBuf = true,
   bufNameStyle = "basename",
   limitBytes = 5000000,
-  forceCollect = true,
+  --forceCollect = true,
 }
 
 local source_params_file = {
@@ -65,12 +65,7 @@ local M = {
 }
 
 M.src.get = function()
-  return {
-    ["lsp"] = source_params_nvimlsp(),
-    --    ['buffer']   = source_params_buffer,
-    ["file"] = source_params_file,
-    ["around"] = source_params_around,
-  }
+  return get_source_params()
 end
 
 return M

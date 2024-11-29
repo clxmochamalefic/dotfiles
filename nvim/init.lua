@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 -- debug mode
 vim.g.is_enable_my_debug = false
 
