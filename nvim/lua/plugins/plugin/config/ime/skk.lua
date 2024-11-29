@@ -1,10 +1,11 @@
+---@diagnostic disable: undefined-global
 local g = vim.g
 local o = vim.o
 local fn = vim.fn
 local opt = vim.opt
 
 local utils = require("utils")
-local helper = require("plugins.plugin.helper.ddc")
+local helper = require("plugins.plugin.ddc.helper")
 
 local M = {}
 

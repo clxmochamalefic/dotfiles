@@ -1,42 +1,17 @@
+---@diagnostic disable: undefined-global
 -- ---------------------------------------------------------------------------
 --  COMMON PLUGINS
 -- ---------------------------------------------------------------------------
 
-local g = vim.g
-local fn = vim.fn
-local uv = vim.uv
-local api = vim.api
-local opt = vim.opt
-local keymap = vim.keymap
-
-local utils = require("utils")
-
 local myDenops = require("plugins.plugin.config.denops")
+local pumHelper = require("plugins.plugin.helper.pum")
 
 return {
   {
+    lazy = false,
     'Shougo/pum.vim',
     config = function()
-      fn['pum#set_option']({
-        max_width     = 100,
-        --use_complete  = true,
-        border        = 'rounded',
-        padding       = true
-      })
-
-      local blend = vim.g.blend
-
-      api.nvim_set_option('pumblend', blend)
-      api.nvim_set_option('winblend', blend)
-
-      --local augroup_id = api.nvim_create_augroup('transparent-windows', { clear = true })
-      --api.nvim_create_autocmd('FileType', {
-      --  group = augroup_id,
-      --  pattern = '*',
-      --  callback = function ()
-      --    api.nvim_set_option('winblend', blend)
-      --  end
-      --})
+      pumHelper.setup()
     end
   },
   {
@@ -55,33 +30,42 @@ return {
     end,
   },
   {
+    -- icon
     lazy = true,
     'nvim-tree/nvim-web-devicons'
   },
   {
     -- completion [{()}]
-    lazy = true,
     'tpope/vim-surround',
+    lazy = true,
+    condition = true,
     event = { 'BufEnter' }
   },
   {
-    lazy = true,
+    -- 現在のカーソル位置のコンテキストによって filetype を切り換える
     'osyo-manga/vim-precious',
+    lazy = true,
+    condition = false,
     dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },
   {
-    lazy = true,
+    -- vimplugin のヘルプを生成する
     'LeafCage/vimhelpgenerator',
---    ft = { 'vimscript', 'lua', 'typescript' }
+    lazy = true,
+    cmd = {
+      "VimHelpGenerator",
+    }
+    --    ft = { 'vimscript', 'lua', 'typescript' }
   },
   {
     -- windows のクリップボード履歴の利用
     lazy = true,
     'Milly/windows-clipboard-history.vim',
-    enabled = function () return vim.fn.has("win32") end
+    enabled = function() return vim.fn.has("win32") end
   },
   {
+    -- かっこの自動補完
     'cohama/lexima.vim',
     lazy = true,
     event = { 'InsertChange' },
@@ -98,10 +82,10 @@ return {
     event = { 'InsertChange' },
     init = function()
       -- Following settings is default value.
-      vim.g.rengbang_default_pattern  = '\\(\\d\\+\\)'
-      vim.g.rengbang_default_start    = 0
-      vim.g.rengbang_default_step     = 1
-      vim.g.rengbang_default_usefirst = 0
+      vim.g.rengbang_default_pattern          = '\\(\\d\\+\\)'
+      vim.g.rengbang_default_start            = 0
+      vim.g.rengbang_default_step             = 1
+      vim.g.rengbang_default_usefirst         = 0
       vim.g.rengbang_default_confirm_sequence = {
         'pattern',
         'start',
@@ -117,31 +101,16 @@ return {
     event = { 'FileReadPost', 'InsertLeave' },
     config = function()
       vim.g["asterisk#keeppos"] = 1
-      vim.keymap.set('n', "*",  "<Plug>(asterisk-z*)")
-      vim.keymap.set('n', "#",  "<Plug>(asterisk-z#)")
+      vim.keymap.set('n', "*", "<Plug>(asterisk-z*)")
+      vim.keymap.set('n', "#", "<Plug>(asterisk-z#)")
       vim.keymap.set('n', "g*", "<Plug>(asterisk-gz*)")
       vim.keymap.set('n', "g#", "<Plug>(asterisk-gz#)")
     end
   },
   {
-    -- line diff / 行にgitの変更箇所を表示する
-    'AndrewRadev/linediff.vim',
-    event = { 'FileReadPost', 'InsertChange' }
-  },
-  {
     lazy = true,
     "nvim-lua/plenary.nvim",
-    build = "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
+    build =
+    "npm install -g textlint textlint-rule-prh textlint-rule-preset-jtf-style textlint-rule-preset-ja-technical-writing textlint-rule-terminology textlint-rule-preset-ja-spacing",
   },
-  -- trailing space / 行末の無意味なスペースを削除する
-  --{
-  --  lazy = true,
-  --  'lewis6991/spaceless.nvim',
-  --  event = { 'FileReadPost', 'InsertLeave' },
-  --  config = function()
-  --    require'spaceless'.setup()
-  --    g.lessspace_normal = 0
-  --  end
-  --},
 }
-

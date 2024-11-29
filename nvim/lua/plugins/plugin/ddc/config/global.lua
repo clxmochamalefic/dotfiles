@@ -1,7 +1,7 @@
-local sources = require('plugins.plugin.config.ddc.global.source')
-local cmd_sources = require('plugins.plugin.config.ddc.global.cmdsource')
-local option = require('plugins.plugin.config.ddc.global.option')
-local params = require('plugins.plugin.config.ddc.global.params')
+local sources = require('plugins.plugin.ddc.config.global.source')
+local cmd_sources = require('plugins.plugin.ddc.config.global.cmdsource')
+local option = require('plugins.plugin.ddc.config.global.option')
+local params = require('plugins.plugin.ddc.config.global.params')
 
 local ui_params = {
   pum = { insert = true },
@@ -44,10 +44,7 @@ local autocomplete_events = {
   "InsertEnter",
   "TextChangedI",
   "TextChangedP",
-  "TextChangedT",
-  "CmdlineEnter",
   "CmdlineChanged",
-  "CmdwinEnter",
 }
 
 --  integrate preferences.
@@ -65,10 +62,10 @@ M.get_config = function()
     sourceOptions = option.source_options,
     sourceParams = params.src.get(),
     filterParams = params.filter,
-    backspaceCompletion = true,
+    --specialBufferCompletion = true,
+    --backspaceCompletion = true,
     autoCompleteDelay = 200,
     autoCompleteEvents = autocomplete_events,
-    --dynamicUi = "ddc-comp",
   }
 end
 

@@ -24,7 +24,7 @@ function M.cd(path)
     dir = path,
     reveal = true,
     --reveal_file = path,           -- path to file or folder to reveal
-    reveal_force_cwd = false,      -- change cwd without asking if needed
+    reveal_force_cwd = false, -- change cwd without asking if needed
   })
 end
 
@@ -44,11 +44,11 @@ function M.setup()
   end
 
   --require('neo-tree.command').execute({
-    --action = "focus",          -- OPTIONAL, this is the default value
-    --source = "filesystem",     -- OPTIONAL, this is the default value
-    --position = "left",         -- OPTIONAL, this is the default value
-    --reveal_file = reveal_file, -- path to file or folder to reveal
-    --reveal_force_cwd = true,   -- change cwd without asking if needed
+  --action = "focus",          -- OPTIONAL, this is the default value
+  --source = "filesystem",     -- OPTIONAL, this is the default value
+  --position = "left",         -- OPTIONAL, this is the default value
+  --reveal_file = reveal_file, -- path to file or folder to reveal
+  --reveal_force_cwd = true,   -- change cwd without asking if needed
   --})
 
   local cd_preference = function()
@@ -58,7 +58,7 @@ function M.setup()
     cd("~")
   end
   local cd_repos = function()
-    cd("~".. env.get_path_splitter_for_current_env() .. "repos")
+    cd("~" .. env.get_path_splitter_for_current_env() .. "repos")
   end
   local cd_docs = function()
     cd("~" .. env.get_path_splitter_for_current_env() .. "Documents")
@@ -83,4 +83,3 @@ function M.setup()
 end
 
 return M
-

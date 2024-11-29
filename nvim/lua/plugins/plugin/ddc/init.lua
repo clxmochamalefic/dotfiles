@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 -- ---------------------------------------------------------------------------
 -- DDC PLUGINS
 -- ---------------------------------------------------------------------------
@@ -5,15 +6,14 @@
 local utils = require("utils")
 local km_opts = require("const.keymap")
 
-local ddc_config = require("plugins.plugin.config.ddc")
+local ddc_config = require("plugins.plugin.ddc.config")
 
 local pum_insert_relative = vim.fn["pum#map#insert_relative"]
 local pum_select_relative = vim.fn["pum#map#select_relative"]
 local pum_confirm = vim.fn["pum#map#confirm"]
 local pum_cancel = vim.fn["pum#map#cancel"]
-local pum_visible = vim.fn["pum#visible"]
 local ddc_manual_complete = vim.fn["ddc#map#manual_complete"]
-local ddc_hide = vim.fn["ddc#hide"]
+-- local ddc_hide = vim.fn["ddc#hide"]
 
 local vsnip = {
   expandable = vim.fn["vsnip#expandable"],
@@ -34,8 +34,7 @@ local function ddc_init()
   utils.io.begin_debug("ddc_init")
 
   vim.fn["ddc#custom#patch_global"](ddc_config.global.get_config())
-  vim.fn["ddc#custom#patch_filetype"]({'noice'}, ddc_config.notice.get_config())
-  
+  vim.fn["ddc#custom#patch_filetype"]({ 'noice' }, ddc_config.noice.get_config())
 
   --  use ddc.
   vim.fn["ddc#enable"]()
@@ -53,88 +52,89 @@ local function ddc_preference()
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-n>",
-    rhs = "",
-    opts = {
-      callback = function()
-        if pumvisible() then
-          utils.io.end_debug("pum:visibled")
-          -- ddcmanualcomp = false
-          vim.fn["pum#map#insert_relative"](1)
-        elseif vim.fn["ddc#map#can_complete"]() then
-          -- ddcmanualcomp = true
-          utils.io.end_debug("ddc: manual completion")
-          vim.fn["ddc#map#manual_complete"]()
-        else
-          utils.io.end_debug("ddc: default")
-          return "<C-n>"
-        end
-      end,
-    },
+    rhs = function()
+      utils.io.end_debug("ddc: <C-n>")
+      if pumvisible() then
+        utils.io.end_debug("pum:visibled")
+        -- ddcmanualcomp = false
+        pum_insert_relative(1)
+      elseif vim.fn["ddc#map#can_complete"]() then
+        -- ddcmanualcomp = true
+        utils.io.end_debug("ddc: manual completion")
+        ddc_manual_complete()
+      else
+        utils.io.end_debug("ddc: default")
+        return "<C-n>"
+      end
+    end,
+    opts = km_opts.ebns,
   })
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-p>",
-    rhs = "",
-    opts = {
-      callback = function()
-        if pumvisible() then
-          -- ddcmanualcomp = false
-          vim.fn["pum#map#insert_relative"](-1)
-        elseif vim.fn["ddc#map#can_complete"]() then
-          -- ddcmanualcomp = true
-          utils.io.end_debug("ddc: manual completion")
-          vim.fn["ddc#map#manual_complete"]()
-        else
-          utils.io.end_debug("ddc: default")
-          return "<C-p>"
-        end
-      end,
-    },
+    rhs = function()
+      utils.io.end_debug("ddc: <C-p>")
+      if pumvisible() then
+        -- ddcmanualcomp = false
+        pum_insert_relative(-1)
+      elseif vim.fn["ddc#map#can_complete"]() then
+        -- ddcmanualcomp = true
+        utils.io.end_debug("ddc: manual completion")
+        ddc_manual_complete()
+      else
+        utils.io.end_debug("ddc: default")
+        return "<C-p>"
+      end
+    end,
+    opts = km_opts.ebns,
   })
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-e>",
     rhs = function()
+      utils.io.end_debug("ddc: <C-e>")
       if pumvisible() then
-        vim.fn["pum#map#cancel"]()
+        pum_cancel()
         return ""
       else
         return "<C-e>"
       end
     end,
-    opts = km_opts.e,
+    opts = km_opts.ebns,
   })
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-y>",
     rhs = function()
+      utils.io.end_debug("ddc: <C-y>")
       if pumvisible() then
-        vim.fn["pum#map#confirm"]()
+        pum_confirm()
         return ""
       end
     end,
-    opts = km_opts.e,
+    opts = km_opts.ebns,
   })
   -- Tab key select completion item
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<Tab>",
     rhs = function()
+      utils.io.end_debug("ddc: <Tab>")
       --if pumvisible() then
       --  vim.fn["pum#map#confirm"]()
       --  return ""
       --end
       if pumvisible() then
         -- ddcmanualcomp = false
-        vim.fn["pum#map#insert_relative"](1)
-      --elseif vim.fn["ddc#map#can_complete"]() then
-      --  -- ddcmanualcomp = true
-      --  vim.fn["ddc#map#manual_complete"]()
+        pum_confirm()
+        --elseif vim.fn["ddc#map#can_complete"]() then
+        --  -- ddcmanualcomp = true
+        --  vim.fn["ddc#map#manual_complete"]()
       else
         return "<Tab>"
       end
     end,
-    opts = km_opts.e,
+    opts = km_opts.ebns,
   })
   -- Enter key select completion item
   utils.io.keymap_set({
@@ -148,21 +148,23 @@ local function ddc_preference()
     --  end
     --end,
     rhs = function()
+      utils.io.end_debug("ddc: <CR>")
       if pumvisible() then
-        vim.fn["pum#map#confirm"]()
+        pum_confirm()
         return ""
       end
       return "<CR>"
     end,
-    opts = km_opts.e,
+    opts = km_opts.ebns,
   })
   -- Manually open the completion menu
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-Space>",
     rhs = function()
+      utils.io.end_debug("ddc: <C-Space>")
       if pumvisible() then
-        vim.fn["ddc#map#manual_complete"]()
+        ddc_manual_complete()
         return ""
       else
         return "<C-Space>"
@@ -178,6 +180,7 @@ local function ddc_preference()
     mode = { "i", "c", "t" },
     lhs = "<C-l>",
     rhs = function()
+      utils.io.end_debug("ddc: <C-l>")
       if pumvisible() then
         vim.fn["ddc#map#extend"]()
         return ""
@@ -211,6 +214,7 @@ local function snippet_preference()
     mode = { "i", "s" },
     lhs = "<Tab>",
     rhs = function()
+      utils.io.end_debug("ddc-snip: <Tab>")
       if vsnip.expandable() == 1 then
         utils.io.feedkey("<Plug>(vsnip-expand)", "")
         return ""
@@ -227,6 +231,7 @@ local function snippet_preference()
     mode = { "i", "s" },
     lhs = "<S-Tab>",
     rhs = function()
+      utils.io.end_debug("ddc-snip: <S-Tab>")
       if vsnip.jumpable(-1) == 1 then
         utils.io.feedkey("<Plug>(vsnip-jump-prev)", "")
         return ""
