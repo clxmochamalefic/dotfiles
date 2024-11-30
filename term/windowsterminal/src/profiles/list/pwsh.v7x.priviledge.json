@@ -1,0 +1,14 @@
+{
+  "guid": "{4b8cbc5b-00e4-4143-ab78-2529f9ae762f}",
+  "name": "\u3010RunAs\u3011 PowerShell",
+  "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+  "elevate": true,
+
+  "colorScheme": "One Half Dark",
+  "icon": "ms-appx:///ProfileIcons/pwsh.png",
+  "startingDirectory": "%USERPROFILE%",
+  "useAcrylic": true,
+
+  "hidden": false
+}
+

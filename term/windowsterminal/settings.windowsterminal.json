@@ -48,8 +48,8 @@
             "cursorShape": "vintage",
             "font": 
             {
-                "face": "Cica",
-                "size": 16.0
+              "face": "IntoneMono Nerd Font Mono",
+              "size": 16
             },
             "opacity": 80,
             "scrollbarState": "hidden",
@@ -62,8 +62,8 @@
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": true,
@@ -74,8 +74,8 @@
                 "colorScheme": "One Half Dark",
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
                 "hidden": false,
@@ -89,8 +89,8 @@
                 "elevate": true,
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{4b8cbc5b-00e4-4143-ab78-2529f9ae762f}",
                 "hidden": false,
@@ -103,8 +103,8 @@
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
@@ -115,8 +115,8 @@
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{43801ed6-d115-4ad6-903d-e064aa9215f2}",
                 "hidden": false,
@@ -126,8 +126,8 @@
             {
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
                 "hidden": false,
@@ -139,8 +139,8 @@
                 "colorScheme": "One Half Dark",
                 "font": 
                 {
-                    "face": "Cica",
-                    "size": 16.0
+                  "face": "IntoneMono Nerd Font Mono",
+                  "size": 16
                 },
                 "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
                 "hidden": true,

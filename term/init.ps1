@@ -8,17 +8,22 @@ $packname = "Microsoft.WindowsTerminal"
 $localstate = "\LocalState"
 
 # copy wezterm settings
-if (!Test-Path $dotconf_path)
+if (!(Test-Path $dotconf_path))
 {
   mkdir $dotconf_path
   mkdir $wezterm_conf_path
 }
-if (!Test-Path $dotconf_path)
+if (!(Test-Path $wezterm_conf_path))
 {
   mkdir $wezterm_conf_path
 }
 
-cp ./wezterm/* $wezterm_conf_path
+$setting_list = ls -Name ./wezterm/
+foreach ($setting in $setting_list)
+{
+  echo "./wezterm/${setting}"
+  cp "./wezterm/${setting}" $wezterm_conf_path
+}
 
 # copy windows terminal settings
 $location_list = ls $windowsterm_conf_findpath | Select-String $packname
