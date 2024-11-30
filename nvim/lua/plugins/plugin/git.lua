@@ -42,10 +42,10 @@ return {
   {
     'FabijanZulj/blame.nvim',
     lazy = true,
-    event = { "VeryLazy" },
+    event = { "FileReadPost" },
     cmd = {
-      'ToggleBlame',
-      "ToggleBlameVirtual",
+      'BlameToggle',
+      "BlameToggleVirtual",
     },
     -- stylua: ignore
     keys = {
@@ -64,5 +64,8 @@ return {
         close = { '<Esc>', 'q' },
       },
     },
+    init = function()
+      vim.api.nvim_create_user_command("BlameToggleVirtual", '<cmd>BlameToggle window<CR>', {})
+    end,
   },
 }
