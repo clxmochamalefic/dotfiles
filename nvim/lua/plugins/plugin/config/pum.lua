@@ -6,7 +6,7 @@ local M = {
   --use_complete  = true,
   border            = 'rounded',
   padding           = true,
-  auto_confirm_time = -1,
+  --auto_confirm_time = 3000,
   auto_select       = false,
 }
 

@@ -64,7 +64,8 @@ M.get_config = function()
     filterParams = params.filter,
     --specialBufferCompletion = true,
     --backspaceCompletion = true,
-    autoCompleteDelay = 200,
+    --autoCompleteDelay = 1000,
+    hideOnEvents = true,
     autoCompleteEvents = autocomplete_events,
   }
 end
