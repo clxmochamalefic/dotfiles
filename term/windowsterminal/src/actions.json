@@ -1,0 +1,35 @@
+[
+  {
+    "command": 
+    {
+      "action": "copy",
+      "singleLine": false
+    },
+    "keys": "ctrl+c"
+  },
+  {
+    "command": "paste"
+  },
+  {
+    "command": "find",
+    "keys": "ctrl+shift+f"
+  },
+  {
+    "command": "unbound",
+    "keys": "ctrl+v"
+  },
+  {
+    "command": "unbound",
+    "keys": "ctrl+shift+v"
+  },
+  {
+    "command": 
+    {
+      "action": "splitPane",
+      "split": "auto",
+      "splitMode": "duplicate"
+    },
+    "keys": "alt+shift+d"
+  }
+]
+

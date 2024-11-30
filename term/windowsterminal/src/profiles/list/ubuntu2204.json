@@ -1,0 +1,12 @@
+{
+  "guid": "{14b89c70-bb4c-455b-8c3c-137f1820305a}",
+  "name": "Ubuntu 22.04.2 LTS",
+  "tabTitle": "Ubuntu 22.04.2 LTS",
+  "commandline": "ubuntu2204.exe",
+
+  "colorScheme": "One Half Dark",
+  "icon": "https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png",
+
+  "hidden": false
+}
+

@@ -1,0 +1,10 @@
+{
+  "guid": "{43801ed6-d115-4ad6-903d-e064aa9215f2}",
+  "name": "\u3010RunAs\u3011 cmd",
+  "commandline": "%SystemRoot%\\System32\\cmd.exe",
+  "elevate": true,
+
+  "useAcrylic": true,
+  "hidden": false
+}
+

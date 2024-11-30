@@ -1,0 +1,15 @@
+{
+  "bellStyle": "window",
+  "colorScheme": "One Half Dark",
+  "cursorShape": "vintage",
+  "font": 
+  {
+    "face": "Intel One Mono",
+    "size": 16
+  },
+  "opacity": 80,
+  "scrollbarState": "hidden",
+  "useAcrylic": true,
+  "useAtlasEngine": true
+}
+
