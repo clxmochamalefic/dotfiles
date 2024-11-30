@@ -10,18 +10,21 @@ M.setup = function()
   --    linux (RHEL)  : $ sudo yum -y install epel-release
   --                    $ sudo yum -y install jq
 
-  local augroup = vim.api.nvim_create_augroup("MyJson", { clear = true })
-  vim.api.nvim_create_autocmd("FileType", {
-    group = augroup,
-    pattern = {
-      "json",
-    },
-    callback = function()
-      -- do something
-      vim.keymap.set("n", "Jq", "!j+ '%:p'", { noremap = true, silent = true, buffer = true })
-      vim.keymap.set("n", "Jqf", "!j+ '.'", { noremap = true, silent = true, buffer = true })
-    end,
-  })
+  vim.api.nvim_create_user_command("JqFullPath", "!j+ '%:p'", {})
+  vim.api.nvim_create_user_command("JqRelative", "!j+ '.'", {})
+
+  --local augroup = vim.api.nvim_create_augroup("MyJson", { clear = true })
+  --vim.api.nvim_create_autocmd("FileType", {
+  --  group = augroup,
+  --  pattern = {
+  --    "json",
+  --  },
+  --  callback = function()
+  --    -- do something
+  --    vim.keymap.set("n", "Jq", "!j+ '%:p'", { noremap = true, silent = true, buffer = true })
+  --    vim.keymap.set("n", "Jqf", "!j+ '.'", { noremap = true, silent = true, buffer = true })
+  --  end,
+  --})
 end
 
 return M
