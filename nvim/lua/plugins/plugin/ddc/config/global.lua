@@ -3,10 +3,6 @@ local cmd_sources = require('plugins.plugin.ddc.config.global.cmdsource')
 local option = require('plugins.plugin.ddc.config.global.option')
 local params = require('plugins.plugin.ddc.config.global.params')
 
-local ui_params = {
-  pum = { insert = true },
-}
-
 -- if has('win32')
 --   local sources = add(s:sources, 'windows-clipboard-history')
 -- endif
@@ -56,7 +52,6 @@ M.get_config = function()
   return {
     --ui = "native",
     ui = "pum",
-    uiParams = ui_params,
     sources = sources,
     cmdlineSources = cmd_sources,
     sourceOptions = option.source_options,
