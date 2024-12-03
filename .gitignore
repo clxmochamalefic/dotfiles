@@ -35,3 +35,9 @@ $RECYCLE.BIN/
 .bak
 .swp
 .swo
+
+# output dirs
+dist/
+out/
+obj/
+bin/
