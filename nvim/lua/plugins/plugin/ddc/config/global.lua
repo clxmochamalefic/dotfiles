@@ -60,7 +60,7 @@ M.get_config = function()
     --specialBufferCompletion = true,
     --backspaceCompletion = true,
     --autoCompleteDelay = 1000,
-    hideOnEvents = true,
+    --hideOnEvents = true,
     autoCompleteEvents = autocomplete_events,
   }
 end
