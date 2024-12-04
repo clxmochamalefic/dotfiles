@@ -7,7 +7,7 @@ local M = {
   border            = 'rounded',
   padding           = true,
   --auto_confirm_time = 3000,
-  auto_select       = false,
+  --auto_select       = false,
 }
 
 return M
