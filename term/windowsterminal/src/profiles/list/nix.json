@@ -1,0 +1,12 @@
+{
+  "commandline": "wsl -d NixOS -u cocoalix",
+  "font": {
+    "cellHeight": "1.4",
+    "face": "IntoneMono Nerd Font Mono",
+    "size": 11.0
+  },
+  "guid": "{af8766a5-b0d6-4753-b439-5b6f68624911}",
+  "hidden": false,
+  "icon": "https://avatars.githubusercontent.com/u/487568?s=200&v=4",
+  "name": "NixOS"
+}
