@@ -1,11 +1,19 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+local is_linux = function()
+	return wezterm.target_triple:find("linux") ~= nil
+end
+
+local is_darwin = function()
+	return wezterm.target_triple:find("darwin") ~= nil
+end
+
+local is_windows = function()
+	return wezterm.target_triple:find("windows") ~= nil
+end
+
 config.automatically_reload_config = true
-config.font_size = 12.0
-config.use_ime = true
-config.window_background_opacity = 0.85
-config.macos_window_background_blur = 20
 
 ----------------------------------------------------
 -- Tab
@@ -34,7 +42,7 @@ config.window_background_gradient = {
 config.show_new_tab_button_in_tab_bar = false
 -- nightlyのみ使用可能
 -- タブの閉じるボタンを非表示
-config.show_close_tab_button_in_tabs = false
+--config.show_close_tab_button_in_tabs = false
 
 -- タブ同士の境界線を非表示
 config.colors = {
@@ -71,6 +79,25 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     { Text = SOLID_RIGHT_ARROW },
   }
 end)
+
+----------------------------------------------------
+-- display
+----------------------------------------------------
+config.font_size = 12.0
+config.use_ime = true
+config.window_background_opacity = 0.85
+config.macos_window_background_blur = 20
+config.font = wezterm.font("IntoneMono Nerd Font Mono")
+
+if is_windows() then
+  config.default_prog = { "pwsh.exe" }
+  config.window_decorations = "TITLE"
+  config.window_background_opacity = 0
+  config.win32_system_backdrop = 'Acrylic'
+else
+  config.default_prog = { '/usr/local/bin/zsh', '-l' }
+end
+
 
 ----------------------------------------------------
 -- keybinds
