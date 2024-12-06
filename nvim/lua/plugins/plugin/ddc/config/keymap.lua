@@ -1,5 +1,13 @@
+---@diagnostic disable: undefined-global
 local utils = require("utils")
 local km_opts = require("const.keymap")
+
+local pum_insert_relative = vim.fn["pum#map#insert_relative"]
+local pum_select_relative = vim.fn["pum#map#select_relative"]
+local pum_confirm = vim.fn["pum#map#confirm"]
+local pum_cancel = vim.fn["pum#map#cancel"]
+local ddc_manual_complete = vim.fn["ddc#map#manual_complete"]
+-- local ddc_hide = vim.fn["ddc#hide"]
 
 local function pumvisible()
   local r = vim.fn["pum#visible"]()
@@ -216,4 +224,3 @@ M.snippet_preference = function()
 end
 
 return M
-
