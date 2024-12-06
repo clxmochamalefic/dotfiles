@@ -5,13 +5,6 @@
 
 local ddc_config = require("plugins.plugin.ddc.config")
 
-local pum_insert_relative = vim.fn["pum#map#insert_relative"]
-local pum_select_relative = vim.fn["pum#map#select_relative"]
-local pum_confirm = vim.fn["pum#map#confirm"]
-local pum_cancel = vim.fn["pum#map#cancel"]
-local ddc_manual_complete = vim.fn["ddc#map#manual_complete"]
--- local ddc_hide = vim.fn["ddc#hide"]
-
 local vsnip = {
   expandable = vim.fn["vsnip#expandable"],
   available = vim.fn["vsnip#available"],
@@ -19,7 +12,6 @@ local vsnip = {
 }
 
 -- local ddcmanualcomp = false
-
 
 return {
   {

@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 -- ---------------------------------------------------------------------------
 -- LSP COMMON PLUGINS
 -- ---------------------------------------------------------------------------
@@ -78,6 +79,9 @@ return {
       "FileReadPre",
     },
     cmd = {
+      "LspStart",
+      "LspRestart",
+      "LspStop",
       "LspInstall",
       "LspUninstall",
       "LspInfo",
