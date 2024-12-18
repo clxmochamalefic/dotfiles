@@ -1,19 +1,13 @@
+---@diagnostic disable: undefined-global
 -- this init.vim is using utf-8
 vim.opt.encoding = "utf-8"
 vim.scriptencoding = "utf-8"
 
+
 local M = {}
 function M.setup()
   local utils = require("utils")
-
-  local fav_font_map = {
-    -- Migu2M = "Migu 2M",
-    -- Migu2MPL = "Migu 2M for Powerline",
-    -- above Migu series fonts are came to EOL probably, THANK YOU FOR AWESOME FONT THAT PRESENT TO ME!!!
-    Cica = "Cica",
-    Hack = "Hack",
-    IntelOneMono = 'IntoneMono\\ Nerd\\ Font\\ Mono',
-  }
+  local fav_font_map = require("const.font")
 
   local currentFont = fav_font_map.IntelOneMono
 
@@ -79,4 +73,3 @@ function M.setup()
 end
 
 return M
-

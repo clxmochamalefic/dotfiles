@@ -1,0 +1,13 @@
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[user]
+	name = clxmochamalefic
+	email = 5728720+clxmochamalefic@users.noreply.github.com
+[core]
+	autocrlf = false
+	filemode = false
+	safecrlf = true
+	whitespace = cr-at-eol
