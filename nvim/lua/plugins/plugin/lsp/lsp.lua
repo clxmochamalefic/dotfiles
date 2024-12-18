@@ -242,12 +242,16 @@ return {
         end
 
         local bufopts = { silent = true, buffer = bufnr, noremap = true }
+        vim.keymap.set("n", "gk", vim.lsp.buf.hover, bufopts)
         vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+        vim.keymap.set("n", "gi", openDiagnostics, bufopts)
         vim.keymap.set("n", "I", openDiagnostics, bufopts)
+
+        vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
+        vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
+
         vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
-        vim.keymap.set("n", "<F3>", function()
-          vim.lsp.buf.format({ async = true })
-        end, bufopts)
+        vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
       end
 
       -- mason-lspconfig setup

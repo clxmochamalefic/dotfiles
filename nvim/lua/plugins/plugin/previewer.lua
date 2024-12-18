@@ -1,4 +1,6 @@
+---@diagnostic disable: undefined-global
 local utils = require('utils')
+local fonts = require('const.font')
 
 local g = vim.g
 local fn = vim.fn
@@ -60,6 +62,25 @@ return {
         -- The host to run the preview server on
         host = "localhost",
       })
+    end,
+  },
+  {
+    "skanehira/denops-silicon.vim",
+    dependencies = {
+      "vim-denops/denops.vim",
+      'yuki-yano/denops-lazy.nvim'
+    },
+    lazy = true,
+    cmd = { "Silicon" },
+    config = function()
+      require('denops-lazy').load('denops-silicon.vim')
+      vim.g.silicon_options = {
+        font = fonts.IntelOneMono,
+        no_line_number = false,
+        no_round_corner = false,
+        no_window_controls = false,
+        theme = 'OneHalfDark',
+      }
     end,
   },
 --  {

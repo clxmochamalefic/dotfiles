@@ -4,12 +4,14 @@
 --
 local tblUtil = require("utils.table")
 
+local path = [[plugins.plugin.lsp.config.server.]]
+
 local M = {
   lang = {
-    jdtls = require("plugins.plugin.lsp.config.server.jdtls"),
-    denols = require("plugins.plugin.lsp.config.server.denols"),
+    jdtls = require(path .. "jdtls"),
+    denols = require(path .. "denols"),
     -- denols = nil,
-    ts_ls = require("plugins.plugin.lsp.config.server.tsserver"),
+    ts_ls = require(path .."tsserver"),
     prismals = nil,
     omnisharp = nil,
     dockerls = nil,
@@ -25,9 +27,9 @@ local M = {
     marksman = nil,
     clangd = nil,
     vimls = nil,
-    lua_ls = nil,
-    prettierd = require("plugins.plugin.lsp.config.server.prettierd"),
-    rust = require("plugins.plugin.lsp.config.server.rust_analyzer"),
+    lua_ls = require(path .. "lua_ls"),
+    prettierd = require(path .. "prettierd"),
+    rust = require(path .. "rust_analyzer"),
   },
   no_mason = {
     "prettierd",
