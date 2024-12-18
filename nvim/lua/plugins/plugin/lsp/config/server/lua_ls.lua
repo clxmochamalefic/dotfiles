@@ -9,7 +9,7 @@ M.setup = function(baseLc, lc, opts)
 
   opts.root_dir = baseLc.util.root_pattern(".luacheckrc", ".rockspec")
   opts.filetypes = { "lua" }
-  opts.single_file_support = true
+  opts.single_file_support = false
 
   lc.setup(opts)
 end

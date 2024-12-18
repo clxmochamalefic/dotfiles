@@ -243,9 +243,7 @@ return {
 
         local bufopts = { silent = true, buffer = bufnr, noremap = true }
         vim.keymap.set("n", "gk", vim.lsp.buf.hover, bufopts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-        vim.keymap.set("n", "gi", openDiagnostics, bufopts)
-        vim.keymap.set("n", "I", openDiagnostics, bufopts)
+        vim.keymap.set("n", "gj", openDiagnostics, bufopts)
 
         vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
         vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
