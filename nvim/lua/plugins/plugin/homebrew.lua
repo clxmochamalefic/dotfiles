@@ -3,7 +3,7 @@ return {
   {
     "clxmochamalefic/lspctl.nvim",
     lazy = false,
-    dir = vim.g.my_home_path .. "/repos/my/plugins/lspctl.nvim",
+    --dir = vim.g.my_home_path .. "/repos/my/plugins/lspctl.nvim",
     --dev = true,
     dependencies = {
       "MunifTanjim/nui.nvim",
