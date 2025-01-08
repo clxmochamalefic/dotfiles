@@ -20,7 +20,7 @@ local function config_vim()
   --  define default file encoding and fileformat
   opt.encoding = "utf-8"
   opt.fileencoding = "utf-8"
-  opt.ff = "dos"
+  opt.ff = "unix"
 
   -- vim compatible
   opt.compatible = false
