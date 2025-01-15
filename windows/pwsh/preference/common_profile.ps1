@@ -7,7 +7,16 @@ oh-my-posh init pwsh --config "$env:PWSHCONF\mytheme.omp.yaml" | Invoke-Expressi
 #   TODO: これ本当に必要かチェック
 #   volta completions
 $profilePath = "${HOME}\Documents\PowerShell"
-Get-ChildItem "${profilePath}\Completions" | ForEach-Object { . $_ }
+if (!(Test-Path -Path $profilePath)) {
+  mkdir $profilePath
+}
+
+$completionPath = "${profilePath}\Completions"
+if (!(Test-Path -Path $completionPath)) {
+  mkdir $completionPath
+}
+
+Get-ChildItem $completionPath | ForEach-Object { . $_ }
 
 #   commandline use feel modifing to the bash
 Import-Module PSReadline
