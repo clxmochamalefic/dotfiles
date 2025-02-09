@@ -20,8 +20,8 @@ function M.py()
   -- python path
   if not utils.fs.exists(pypath) then
       -- TODO: PLZ TEST ME!!
-      local py2path = vim.cmd("!which python")
-      local py3path = vim.cmd("!which python3")
+      local py2path = vim.cmd("silent !which python")
+      local py3path = vim.cmd("silent !which python3")
       local py2pref = "vim.g.python2_host_prog = " .. py2path
       local py3pref = "vim.g.python3_host_prog = " .. py3path
 
@@ -41,7 +41,7 @@ function M.node()
   local nodepath = g.my_home_preference_path .. '/node.lua'
   -- node path
   if not utils.fs.exists(nodepath) then
-    local path = vim.cmd("!which node")
+    local path = vim.cmd("silent !which node")
     local pref = "vim.g.node_host_prog = " .. path
 
     local body = pref .. "\n"

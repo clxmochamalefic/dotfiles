@@ -22,7 +22,7 @@ function M.py()
     local py2path = ""
     local py2pref = ""
 
-    local py3path = vim.cmd("!gcm python | Select-Object Source")
+    local py3path = vim.cmd("silent !gcm python | Select-Object Source")
     local py3pref = "vim.g.python3_host_prog = " .. py3path
 
     local body = py2pref .. "\n" .. py3pref .. "\n"
@@ -41,7 +41,7 @@ function M.node()
   local nodepath = g.my_home_preference_path .. "/node.lua"
   -- node path
   if not utils.fs.exists(nodepath) then
-    local path = vim.cmd("!gcm node | Select-Object Source")
+    local path = vim.cmd("silent !gcm node | Select-Object Source")
     local pref = "vim.g.node_host_prog = " .. path
 
     local body = pref .. "\n"
