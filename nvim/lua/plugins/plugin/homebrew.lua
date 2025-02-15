@@ -1,12 +1,12 @@
 ---@diagnostic disable: undefined-global
 return {
   {
-    "clxmochamalefic/lspctl.nvim",
+    "clxmochamalefic/lspctl.denops",
     lazy = false,
-    --dir = vim.g.my_home_path .. "/repos/my/plugins/lspctl.nvim",
-    --dev = true,
+    dir = vim.g.my_home_path .. "/repos/plugins/lspctl.denops",
+    dev = true,
     dependencies = {
-      "MunifTanjim/nui.nvim",
+      'vim-denops/denops.vim',
       "neovim/nvim-lspconfig",
     },
     cmd = { "Lspctl", },
