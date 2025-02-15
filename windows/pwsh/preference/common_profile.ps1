@@ -27,6 +27,7 @@ Remove-PSReadLineKeyHandler -Chord Ctrl+h
 Remove-PSReadLineKeyHandler -Chord Ctrl+g
 
 $OutputEncoding = [System.Text.Encoding]::GetEncoding('utf-8')
+$PSDefaultParameterValues['*:Encoding'] = 'utf8'
 
 # load other preferences
 #   command aliases

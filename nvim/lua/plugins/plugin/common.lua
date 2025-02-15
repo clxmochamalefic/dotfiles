@@ -20,6 +20,7 @@ return {
   {
     'vim-denops/denops.vim',
     build = function()
+      myDenops.configure()
       myDenops.setup()
       myDenops.build()
       myDenops.update()
