@@ -246,6 +246,7 @@ return {
     end,
   },
   {
+    -- show find highlight number
     "kevinhwang91/nvim-hlslens",
     lazy = true,
     event = { "BufReadPost", "FileReadPost" },
