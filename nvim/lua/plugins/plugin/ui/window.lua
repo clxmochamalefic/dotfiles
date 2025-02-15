@@ -29,27 +29,27 @@ return {
       --{ "-", "<Cmd>NvimWindowPicker<CR>", mode = "n" },
       --{ "-", wp, mode = "n" },
     },
-    config = function()
-      require 'window-picker'.setup({
-        filter_rules = {
-          include_current_win = true,
-          autoselect_one = false,
+    opts = {
+      filter_rules = {
+        include_current_win = true,
+        autoselect_one = false,
 
-          -- filter using buffer options
-          bo = {
-            -- if the file type is one of following, the window will be ignored
-            filetype = { 'neo-tree', "neo-tree-popup", "notify" },
-            --filetype = { "neo-tree-popup", "notify" },
-            --
-            -- if the buffer type is one of following, the window will be ignored
-            --buftype = { "quickfix" },
-            buftype = { 'terminal', "quickfix" },
-          },
+        -- filter using buffer options
+        bo = {
+          -- if the file type is one of following, the window will be ignored
+          filetype = { 'neo-tree', "neo-tree-popup", "notify" },
+          --filetype = { "neo-tree-popup", "notify" },
+          --
+          -- if the buffer type is one of following, the window will be ignored
+          --buftype = { "quickfix" },
+          buftype = { 'terminal', "quickfix" },
         },
-        --hint = 'statusline-winbar',
-        hint = 'floating-big-letter',
-      })
-
+      },
+      --hint = 'statusline-winbar',
+      hint = 'floating-big-letter',
+    },
+    config = function(_, opts)
+      require 'window-picker'.setup(opts)
       vim.api.nvim_create_user_command( "NvimWindowPicker", wp, {})
     end,
   },

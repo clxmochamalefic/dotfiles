@@ -42,6 +42,8 @@ local keymap = vim.keymap
 --
 
 return {
+  -- lspsaga
+  --    (winbar) lspsaga.Breadcrumbs => window header line symbol list
   {
     lazy = true,
     "nvimdev/lspsaga.nvim",
@@ -50,32 +52,31 @@ return {
       'nvim-treesitter/nvim-treesitter',
       "nvim-tree/nvim-web-devicons",
     },
-    config = function()
-      require("lspsaga").setup({
-        finder = {
-          max_height = 0.6,
-          default = "tyd+ref+imp+def",
-          keys = {
-            toggle_or_open = "<CR>",
-            vsplit = { "v", "[" },
-            split = { "s", "]" },
-            tabnew = "t",
-            tab = "T",
-            quit = "q",
-            close = "<Esc>",
-          },
-          methods = {
-            tyd = "textDocument/typeDefinition",
-          },
+    keys = {
+      { "<leader>,", "<cmd>Lspsaga finder<CR>", mode = "n" },
+    },
+    opts = {
+      finder = {
+        max_height = 0.6,
+        default = "tyd+ref+imp+def",
+        keys = {
+          toggle_or_open = "<CR>",
+          vsplit = { "v", "[" },
+          split = { "s", "]" },
+          tabnew = "t",
+          tab = "T",
+          quit = "q",
+          close = "<Esc>",
         },
-        -- https://nvimdev.github.io/lspsaga/lightbulb/
-        -- hide lightbulb icon in anumber col  number col
-        ui = {
-          code_action = "",
+        methods = {
+          tyd = "textDocument/typeDefinition",
         },
-      })
-
-      keymap.set("n", "<leader>,", "<Cmd>Lspsaga finder<CR>", { desc = "Telescope: live grep args" })
-    end,
+      },
+      -- https://nvimdev.github.io/lspsaga/lightbulb/
+      -- hide lightbulb icon in anumber col  number col
+      ui = {
+        code_action = "",
+      },
+    },
   },
 }
