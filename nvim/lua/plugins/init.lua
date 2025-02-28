@@ -1,10 +1,3 @@
-local g = vim.g
-local fn = vim.fn
-local api = vim.api
-local opt = vim.opt
-local loop = vim.loop
-local keymap = vim.keymap
-
 local opts = {
   defaults = {
     lazy = true,
@@ -19,9 +12,9 @@ local opts = {
 local M = {}
 
 M.setup = function()
-  local lazypath = fn.stdpath("data") .. "/lazy/lazy.nvim"
-  if not loop.fs_stat(lazypath) then
-    fn.system({
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
       "git",
       "clone",
       "--filter=blob:none",
@@ -30,11 +23,11 @@ M.setup = function()
       lazypath,
     })
   end
-  opt.rtp:prepend(lazypath)
+  vim.opt.rtp:prepend(lazypath)
 
-  --api.nvim_create_autocmd("VimEnter", {
+  --vim.api.nvim_create_autocmd("VimEnter", {
   --  callback = function(_)
-  --    --api.nvim_set_keymap("n", "<leader>l", ":Lazy<CR>", { silent = true, desc = "lazy" })
+  --    --vim.api.nvim_set_keymap("n", "<leader>l", ":Lazy<CR>", { silent = true, desc = "lazy" })
   --  end,
   --})
 

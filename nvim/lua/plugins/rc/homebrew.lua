@@ -19,6 +19,7 @@ return {
     lazy = false,
     dir = vim.g.my_home_path .. "/repos/plugins/lspctl.denops",
     dev = true,
+    cond = false,
     dependencies = {
       'vim-denops/denops.vim',
       "neovim/nvim-lspconfig",

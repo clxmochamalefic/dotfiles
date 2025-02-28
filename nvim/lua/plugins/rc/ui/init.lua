@@ -12,6 +12,7 @@ local notify = require("plugins.rc.ui.notify")
 local nui = require("plugins.rc.ui.nui")
 local statusline = require("plugins.rc.ui.statusline")
 local window = require("plugins.rc.ui.window")
+local ddu = require("plugins.rc.ui.ddu")
 
 table.insert(M, editor)
 table.insert(M, viewer)
@@ -21,5 +22,6 @@ table.insert(M, notify)
 table.insert(M, nui)
 table.insert(M, statusline)
 table.insert(M, window)
+table.insert(M, ddu)
 
 return M
