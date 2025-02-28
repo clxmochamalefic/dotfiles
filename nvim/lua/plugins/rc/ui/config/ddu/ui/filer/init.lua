@@ -16,15 +16,24 @@ local M = {
 function M.setup()
   utils.io.begin_debug("ddu filer")
 
+  local ddu_filer_source_columns = {
+    "devicon_filename",
+    "file_git_status",
+    "file_buf_modified",
+  }
   local ddu_filer_sources = {
     {
       name = "file",
-      param = {},
+      --param = {},
+      options = {
+        --sorters = { "sorter_alpha", "sorter_reversed" },
+        columns = ddu_filer_source_columns,
+      }
     },
   }
   local ddu_filer_source_options = {
     ["_"] = {
-      columns = { "devicon_filename" },
+      columns = ddu_filer_source_columns,
     },
   }
   local ddu_filer_kind_options = {
@@ -57,12 +66,12 @@ function M.setup()
       sortTreesFirst = true,
     },
     devicon_filename = {
-      span = 2,
-      padding = 2,
       iconWidth = 2,
-      useLinkIcon = "grayout",
-      sort = "filename",
-      sortTreesFirst = true,
+      linkIcon = "grayout",
+    },
+    file_git_status = {
+    },
+    file_buf_modified = {
     },
   }
 
