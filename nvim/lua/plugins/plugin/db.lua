@@ -1,38 +1,59 @@
+---@diagnostic disable: unused-local, undefined-global
+
 local utils = require("utils")
 
-local g = vim.g
-local fn = vim.fn
-local opt = vim.opt
-local api = vim.api
-local keymap = vim.keymap
+local cond = false
+local dadbodPreferencePath = nil
+
+local function getDadBodPreferencePath()
+  if dadbodPreferencePath == nil then
+    dadbodPreferencePath = vim.fn.expand(vim.g.my_home_cache_path .. '/dadbod')
+  end
+
+  return dadbodPreferencePath
+end
 
 return {
   {
     "tpope/vim-dadbod",
     lazy = true,
-    event = { "VimEnter" },
-    cond = false,
+    cond = cond,
+    cmd = {
+      "DB",
+      "DBUI",
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUIFindBuffer',
+    },
     dependencies = {
       "tpope/vim-dotenv",
+      "vim-scripts/dbext.vim",
       "kristijanhusak/vim-dadbod-ui",
+      'kristijanhusak/vim-dadbod-completion',
     },
     build = function()
       utils.io.begin_debug("build: /plugins/db.lua")
 
-      local db_toml_dir = vim.fn.expand("~/.cache/vim_dadbod")
+      local dirPath = getDadBodPreferencePath()
       vim.g.dbs = {}
 
-      if vim.fn.isdirectory(db_toml_dir) ~= 1 then
-        local mkdircmd = "!mkdir " .. db_toml_dir
+      if vim.fn.isdirectory(dirPath) ~= 1 then
+        local mkdircmd = "!mkdir " .. dirPath
         utils.io.echo(mkdircmd)
         vim.cmd(mkdircmd)
       end
 
       utils.io.end_debug("build: /plugins/db.lua")
     end,
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+      vim.g.db_ui_save_location = getDadBodPreferencePath()
+    end,
     config = function()
       utils.io.begin_debug("/plugins/db.lua")
+      vim.g.db_ui_save_location = getDadBodPreferencePath()
 
+      -- e.g.
       -- TOML FORMAT
       -- [local]
       -- connection_string = "mysql://xxxx"
@@ -61,4 +82,29 @@ return {
       utils.io.end_debug("/plugins/db.lua")
     end,
   },
+  {
+    "vim-scripts/dbext.vim",
+    lazy = true,
+    cond = cond,
+    config = function()
+      vim.g.dbext_default_SQLITE_bin = 'sqlite3'
+      -- プロファイルの定義
+      vim.g.dbext_default_profile_MySQL_test = 'type=SQLSRV:integratedlogin=1:dbname=myDB'
+      vim.g.dbext_default_profile_mysqlnodb = 'type=MYSQL:host=127.0.0.1:user=root:passwd=password:dbname=test'
+      vim.g.dbext_default_profile_SQLServer_test = 'type=SQLSRV:integratedlogin=1:dbname=myDB'
+      vim.g.dbext_default_profile_test = 'type=SQLITE:dbname=/dbpath/test.db'
+      -- デフォルトで使用するプロファイルを指定
+      vim.g.dbext_default_profile = 'test'
+    end,
+  },
+  {
+    'kristijanhusak/vim-dadbod-completion',
+    lazy = true,
+    cond = cond,
+    ft = {
+      'sql',
+      'mysql',
+      'plsql'
+    },
+  }
 }
