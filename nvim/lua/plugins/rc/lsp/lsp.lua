@@ -271,7 +271,7 @@ return {
       })
 
       -- setup ensure installed LSP servers out of mason registry
-      myserver.setupToServerForNoMasons(lspconfig, opts)
+      --myserver.setupToServerForNoMasons(lspconfig, opts)
 
       myhelper.setup()
 
