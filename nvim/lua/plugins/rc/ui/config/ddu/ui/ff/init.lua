@@ -6,16 +6,16 @@ local keymap = vim.keymap
 
 local utils   = require("utils")
 local km_opts = require("const.keymap")
-local ddu     = require("plugins.rc.config.ddu.core")
-local ffutils = require("plugins.rc.config.ddu.ui.ff.utils")
+local ddu     = require("plugins.rc.ui.config.ddu.core")
+local ffutils = require("plugins.rc.ui.config.ddu.ui.ff.utils")
 
 
-local buffer  = require("plugins.rc.config.ddu.ui.ff.buffer")
-local clip    = require("plugins.rc.config.ddu.ui.ff.clip")
-local emoji   = require("plugins.rc.config.ddu.ui.ff.emoji")
-local file    = require("plugins.rc.config.ddu.ui.ff.file")
-local lsp     = require("plugins.rc.config.ddu.ui.ff.lsp")
-local mr      = require("plugins.rc.config.ddu.ui.ff.mr")
+local buffer  = require("plugins.rc.ui.config.ddu.ui.ff.buffer")
+local clip    = require("plugins.rc.ui.config.ddu.ui.ff.clip")
+local emoji   = require("plugins.rc.ui.config.ddu.ui.ff.emoji")
+local file    = require("plugins.rc.ui.config.ddu.ui.ff.file")
+local lsp     = require("plugins.rc.ui.config.ddu.ui.ff.lsp")
+local mr      = require("plugins.rc.ui.config.ddu.ui.ff.mr")
 
 local M = {
   util = ffutils

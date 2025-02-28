@@ -6,7 +6,7 @@ local keymap = vim.keymap
 
 local utils = require("utils")
 local km_opts = require("const.keymap")
-local ddu = require("plugins.rc.config.ddu.core")
+local ddu = require("plugins.rc.ui.config.ddu.core")
 
 local M = {
   current_ff_name = "buffer"

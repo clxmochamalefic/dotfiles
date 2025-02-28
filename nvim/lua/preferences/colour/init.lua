@@ -221,7 +221,7 @@ colour.setup = function()
       vim.cmd("colorscheme " .. colorscheme)
     end,
     catch = function()
-      vim.cmd("colorscheme " .. "primary")
+      --vim.cmd("colorscheme " .. "primary")
     end,
     finally = function()
       -- background color
