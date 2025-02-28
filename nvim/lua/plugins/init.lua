@@ -38,8 +38,8 @@ M.setup = function()
   --  end,
   --})
 
-  --require("lazy").setup("plugins.plugin", opts)
-  require("lazy").setup("plugins.plugin")
+  --require("lazy").setup("plugins.rc", opts)
+  require("lazy").setup("plugins.rc")
 end
 
 return M
