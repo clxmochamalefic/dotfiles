@@ -17,9 +17,10 @@ function M.setup()
   utils.io.begin_debug("ddu filer")
 
   local ddu_filer_source_columns = {
-    "devicon_filename",
     "file_git_status",
     "file_buf_modified",
+    "devicon_filename",
+    --"icon_filename",
   }
   local ddu_filer_sources = {
     {
