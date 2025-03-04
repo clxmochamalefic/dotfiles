@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 local env = require("utils.sub.env")
 
 local M = {}
@@ -63,6 +64,9 @@ function M.setup()
   local cd_docs = function()
     cd("~" .. env.get_path_splitter_for_current_env() .. "Documents")
   end
+  local cd_quicknotes = function()
+    cd(env.join_path("~", ".cache", "quick-notes"))
+  end
 
   local augroup_id = vim.api.nvim_create_augroup("neo-tree", {})
   vim.api.nvim_create_autocmd("FileType", {
@@ -75,6 +79,7 @@ function M.setup()
       vim.keymap.set("n", "~", cd_home, opts("Open: $HOME"))
       vim.keymap.set("n", "\\", cd_repos, opts("Open: repos"))
       vim.keymap.set("n", "=", cd_docs, opts("Open: Documents"))
+      vim.keymap.set("n", "<F1>", cd_quicknotes, opts("Open: QuickNotes"))
 
       vim.keymap.set("n", ">", "<Cmd>vertical resize +10<CR>", { noremap = true, buffer = true })
       vim.keymap.set("n", "<lt>", "<Cmd>vertical resize -10<CR>", { noremap = true, buffer = true })
