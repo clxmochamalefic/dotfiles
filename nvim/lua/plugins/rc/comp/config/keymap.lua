@@ -125,11 +125,12 @@ M.ddc_preference = function()
       utils.io.end_debug("ddc: <CR>")
       if pumvisible() then
         pum_confirm()
-        --return ""
       end
+
       return "<CR>"
     end,
-    opts = {},
+    -- exprをつけないと、元々の `<CR>` が動いてくれない
+    opts = km_opts.en,
   })
   -- Manually open the completion menu
   utils.io.keymap_set({
