@@ -62,20 +62,20 @@ M.ddc_preference = function()
     end,
     opts = km_opts.n,
   })
-  utils.io.keymap_set({
-    mode = { "i", "c", "t" },
-    lhs = "<C-e>",
-    rhs = function()
-      utils.io.end_debug("ddc: <C-e>")
-      if pumvisible() then
-        pum_cancel()
-        return ""
-      else
-        return "<C-e>"
-      end
-    end,
-    opts = km_opts.n,
-  })
+  --utils.io.keymap_set({
+  --  mode = { "i", "c", "t" },
+  --  lhs = "<C-e>",
+  --  rhs = function()
+  --    utils.io.end_debug("ddc: <C-e>")
+  --    if pumvisible() then
+  --      pum_cancel()
+  --      return ""
+  --    else
+  --      return "<C-e>"
+  --    end
+  --  end,
+  --  opts = km_opts.n,
+  --})
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-y>",

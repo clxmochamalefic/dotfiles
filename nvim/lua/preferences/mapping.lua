@@ -21,6 +21,9 @@ mapping.setup = function()
   -- escape from insert mode
   keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
 
+  -- TODO: tabキーでターミナルの補完聞かない問題
+  keymap.set({ "i", "c" }, "<C-a>", "<Home>", { noremap = true })
+  keymap.set({ "i", "c" }, "<C-e>", "<End>",  { noremap = true })
   --  today date and time
   -- nmap <C-;> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
   -- nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
