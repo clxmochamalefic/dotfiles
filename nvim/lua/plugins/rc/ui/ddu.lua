@@ -86,7 +86,7 @@ return {
       "DduLspActions",
     },
     keys = {
-      { "<Space>", "<cmd>DduFiler<CR>", mode = "n" },
+      { "g<Space>", "<cmd>DduFiler<CR>", mode = "n" },
       --{ "Z", "<cmd>DduFF<CR>", mode = "n" },
       --{ "<F2>", "<cmd>DduLspActions<CR>", mode = "n" },
     },
