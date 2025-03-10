@@ -30,7 +30,9 @@ return {
   {
     -- 自動括弧閉じ
     -- https://github.com/windwp/nvim-autopairs
+    -- ddc.vim との競合があるため、cond=false
     lazy = true,
+    cond = false,
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     opts = {}, -- this is equalent to setup({}) function
