@@ -296,7 +296,7 @@ return {
       "VeryLazy",
     },
     keys = {
-      { "<F12>", "<Cmd>Mason<CR>", { mode = "n", silent = true, desc = "mason" } },
+      --{ "<F12>", "<Cmd>Mason<CR>", { mode = "n", silent = true, desc = "mason" } },
     },
     opts = {
       ui = {
