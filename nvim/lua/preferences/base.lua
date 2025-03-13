@@ -148,9 +148,9 @@ local function config_io()
 
   --  disable use tabcharacter and define tabstop
   opt.tabstop = 4
-  opt.softtabstop = 4
   opt.smartindent = true
-  opt.shiftwidth = 4
+  opt.softtabstop = -1  -- reference shiftwidth
+  opt.shiftwidth = 0    -- reference tabstop
   opt.expandtab = true
   opt.backspace = "indent,eol,start"
 

@@ -32,8 +32,6 @@ ft.setup = function()
     callback = function ()
       -- do something
       opt.tabstop = 2
-      opt.softtabstop = 2
-      opt.shiftwidth = 2
     end
   })
   api.nvim_create_autocmd("FileType", {
@@ -44,8 +42,6 @@ ft.setup = function()
     callback = function ()
       -- do something
       opt.tabstop = 2
-      opt.softtabstop = 2
-      opt.shiftwidth = 2
     end
   })
 end
