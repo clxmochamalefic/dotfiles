@@ -34,4 +34,36 @@ return {
       require('csvview').setup(opts)
     end,
   },
+  {
+    "folke/zen-mode.nvim",
+    lazy = true,
+    dependencies = {
+      "folke/twilight.nvim",
+    },
+    cmd = {
+      "ZenMode",
+      "ZenModeDisable",
+    },
+    keys = {
+      { "gz", "<cmd>ZenMode<CR>", mode = "n" },
+    },
+    opts = {
+      window = {
+        width = .90 -- width will be 85% of the editor width
+      },
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
+  -- Lua
+  {
+    "folke/twilight.nvim",
+    lazy = true,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  }
 }
