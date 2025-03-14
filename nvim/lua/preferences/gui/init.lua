@@ -6,9 +6,12 @@ vim.scriptencoding = "utf-8"
 local utils = require("utils")
 local fav_font_map = require("const.font")
 
+local neoviderc = require("preferences.gui.rc.neovide")
+
 local default_fontsize = 13
 
 local M = {
+  -- common
   c = {
     font = {
       currentFont = fav_font_map.IntelOneMono,
@@ -16,6 +19,10 @@ local M = {
       min_fontsize = 7,
       max_columns = 260,
     },
+  },
+  -- resources
+  rc = {
+    neovide = neoviderc,
   },
 }
 
@@ -51,7 +58,7 @@ function M:map()
   vim.keymap.set("i", "<C-ScrollWheelUp>", increment_font_size, { noremap = true })
   vim.keymap.set("i", "<C-ScrollWheelDown>", decrement_font_size, { noremap = true })
 
-  vim.keymap.set({"n", "i", "v", "x", "t"}, "<S-Insert>", "<C-R>+", { noremap = true })
+  vim.keymap.set({ "n", "i", "v", "x", "t" }, "<S-Insert>", "<C-R>+", { noremap = true })
 end
 
 function M:setup()
@@ -66,6 +73,10 @@ function M:setup()
   end
   M:font()
   M:map()
+
+  if neoviderc:can_setup() then
+    neoviderc:setup()
+  end
 end
 
 return M
