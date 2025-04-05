@@ -12,9 +12,15 @@ return {
       "InsertEnter",
     },
     config = function()
-      local keymap_opt = { noremap = true, script = true, expr = true, silent = true, replace_keycodes = false }
+      local keymap_opt = {
+        noremap = false,
+        script = true,
+        expr = true,
+        silent = true,
+        replace_keycodes = false
+      }
       vim.keymap.set("i", "<C-\\>", "copilot#Accept()", keymap_opt)
-      g.copilot_no_tab_map = true
+      vim.g.copilot_no_tab_map = true
     end,
   },
   {

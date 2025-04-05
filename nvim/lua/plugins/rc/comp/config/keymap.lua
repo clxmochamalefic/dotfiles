@@ -62,20 +62,20 @@ M.ddc_preference = function()
     end,
     opts = km_opts.n,
   })
-  utils.io.keymap_set({
-    mode = { "i", "c", "t" },
-    lhs = "<C-e>",
-    rhs = function()
-      utils.io.end_debug("ddc: <C-e>")
-      if pumvisible() then
-        pum_cancel()
-        return ""
-      else
-        return "<C-e>"
-      end
-    end,
-    opts = km_opts.n,
-  })
+  --utils.io.keymap_set({
+  --  mode = { "i", "c", "t" },
+  --  lhs = "<C-e>",
+  --  rhs = function()
+  --    utils.io.end_debug("ddc: <C-e>")
+  --    if pumvisible() then
+  --      pum_cancel()
+  --      return ""
+  --    else
+  --      return "<C-e>"
+  --    end
+  --  end,
+  --  opts = km_opts.n,
+  --})
   utils.io.keymap_set({
     mode = { "i", "c", "t" },
     lhs = "<C-y>",
@@ -125,11 +125,12 @@ M.ddc_preference = function()
       utils.io.end_debug("ddc: <CR>")
       if pumvisible() then
         pum_confirm()
-        --return ""
       end
+
       return "<CR>"
     end,
-    opts = {},
+    -- exprをつけないと、元々の `<CR>` が動いてくれない
+    opts = km_opts.en,
   })
   -- Manually open the completion menu
   utils.io.keymap_set({
@@ -184,6 +185,12 @@ end
 M.snippet_preference = function()
   utils.io.begin_debug("snippet_preference")
 
+  local vsnip = {
+    expandable = vim.fn["vsnip#expandable"],
+    available = vim.fn["vsnip#available"],
+    jumpable = vim.fn["vsnip#jumpable"],
+  }
+
   utils.io.keymap_set({
     mode = { "i", "s" },
     lhs = "<Tab>",
@@ -199,28 +206,27 @@ M.snippet_preference = function()
         return "<Tab>"
       end
     end,
-    --opts = km_opts.en,
-    --opts = km_opts.ens,
-    opts = km_opts.n,
+    -- exprをつけないと、元々の `<CR>` が動いてくれない
+    opts = km_opts.en,
   })
-  utils.io.keymap_set({
-    mode = { "i", "s" },
-    lhs = "<S-Tab>",
-    rhs = function()
-      utils.io.end_debug("ddc-snip: <S-Tab>")
-      if vsnip.jumpable(-1) == 1 then
-        utils.io.feedkey("<Plug>(vsnip-jump-prev)", "")
-        return ""
-      else
-        return "<S-Tab>"
-      end
-    end,
-    --opts = km_opts.en,
-    --opts = km_opts.ens,
-    opts = km_opts.n,
-  })
+  --utils.io.keymap_set({
+  --  mode = { "i", "s" },
+  --  lhs = "<S-Tab>",
+  --  rhs = function()
+  --    utils.io.end_debug("ddc-snip: <S-Tab>")
+  --    if vsnip.jumpable(-1) == 1 then
+  --      utils.io.feedkey("<Plug>(vsnip-jump-prev)", "")
+  --      return ""
+  --    else
+  --      return "<C-d>"
+  --    end
+  --  end,
+  --  -- exprをつけないと、元々の `<CR>` が動いてくれない
+  --  opts = km_opts.en,
+  --})
 
   utils.io.end_debug("snippet_preference")
 end
+
 
 return M

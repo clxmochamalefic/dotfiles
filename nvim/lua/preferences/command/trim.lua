@@ -1,26 +1,45 @@
 local M = {}
 
+local current_line = 0;
+local current_col = 0;
+
 M.setup = function()
+  local function saveCurrent()
+    current_line = vim.fn["line"](".")
+    current_col = vim.fn["col"](".")
+  end
+  local function loadCurrent()
+    vim.cmd("call cursor(" .. current_line .. ", " .. current_col .. ")")
+    --current_col = vim.fn["col"](".")
+  end
   -- erase spaces to line end
   local function trimEndSpace()
-    vim.cmd([[%s#\v\s+$##g]])
+    saveCurrent()
+    vim.cmd([[silent! %s#\v\s+$##g]])
+    loadCurrent()
   end
   vim.api.nvim_create_user_command("TrimEndSpace", trimEndSpace, {})
 
   -- erase spaces to line end
   local function trimCr()
-    vim.cmd([[%s#\v\r##g]])
+    saveCurrent()
+    vim.cmd([[silent! %s#\v\r##g]])
+    loadCurrent()
   end
   vim.api.nvim_create_user_command("TrimCr", trimCr, {})
 
   -- erase spaces to line end
   local function trimCrlf()
-    vim.cmd([[%s#\v\r\n##g]])
+    saveCurrent()
+    vim.cmd([[silent! %s#\v\r\n##g]])
+    loadCurrent()
   end
   vim.api.nvim_create_user_command("TrimCrlf", trimCrlf, {})
 
   local function trimEnd()
-    vim.cmd([[%s#\v\s*\r##g]])
+    saveCurrent()
+    vim.cmd([[silent! %s#\v\s*\r##g]])
+    loadCurrent()
   end
   vim.api.nvim_create_user_command("TrimEnd", trimEnd, {})
 end
