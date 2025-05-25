@@ -2,8 +2,6 @@
 -- UI NOTIFY PLUGINS
 -- ---------------------------------------------------------------------------
 
-local nc = require("plugins.rc.ui.config.nui.noice-nvim")
-
 local hasAlreadyLoaded = false
 local telescope = nil
 
@@ -40,46 +38,6 @@ return {
 
       local t = require("telescope")
       telescope = t
-    end,
-  },
-  {
-    lazy = true,
-    "folke/noice.nvim",
-    cond = true,
-    event = { "VeryLazy" },
-    keys = {
-      {
-        "<leader>n",
-        open_telescope_notify,
-        {
-          mode = "n",
-          desc = "Open Telescope Notify"
-        }
-      },
-    },
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
-      "nvim-telescope/telescope.nvim",
-    },
-    opts = function(_, opts)
-      -- add any options here
-      opts.routes = nc.routes
-      opts.notify = nc.notify
-      opts.cmdline = nc.cmdline
-      opts.health = nc.health
-      opts.lsp = nc.lsp
-      opts.messages = nc.messages
-      opts.redirect = {
-        view = "notify",
-        filter = { event = "msg_show" },
-      }
-      opts.progress = nc.progress
-      opts.popupmenu = nc.popupmenu
-      opts.presets = nc.presets
-    end,
-    config = function(_, opts)
-      require("noice").setup(opts)
     end,
   },
 }
