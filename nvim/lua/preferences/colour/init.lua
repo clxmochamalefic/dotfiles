@@ -12,7 +12,7 @@ local opt = vim.opt
 local fn = vim.fn
 local api = vim.api
 local g = vim.g
-local hl_define = vim.highlight.create
+local hl_define = vim.hl.create
 
 local is_nvim_version_gt_08 = fn.has("nvim-0.8")
 
@@ -90,11 +90,11 @@ else
   --
   -- cterm   - sets the style
   -- ctermfg - set the text color
-  -- ctermbg - set the highlighting
+  -- ctermbg - set the hling
   --
   -- DiffAdd    - line was added
   -- DiffDelete - line was removed
-  -- DiffChange - part of the line was changed (highlights the whole line)
+  -- DiffChange - part of the line was changed (hls the whole line)
   --            - 行の一部が変更されました（行全体を強調表示）
   -- DiffText   - the exact part of the line that changed
   --            - 行の変更された正確な部分
@@ -164,7 +164,7 @@ colour.get_my_colorscheme = function()
   return my_colorscheme
 end
 
-local function get_highlight_table(is_nvim_ver_gt_08, key, val)
+local function get_hl_table(is_nvim_ver_gt_08, key, val)
   if (is_nvim_ver_gt_08) then
     return{ 0, key, val }
   end
@@ -172,10 +172,10 @@ local function get_highlight_table(is_nvim_ver_gt_08, key, val)
   return { key, val, false }
 end
 
-colour.get_highlight = function()
-  utils.io.begin_debug("colour.get_highlight")
+colour.get_hl = function()
+  utils.io.begin_debug("colour.get_hl")
 
-  local highlight_table = {
+  local hl_table = {
     RegistersWindow = onepoint_colours_primary,
     Pmenu           = onepoint_colours_primary,
     PmenuSel        = onepoint_colours_secondary,
@@ -201,14 +201,14 @@ colour.get_highlight = function()
   }
 
 
-  local my_highlight = {}
+  local my_hl = {}
 
-  for key, val in pairs(highlight_table) do
-    table.insert(my_highlight, get_highlight_table(is_nvim_version_gt_08, key, val))
+  for key, val in pairs(hl_table) do
+    table.insert(my_hl, get_hl_table(is_nvim_version_gt_08, key, val))
   end
 
-  utils.io.end_debug("colour.get_highlight")
-  return my_highlight
+  utils.io.end_debug("colour.get_hl")
+  return my_hl
 end
 
 colour.setup = function()
@@ -231,12 +231,12 @@ colour.setup = function()
 
   opt.termguicolors = true
 
-  --  highlight cursor line
+  --  hl cursor line
   opt.cursorline = true
 
   --  define colorscheme load function for lazyload
   local my_colorscheme = colour.get_my_colorscheme()
-  local my_highlight = colour.get_highlight()
+  local my_hl = colour.get_hl()
 
   local set_colorscheme = function()
     utils.io.debug_echo("set colorschemes")
@@ -246,8 +246,8 @@ colour.setup = function()
     end
   end
   local set_highlight = function()
-    utils.io.debug_echo("set highlights")
-    for i, x in pairs(my_highlight) do
+    utils.io.debug_echo("set hls")
+    for i, x in pairs(my_hl) do
       utils.io.debug_echo(i, x)
       hl_define(x[1], x[2], x[3])
     end
@@ -261,9 +261,9 @@ colour.setup = function()
     callback = set_colorscheme,
   })
 
-  local myhighlight_augroup_id = api.nvim_create_augroup("MyHighlight", { clear = true })
+  local myhl_augroup_id = api.nvim_create_augroup("Myhl", { clear = true })
   api.nvim_create_autocmd("ColorScheme", {
-    group = myhighlight_augroup_id,
+    group = myhl_augroup_id,
     callback = set_highlight,
   })
 
