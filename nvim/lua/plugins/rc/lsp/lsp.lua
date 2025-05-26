@@ -4,21 +4,9 @@
 -- ---------------------------------------------------------------------------
 
 local myutils = require("utils")
-
-local myserver = require("plugins.rc.lsp.config.server")
-local myignore = require("plugins.rc.lsp.config.ignore")
-
-local myhelper = require("plugins.rc.lsp.helper")
+local mymason = require("plugins.rc.lsp.mason")
 
 local border = "rounded"
-
---local function on_cursor_hold()
---  if vim.lsp.buf.server_ready() then
---    vim.diagnostic.open_float()
---  end
---end
-
---local vim.diagnostic_hover_augroup_name = "lspconfig-diagnostic"
 
 local icons = {
   package_installed = "✓",
@@ -26,38 +14,17 @@ local icons = {
   package_pending = "⟳",
 }
 
---local function enable_diagnostics_hover()
---  vim.api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
---  vim.api.nvim_create_autocmd({ "CursorHold" }, { group = vim.diagnostic_hover_augroup_name, callback = on_cursor_hold })
---end
---
---local function disable_diagnostics_hover()
---  vim.api.nvim_clear_autocmds({ group = vim.diagnostic_hover_augroup_name })
---end
+function call_my_mason()
+  require("plugins.rc.lsp.mason")
+end
 
---local function on_hover()
---  disable_diagnostics_hover()
---
---  vim.lsp.buf.hover()
---
---  vim.api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
---  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
---  vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
---    group = "lspconfig-enable-diagnostics-hover",
---    callback = function()
---      vim.api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
---      enable_diagnostics_hover()
---    end,
---  })
---end
+function openDiagnostics()
+  vim.diagnostic.open_float(nil, {
+    focus = false,
+    border = border,
+  })
+end
 
---local formatting_callback = function(client, bufnr)
---  vim.keymap.set("n", "<Leader>f", function()
---    local params = require("vim.lsp.util").make_formatting_params({})
---    client.request("textDocument/formatting", params, nil, bufnr)
---  end, { buffer = bufnr })
---end
---
 local function text_document_format(diag)
   -- return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
   return string.format("💡(%s)", diag.source)
@@ -67,16 +34,19 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      { "mason-org/mason-lspconfig.nvim", opts = {} },
       "vim-denops/denops.vim",
       "nvim-lua/plenary.nvim",
       "rcarriga/nvim-notify",
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
       "mfussenegger/nvim-dap",
     },
     lazy = true,
+    --lazy = false,
     event = {
-      "FileReadPre",
+      "FileReadPost",
+      "BufReadPost",
+      "InsertChange",
     },
     cmd = {
       "LspStart",
@@ -85,10 +55,10 @@ return {
       "LspInstall",
       "LspUninstall",
       "LspInfo",
+
+      "Mason",
     },
     config = function()
-      vim.g.mason_ready = false
-
       -- general settings
       vim.diagnostic.config({
         float = {
@@ -102,12 +72,6 @@ return {
           format = text_document_format,
         },
       })
-      --lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      --  border = border,
-      --  virtual_text = false,
-      --  focus = false,
-      --  silent = true,
-      --})
       vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
         local diag = vim.lsp.diagnostic.get_line_diagnostics()
         config = config or {}
@@ -123,22 +87,6 @@ return {
 
         local nv = myutils.env.get_nvim_version()
 
-        if nv.minor < 10 then
-          if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
-            -- vim.notify("No information available: diag")
-            return
-          end
-        else
-          -- TODO: もしかしたら nvim 0.10.0 以降で `vim.tbl_isempty` から `vim.empty` に変わるかもしれない
-          -- https://github.com/neovim/neovim/issues/24572
-          if vim.tbl_isempty(markdown_lines) and myutils.string.is_null_or_empty(diag) then
-            -- vim.notify("No information available: diag")
-            return
-          end
-        end
-
-        --local floatWndWidth = config.width
-        --local separator = string.rep("-", floatWndWidth)
 
         config.border = border
         config.focus = false
@@ -151,9 +99,6 @@ return {
         return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
       end
 
-      --lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-      --  border = border,
-      --})
       local signatureHelpStack = {}
       vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
         local uri = result.uri
@@ -192,30 +137,6 @@ return {
       --        note: this setting is global and should be set only once
       vim.api.nvim_set_option("updatetime", 1000)
 
-      --vim.api.nvim_create_autocmd("LspAttach", {
-      --  callback = function(args)
-      --    -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-      --    if not myignore.isShowable(args) then
-      --      return
-      --    end
-
-      --    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-      --      callback = function(t)
-      --        if myignore.isShowable(t) then
-      --          vim.diagnostic.open_float(nil, { focus = false })
-      --        end
-      --      end,
-      --    })
-      --    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-      --      callback = function(t)
-      --        if myignore.isShowable(t) then
-      --          vim.lsp.buf.hover()
-      --        end
-      --      end,
-      --    })
-      --  end,
-      --})
-
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
       capabilities.textDocument.foldingRange = {
@@ -223,12 +144,17 @@ return {
         lineFoldingOnly = true,
       }
 
-      require("mason").setup()
       local lspconfig = require("lspconfig")
-      local malspconfig = require("mason-lspconfig")
+      mymason.setup()
 
-      -- my lsp server setting setup
-      myserver.setup()
+      --vim.keymap.set("n", "gk", vim.lsp.buf.hover, bufopts)
+      --vim.keymap.set("n", "gj", openDiagnostics, bufopts)
+
+      --vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
+      --vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
+
+      --vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
+      --vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
 
       local on_attach = function(client, bufnr)
         local async = require("plenary.async")
@@ -237,9 +163,6 @@ return {
           vim.notify("LSP started: " .. client.name, vim.log.levels.INFO)
         end)
 
-        local openDiagnostics = function()
-          vim.diagnostic.open_float(nil, { focus = false })
-        end
 
         local bufopts = { silent = true, buffer = bufnr, noremap = true }
         vim.keymap.set("n", "gk", vim.lsp.buf.hover, bufopts)
@@ -252,58 +175,37 @@ return {
         vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
       end
 
-      -- mason-lspconfig setup
-      malspconfig.setup({
-        --ensure_installed = servers,
-        ensure_installed = myserver.servers,
-        automatic_installation = true,
-      })
-
-      -- setup ensure installed LSP servers in mason registry
-      local opts = {
+      vim.lsp.config("*", {
         on_attach = on_attach,
         capabilities = capabilities,
-      }
-      malspconfig.setup_handlers({
-        function(server_name)
-          myserver.setupToServerByName(lspconfig, server_name, opts)
-        end,
       })
-
-      -- setup ensure installed LSP servers out of mason registry
-      --myserver.setupToServerForNoMasons(lspconfig, opts)
-
-      myhelper.setup()
-
-      vim.g.mason_ready = true
     end,
   },
   {
-    --lazy = true,
-    "williamboman/mason.nvim",
+    lazy = true,
+    "mason-org/mason.nvim",
     dependencies = {
-      "vim-denops/denops.vim",
-      "mfussenegger/nvim-dap",
-    },
-    cmd = {
-      "Mason",
-      "MasonInstall",
-      "MasonUninstall",
-      "MasonUninstallAll",
-      "MasonLog",
     },
     event = {
-      "VeryLazy",
+      "FileReadPre",
     },
-    keys = {
-      --{ "<F12>", "<Cmd>Mason<CR>", { mode = "n", silent = true, desc = "mason" } },
+    opts = {}
+  },
+  {
+    lazy = true,
+    "mason-org/mason-lspconfig.nvim",
+    event = {
+      "FileReadPre",
     },
     opts = {
-      ui = {
-        icons = icons,
+      ensure_installed = {
+        "lua_ls",
+        "ts_ls",
       },
     },
-    --config = function() end,
+    dependencies = {
+        "neovim/nvim-lspconfig",
+    },
   },
   -- neodev.nvim ------------------------------
   {
