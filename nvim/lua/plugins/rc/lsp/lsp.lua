@@ -34,7 +34,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
+      { "mason-org/mason.nvim",           opts = {} },
       { "mason-org/mason-lspconfig.nvim", opts = {} },
       "vim-denops/denops.vim",
       "nvim-lua/plenary.nvim",
@@ -175,37 +175,118 @@ return {
         vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
       end
 
-      vim.lsp.config("*", {
-        on_attach = on_attach,
-        capabilities = capabilities,
-      })
+      -- TODO: 👇 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
+      local util = require 'lspconfig.util'
+      local server_preferences = {
+        ["astro"] = {},
+        ["cssls"] = {},
+        ["css_variables"] = {},
+        ["cssmodules_ls"] = {},
+        ["denols"] = {
+          filetypes = {
+            'typescript',
+          },
+          root_dir = util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
+          single_file_support = true,
+          settings = {
+            deno = {
+              enable = true,
+              lint = true,
+              unstable = true,
+              suggest = {
+                imports = {
+                  hosts = {
+                    ["https://deno.land"] = true,
+                    ["https://cdn.nest.land"] = true,
+                    ["https://crux.land"] = true,
+                  },
+                },
+              }
+            },
+          },
+          ["docker_compose_language_service"] = {},
+          ["dockerls"] = {},
+          ["html"] = {},
+          ["intelephense"] = {},
+          ["lua_ls"] = {
+            settings = {
+              Lua = {
+                completion = { callSnippet = "Replace", },
+                hint = { enable = true, },
+              },
+            }
+          },
+          ["marksman"] = {},
+          ["rust_analyzer"] = {
+            root_dir = util.root_pattern('Cargo.toml'),
+            filetypes = { "rust" },
+            cmd = { "ra-multiplex" },
+            settings = {
+              ["rust_analyzer"] = {
+                lru = {
+                  Capacity = 64,
+                },
+                assist = {
+                  importGranularity = "module",
+                  importPrefix = "by_crate",
+                },
+                procMacro = {
+                  enable = true,
+                },
+                checkOnSave = {
+                  command = "clippy",
+                  allTargets = false,
+                },
+                cargo = {
+                  loadOutDirsFromCheck = true,
+                  -- allFeatures = true,
+                },
+                completion = {
+                  autoimport = {
+                    enable = true,
+                  },
+                },
+                diagnostics = {
+                  disabled = {
+                    "unresolved-macro-call",
+                  },
+                },
+              },
+            },
+          },
+          ["svelte"] = {},
+          ["tailwindcss"] = {},
+          ["ts_ls"] = {
+            root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json'),
+            single_file_support = true,
+            settings = {
+              ["ts_ls"] = {
+                filetypes = {
+                  'javascript',
+                  'javascriptreact',
+                  'javascript.jsx',
+                  'typescript',
+                  'typescriptreact',
+                  'typescript.tsx',
+                },
+              },
+              docs = {
+                description = [[https://github.com/typescript-language-server/typescript-language-server]],
+              },
+            },
+          },
+          ["vtsls"] = {},
+          ["vue_ls"] = {},
+        }
+      }
+      -- TODO: 👆 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
+
+      for name, v in pairs(server_preferences) do
+        v.on_attach = on_attach
+        v.capabilities = capabilities
+        vim.lsp.config(name, v)
+      end
     end,
-  },
-  {
-    lazy = true,
-    "mason-org/mason.nvim",
-    dependencies = {
-    },
-    event = {
-      "FileReadPre",
-    },
-    opts = {}
-  },
-  {
-    lazy = true,
-    "mason-org/mason-lspconfig.nvim",
-    event = {
-      "FileReadPre",
-    },
-    opts = {
-      ensure_installed = {
-        "lua_ls",
-        "ts_ls",
-      },
-    },
-    dependencies = {
-        "neovim/nvim-lspconfig",
-    },
   },
   -- neodev.nvim ------------------------------
   {
