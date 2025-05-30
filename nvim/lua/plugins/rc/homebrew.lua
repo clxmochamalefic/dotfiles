@@ -16,8 +16,9 @@ return {
   },
   {
     "clxmochamalefic/lspctl.denops",
+    name = "lspctldenops",
     lazy = false,
-    dir = vim.g.my_home_path .. "/repos/plugins/lspctl.denops",
+    dir = vim.g.my_home_path .. "/repos/my/plugins/lspctl.denops",
     dev = true,
     cond = false,
     dependencies = {
