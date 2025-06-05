@@ -22,9 +22,9 @@ return {
       async.run(function()
         while g.mason_ready == nil or g.mason_ready == false do
           async.util.sleep(1000)
-          print("mason-nvim-lint: Waiting for mason to be ready")
+          --print("mason-nvim-lint: Waiting for mason to be ready")
         end
-        print("mason-nvim-lint: GET READY!!")
+        vim.notify("mason-nvim-lint: GET READY!!")
         cv:notify_all()
       end)
 
