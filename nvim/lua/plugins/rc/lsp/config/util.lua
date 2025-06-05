@@ -57,7 +57,14 @@ function M.setup()
     { name = "DiagnosticSignInfo", text = " " },
   }
   for _, sign in ipairs(diagnostic_signs) do
-    vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
+    -- DEPRECATED: Neovim 0.12
+    --vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
+    vim.diagnostic.config({
+      name = sign.name,
+      texthl = sign.name,
+      text = sign.text,
+      numhl = sign.name
+    })
   end
 
   vim.diagnostic.config(lsputils.diagnostic)
