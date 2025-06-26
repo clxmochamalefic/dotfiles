@@ -3,15 +3,15 @@
 -- ---------------------------------------------------------------------------
 
 local vivid = {
+  transparent = {
+    bg = "none",
+    --fg = "none",
+  },
   -- cui
   c = {
     zero = 0,
     bg = 249,
     fg = 46,
-  },
-  cn = {
-    bg = "none",
-    fg = "none",
   },
   -- gui
   g = {
@@ -25,15 +25,15 @@ local vivid = {
 }
 
 local azure = {
+  transparent = {
+    bg = "none",
+    --fg = "none",
+  },
   -- cui
   c = {
     zero = 0,
     bg = 249,
     fg = 46,
-  },
-  cn = {
-    bg = "none",
-    fg = "none",
   },
   -- gui
   g = {
@@ -49,6 +49,9 @@ local azure = {
     --terminal = { bg = "#191d30", fg = "#D8D8D8" },
     terminal = { bg = "#2f446e", fg = "#D8D8D8" },
   },
+}
+
+local transparent = {
 }
 
 local M = {
