@@ -26,7 +26,7 @@ local onepoint_colours_primary = {}
 local onepoint_colours_secondary = {}
 local onepoint_colours_sub2 = {}
 local onepoint_colours_sub3 = {}
-local onepoint_colours_none = {}
+local onepoint_colours_transparent = {}
 local onepoint_colours_term = {}
 local onepoint_colours_term_nc = {}
 
@@ -44,11 +44,13 @@ if is_nvim_version_gt_08 then
   onepoint_colours_secondary = theme.g.secondary
   onepoint_colours_sub2 = theme.g.sub2
   onepoint_colours_sub3 = theme.g.sub3
-  onepoint_colours_none = theme.cn
+  onepoint_colours_transparent = theme.transparent
 
   onepoint_colours_term = theme.g.terminal
   onepoint_colours_term_nc = { fg = "gray" }
+
 else
+
   onepoint_colours_cui_primary = { ctermbg = theme.c.fg, ctermfg = theme.c.zero }
   onepoint_colours_cui_secondary = { ctermbg = theme.c.bg, ctermfg = theme.c.fg }
   onepoint_colours_primary = {
@@ -75,7 +77,10 @@ else
     guibg = theme.g.sub3.bg,
     guifg = theme.g.sub3.fg,
   }
-  onepoint_colours_none = { ctermbg = theme.cn.bg, ctermfg = theme.cn.fg }
+  onepoint_colours_transparent = {
+    ctermbg = theme.transparent.bg,
+    guibg = theme.transparent.bg
+  }
 
   onepoint_colours_term = {
     ctermbg = theme.c.bg,
@@ -133,49 +138,43 @@ end
 
 local colour = {}
 
-colour.get_my_colorscheme = function()
-  utils.io.begin_debug("colour.get_my_colorscheme")
-  local my_colorscheme = {}
 
+local function get_hl_table(key, val)
   if is_nvim_version_gt_08 then
-    utils.io.debug_echo("nvim-version: 0.8")
-    -- LineNumber
-    -- table.insert(my_colorscheme, { 0, 'LineNr',       onepoint_colours_cui_primary })
-    table.insert(my_colorscheme, { 0, "CursorLineNr", onepoint_colours_cui_secondary })
-    -- -- TransparentBG
-    -- table.insert(my_colorscheme, { 0, "Normal",       onepoint_colours_none })
-    -- table.insert(my_colorscheme, { 0, "NonText",      onepoint_colours_none })
-    -- table.insert(my_colorscheme, { 0, "LineNr",       onepoint_colours_none })
-    -- table.insert(my_colorscheme, { 0, "Folded",       onepoint_colours_none })
-    -- table.insert(my_colorscheme, { 0, "EndOfBuffer",  onepoint_colours_none })
-  else
-    -- LineNumber
-    -- table.insert(my_colorscheme, { 'LineNr',          onepoint_colours_cui_primary,   false })
-    table.insert(my_colorscheme, { "CursorLineNr", onepoint_colours_cui_secondary, false })
-    -- -- TransparentBG
-    -- table.insert(my_colorscheme, { "Normal",          onepoint_colours_none,          false })
-    -- table.insert(my_colorscheme, { "NonText",         onepoint_colours_none,          false })
-    -- table.insert(my_colorscheme, { "LineNr",          onepoint_colours_none,          false })
-    -- table.insert(my_colorscheme, { "Folded",          onepoint_colours_none,          false })
-    -- table.insert(my_colorscheme, { "EndOfBuffer",     onepoint_colours_none,          false })
-  end
-
-  utils.io.end_debug("colour.get_my_colorscheme")
-  return my_colorscheme
-end
-
-local function get_hl_table(is_nvim_ver_gt_08, key, val)
-  if (is_nvim_ver_gt_08) then
     return{ 0, key, val }
   end
 
   return { key, val, false }
 end
 
+colour.get_my_colorscheme = function()
+  utils.io.begin_debug("colour.get_my_colorscheme")
+  local my_colorscheme = {}
+
+  -- LineNumber
+  -- table.insert(my_colorscheme, get_highlight_table("LineNr", onepoint_colours_cui_secondary))
+  table.insert(my_colorscheme, get_hl_table("CursorLineNr", onepoint_colours_cui_secondary))
+
+  -- TransparentBG
+  table.insert(my_colorscheme, get_hl_table("Normal", onepoint_colours_transparent))
+  table.insert(my_colorscheme, get_hl_table("NonText", onepoint_colours_transparent))
+  table.insert(my_colorscheme, get_hl_table("LineNr", onepoint_colours_transparent))
+  table.insert(my_colorscheme, get_hl_table("Folded", onepoint_colours_transparent))
+  table.insert(my_colorscheme, get_hl_table("EndOfBuffer", onepoint_colours_transparent))
+
+  utils.io.end_debug("colour.get_my_colorscheme")
+  return my_colorscheme
+end
+
 colour.get_hl = function()
   utils.io.begin_debug("colour.get_hl")
 
   local hl_table = {
+    Normal =onepoint_colours_transparent,
+    NonText =onepoint_colours_transparent,
+    NormalNC =onepoint_colours_transparent,
+    NormalSB =onepoint_colours_transparent,
+
     RegistersWindow = onepoint_colours_primary,
     Pmenu           = onepoint_colours_primary,
     PmenuSel        = onepoint_colours_secondary,
