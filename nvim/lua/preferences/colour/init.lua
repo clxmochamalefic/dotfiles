@@ -5,6 +5,8 @@
 -- ---------------------------------------------------------------------------
 
 local utils = require("utils")
+local env = require("utils.sub.env")
+
 local colours = require("const.colour")
 local theme = colours.azure
 
@@ -156,11 +158,13 @@ colour.get_my_colorscheme = function()
   table.insert(my_colorscheme, get_hl_table("CursorLineNr", onepoint_colours_cui_secondary))
 
   -- TransparentBG
-  table.insert(my_colorscheme, get_hl_table("Normal", onepoint_colours_transparent))
-  table.insert(my_colorscheme, get_hl_table("NonText", onepoint_colours_transparent))
-  table.insert(my_colorscheme, get_hl_table("LineNr", onepoint_colours_transparent))
-  table.insert(my_colorscheme, get_hl_table("Folded", onepoint_colours_transparent))
-  table.insert(my_colorscheme, get_hl_table("EndOfBuffer", onepoint_colours_transparent))
+  if not env.is_neovide() then  -- TODO: neovide supportをここに書かない
+    table.insert(my_colorscheme, get_hl_table("Normal", onepoint_colours_transparent))
+    table.insert(my_colorscheme, get_hl_table("NonText", onepoint_colours_transparent))
+    table.insert(my_colorscheme, get_hl_table("LineNr", onepoint_colours_transparent))
+    table.insert(my_colorscheme, get_hl_table("Folded", onepoint_colours_transparent))
+    table.insert(my_colorscheme, get_hl_table("EndOfBuffer", onepoint_colours_transparent))
+  end
 
   utils.io.end_debug("colour.get_my_colorscheme")
   return my_colorscheme
@@ -203,7 +207,7 @@ colour.get_hl = function()
   local my_hl = {}
 
   for key, val in pairs(hl_table) do
-    table.insert(my_hl, get_hl_table(is_nvim_version_gt_08, key, val))
+    table.insert(my_hl, get_hl_table(key, val))
   end
 
   utils.io.end_debug("colour.get_hl")
