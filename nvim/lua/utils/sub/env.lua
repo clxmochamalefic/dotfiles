@@ -125,6 +125,10 @@ function M.is_windows()
   return fn.has("win32") == 1
 end
 
+function M.is_neovide()
+  return vim.g.neovide ~= nil and vim.g.neovide == true
+end
+
 function M.get_path_splitter_for_current_env()
   if M.is_linux() or M.is_unix() then
     return "/"

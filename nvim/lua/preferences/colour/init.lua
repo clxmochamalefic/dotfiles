@@ -170,10 +170,10 @@ colour.get_hl = function()
   utils.io.begin_debug("colour.get_hl")
 
   local hl_table = {
-    Normal =onepoint_colours_transparent,
-    NonText =onepoint_colours_transparent,
-    NormalNC =onepoint_colours_transparent,
-    NormalSB =onepoint_colours_transparent,
+    --Normal = onepoint_colours_transparent,
+    --NonText = onepoint_colours_transparent,
+    --NormalNC = onepoint_colours_transparent,
+    --NormalSB = onepoint_colours_transparent,
 
     RegistersWindow = onepoint_colours_primary,
     Pmenu           = onepoint_colours_primary,
@@ -269,7 +269,7 @@ colour.setup = function()
   utils.io.debug_echo("=== default load ===")
   set_colorscheme()
   utils.io.debug_echo("=== default load ===")
-  set_highlight()
+  --set_highlight()
 
   --  modify color by colorscheme
   if colorscheme == "onehalfdark" then
