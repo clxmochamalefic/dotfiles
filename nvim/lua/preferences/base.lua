@@ -73,7 +73,7 @@ local function config_draw()
   g.float_window_width = 30
 
   -- blending
-  g.blend = 20
+  g.blend = 50
 
   utils.window.resize_float_window_default()
 
