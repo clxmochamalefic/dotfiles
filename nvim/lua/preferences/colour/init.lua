@@ -26,6 +26,7 @@ local onepoint_colours_cui_primary = {}
 local onepoint_colours_cui_secondary = {}
 local onepoint_colours_primary = {}
 local onepoint_colours_secondary = {}
+local onepoint_colours_accent = {}
 local onepoint_colours_sub2 = {}
 local onepoint_colours_sub3 = {}
 local onepoint_colours_transparent = {}
@@ -44,6 +45,7 @@ if is_nvim_version_gt_08 then
   onepoint_colours_cui_secondary = { bg = theme.g.sub3.bg, fg = theme.g.sub3.fg }
   onepoint_colours_primary = theme.g.primary
   onepoint_colours_secondary = theme.g.secondary
+  onepoint_colours_accent = theme.g.accent
   onepoint_colours_sub2 = theme.g.sub2
   onepoint_colours_sub3 = theme.g.sub3
   onepoint_colours_transparent = theme.transparent
@@ -66,6 +68,12 @@ else
     ctermfg = theme.c.fg,
     guibg = theme.g.secondary.bg,
     guifg = theme.g.secondary.fg,
+  }
+  onepoint_colours_accent = {
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.accent.bg,
+    guifg = theme.g.accent.fg,
   }
   onepoint_colours_sub2 = {
     ctermbg = theme.c.bg,
@@ -164,6 +172,15 @@ colour.get_my_colorscheme = function()
     table.insert(my_colorscheme, get_hl_table("LineNr", onepoint_colours_transparent))
     table.insert(my_colorscheme, get_hl_table("Folded", onepoint_colours_transparent))
     table.insert(my_colorscheme, get_hl_table("EndOfBuffer", onepoint_colours_transparent))
+    table.insert(my_colorscheme, get_hl_table("WinBar", onepoint_colours_transparent))
+    table.insert(my_colorscheme, get_hl_table("WinBarNC", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("SagaNormal", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("SagaBorder", onepoint_colours_transparent))
+
+    table.insert(my_colorscheme, get_hl_table("NormalFloat", onepoint_colours_secondary))
+    table.insert(my_colorscheme, get_hl_table("FloatBorder", onepoint_colours_secondary))
+    table.insert(my_colorscheme, get_hl_table("FloatShadow", onepoint_colours_secondary))
+    table.insert(my_colorscheme, get_hl_table("FloatShadowThrough", onepoint_colours_secondary))
   end
 
   utils.io.end_debug("colour.get_my_colorscheme")
