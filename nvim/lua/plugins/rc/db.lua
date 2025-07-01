@@ -2,7 +2,7 @@
 
 local utils = require("utils")
 
-local cond = false
+local cond = true
 local dadbodPreferencePath = nil
 
 local function getDadBodPreferencePath()
@@ -12,6 +12,19 @@ local function getDadBodPreferencePath()
 
   return dadbodPreferencePath
 end
+
+--
+-- 設定例
+-- ```json
+-- [
+--    {"url": "dbext:type=PGSQL:host=localhost:user=<user_name>:passwd=<password>:dbname=<db_name>", "name": "<your_awesome_name>"}
+-- ]
+-- ```
+-- see also =>
+-- - https://github.com/tpope/vim-dadbod?tab=readme-ov-file#usage
+-- - https://github.com/vim-scripts/dbext.vim
+-- - https://www.vim.org/scripts/script.php?script_id=356
+
 
 return {
   {
