@@ -14,6 +14,9 @@ local function getDadBodPreferencePath()
 end
 
 --
+-- 設定の場所
+-- ~\.cache\dadbod\connections.json
+--
 -- 設定例
 -- ```json
 -- [
@@ -37,6 +40,9 @@ return {
       'DBUIToggle',
       'DBUIAddConnection',
       'DBUIFindBuffer',
+    },
+    keys = {
+      { "<leader>s", "<cmd>DBUIToggle<CR>", mode = "n" },
     },
     dependencies = {
       "tpope/vim-dotenv",
