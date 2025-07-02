@@ -6,9 +6,9 @@ local M = {
   commands = {
     require("preferences.command.trim"),
     require("preferences.command.reloadPreference"),
-    -- require("preferences.command.replaceBigCharacters"),
     require("preferences.command.showLoadedScripts"),
-
+    require("preferences.command.showHighlightGroup"),
+    require("preferences.command.yank"),
     require("preferences.command.parser.jq"),
   },
 }
