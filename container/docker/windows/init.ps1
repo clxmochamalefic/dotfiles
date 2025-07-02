@@ -20,7 +20,7 @@ Write-Output "create docker service (Docker)"
 
 $dist_path = "${env:ProgramFiles}\docker\daemon.json"
 
-Copy-Item -Path "${PSScriptRoot}\daemon.json" -Destination $dist_poath -Force
+Copy-Item -Path "${PSScriptRoot}\daemon.json" -Destination $dist_path -Force
 
 $docker_path = (Get-Command dockerd | Select-Object -ExpandProperty Source)
 New-Service -Name Docker -BinaryPathName $docker_path --run-service --config-file $dist_path -DisplayName "Docker Engine" -StartupType "Automatic"
