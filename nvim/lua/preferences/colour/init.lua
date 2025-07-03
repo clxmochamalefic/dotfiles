@@ -33,6 +33,13 @@ local onepoint_colours_transparent = {}
 local onepoint_colours_term = {}
 local onepoint_colours_term_nc = {}
 
+local opc_pmenu = {}
+local opc_pmenu_sel = {}
+local opc_pmenu_sbar = {}
+local opc_pmenu_thumb = {}
+
+
+
 local opc_diff_add     = {}
 local opc_diff_delete  = {}
 local opc_diff_changed  = {}
@@ -52,6 +59,11 @@ if is_nvim_version_gt_08 then
 
   onepoint_colours_term = theme.g.terminal
   onepoint_colours_term_nc = { fg = "gray" }
+
+  opc_pmenu = { bg = theme.g.secondary.bg, fg = theme.g.secondary.fg }
+  opc_pmenu_sel = { bg = theme.g.accent.bg, fg = theme.g.secondary.fg }
+  opc_pmenu_sbar = { bg = theme.g.secondary.bg, fg = theme.g.secondary.fg }
+  opc_pmenu_thumb = { bg = theme.g.accent.bg, fg = theme.g.secondary.fg }
 
 else
 
@@ -82,8 +94,8 @@ else
     guifg = theme.g.sub2.fg,
   }
   onepoint_colours_sub3 = {
-    ctermbg = theme.c.bg,
-    ctermfg = theme.c.fg,
+    --ctermbg = theme.c.bg,
+    --ctermfg = theme.c.fg,
     guibg = theme.g.sub3.bg,
     guifg = theme.g.sub3.fg,
   }
@@ -99,6 +111,31 @@ else
     guifg = theme.g.terminal.fg,
   }
   onepoint_colours_term_nc = { guifg = "gray" }
+
+  opc_pmenu = {
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.secondary.bg,
+    guifg = theme.g.secondary.fg
+  }
+  opc_pmenu_sel = {
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.accent.bg,
+    guifg = theme.g.secondary.fg
+  }
+  opc_pmenu_sbar = {
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.secondary.bg,
+    guifg = theme.g.secondary.fg
+  }
+  opc_pmenu_thumb = {
+    ctermbg = theme.c.bg,
+    ctermfg = theme.c.fg,
+    guibg = theme.g.accent.bg,
+    guifg = theme.g.secondary.fg
+  }
 
 
   -- reference => https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff
@@ -177,6 +214,12 @@ colour.get_my_colorscheme = function()
     --table.insert(my_colorscheme, get_hl_table("SagaNormal", onepoint_colours_transparent))
     --table.insert(my_colorscheme, get_hl_table("SagaBorder", onepoint_colours_transparent))
 
+    table.insert(my_colorscheme, get_hl_table("RegistersWindow", onepoint_colours_primary))
+    table.insert(my_colorscheme, get_hl_table("Pmenu", opc_pmenu))
+    table.insert(my_colorscheme, get_hl_table("PmenuSel", opc_pmenu_sel))
+    table.insert(my_colorscheme, get_hl_table("PmenuSbar", opc_pmenu_sbar))
+    table.insert(my_colorscheme, get_hl_table("PmenuThumb", opc_pmenu_thumb))
+
     table.insert(my_colorscheme, get_hl_table("NormalFloat", onepoint_colours_secondary))
     table.insert(my_colorscheme, get_hl_table("FloatBorder", onepoint_colours_secondary))
     table.insert(my_colorscheme, get_hl_table("FloatShadow", onepoint_colours_secondary))
@@ -197,15 +240,15 @@ colour.get_hl = function()
     --NormalSB = onepoint_colours_transparent,
 
     RegistersWindow = onepoint_colours_primary,
-    Pmenu           = onepoint_colours_primary,
-    PmenuSel        = onepoint_colours_secondary,
+    Pmenu           = onepoint_colours_secondary,
+    PmenuSel        = onepoint_colours_accent,
     PmenuSbar       = onepoint_colours_sub2,
     PmenuThumb      = onepoint_colours_sub3,
 
-    NormalFloat = onepoint_colours_primary,
-    FloatBorder = onepoint_colours_primary,
-    FloatShadow = onepoint_colours_primary,
-    FloatShadowThrough = onepoint_colours_primary,
+    --NormalFloat = onepoint_colours_primary,
+    --FloatBorder = onepoint_colours_primary,
+    --FloatShadow = onepoint_colours_primary,
+    --FloatShadowThrough = onepoint_colours_primary,
 
     TermCursor = onepoint_colours_secondary,
     TermCursorNC = onepoint_colours_primary,
