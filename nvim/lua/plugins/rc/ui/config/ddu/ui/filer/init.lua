@@ -1,7 +1,6 @@
 local g = vim.g
 local fn = vim.fn
 local api = vim.api
-local opt = vim.opt
 local keymap = vim.keymap
 
 local utils = require("utils")
@@ -17,9 +16,9 @@ function M.setup()
   utils.io.begin_debug("ddu filer")
 
   local ddu_filer_source_columns = {
-    "file_git_status",
     "file_buf_modified",
     "devicon_filename",
+    "file_git_status",
     --"icon_filename",
   }
   local ddu_filer_sources = {
@@ -48,7 +47,7 @@ function M.setup()
     },
   }
 
-  local ddu_ui_filer_params = ddu.uiParams
+  local ddu_ui_filer_params = ddu.uiParamsVertical
   ddu_ui_filer_params.border = ddu.floatWindow.border
   ddu_ui_filer_params.search = fn.expand("%:p")
   ddu_ui_filer_params.sort = "filename"
@@ -141,27 +140,27 @@ function M.setup()
     -- change directory (path)
     keymap.set("n", "<CR>", function()
       return ddu.item.is_tree() and ddu.do_action("itemAction", { name = "narrow" })
-      or ddu.do_action("itemAction", { name = "filer_window_choose", quit = true })
+          or ddu.do_action("itemAction", { name = "filer_window_choose", quit = true })
     end, km_opts.bn)
     keymap.set("n", "h", function()
       return ddu.item.is_tree() and ddu.do_action("collapseItem")
     end, km_opts.bn)
     --    keymap.set("n", "h",    function() return ddu.item.is_tree() and ddu.do_action('collapseItem')                   or utils.io.echoe('cannot close this item')                                            end, km_opts.bn)
---    keymap.set("n", "l", function()
---      return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
---      or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
---    end, km_opts.bn)
---    keymap.set("n", "L", function()
---      return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
---      or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
---    end, km_opts.bn)
+    --    keymap.set("n", "l", function()
+    --      return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
+    --      or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
+    --    end, km_opts.bn)
+    --    keymap.set("n", "L", function()
+    --      return ddu.item.is_tree() and ddu.do_action("expandItem", { mode = "toggle" })
+    --      or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
+    --    end, km_opts.bn)
     keymap.set("n", "l", function()
       return ddu.item.is_tree() and ddu.do_action("expandItem")
-      or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
+          or ddu.do_action("itemAction", { name = "open", params = { command = "vsplit" } })
     end, km_opts.bn)
     keymap.set("n", "L", function()
       return ddu.item.is_tree() and ddu.do_action("expandItem")
-      or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
+          or ddu.do_action("itemAction", { name = "open", params = { command = "split" } })
     end, km_opts.bn)
 
     utils.io.debug_echo("change dir alias keymaps")
