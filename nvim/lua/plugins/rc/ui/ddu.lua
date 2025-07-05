@@ -57,7 +57,7 @@ local M = {
 
 local depends = {}
 
-for i, group in pairs(M) do
+for _, group in pairs(M) do
   for _, v in pairs(group) do
     table.insert(depends, v)
   end
@@ -68,7 +68,7 @@ return {
     lazy = true,
     cond = willUse,
     "Shougo/ddu.vim",
-    tag = "v10.0.0",
+    tag = "v10.3.0",
     dependencies = depends,
     config = function()
       myddu.setup()
@@ -86,8 +86,9 @@ return {
       "DduLspActions",
     },
     keys = {
-      { "g<Space>", "<cmd>DduFiler<CR>", mode = "n" },
-      --{ "Z", "<cmd>DduFF<CR>", mode = "n" },
+      --{ "g<Space>", "<cmd>DduFiler<CR>", mode = "n" },
+      { "Z", "<cmd>DduFiler<CR>", mode = "n" },
+      --{ "Z",        "<cmd>DduFF<CR>",    mode = "n" },
       --{ "<F2>", "<cmd>DduLspActions<CR>", mode = "n" },
     },
   },

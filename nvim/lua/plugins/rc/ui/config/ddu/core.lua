@@ -22,6 +22,17 @@ local M = {
   },
 }
 
+M.verticalWindow = {
+  col = g.float_window_col,
+  row = g.float_window_row,
+  width = 30,
+  preview_width = 120,
+  preview_col = 0,
+  preview_height = g.ddu_float_window_height,
+  border = "rounded",
+  split = "vertical",
+}
+
 M.floatWindow = {
   col = g.float_window_col,
   row = g.float_window_row,
@@ -32,6 +43,27 @@ M.floatWindow = {
   preview_height = g.ddu_float_window_height,
   border = "rounded",
   split = "floating",
+}
+
+M.uiParamsVertical = {
+  span = 2,
+
+  split = M.verticalWindow.split,
+  floatingBorder = M.verticalWindow.border,
+  filterFloatingPosition = "bottom",
+  filterSplitDirection = M.verticalWindow.split,
+  winRow = M.verticalWindow.row,
+  winCol = M.verticalWindow.col,
+  winWidth = M.verticalWindow.width,
+  winHeight = M.verticalWindow.height,
+
+  previewFloating = true,
+  previewVertical = true,
+  previewFloatingBorder = M.verticalWindow.border,
+  previewFloatingZindex = 10000,
+  previewCol = M.verticalWindow.preview_col,
+  previewWidth = M.verticalWindow.preview_width,
+  previewHeight = M.verticalWindow.preview_height,
 }
 
 M.uiParams = {
