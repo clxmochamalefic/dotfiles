@@ -42,6 +42,10 @@ function M.setup()
     },
   }
   local ddu_filer_action_options = {
+    -- split:floatingで動かすときは消さないとならないかも
+    open = {
+      quit = false,
+    },
     narrow = {
       quit = false,
     },
@@ -111,9 +115,9 @@ function M.setup()
       ddu.do_action("quit")
     end, km_opts.bn)
     -- TODO: redraw
-    -- nnoremap <buffer><silent> R     <ll ddu#ui#filer#do_action('refreshItems')<Bar>redraw<CR>
+    -- nnoremap <buffer><silent> R     <ll ddu#ui#filer#do_action('redraw')<Bar>redraw<CR>
     keymap.set("n", "R", function()
-      ddu.do_action("refreshItems")
+      ddu.do_action("redraw")
     end, km_opts.bn)
     keymap.set("n", "a", function()
       ddu.do_action("chooseAction")
@@ -138,9 +142,13 @@ function M.setup()
 
     utils.io.debug_echo("change dir keymaps")
     -- change directory (path)
+    --keymap.set("n", "<CR>", function()
+    --  return ddu.item.is_tree() and ddu.do_action("itemAction", { name = "narrow" })
+    --      or ddu.do_action("itemAction", { name = "filer_window_choose", quit = true })
+    --end, km_opts.bn)
     keymap.set("n", "<CR>", function()
       return ddu.item.is_tree() and ddu.do_action("itemAction", { name = "narrow" })
-          or ddu.do_action("itemAction", { name = "filer_window_choose", quit = true })
+          or ddu.do_action("itemAction", { name = "open", params = { command = 'wincmd p | drop' } })
     end, km_opts.bn)
     keymap.set("n", "h", function()
       return ddu.item.is_tree() and ddu.do_action("collapseItem")
