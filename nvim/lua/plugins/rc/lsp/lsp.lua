@@ -44,8 +44,8 @@ return {
     lazy = true,
     --lazy = false,
     event = {
-      "FileReadPost",
-      "BufReadPost",
+      "FileReadPre",
+      "BufReadPre",
       "InsertChange",
     },
     cmd = {
