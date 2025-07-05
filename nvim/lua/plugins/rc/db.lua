@@ -64,10 +64,10 @@ return {
 
       utils.io.end_debug("build: /plugins/db.lua")
     end,
-    init = function()
-      vim.g.db_ui_use_nerd_fonts = 1
-      vim.g.db_ui_save_location = getDadBodPreferencePath()
-    end,
+    --init = function()
+    --  vim.g.db_ui_use_nerd_fonts = 1
+    --  vim.g.db_ui_save_location = getDadBodPreferencePath()
+    --end,
     config = function()
       utils.io.begin_debug("/plugins/db.lua")
       vim.g.db_ui_save_location = getDadBodPreferencePath()
