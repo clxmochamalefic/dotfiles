@@ -5,15 +5,15 @@ local keymap = vim.keymap
 
 require("utils.string")
 
-local sub_util = require("utils.sub.util")
+local sub_util = require("utils..util")
 
 local M = {}
 
-M.fs = require("utils.sub.fs")
-M.io = require("utils.sub.io")
-M.env = require("utils.sub.env")
-M.window = require("utils.sub.window")
-M.depends = require("utils.sub.depends")
+M.fs = require("utils..fs")
+M.io = require("utils..io")
+M.env = require("utils..env")
+M.window = require("utils..window")
+M.depends = require("utils..depends")
 M.util = sub_util
 M.table = require("utils.table")
 

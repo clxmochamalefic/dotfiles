@@ -4,7 +4,7 @@ local api = vim.api
 local keymap = vim.keymap
 
 local strutil = require("utils.string")
-local env = require("utils.sub.env")
+local env = require("utils..env")
 
 local M = {}
 

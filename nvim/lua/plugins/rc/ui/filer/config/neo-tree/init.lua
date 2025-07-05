@@ -1,5 +1,5 @@
 ---@diagnostic disable: undefined-global
-local env = require("utils.sub.env")
+local env = require("utils..env")
 
 local M = {}
 

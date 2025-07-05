@@ -1,6 +1,6 @@
 local M = {}
 
-local wndutil = require("utils.sub.window")
+local wndutil = require("utils..window")
 
 function M.setup()
   vim.opt.completeopt = { "menuone", "noinsert", "noselect" }

@@ -1,7 +1,7 @@
 local g = vim.g
 local keymap = vim.keymap
 
-local env = require("utils.sub.env")
+local env = require("utils..env")
 
 local M = {}
 
