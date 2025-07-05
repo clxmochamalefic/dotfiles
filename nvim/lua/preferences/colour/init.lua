@@ -4,7 +4,7 @@
 -- ---------------------------------------------------------------------------
 
 local utils = require("utils")
-local env = require("utils.sub.env")
+local env = require("utils..env")
 
 local colours = require("const.colour")
 local theme = colours.azure

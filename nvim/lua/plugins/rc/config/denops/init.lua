@@ -2,7 +2,7 @@ local g = vim.g
 local fn = vim.fn
 
 local utils = require("utils")
-local env = require("utils.sub.env")
+local env = require("utils..env")
 
 local M = {
   addr = "127.0.0.1",

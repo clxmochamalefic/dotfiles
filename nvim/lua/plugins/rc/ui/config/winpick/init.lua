@@ -6,7 +6,7 @@ local api = vim.api
 local opt = vim.opt
 
 local utils = require("utils")
-local wndutil = require("utils.sub.window")
+local wndutil = require("utils..window")
 
 local M = {}
 
