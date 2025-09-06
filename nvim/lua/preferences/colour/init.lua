@@ -9,11 +9,14 @@ local env = require("utils..env")
 local colours = require("const.colour")
 local theme = colours.azure
 
-local set_highlight = vim.hl.create
+--local set_highlight = vim.hi.create
+local set_highlight = nil
 
 local is_nvim_version_gt_08 = vim.fn.has("nvim-0.8") == 1
 if is_nvim_version_gt_08 then
   set_highlight = vim.api.nvim_set_hl
+else
+  set_highlight = vim.hl.create
 end
 
 local onepoint_colours_cui_primary   = { bg = theme.g.primary.bg, fg = theme.g.primary.fg }
