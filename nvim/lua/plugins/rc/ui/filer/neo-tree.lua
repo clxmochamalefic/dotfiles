@@ -18,7 +18,7 @@ return {
     },
     cmd = { "Neotree" },
     keys = {
-      --{ "Z", "<cmd>Neotree<CR>", mode = "n" },
+      { "Z", "<cmd>Neotree<CR>", mode = "n" },
     },
     config = function()
       require("neo-tree").setup({
@@ -122,7 +122,7 @@ return {
           mappings = {
             ["<space>"] = {
               "toggle_node",
-              nowait = false,   -- disable `nowait` if you have existing combos starting with this char that you want to use
+              nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
             },
             ["<2-LeftMouse>"] = "open",
             ["<cr>"] = "open_with_window_picker",
