@@ -208,13 +208,20 @@ return {
           ["dockerls"] = {},
           ["html"] = {},
           ["intelephense"] = {},
-          ["lua_ls"] = {
-            settings = {
-              Lua = {
-                completion = { callSnippet = "Replace", },
-                hint = { enable = true, },
+          ["luals"] = {
+            cmd = { 'lua-language-server' },
+            filetypes = { 'lua' },
+            root_markers = {
+              { '.luarc.json', '.luarc.jsonc' },
+              '.git',
+            },
+            Lua = {
+              hint = { enable = true, },
+              completion = { callSnippet = "Replace", },
+              runtime = {
+                version = 'LuaJIT',
               },
-            }
+            },
           },
           ["marksman"] = {},
           ["rust_analyzer"] = {
