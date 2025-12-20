@@ -20,6 +20,7 @@ M.setup = function()
     command.setup()
   end
 
+  vim.keymap.set("n", "<leader>t", "<Plug>TrimEnd<CR>", { noremap = true, silent = true, })
 
   utils.io.end_debug(vim.fn["expand"]("%/h"))
 end
