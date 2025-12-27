@@ -57,4 +57,8 @@ M.setup = function()
   vim.api.nvim_create_user_command("TrimEnd", trimEnd, {})
 end
 
+M.keymap = function()
+  vim.keymap.set("n", "te", "<Cmd>TrimEnd<CR>", { noremap = true, silent = true })
+end
+
 return M
