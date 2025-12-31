@@ -9,6 +9,8 @@ local env = require("utils..env")
 local colours = require("const.colour")
 local theme = colours.azure
 
+local notify = require("preferences.colour.sub.notify")
+
 --local set_highlight = vim.hi.create
 local set_highlight = nil
 
@@ -263,6 +265,8 @@ M.setup = function()
     vim.g.terminal_color_0 = "#5A6A7C"
     vim.g.terminal_color_8 = "#8097B0"
   end
+
+  notify.setup(my_colorscheme)
 
   utils.io.end_debug("colour.setup")
 end
