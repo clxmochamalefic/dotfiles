@@ -25,6 +25,13 @@ function openDiagnostics()
   })
 end
 
+function openHover()
+  vim.lsp.buf.hover({
+    focus = false,
+    border = border,
+  })
+end
+
 local function text_document_format(diag)
   -- return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
   return string.format("💡(%s)", diag.source)
@@ -147,34 +154,6 @@ return {
       local lspconfig = require("lspconfig")
       mymason.setup()
 
-      --vim.keymap.set("n", "gk", vim.lsp.buf.hover, bufopts)
-      --vim.keymap.set("n", "gj", openDiagnostics, bufopts)
-
-      --vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
-      --vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
-
-      --vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
-      --vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
-
-      local on_attach = function(client, bufnr)
-        local async = require("plenary.async")
-        myutils.io.debug_echo("LSP started" .. client.name)
-        async.run(function()
-          vim.notify("LSP started: " .. client.name, vim.log.levels.INFO)
-        end)
-
-
-        local bufopts = { silent = true, buffer = bufnr, noremap = true }
-        vim.keymap.set("n", "gk", vim.lsp.buf.hover, bufopts)
-        vim.keymap.set("n", "gj", openDiagnostics, bufopts)
-
-        vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
-        vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
-
-        vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
-        vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
-      end
-
       -- TODO: 👇 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
       local util = require 'lspconfig.util'
       local server_preferences = {
@@ -288,8 +267,23 @@ return {
       }
       -- TODO: 👆 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
 
+      local augroup = vim.api.nvim_create_augroup('LspAttach', { clear = true })
+      vim.api.nvim_create_autocmd({ 'LspAttach' }, {
+        group = augroup,
+        callback = function()
+          local bufopts = { silent = true, buffer = bufnr, noremap = true }
+          vim.keymap.set("n", "gk", openHover, bufopts)
+          vim.keymap.set("n", "gj", openDiagnostics, bufopts)
+
+          vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
+          vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
+
+          vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
+          vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
+        end,
+      })
+
       for name, v in pairs(server_preferences) do
-        v.on_attach = on_attach
         v.capabilities = capabilities
         vim.lsp.config(name, v)
       end
