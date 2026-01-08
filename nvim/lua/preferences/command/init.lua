@@ -11,6 +11,7 @@ local M = {
     require("preferences.command.reloadPreference"),
     require("preferences.command.showLoadedScripts"),
     require("preferences.command.showHighlightGroup"),
+    require("preferences.command.showMap"),
     require("preferences.command.yank"),
     require("preferences.command.parser.jq"),
   },
