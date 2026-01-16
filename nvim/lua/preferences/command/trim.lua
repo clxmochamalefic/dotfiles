@@ -50,15 +50,23 @@ M.setup = function()
     if ff == bo.fileformat.dos then
       vim.cmd([[silent! %s#\v\s*$##g]])
     elseif ff == bo.fileformat.unix then
-      vim.cmd([[silent! %s#\v\s*$##g]])
+      vim.cmd([[silent! %s#\v(\s|\r)*$##g]])
     end
     loadCurrent()
   end
   vim.api.nvim_create_user_command("TrimEnd", trimEnd, {})
+
+  local function trimCr()
+    saveCurrent()
+    vim.cmd([[silent! %s#\v(\s|\r)*$##g]])
+    loadCurrent()
+  end
+  vim.api.nvim_create_user_command("TrimCr", trimCr, {})
 end
 
 M.keymap = function()
   vim.keymap.set("n", "te", "<Cmd>TrimEnd<CR>", { noremap = true, silent = true })
+  vim.keymap.set("n", "tc", "<Cmd>TrimCr<CR>", { noremap = true, silent = true })
 end
 
 return M
