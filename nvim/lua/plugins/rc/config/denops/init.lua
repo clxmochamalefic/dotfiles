@@ -37,10 +37,10 @@ function M.build4win()
     io.open(serviceScriptPath, "w"):write(body):close()
   end
 
-  local startupBat = [[~/AppData/Roaming/Microsoft/Windows/Start\ Menu/Programs/Startup/boot_denops.vbs]]
-  io.open(startupBat, "w")
-    :write([[Set ws = CreateObject("Wscript.Shell")\nws.run "cmd /c ]] .. serviceScriptPath .. [[", vbhide]])
-    :close()
+  -- local startupBat = [[~/AppData/Roaming/Microsoft/Windows/Start\ Menu/Programs/Startup/boot_denops.vbs]]
+  -- io.open(startupBat, "w")
+  --   :write([[Set ws = CreateObject("Wscript.Shell")\nws.run "cmd /c ]] .. serviceScriptPath .. [[", vbhide]])
+  --   :close()
 end
 
 function M.build4anyhost()
