@@ -1,8 +1,10 @@
 ---@diagnostic disable: undefined-global
 
+local colour_utils = require("utils.colour")
+
 local M = {
   max_width         = 120,
-  blend             = vim.g.blend,
+  blend             = colour_utils.get_pumblend(),
   --use_complete  = true,
   border            = 'rounded',
   padding           = true,

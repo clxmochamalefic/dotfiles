@@ -49,7 +49,8 @@ return {
     },
     opts = {
       window = {
-        width = .90 -- width will be 85% of the editor width
+        --backdrop = .95,
+        width   = .90,  -- .90 => 90%
       },
       -- your configuration comes here
       -- or leave it empty to use the default settings

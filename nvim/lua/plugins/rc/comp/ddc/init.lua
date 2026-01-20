@@ -3,6 +3,7 @@
 -- DDC PLUGINS
 -- ---------------------------------------------------------------------------
 
+local colour_utils = require("utils.colour")
 local ddc_config = require("plugins.rc.comp.config")
 
 local vsnip = {
@@ -113,7 +114,7 @@ return {
       vim.g.popup_preview_config = {
         delay = 10,
         maxWidth = 100,
-        winblend = vim.g.blend,
+        winblend = colour_utils.get_winblend() ,
       }
       vim.api.nvim_call_function("popup_preview#enable", {})
     end,

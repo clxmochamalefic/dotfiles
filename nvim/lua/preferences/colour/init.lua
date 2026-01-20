@@ -243,6 +243,7 @@ M.setup = function()
   })
 
   vim.opt.termguicolors = true
+  vim.o.termguicolors = true
 
   --  hl cursor line
   vim.opt.cursorline = true
