@@ -7,7 +7,7 @@ local M = {
   azure = require("const.colour.azure"),
   transparent = "none",
   blend = {
-    value = 80,
+    value = 20,
     max = 100,
   },
 }

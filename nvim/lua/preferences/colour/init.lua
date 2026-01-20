@@ -184,16 +184,16 @@ M.get_my_colorscheme = function()
 
   -- TransparentBG
   if not env.is_neovide() then -- TODO: neovide supportをここに書かない
-    table.insert(my_colorscheme, get_hl_table("Normal", onepoint_colours_transparent))
-    table.insert(my_colorscheme, get_hl_table("NonText", onepoint_colours_transparent))
-    table.insert(my_colorscheme, get_hl_table("LineNr", onepoint_colours_transparent))
-    table.insert(my_colorscheme, get_hl_table("Folded", onepoint_colours_transparent))
-    table.insert(my_colorscheme, get_hl_table("EndOfBuffer", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("Normal", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("NonText", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("LineNr", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("Folded", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("EndOfBuffer", onepoint_colours_transparent))
 
-    table.insert(my_colorscheme, get_hl_table("WinBar", onepoint_colours_transparent))
-    table.insert(my_colorscheme, get_hl_table("WinBarNC", onepoint_colours_transparent))
-    --table.insert(my_colorscheme, get_hl_table("SagaNormal", onepoint_colours_transparent))
-    --table.insert(my_colorscheme, get_hl_table("SagaBorder", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("WinBar", onepoint_colours_transparent))
+    --table.insert(my_colorscheme, get_hl_table("WinBarNC", onepoint_colours_transparent))
+    ----table.insert(my_colorscheme, get_hl_table("SagaNormal", onepoint_colours_transparent))
+    ----table.insert(my_colorscheme, get_hl_table("SagaBorder", onepoint_colours_transparent))
 
     table.insert(my_colorscheme, get_hl_table("RegistersWindow", onepoint_colours_primary))
     table.insert(my_colorscheme, get_hl_table("Pmenu", opc_pmenu))

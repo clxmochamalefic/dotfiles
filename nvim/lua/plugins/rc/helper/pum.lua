@@ -8,7 +8,7 @@ M.setup = function()
   vim.fn['pum#set_option'](config)
   --vim.notify("blend: " .. vim.g.blend)
   vim.api.nvim_set_option('pumblend', blend.get_pumblend())
-  vim.api.nvim_set_option('winblend', blend.get_winblend())
+  vim.api.nvim_set_option('winblend', blend.get_pumblend())
 end
 
 return M

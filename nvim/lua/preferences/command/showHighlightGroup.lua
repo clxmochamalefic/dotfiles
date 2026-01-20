@@ -13,7 +13,7 @@ local function showHighlightGroup()
     hlgroup = vim.fn.matchstr(vim.fn.trim(vim.fn.execute('highlight ' .. hlgroup)), [[\<links\s\+to\>\s\+\zs\w\+$]])
   end
 
-  if groupChain == {} then
+  if next(groupChain) == nil then
     vim.notify('No highlight groups')
     return
   end
