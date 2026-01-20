@@ -5,6 +5,7 @@
 local M = {}
 
 local utils = require("utils")
+local colour_util = require("utils.colour")
 
 local g = vim.g
 local o = vim.o
@@ -51,6 +52,10 @@ local function config_draw()
   --  use gui color preference on terminal
   vim.opt.termguicolors = true
   vim.o.termguicolors = true
+
+  --  alphablending (reference by telescope.nvim)
+  vim.opt.winblend = colour_util.get_pumblend()
+  vim.o.winblend = colour_util.get_pumblend()
 
   --  show whitespace characters
   opt.list = true

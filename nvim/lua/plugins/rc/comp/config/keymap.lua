@@ -70,7 +70,7 @@ local on_pum_state = function(opts)
     vim.notify("__IS_PUM_INVISIBLE_CAN_COMPLETE__")
     opts.handle_can_complete()
 
-    vim.notify("v: " .. v)
+    --vim.notify("v: " .. v)
     return v
 
   else
