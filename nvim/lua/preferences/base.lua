@@ -53,9 +53,10 @@ local function config_draw()
   vim.opt.termguicolors = true
   vim.o.termguicolors = true
 
-  --  alphablending (reference by telescope.nvim)
-  vim.opt.winblend = colour_util.get_pumblend()
-  vim.o.winblend = colour_util.get_pumblend()
+  ---- alphablending (reference by telescope.nvim)
+  ---- DEPRECATED: これをONにすると `nvim-notify` の背景透過が消える
+  --vim.opt.winblend = colour_util.get_pumblend()
+  --vim.o.winblend = colour_util.get_pumblend()
 
   --  show whitespace characters
   opt.list = true
