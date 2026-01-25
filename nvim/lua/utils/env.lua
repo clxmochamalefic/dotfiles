@@ -67,10 +67,16 @@ function M.get_minor()
   return M.ver.minor
 end
 
-function M.get_major()
+function M.get_patch()
   M.init_nvim_version()
-  return M.ver.major
+  return M.ver.patch
 end
+
+function M.is_nvim_version_gt_08()
+  return vim.fn.has("nvim-0.8") == 1
+end
+
+
 
 function M.get_env_name()
   if M.is_windows() then

@@ -9,6 +9,9 @@ local secondary_fg = "#F2F2F2"
 local accent_bg = "#FEB2FC"
 local accent_fg = "#D8D8D8"
 
+local accent2_bg = accent_fg
+local accent2_fg = accent_bg
+
 local sub1_bg = "#961ea8"
 local sub1_fg = "#D8D8D8"
 
@@ -25,6 +28,7 @@ local terminal_fg = "#D8D8D8"
 local vivid = {
   transparent = {
     bg = "none",
+    ctermbg = "none",
     --fg = "none",
   },
   -- cui
@@ -35,13 +39,14 @@ local vivid = {
   },
   -- gui
   g = {
-    primary = { bg = primary_bg , fg = primary_fg },
-    secondary = { bg = secondary_bg, fg = secondary_fg },
-    accent = { bg = accent_bg, fg = accent_fg },
-    sub1 = { bg = sub1_bg, fg = sub1_fg },
-    sub2 = { bg = sub2_bg, fg = sub2_fg },
-    sub3 = { bg = sub3_bg, fg = sub3_fg },
-    terminal = { bg = terminal_bg, fg = terminal_fg },
+    primary =   { bg = primary_bg ,   fg = primary_fg },
+    secondary = { bg = secondary_bg,  fg = secondary_fg },
+    accent =    { bg = accent_bg,     fg = accent_fg },
+    accent2 =   { bg = accent2_bg,    fg = accent2_fg },
+    sub1 =      { bg = sub1_bg,       fg = sub1_fg },
+    sub2 =      { bg = sub2_bg,       fg = sub2_fg },
+    sub3 =      { bg = sub3_bg,       fg = sub3_fg },
+    terminal =  { bg = terminal_bg,   fg = terminal_fg },
   },
 }
 

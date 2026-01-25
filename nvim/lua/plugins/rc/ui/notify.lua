@@ -23,21 +23,23 @@ return {
     event = { "VeryLazy" },
     cond = true,
     "rcarriga/nvim-notify",
-    tag = "v3.13.5",
+    tag = "v3.15.0",
     dependencies = {
       "nvim-telescope/telescope.nvim",
     },
-    config = function()
+    opts = {
+      render = "wrapped-compact",
+      max_width = 80,
+      background_colour = "#000000",
+      opacity = 90,
+      fps = 10,
+    },
+    config = function(_, opts)
       vim.notify = require("notify")
-      vim.notify.setup({
-        render = "wrapped-compact",
-        max_width = 60,
-        background_colour = "#000000",
-        fps = 10,
-      })
+      vim.notify.setup(opts)
 
-      local t = require("telescope")
-      telescope = t
+      --local t = require("telescope")
+      --telescope = t
     end,
   },
 }
