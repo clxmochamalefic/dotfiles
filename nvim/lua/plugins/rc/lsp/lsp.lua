@@ -157,113 +157,113 @@ return {
       -- TODO: 👇 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
       local util = require 'lspconfig.util'
       local server_preferences = {
-        ["astro"] = {},
+        --["astro"] = {},
         ["cssls"] = {},
         ["css_variables"] = {},
-        ["cssmodules_ls"] = {},
-        ["denols"] = {
-          filetypes = {
-            'typescript',
+        --["cssmodules_ls"] = {},
+        --["denols"] = {
+        --  filetypes = {
+        --    'typescript',
+        --  },
+        --  root_dir = util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
+        --  single_file_support = true,
+        --  settings = {
+        --    deno = {
+        --      enable = true,
+        --      lint = true,
+        --      unstable = true,
+        --      suggest = {
+        --        imports = {
+        --          hosts = {
+        --            ["https://deno.land"] = true,
+        --            ["https://cdn.nest.land"] = true,
+        --            ["https://crux.land"] = true,
+        --          },
+        --        },
+        --      }
+        --    },
+        --  },
+        --},
+        ["docker_compose_language_service"] = {},
+        ["dockerls"] = {},
+        ["html"] = {},
+        ["intelephense"] = {},
+        ["luals"] = {
+          cmd = { 'lua-language-server' },
+          filetypes = { 'lua' },
+          root_markers = {
+            { '.luarc.json', '.luarc.jsonc' },
+            '.git',
           },
-          root_dir = util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
+          Lua = {
+            hint = { enable = true, },
+            completion = { callSnippet = "Replace", },
+            runtime = {
+              version = 'LuaJIT',
+            },
+          },
+        },
+        ["marksman"] = {},
+        --["rust_analyzer"] = {
+        --  root_dir = util.root_pattern('Cargo.toml'),
+        --  filetypes = { "rust" },
+        --  cmd = { "ra-multiplex" },
+        --  settings = {
+        --    ["rust_analyzer"] = {
+        --      lru = {
+        --        Capacity = 64,
+        --      },
+        --      assist = {
+        --        importGranularity = "module",
+        --        importPrefix = "by_crate",
+        --      },
+        --      procMacro = {
+        --        enable = true,
+        --      },
+        --      checkOnSave = {
+        --        command = "clippy",
+        --        allTargets = false,
+        --      },
+        --      cargo = {
+        --        loadOutDirsFromCheck = true,
+        --        -- allFeatures = true,
+        --      },
+        --      completion = {
+        --        autoimport = {
+        --          enable = true,
+        --        },
+        --      },
+        --      diagnostics = {
+        --        disabled = {
+        --          "unresolved-macro-call",
+        --        },
+        --      },
+        --    },
+        --  },
+        --},
+        --["svelte"] = {},
+        ["tailwindcss"] = {},
+        ["ts_ls"] = {
+          root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json'),
           single_file_support = true,
           settings = {
-            deno = {
-              enable = true,
-              lint = true,
-              unstable = true,
-              suggest = {
-                imports = {
-                  hosts = {
-                    ["https://deno.land"] = true,
-                    ["https://cdn.nest.land"] = true,
-                    ["https://crux.land"] = true,
-                  },
-                },
-              }
-            },
-          },
-          ["docker_compose_language_service"] = {},
-          ["dockerls"] = {},
-          ["html"] = {},
-          ["intelephense"] = {},
-          ["luals"] = {
-            cmd = { 'lua-language-server' },
-            filetypes = { 'lua' },
-            root_markers = {
-              { '.luarc.json', '.luarc.jsonc' },
-              '.git',
-            },
-            Lua = {
-              hint = { enable = true, },
-              completion = { callSnippet = "Replace", },
-              runtime = {
-                version = 'LuaJIT',
+            ["ts_ls"] = {
+              filetypes = {
+                'javascript',
+                'javascriptreact',
+                'javascript.jsx',
+                'typescript',
+                'typescriptreact',
+                'typescript.tsx',
               },
             },
-          },
-          ["marksman"] = {},
-          ["rust_analyzer"] = {
-            root_dir = util.root_pattern('Cargo.toml'),
-            filetypes = { "rust" },
-            cmd = { "ra-multiplex" },
-            settings = {
-              ["rust_analyzer"] = {
-                lru = {
-                  Capacity = 64,
-                },
-                assist = {
-                  importGranularity = "module",
-                  importPrefix = "by_crate",
-                },
-                procMacro = {
-                  enable = true,
-                },
-                checkOnSave = {
-                  command = "clippy",
-                  allTargets = false,
-                },
-                cargo = {
-                  loadOutDirsFromCheck = true,
-                  -- allFeatures = true,
-                },
-                completion = {
-                  autoimport = {
-                    enable = true,
-                  },
-                },
-                diagnostics = {
-                  disabled = {
-                    "unresolved-macro-call",
-                  },
-                },
-              },
+            docs = {
+              description = [[https://github.com/typescript-language-server/typescript-language-server]],
             },
           },
-          ["svelte"] = {},
-          ["tailwindcss"] = {},
-          ["ts_ls"] = {
-            root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json'),
-            single_file_support = true,
-            settings = {
-              ["ts_ls"] = {
-                filetypes = {
-                  'javascript',
-                  'javascriptreact',
-                  'javascript.jsx',
-                  'typescript',
-                  'typescriptreact',
-                  'typescript.tsx',
-                },
-              },
-              docs = {
-                description = [[https://github.com/typescript-language-server/typescript-language-server]],
-              },
-            },
-          },
-          ["vtsls"] = {},
-          ["vue_ls"] = {},
-        }
+        },
+        --["vtsls"] = {},
+        --["vue_ls"] = {},
       }
       -- TODO: 👆 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
 
