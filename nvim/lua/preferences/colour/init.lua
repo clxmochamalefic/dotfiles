@@ -179,12 +179,11 @@ local function get_hl_table(key, val)
 end
 
 local function get_on_terminal()
-  local default_normal_hl = vim.api.nvim_get_hl(0, { name = "Normal"})
-
   return {
     get_hl_table("Normal", onepoint_colours_transparent)
   , get_hl_table("NonText", onepoint_colours_transparent)
   , get_hl_table("LineNr", linenr)
+  , get_hl_table("LineNr", onepoint_colours_transparent)
   , get_hl_table("Folded", onepoint_colours_transparent)
   , get_hl_table("EndOfBuffer", onepoint_colours_transparent)
 
@@ -196,14 +195,6 @@ local function get_on_terminal()
 
   -- telescope.nvim
   , get_hl_table("TelescopeNormal", onepoint_colours_transparent)
-
-  ---- notify
-  , get_hl_table("NotifyBackground", onepoint_colours_transparent)
-  , get_hl_table("NotifyERRORBody", onepoint_colours_transparent)
-  , get_hl_table("NotifyWARNBody", onepoint_colours_transparent)
-  , get_hl_table("NotifyINFOBody", onepoint_colours_transparent)
-  , get_hl_table("NotifyDEBUGBody", onepoint_colours_transparent)
-  , get_hl_table("NotifyTRACEBody", onepoint_colours_transparent)
 
   -- winseparator
   , get_hl_table("WinSeparator", onepoint_colours_transparent)
@@ -227,11 +218,6 @@ local function get_on_terminal()
   , get_hl_table("Floaterm", onepoint_colours_term)
   , get_hl_table("FloatermBorder", onepoint_colours_term)
   , get_hl_table("FloatermNC", onepoint_colours_term_nc)
-
-  , get_hl_table("DiffAdd", opc_diff_add)
-  , get_hl_table("DiffDelete", opc_diff_delete)
-  , get_hl_table("DiffChange", opc_diff_changed)
-  , get_hl_table("DiffText", opc_diff_text)
   }
 end
 
