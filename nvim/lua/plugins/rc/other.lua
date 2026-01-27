@@ -190,6 +190,17 @@ return {
       api.nvim_create_user_command("Qln", quicknotes_ls_notes, {})
       api.nvim_create_user_command("Qld", quicknotes_ls_diary, {})
 
+      -- filetype: neotree
+      local augroup_id_on_neotree = vim.api.nvim_create_augroup("quick-notes-on-neo-tree", {})
+      vim.api.nvim_create_autocmd("FileType", {
+        group = augroup_id_on_neotree,
+        pattern = "neo-tree",
+        callback = function()
+          vim.keymap.set("n", "<leader>nn", quicknotes_ls_notes, { noremap = true })
+          vim.keymap.set("n", "<leader>nd", quicknotes_ls_diary, { noremap = true })
+        end
+      })
+
       --local augroup_id = vim.api.nvim_create_augroup("quick-notes", {})
       --vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
       --  group = augroup_id,
