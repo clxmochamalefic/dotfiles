@@ -1,20 +1,20 @@
 local mason_servers = {
-  "astro",
+  --"astro",
   "cssls",
-  "css_variables",
-  "cssmodules_ls",
+  --"css_variables",
+  --"cssmodules_ls",
   "docker_compose_language_service",
   "dockerls",
   "html",
   "intelephense",
   "lua_ls",
   "marksman",
-  "rust_analyzer",
-  "svelte",
+  --"rust_analyzer",
+  --"svelte",
   "tailwindcss",
   "ts_ls",
-  "vtsls",
-  "vue_ls",
+  --"vtsls",
+  --"vue_ls",
 }
 
 local non_mason_servers = {
