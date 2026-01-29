@@ -183,7 +183,7 @@ local function get_on_terminal()
     get_hl_table("Normal", onepoint_colours_transparent)
   , get_hl_table("NonText", onepoint_colours_transparent)
   , get_hl_table("LineNr", linenr)
-  , get_hl_table("LineNr", onepoint_colours_transparent)
+  , get_hl_table("CursorLineNr", onepoint_colours_cui_secondary)
   , get_hl_table("Folded", onepoint_colours_transparent)
   , get_hl_table("EndOfBuffer", onepoint_colours_transparent)
 
