@@ -7,6 +7,6 @@
   },
   "guid": "{af8766a5-b0d6-4753-b439-5b6f68624911}",
   "hidden": false,
-  "icon": "https://avatars.githubusercontent.com/u/487568?s=200&v=4",
+  "icon": "%WINTERM_PATH%\\ProfileIcons\\{9acb9455-ca41-5af7-950f-6bca1bc9722f}.scale-200.png",
   "name": "NixOS"
 }

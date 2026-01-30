@@ -5,7 +5,7 @@
   "commandline": "ubuntu2204.exe",
 
   "colorScheme": "One Half Dark",
-  "icon": "https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png",
+  "icon": "%WINTERM_PATH%\\ProfileIcons\\{9acb9455-ca41-5af7-950f-6bca1bc9722f}.scale-200.png",
 
   "hidden": false
 }
