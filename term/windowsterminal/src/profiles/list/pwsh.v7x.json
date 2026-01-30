@@ -5,7 +5,7 @@
   "elevate": false,
 
   "colorScheme": "One Half Dark",
-  "icon": "ms-appx:///ProfileIcons/pwsh.png",
+  "icon": "%WINTERM_PATH%\\ProfileIcons\\pwsh.scale-200.png",
   "startingDirectory": "%USERPROFILE%",
   "useAcrylic": true,
 
