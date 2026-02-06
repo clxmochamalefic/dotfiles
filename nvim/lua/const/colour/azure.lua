@@ -6,7 +6,7 @@ local primary_fg = "#D8D8D8"
 --local secondary_bg = "#16437d"
 --local secondary_fg = "#F2F2F2"
 local secondary_bg = "#132345"
-local secondary_fg = "#ffcc00"
+local secondary_fg = "#F2F2F2"
 
 local accent_bg = "#b1d1fa"
 local accent_fg = "#1a1a1a"
