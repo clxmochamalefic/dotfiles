@@ -14,6 +14,13 @@ blocks:
     style: powerline
   - properties:
       cache_duration: none
+      time_format: "2006-01-02 15:04:05"
+    template: " [{{ .CurrentDate | date .Format }}] \uf0e7 "
+    powerline_symbol: 
+    type: time
+    style: plain
+  - properties:
+      cache_duration: none
     template: " {{ .UserName }}@{{ .HostName }} "
     foreground: "#100e23"
     powerline_symbol: 
