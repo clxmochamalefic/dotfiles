@@ -3,7 +3,7 @@
   "name": "cmd",
   "commandline": "%SystemRoot%\\System32\\cmd.exe",
 
-  "useAcrylic": true,
+  "useAcrylic": false,
 
   "hidden": false
 }

@@ -4,7 +4,7 @@
   "source": "Windows.Terminal.PowershellCore",
 
   "colorScheme": "One Half Dark",
-  "useAcrylic": true,
+  "useAcrylic": false,
 
   "hidden": false
 }

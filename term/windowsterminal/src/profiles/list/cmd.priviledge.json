@@ -4,7 +4,7 @@
   "commandline": "%SystemRoot%\\System32\\cmd.exe",
   "elevate": true,
 
-  "useAcrylic": true,
+  "useAcrylic": false,
   "hidden": false
 }
 

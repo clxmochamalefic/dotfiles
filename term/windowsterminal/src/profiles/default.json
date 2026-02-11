@@ -2,8 +2,8 @@
   "bellStyle": "window",
   "colorScheme": "One Half Dark",
   "cursorShape": "vintage",
-  "opacity": 80,
+  "opacity": 90,
   "scrollbarState": "hidden",
-  "useAcrylic": true,
+  "useAcrylic": false,
   "useAtlasEngine": true
 }
