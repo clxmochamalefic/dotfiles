@@ -3,7 +3,7 @@
   "name": "Azure Cloud Shell",
   "source": "Windows.Terminal.Azure",
 
-  "useAcrylic": true,
+  "useAcrylic": false,
 
   "hidden": false
 }

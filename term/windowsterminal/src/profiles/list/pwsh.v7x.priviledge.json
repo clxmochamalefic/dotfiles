@@ -7,7 +7,7 @@
   "colorScheme": "One Half Dark",
   "icon": "%WINTERM_PATH%\\ProfileIcons\\pwsh.scale-200.png",
   "startingDirectory": "%USERPROFILE%",
-  "useAcrylic": true,
+  "useAcrylic": false,
 
   "hidden": false
 }

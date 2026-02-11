@@ -5,7 +5,7 @@
 
   "colorScheme": "One Half Dark",
   "startingDirectory": "%USERPROFILE%",
-  "useAcrylic": true,
+  "useAcrylic": false,
 
   "hidden": true
 }
