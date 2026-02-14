@@ -11,7 +11,7 @@ local source_option_default = {
     "converter_truncate",
     "converter_fuzzy",
   },
-  maxItems = 10,
+  --maxItems = 10,
 }
 local source_option_around = {
   mark = "   ",
