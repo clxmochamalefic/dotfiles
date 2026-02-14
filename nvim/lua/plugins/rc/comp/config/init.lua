@@ -17,7 +17,7 @@ M.ddc_init = function()
   utils.io.begin_debug("ddc_init")
 
   vim.fn["ddc#custom#patch_global"](M.global.get_config())
-  vim.fn["ddc#custom#patch_filetype"]({ 'noice' }, M.noice.get_config())
+  --vim.fn["ddc#custom#patch_filetype"]({ 'noice' }, M.noice.get_config())
 
   --  use ddc.
   vim.fn["ddc#enable"]()
