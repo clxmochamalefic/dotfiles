@@ -60,7 +60,14 @@ local function config_draw()
 
   --  show whitespace characters
   opt.list = true
-  g.listchars = "tab:»-,trail:-,eol:↲,extend»,precede«,nbsp:%"
+  opt.listchars = {
+    tab = "»-",
+    trail = "-",
+    eol = "↲",
+    --extend = "»",
+    --precede = "«",
+    nbsp = "%",
+  }
 
   --  Windows でもパスの区切り文字を / にする
   --  2023-12-22: 一時的に `shellslash` をオフにする 👉 telescope.nvim がいまいち対応していないため
