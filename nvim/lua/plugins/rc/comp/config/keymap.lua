@@ -5,7 +5,8 @@ local km_opts = require("const.keymap")
 -- exprをつけないと、元々の `<CR>` が動いてくれない
 local opts_4insert           = km_opts.n
 local opts_4insert_with_key  = km_opts.en
-local opts_4command          = km_opts.en
+--local opts_4command          = km_opts.en
+local opts_4command          = km_opts.ns
 local opts_4term             = km_opts.ens
 
 local pum_insert_relative = vim.fn["pum#map#insert_relative"]
@@ -45,6 +46,10 @@ end
 ---| handle_else                      # [function] 上述のいずれでもない場合の実行
 ---
 
+local localprint = function(mess)
+  --vim.notify(mess)
+end
+
 ---
 --- @function on_pum_state
 ---
@@ -56,25 +61,25 @@ local on_pum_state = function(opts)
   end
 
   if is_pum_visible() then
-    --vim.notify("__IS_PUM_VISIBLE__")
+    localprint("__IS_PUM_VISIBLE__")
     --local item = pum_current_item()
     --vim.print(item)
       --vim.notify("__未選択__")
     opts.handle_pumvisible()
 
   elseif is_pum_entered() then
-    --vim.notify("__IS_PUM_ENTERED__")
+    localprint("__IS_PUM_ENTERED__")
     opts.handle_pumvisible()
 
   elseif vim.fn["ddc#map#can_complete"]() then
-    vim.notify("__IS_PUM_INVISIBLE_CAN_COMPLETE__")
+    localprint("__IS_PUM_INVISIBLE_CAN_COMPLETE__")
     opts.handle_can_complete()
 
     --vim.notify("v: " .. v)
     return v
 
   else
-    --vim.notify("__IS_PUM_INVISIBLE_AND_HAVENOT_COMPLETE__")
+    localprint("__IS_PUM_INVISIBLE_AND_HAVENOT_COMPLETE__")
     opts.handle_else()
     return opts.mapped_key
   end

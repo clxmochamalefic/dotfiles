@@ -78,13 +78,22 @@ local source_option_vsnip = {
 --    sorters     = {'sorter_fuzzy'},
 --    converters  = {'converter_fuzzy'}
 --  }
-local source_option_cmdlinehistory = {
-  mark = "   ",
+local source_option_cmdline = {
+  mark = "   ",
   minKeywordLength = 2,
   maxKeywordLength = 50,
   isVolatile = true,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
+  converters = { "converter_fuzzy" },
+}
+local source_option_cmdlinehistory = {
+  mark = "   ",
+  minKeywordLength = 2,
+  maxKeywordLength = 50,
+  isVolatile = true,
+  matchers = { "matcher_fuzzy" },
+  sorters = {  "sorter_cmdline_history","sorter_fuzzy", },
   converters = { "converter_fuzzy" },
 }
 local source_option_shellhistory = {
@@ -104,7 +113,8 @@ local source_options = {
   --    ['buffer']          = source_option_buffer,
   ["file"] = source_option_file,
   ["vsnip"] = source_option_vsnip,
-  ["cmdline-history"] = source_option_cmdlinehistory,
+  ["cmdline"] = source_option_cmdline,
+  ["cmdline_history"] = source_option_cmdlinehistory,
   ["shell-history"] = source_option_shellhistory,
 
   ["around"] = source_option_around,

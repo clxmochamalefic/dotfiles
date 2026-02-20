@@ -1,7 +1,7 @@
 local cmd_sources = {
-  [":"] = { "cmdline-history", "around" },
-  ["@"] = { "cmdline-history", "input", "file", "around" },
-  [">"] = { "cmdline-history", "input", "file", "around" },
+  [":"] = { "cmdline", "cmdline_history", "around" },
+  ["@"] = { "cmdline", "cmdline_history", "input", "file", "around" },
+  [">"] = { "cmdline", "cmdline_history", "input", "file", "around" },
   ["/"] = { "line", "around" },
   ["?"] = { "line", "around" },
   ["-"] = { "line", "around" },
