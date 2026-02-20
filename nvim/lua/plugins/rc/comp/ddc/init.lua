@@ -31,6 +31,7 @@ return {
       --  'ddc-dictionary',
       "LumaKernel/ddc-source-file",
       "tani/ddc-fuzzy",
+      "Shougo/ddc-source-cmdline",
       "Shougo/ddc-cmdline-history",
       "delphinus/ddc-shell-history",
       "Shougo/ddc-matcher_head",
