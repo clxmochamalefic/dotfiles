@@ -120,6 +120,8 @@ return {
 
       "Telescope git_status",
       "Telescope git_commits",
+
+      "Telescope resume",
     },
     keys = {
       -- buffer
@@ -140,6 +142,7 @@ return {
 
       -- symbol list
       { "<leader>i", get_symlist,             { mode = "n", desc = "Telescope: builtin lsp doc symbols" } },
+      { "<leader>r", tu.CallBuiltinResume,    { mode = "n", desc = "Telescope: resume" } },
     },
     opts = {
       pickers = {

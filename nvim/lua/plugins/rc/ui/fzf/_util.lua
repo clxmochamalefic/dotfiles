@@ -111,4 +111,16 @@ function M.CallFrecencyCurrentDir()
   vim.cmd("Telescope frecency workspace=" .. project_root .. "<CR>")
 end
 
+
+--
+-- telescope.nvim ビルトインの `resume` をコールする
+-- `Telescope resume`
+--
+-- @param opts options: default => default_opts
+--
+function M.CallBuiltinResume(opts)
+  opts = opts or {}
+  M.GetBuiltin().resume(opts)
+end
+
 return M
