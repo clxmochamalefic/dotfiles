@@ -18,18 +18,42 @@ end
 
 local function get_mappings(actions)
   actions = actions or require("telescope.actions")
+  local paste_reg_to_prompt = function()
+    local text = vim.fn.getreg('+')
+    vim.api.nvim_paste(text, false, -1)
+  end
+  local paste_search_to_prompt = function()
+    local text = vim.fn.getreg('/')
+    local len = string.len(text)
+
+    if text:startswith("\\<") then
+      text = string.sub(text, 3, len-2)
+      len = len - 2
+    end
+    if text:endswith("\\>") then
+      text = string.sub(text, 1, len-2)
+      len = len - 2
+    end
+
+    vim.api.nvim_paste(text, false, -1)
+  end
+vim.fn.getreg("/")
+
   return {
     i = {
       --["<esc>"] = actions.close,
+      ["<C-v>"] = paste_reg_to_prompt,
+      ["<C-b>"] = paste_search_to_prompt,
     },
     n = {
+      ["p"] = paste_reg_to_prompt,
+      ["P"] = paste_search_to_prompt,
+
       -- vertical split show
       ["["] = actions.select_vertical,
-      ["<C-v>"] = actions.select_vertical,
       ["v"] = actions.select_vertical,
       -- horizontal split show
       ["]"] = actions.select_horizontal,
-      ["<C-s>"] = actions.select_horizontal,
       ["s"] = actions.select_horizontal,
 
       ["<Tab>"] = actions.select_tab,
