@@ -61,11 +61,11 @@ local function config_draw()
   --  show whitespace characters
   opt.list = true
   opt.listchars = {
-    tab = "»-",
+    tab = "-",
     trail = "-",
     eol = "↲",
-    --extend = "»",
-    --precede = "«",
+    --extend = "",
+    --precede = "",
     nbsp = "%",
   }
 

@@ -79,7 +79,7 @@ return {
         spinner = 1000,
         lsp_client_name_enddelay = 1000
       },
-      spinner_symbols = { "🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘" },
+      spinner_symbols = { "", "健", "兼", "券", "剣", "喧", "圏", "堅" },
     },
     config = function(_, opts)
       -- lualine-lsp-progress ------------------------------
