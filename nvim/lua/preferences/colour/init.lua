@@ -4,7 +4,8 @@
 -- ---------------------------------------------------------------------------
 
 local utils = require("utils")
-local env = require("utils..env")
+local env = require("utils.env")
+local util_colour = require("utils.colour")
 
 local colours = require("const.colour")
 local theme = colours.azure
@@ -186,6 +187,12 @@ local function get_on_terminal()
   , get_hl_table("CursorLineNr", onepoint_colours_cui_secondary)
   , get_hl_table("Folded", onepoint_colours_transparent)
   , get_hl_table("EndOfBuffer", onepoint_colours_transparent)
+
+  -- whitespace tab linebreak characters
+--  , get_hl_table("NonText", {    ctermbg="None", ctermfg="242", bg="None", fg="#777" })
+--  , get_hl_table("SpecialKey", { ctermbg="None", ctermfg="242", bg="None", fg="#777" })
+  , get_hl_table("NonText", {    bg="None", fg="#777777" })
+  , get_hl_table("SpecialKey", { bg="None", fg="#777777" })
 
   , get_hl_table("WinBar", onepoint_colours_transparent)
   , get_hl_table("WinBarNC", onepoint_colours_transparent)
