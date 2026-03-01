@@ -42,7 +42,7 @@ return {
       'DBUIFindBuffer',
     },
     keys = {
-      { "<leader>s", "<cmd>DBUIToggle<CR>", mode = "n" },
+      --{ "<leader>s", "<cmd>DBUIToggle<CR>", mode = "n" },
     },
     dependencies = {
       "tpope/vim-dotenv",
