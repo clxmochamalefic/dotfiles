@@ -129,7 +129,7 @@ return {
       -- find file
       { "<leader>f", tu.CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
       -- find help
-      { "<leader>h", tu.CallBuiltinHelpTags,  { mode = "n", desc = "Telescope: help tags" } },
+      { "<F1>", tu.CallBuiltinHelpTags,       { mode = "n", desc = "Telescope: help tags" } },
 
       -- freecency in project root
       --{
@@ -141,7 +141,7 @@ return {
       { "<leader>g", tu.CallBuiltinLiveGrep,  { mode = "n", desc = "Telescope: live grep" } },
 
       -- symbol list
-      { "<leader>i", get_symlist,             { mode = "n", desc = "Telescope: builtin lsp doc symbols" } },
+      { "<leader>s", get_symlist,             { mode = "n", desc = "Telescope: builtin lsp doc symbols" } },
       { "<leader>r", tu.CallBuiltinResume,    { mode = "n", desc = "Telescope: resume" } },
     },
     opts = {
