@@ -1,10 +1,31 @@
 local mapping = {}
 
-local opt = vim.opt
 local fn = vim.fn
 local api = vim.api
-local g = vim.g
 local keymap = vim.keymap
+
+local function get_floating_window_id()
+  -- 現在のタブページ内の全ウィンドウIDを取得
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+
+  for _, winid in ipairs(wins) do
+    local config = vim.api.nvim_win_get_config(winid)
+    -- relative が空文字列でない場合はフローティングウィンドウ
+    if config.relative ~= "" and config.col ~= nil then
+      return winid
+    end
+  end
+
+  return 0 -- フローティングウィンドウが見つからない場合は0を返す
+end
+
+-- diagnosticsを開いているときにキーを押したらdiagnosticsのfloating windowに移動する
+local function switch_floating_window()
+  local winid = get_floating_window_id()
+  if winid ~= 0 then
+    vim.api.nvim_set_current_win(winid)
+  end
+end
 
 mapping.setup = function()
   -- ---------------------------------------------------------------------------
@@ -29,6 +50,9 @@ mapping.setup = function()
   -- nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
 
   keymap.set({ "i", "c" }, "<S-Tab>", "<C-d>", { silent = true })
+
+  -- switch floating winddow of diagnositcs or hover
+  keymap.set({ "n", }, "\\", switch_floating_window, { noremap = true, silent = true })
 
   --  auto insert semicolon to after last character in current line
   local function isEndSemicolon()
