@@ -8,13 +8,23 @@ local mydap = require(basepath .. "config")
 local depends = require(basepath .. "depends")
 
 -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
-local function dap_start(opts)
-  local args = opts.fargs[1]:split(" ")
-  mydap.start({
-    lang = args[1],
-    host = args[2],
-    port = args[3],
-  })
+--local function dap_start(opts)
+--  local args = opts.fargs[1]:split(" ")
+--  mydap.start({
+--    lang = args[1],
+--    host = args[2],
+--    port = args[3],
+--  })
+--end
+--
+
+local function dap_start()
+  --local dap = require("dap")
+  --dap.start({
+  --  lang = vim.bo.filetype,
+  --  host = args[2],
+  --  port = args[3],
+  --})
 end
 
 local complete_list = mydap.lang
@@ -123,8 +133,12 @@ return {
       --vim.api.nvim_set_keymap("n", "<leader>.", ':lua require("dapui").eval()<CR>', {})
 
       local dap = require("dap")
-      mydap.setup(dap)
+      --mydap.setup(dap)
       --vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { noremap = true })
+      --
+      -- ここにデバッガの設定
+      dap.adapters = mydap.adapter_list
+      dap.configurations = mydap.ft_config_list
 
       -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
       vim.api.nvim_create_user_command("DapStart", dap_start, dap_start_complete)
