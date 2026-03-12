@@ -53,7 +53,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     keys = {
-      { "<leader>,", "<cmd>Lspsaga finder<CR>", mode = "n" },
+      { "<F12>", "<cmd>Lspsaga finder<CR>", mode = "n" },
     },
     opts = {
       finder = {

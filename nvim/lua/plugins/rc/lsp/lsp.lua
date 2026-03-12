@@ -276,7 +276,7 @@ return {
           vim.keymap.set("n", "gj", openDiagnostics, bufopts)
 
           vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
-          vim.keymap.set("n", "gN", vim.diagnostic.goto_next, bufopts)
+          vim.keymap.set("n", "gN", vim.diagnostic.goto_prev, bufopts)
 
           vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
           vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
@@ -300,7 +300,7 @@ return {
     event = { "LspAttach" },
     keys = {
       {
-        "<leader><space>",
+        "<M-.>",
         "<Cmd>lua require('actions-preview').code_actions()<CR>",
         {
           buffer = bufnr,

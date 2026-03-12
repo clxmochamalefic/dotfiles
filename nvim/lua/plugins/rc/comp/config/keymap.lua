@@ -6,7 +6,7 @@ local km_opts = require("const.keymap")
 local opts_4insert           = km_opts.n
 local opts_4insert_with_key  = km_opts.en
 --local opts_4command          = km_opts.en
-local opts_4command          = km_opts.ns
+local opts_4command          = km_opts.n
 local opts_4term             = km_opts.ens
 
 local pum_insert_relative = vim.fn["pum#map#insert_relative"]
