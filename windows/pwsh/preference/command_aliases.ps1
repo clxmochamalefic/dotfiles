@@ -52,3 +52,8 @@ function reload()
     . $PROFILE
 }
 
+function su($uname)
+{
+      Start-Process pwsh.exe -Credential $uname
+}
+
