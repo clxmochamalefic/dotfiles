@@ -4,6 +4,10 @@
 
 local g = vim.g
 
+local function trylint()
+  require("lint").try_lint()
+end
+
 return {
   {
     lazy = true,
@@ -17,37 +21,23 @@ return {
     config = function()
       local async = require("plenary.async")
 
-      local cv = async.control.Condvar.new()
+      require("mason-nvim-lint").setup({
+        ensure_installed = {
+          --"checkstyle",
+          --"eslint_d",
+          --"sonarlint-language-server",
+          --"tflint",
+          --"vacuum",
+          --"revive",
+        },
+        automatic_installation = true,
+      })
 
-      async.run(function()
-        while g.mason_ready == nil or g.mason_ready == false do
-          async.util.sleep(1000)
-          --print("mason-nvim-lint: Waiting for mason to be ready")
-        end
-        vim.notify("mason-nvim-lint: GET READY!!")
-        cv:notify_all()
-      end)
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = trylint,
+      })
 
-      async.run(function()
-        cv:wait()
-
-        require("mason-nvim-lint").setup({
-          ensure_installed = {
-            "checkstyle",
-            "eslint_d",
-            "sonarlint-language-server",
-            "tflint",
-            "vacuum",
-            "revive",
-          },
-        })
-
-        vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-          callback = function()
-            require("lint").try_lint()
-          end,
-        })
-      end)
+      vim.api.nvim_create_user_command("TryLint", trylint, {})
     end,
   },
 }
