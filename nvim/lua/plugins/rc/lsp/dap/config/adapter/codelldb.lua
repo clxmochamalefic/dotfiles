@@ -55,6 +55,9 @@ local ft_list = {
 
 --- @type my_adapter_config
 local M = {
+  executable_path = executable_path,
+  name = dap_name,
+
   ft = ft_list,
   adapter_config = {
     type = 'server',

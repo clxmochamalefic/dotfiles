@@ -6,8 +6,9 @@ local keymap = vim.keymap
 local M = {}
 
 function M.exists(name)
-  local f = io.open(name, "r")
-  return f ~= nil and io.close(f)
+  return vim.uv.fs_stat(name)
+  --local f = io.open(name, "r")
+  --return f ~= nil and io.close(f)
 end
 
 function M.get_parent(path)
