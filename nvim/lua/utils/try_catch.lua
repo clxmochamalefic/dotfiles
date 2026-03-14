@@ -1,10 +1,7 @@
-
-local io = require("utils..io")
-
-local M = {}
+local io = require("utils.io")
 
 -- 疑似trycatch
-function M.try_catch(what)
+local function try_catch(what)
   io.debug_echo("begin try --->")
   local status, exception = pcall(what.try)
   if not status then
@@ -23,4 +20,4 @@ function M.try_catch(what)
   return exception
 end
 
-return M
+return try_catch

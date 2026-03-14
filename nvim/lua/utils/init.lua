@@ -5,25 +5,21 @@ local keymap = vim.keymap
 
 require("utils.string")
 
-local sub_util = require("utils..util")
-
 local M = {}
 
-M.fs = require("utils..fs")
-M.io = require("utils..io")
-M.env = require("utils..env")
-M.window = require("utils..window")
-M.depends = require("utils..depends")
-M.util = sub_util
+M.depends = require("utils.depends")
+M.env = require("utils.env")
+M.fs = require("utils.fs")
+M.io = require("utils.io")
+M.string = require("utils.string")
 M.table = require("utils.table")
+M.try_catch = require("utils.try_catch") -- 疑似trycatch
+M.window = require("utils.window")
 
 -- key exists in array
 function M.isContainsInArray(set, key)
 	return set[key] ~= nil
 end
-
--- 疑似trycatch
-M.try_catch = M.util.try_catch
 
 -- 型チェック
 -- super thx for @paulcuth!!: https://gist.github.com/paulcuth/1270733
