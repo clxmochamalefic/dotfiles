@@ -148,7 +148,7 @@ function M.join_path_with_separator(separator, ...)
     local arg = (select(i, ...))
     args[i] = arg
   end
-  local path = table.concat(args, separator)
+  local path = vim.fn.expand(table.concat(args, separator))
   return path
 end
 
