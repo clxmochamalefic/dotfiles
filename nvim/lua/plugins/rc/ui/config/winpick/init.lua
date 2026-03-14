@@ -5,7 +5,7 @@
 local api = vim.api
 local opt = vim.opt
 
-local utils = require("utils")
+local try_catch = require("utils.try_catch")
 local wndutil = require("utils.window")
 
 local M = {}
@@ -83,7 +83,7 @@ M.opts = {
 -- choose window for window focus
 --
 function M.choose_for_focus()
-  utils.try_catch({
+  try_catch({
     try = function()
       local winid = M.winpick.select()
       if winid then

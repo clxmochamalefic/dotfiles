@@ -1,6 +1,6 @@
 local fn = vim.fn
 
-local myutils = require("utils.try_catch")
+local try_catch = require("utils.try_catch")
 
 local M = {}
 
@@ -68,7 +68,7 @@ function M.which(name)
 end
 
 function M.install(name, verb, ignore_fn_list)
-  myutils.try_catch({
+  try_catch({
     try = function()
       ignore_fn_list = ignore_fn_list or {}
       if fn.executable(name) < 1 then
