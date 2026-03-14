@@ -1,4 +1,5 @@
 local utils = require("utils")
+local try_catch = require("utils.try_catch")
 
 local g = vim.g
 local fn = vim.fn
@@ -100,7 +101,7 @@ function M.window_choose(args)
   utils.io.debug_echo("args", args)
 
 
-  utils.try_catch({
+  try_catch({
     try = function()
       local path = args.items[1].action.path
       if M.win_count() <= 1 then

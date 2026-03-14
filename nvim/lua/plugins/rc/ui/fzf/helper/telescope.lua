@@ -4,7 +4,7 @@
 
 M = {}
 
-local utils = require("utils")
+local try_catch = require("utils.try_catch")
 local winpick = require("plugins.rc.config.winpick")
 
 M.setup = function()
@@ -21,7 +21,7 @@ M.setup = function()
     local winid = M.winpick.choose_for_focus()
     local entry = M.action_state.get_selected_entry()
     if winid then
-      utils.try_catch({
+      try_catch({
         try = function()
           if M.win_count() <= 1 then
             vim.cmd("edit " .. entry.filename)
