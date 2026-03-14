@@ -1,6 +1,6 @@
 local fn = vim.fn
 
-local myutils = require("utils..util")
+local myutils = require("utils.try_catch")
 
 local M = {}
 
@@ -56,7 +56,7 @@ local function get_pm_command(name)
       get_pm_command_with_pm_name(name, v)
     end
   end
-  error("have not defined package manager name in list, plz update me: utils..depends.lua")
+  error("have not defined package manager name in list, plz update me: utils.depends.lua")
 end
 
 function M.has(name)

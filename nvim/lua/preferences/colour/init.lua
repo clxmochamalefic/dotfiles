@@ -4,6 +4,7 @@
 -- ---------------------------------------------------------------------------
 
 local utils = require("utils")
+local try_catch = require("utils.try_catch")
 local env = require("utils.env")
 local util_colour = require("utils.colour")
 
@@ -253,7 +254,7 @@ M.setup = function()
 
   local colorscheme = "onehalfdark"
 
-  utils.try_catch({
+  try_catch({
     try = function()
       vim.cmd("colorscheme " .. colorscheme)
     end,

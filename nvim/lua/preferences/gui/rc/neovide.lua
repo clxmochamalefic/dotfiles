@@ -2,7 +2,7 @@
 
 --- ref: https://namileriblog.com/mac/neovide_settings/
 
-local env = require("utils..env")
+local env = require("utils.env")
 
 local M = {}
 
