@@ -1,8 +1,8 @@
 -- ---------------------------------------------------------------------------
 -- DAP - cpptools (C++) CONFIGS
 -- ---------------------------------------------------------------------------
-require('plugins.rc.lsp.dap.config.adapter._type')
-local util = require('plugins.rc.lsp.dap.config.adapter._util')
+require('plugins.rc.lsp.dap.config.adapter._types')
+local util = require('plugins.rc.lsp.dap.config.adapter._utils')
 
 local dap_name = 'cpptools'
 local default_port = 13000

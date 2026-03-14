@@ -1,9 +1,9 @@
 -- ---------------------------------------------------------------------------
 -- DAP - cpptools (C++) CONFIGS
 -- ---------------------------------------------------------------------------
-require('plugins.rc.lsp.dap.config.adapter._type')
+require('plugins.rc.lsp.dap.config.adapter._types')
 --- @var DAPのアダプタ用のユーティリティ
-local adaptutil = require('plugins.rc.lsp.dap.config.adapter._util')
+local adaptutil = require('plugins.rc.lsp.dap.config.adapter._utils')
 --- 自前実装のneovimのユーティリティのうち、OS環境のもの
 local envutil = require("utils.env");
 
