@@ -2,7 +2,7 @@
 -- DAP (debug adapter protocol) CONFIGS
 -- ---------------------------------------------------------------------------
 
-require('plugins.rc.lsp.dap.config.adapter._type')
+require('plugins.rc.lsp.dap.config.adapter._types')
 
 local lang_dir = 'plugins.rc.lsp.dap.config.adapter.'
 
