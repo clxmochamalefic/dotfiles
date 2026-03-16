@@ -1,10 +1,10 @@
 ---@diagnostic disable: undefined-global
 
-local colour_utils = require("utils.colour")
+local _COLOUR = require("const.colour")
 
 local M = {
   max_width         = 120,
-  blend             = colour_utils.get_pumblend(),
+  blend             = _COLOUR.get_pumblend(),
   --use_complete  = true,
   border            = 'rounded',
   padding           = true,

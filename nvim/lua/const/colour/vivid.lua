@@ -1,4 +1,4 @@
-require("const.colour._type")
+require("const.colour._types")
 
 local primary_bg = "#2F0B3A"
 local primary_fg = "#D8D8D8"

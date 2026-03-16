@@ -1,7 +1,4 @@
-local utils = require("utils")
-local colour = require("const.colour")
-
-local M = {
+return {
   yellow = "#ECBE7B",
   cyan = "#008080",
   darkblue = "#081633",
@@ -13,4 +10,3 @@ local M = {
   red = "#ec5f67",
 }
 
-return M

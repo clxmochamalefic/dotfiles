@@ -4,7 +4,7 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
-local colour = require("const.colour")
+local _COLOUR = require("const.colour")
 
 return {
   --{
@@ -112,7 +112,7 @@ return {
         },
         handle = {
           text = " ",
-          color = colour.azure.g.sub2.bg,
+          color = _COLOUR.azure.g.sub2.bg,
           color_nr = nil, -- cterm
           highlight = "CursorColumn",
           hide_if_all_visible = true, -- Hides handle if all lines are visible

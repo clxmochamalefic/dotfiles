@@ -9,7 +9,7 @@ local api = vim.api
 local opt = vim.opt
 local keymap = vim.keymap
 
-local colour = require("const.colour")
+local _COLOUR = require("const.colour")
 
 return {
   {
@@ -75,8 +75,8 @@ return {
           -- highlights which map to a highlight group name and a table of it's values
           -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
           Normal = {
-            guibg = colour.azure.g.secondary.bg,
-            guifg = colour.azure.g.secondary.fg,
+            guibg = _COLOUR.azure.g.secondary.bg,
+            guifg = _COLOUR.azure.g.secondary.fg,
           },
           --NormalFloat = {
           --  link = 'Normal'
