@@ -5,6 +5,15 @@
 -- no load
 local myconfig = require("plugins.rc.ui.filer.config.neo-tree")
 
+local add_config = {
+  "add",
+  -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
+  -- some commands may take optional config options, see `:h neo-tree-mappings` for details
+  config = {
+    show_path = "none" -- "none", "relative", "absolute"
+  }
+}
+
 return {
   {
     lazy = true,
@@ -153,15 +162,10 @@ return {
             --["z"] = "close_all_nodes",
             ["H"] = "close_all_nodes",
             --["Z"] = "expand_all_nodes",
-            ["b"] = {
-              "add",
-              -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
-              -- some commands may take optional config options, see `:h neo-tree-mappings` for details
-              config = {
-                show_path = "none" -- "none", "relative", "absolute"
-              }
-            },
+            ["b"] = add_config,
+            ["i"] = add_config,
             ["B"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
+            ["I"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
             ["d"] = "delete",
             ["r"] = "rename",
             ["y"] = "copy_to_clipboard",
@@ -177,10 +181,13 @@ return {
             ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
             ["q"] = "close_window",
             ["R"] = "refresh",
+            ["<C-r>"] = "refresh",
             ["?"] = "show_help",
             --["<"] = "prev_source",
             --[">"] = "next_source",
-            ["i"] = "show_file_details",
+            ["<C-i>"] = "show_file_details",
+
+            ["<C-c>"] = "clear_clipboard",
           }
         },
         nesting_rules = {},
