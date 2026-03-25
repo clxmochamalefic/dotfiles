@@ -4,13 +4,13 @@ local is_all_enabled = false
 
 return {
   {
-    condition = is_all_enabled,
+    cond = is_all_enabled,
     'keaising/im-select.nvim',
     config = true
   },
   {
     lazy = true,
-    condition = is_all_enabled,
+    cond = is_all_enabled,
     "vim-skk/skkeleton",
     dependencies = {
       "vim-denops/denops.vim",
@@ -63,7 +63,7 @@ return {
     end,
   },
   {
-    condition = is_all_enabled,
+    cond = is_all_enabled,
     "delphinus/skkeleton_indicator.nvim",
     lazy = true,
     config = function()

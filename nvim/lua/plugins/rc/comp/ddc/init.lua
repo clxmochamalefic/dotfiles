@@ -105,6 +105,7 @@ return {
   },
   {
     lazy = true,
+    cond = false,
     "matsui54/denops-popup-preview.vim",
     dependencies = {
       "vim-denops/denops.vim",
@@ -119,7 +120,7 @@ return {
       }
       vim.api.nvim_call_function("popup_preview#enable", {})
     end,
-    init = function() end,
+    --init = function() end,
   },
   {
     lazy = true,
