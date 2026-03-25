@@ -1,54 +1,41 @@
---local g = vim.g
---local fn = vim.fn
---local uv = vim.uv
---local api = vim.api
---local opt = vim.opt
---local keymap = vim.keymap
---
---local myWinPick = require("plugins.rc.config.winpick")
---local utils = require("utils")
---
---local myDenops = require("plugins.rc.config.denops")
---
+local skk = require("plugins.rc.config.ime.skk")
 
---local skk = require("plugins.rc.config.ime.skk")
+local is_all_enabled = false
 
 return {
-  --  {
-  --    'keaising/im-select.nvim',
-  --    config = function()
-  --      require('im_select').setup {
-  --      }
-  --    end
-  --  }
   {
+    condition = is_all_enabled,
+    'keaising/im-select.nvim',
+    config = true
+  },
+  {
+    lazy = true,
+    condition = is_all_enabled,
     "vim-skk/skkeleton",
     dependencies = {
       "vim-denops/denops.vim",
       "delphinus/skkeleton_indicator.nvim",
       "ddc.vim",
     },
-    condition = false,
-    lazy = true,
     event = { "InsertEnter", "CursorHold" },
-    --keys = {
-    --  {
-    --    "<C-j>",
-    --    "<Plug>(skkeleton-toggle)",
-    --    {
-    --      mode = "i",
-    --      desc = "[skk] toggle on insert mode",
-    --    },
-    --  },
-    --  {
-    --    "<C-j>",
-    --    "<Plug>(skkeleton-toggle)",
-    --    {
-    --      mode = "c",
-    --      desc = "[skk] toggle on ex mode",
-    --    },
-    --  },
-    --},
+    keys = {
+      {
+        "<C-j>",
+        "<Plug>(skkeleton-toggle)",
+        {
+          mode = "i",
+          desc = "[skk] toggle on insert mode",
+        },
+      },
+      {
+        "<C-j>",
+        "<Plug>(skkeleton-toggle)",
+        {
+          mode = "c",
+          desc = "[skk] toggle on ex mode",
+        },
+      },
+    },
     init = function()
       vim.api.nvim_create_autocmd('User', {
         pattern = 'skkeleton-initialize-pre',
@@ -66,7 +53,7 @@ return {
     end,
     config = function()
       -- skk how to use
-      -- winget install 
+      -- winget install
       -- download below, extract, and create symblink to shell:startup
       -- https://github.com/nathancorvussolis/crvskkserv/releases/tag/2.5.6
       --skk.setup()
@@ -76,8 +63,8 @@ return {
     end,
   },
   {
+    condition = is_all_enabled,
     "delphinus/skkeleton_indicator.nvim",
-    condition = false,
     lazy = true,
     config = function()
       require("skkeleton_indicator").setup()
