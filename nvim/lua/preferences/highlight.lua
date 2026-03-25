@@ -42,8 +42,20 @@ local md_fenced_language_list = {
   'vim'
 }
 
+local augroup_name = "MyMarkdownHighlight"
+
 M.setup = function()
-  vim.g.markdown_fenced_languages = md_fenced_language_list
+  vim.api.nvim_create_augroup(augroup_name, { clear = true })
+  vim.api.nvim_create_autocmd("FileType", {
+    group = augroup_name,
+    pattern = {
+      "markdown",
+      "md",
+    },
+    callback = function()
+      vim.g.markdown_fenced_languages = md_fenced_language_list
+    end
+  })
 end
 
 return M
