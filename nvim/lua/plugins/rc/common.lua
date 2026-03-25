@@ -39,14 +39,14 @@ return {
     -- completion [{()}]
     'tpope/vim-surround',
     lazy = true,
-    condition = true,
+    cond = true,
     event = { 'BufEnter' }
   },
   {
     -- 現在のカーソル位置のコンテキストによって filetype を切り換える
     'osyo-manga/vim-precious',
     lazy = true,
-    condition = false,
+    cond = false,
     dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },

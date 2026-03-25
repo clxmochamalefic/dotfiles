@@ -24,7 +24,7 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-    condition = true,
+    cond = true,
     lazy = true,
     event = {
       "LspAttach",
@@ -95,7 +95,7 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-    condition = true,
+    cond = true,
     lazy = true,
     event = {
       "FileReadPost",

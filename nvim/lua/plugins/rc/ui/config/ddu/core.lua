@@ -46,6 +46,7 @@ M.floatWindow = {
   split = "floating",
 }
 
+-- for vertical window
 M.uiParamsVertical = {
   span = 2,
 
@@ -67,6 +68,7 @@ M.uiParamsVertical = {
   previewHeight = M.verticalWindow.preview_height,
 }
 
+-- for floating window
 M.uiParams = {
   span = 2,
 
