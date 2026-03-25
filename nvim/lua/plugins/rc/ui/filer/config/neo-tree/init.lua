@@ -11,14 +11,6 @@ function M.get_require()
   return nc
 end
 
---function M.cd(path)
---  local nc = M.get_require()
---  nc.execute({
---    reveal_file = path,           -- path to file or folder to reveal
---    reveal_force_cwd = true,      -- change cwd without asking if needed
---  })
---end
-
 function M.cd(path)
   local nc = M.get_require()
   nc.execute({

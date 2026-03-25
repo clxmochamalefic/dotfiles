@@ -29,12 +29,15 @@ return {
     keys = {
       { "Z", "<cmd>Neotree<CR>", mode = "n" },
     },
-    config = function()
-      require("neo-tree").setup({
+    opts = {
         close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
         popup_border_style = "rounded",
         enable_git_status = true,
         enable_diagnostics = true,
+        preview = {
+          max_width = "40%",
+          width = "40%",
+        },
         open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
         sort_case_insensitive = false,                                     -- used when sorting files and directories in the tree
         sort_function = nil,                                               -- use a custom function for sorting files and directories in the tree
@@ -122,8 +125,21 @@ return {
         -- see `:h neo-tree-custom-commands-global`
         commands = {},
         window = {
-          position = "left",
-          width = 40,
+          position = "float",
+          width = "20%",
+          min_width = 20,
+          max_width = "20%",
+          auto_expand_width = false,
+          popup = {
+            size = {
+              width = "40%",
+              height = "60%",
+            },
+            position = {
+              row = "100%",
+              col = "50%",
+            },
+          },
           mapping_options = {
             noremap = true,
             nowait = true,
@@ -315,13 +331,14 @@ return {
             }
           }
         }
-      })
-
+    },
+    config = function(_, opts)
+      require("neo-tree").setup(opts)
       myconfig.setup()
 
-      -- 初期ディレクトリ移動
-      --local currentDir = vim.fn["fnamemodify"]("", ":p")
-      --myconfig.cd(currentDir)
+    --  -- 初期ディレクトリ移動
+    --  --local currentDir = vim.fn["fnamemodify"]("", ":p")
+    --  --myconfig.cd(currentDir)
     end,
   },
 }
