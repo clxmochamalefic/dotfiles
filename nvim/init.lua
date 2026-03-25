@@ -32,6 +32,7 @@ local ft = require("preferences.ft")
 local mapping = require("preferences.mapping")
 local command = require("preferences.command")
 local colour = require("preferences.colour")
+local hl = require("preferences.highlight")
 local window = require("preferences.window")
 local gui = require("preferences.gui")
 
@@ -52,6 +53,7 @@ mapping.setup()
 command.setup()
 
 colour.setup()
+hl.setup()
 window.setup()
 
 gui:setup()
