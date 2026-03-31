@@ -37,3 +37,6 @@ $myCommandAliases = "${pwshconfPath}\command_aliases.ps1"
 
 $myCommand = "${pwshconfPath}\command.ps1"
 . $myCommand
+
+$myEnv = "${pwshconfPath}\env.ps1"
+. $myEnv
