@@ -5,7 +5,9 @@
 require("const.colour._types")
 
 local TRANSPARENT     = "none"
-local GUI_DEFAULT_FG  = "#DDDDDD"
+local GUI_WHITE_FG  = "#EEEEEE"
+local GUI_BLACK_FG  = "#111111"
+local AVG_THRESHOLD   = tonumber("BB", 16)
 
 local CUI_DEFAULT = {
   zero = 0,
@@ -51,6 +53,14 @@ local function get_mytheme_color_table(t)
         },
       }
     else  -- @var v string
+      --vim.print("r", v:sub(2, 3), "g", v:sub(4, 5), "b", v:sub(6, 7))
+      local total = (tonumber(v:sub(2, 3), 16) + tonumber(v:sub(4, 5), 16) + tonumber(v:sub(6, 7), 16))
+      local avg = total / 3
+      --vim.print("key", k, "value", v)
+      --vim.print("THRESHOLD", AVG_THRESHOLD)
+      --vim.print("total", total)
+      --vim.print("avg", avg)
+      local gui_default_fg = avg > AVG_THRESHOLD and GUI_BLACK_FG or GUI_WHITE_FG
       new_t[k] = {
         c = {
           fg = CUI_DEFAULT.fg,
@@ -67,7 +77,7 @@ local function get_mytheme_color_table(t)
           bg = CUI_DEFAULT.bg,
         },
         g = {
-          fg = GUI_DEFAULT_FG,
+          fg = gui_default_fg,
           bg = v,
         },
       }
@@ -80,7 +90,7 @@ end
 local M = {
   transparent = "None",
   blend = BLEND,
-  gui_default_fg = GUI_DEFAULT_FG,
+  gui_default_fg = GUI_WHITE_FG,
   get_mytheme_color_table = get_mytheme_color_table,
   get_pumblend = get_pumblend,
   get_winblend = get_winblend,
