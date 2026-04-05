@@ -11,8 +11,6 @@ local debugInfo = debug.getinfo(1)
 local filename = debugInfo.source:match("[^/]*$")
 local fn_without_ext = filename:sub(1, #filename - 4) -- 拡張子を取る
 
-vim.print("filename: " .. fn_without_ext)
-
 local dap_name = fn_without_ext
 local default_port = 13000
 local executable_path = adaptutil.get_executable_path(dap_name, 'adapter')

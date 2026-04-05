@@ -24,7 +24,6 @@ function M.set_highlight_by_table(hl_table)
   _io.debug_echo("set hls")
   for i, x in pairs(hl_table) do
     _io.debug_echo(i, x)
-    vim.print(i, x)
     M.set_highlight(x[1], x[2], x[3])
   end
 end
