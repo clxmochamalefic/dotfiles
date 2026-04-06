@@ -20,6 +20,7 @@
 --- @field accent     my_colour_pair|my_colour_display_type|string accent colour / アクセントカラー
 --- @field sub        my_colour_pair|my_colour_display_type|string sub colour / サブカラー
 --- @field terminal   my_colour_pair|my_colour_display_type|string terminal colour / ターミナルカラー
+--- @field disabled   my_colour_pair|my_colour_display_type|string 無効化色
 ---
 
 ---
@@ -30,10 +31,12 @@
 --- @field accent       my_colour_display_type accent colour / アクセントカラー
 --- @field sub          my_colour_display_type sub colour / サブカラー
 --- @field terminal     my_colour_display_type terminal colour / ターミナルカラー
+--- @field disabled   my_colour_pair|my_colour_display_type|string 無効化色
 --- @field primary_bg   my_colour_display_type primary colour / 基本色
 --- @field secondary_bg my_colour_display_type secondary colour / 補助色
 --- @field accent_bg    my_colour_display_type accent colour / アクセントカラー
 --- @field sub_bg       my_colour_display_type sub colour / サブカラー
 --- @field terminal_bg  my_colour_display_type terminal colour / ターミナルカラー
+--- @field disabled_bg  my_colour_pair|my_colour_display_type|string 無効化色
 ---
 

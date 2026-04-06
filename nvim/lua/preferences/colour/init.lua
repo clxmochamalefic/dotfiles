@@ -32,13 +32,14 @@ local function get_on_terminal()
   ,
 
     _c.get_hl_table("RegistersWindow", theme.primary.g)
-  , _c.get_hl_table("Pmenu", theme.secondary_bg.g)
+  , _c.get_hl_table("Pmenu", theme.primary.g)
   , _c.get_hl_table("PmenuSel", theme.accent_bg.g)
   , _c.get_hl_table("PmenuSbar", background_transparent)
   , _c.get_hl_table("PmenuThumb", theme.accent_bg.g)
-  , _c.get_hl_table("FloatBorder", theme.secondary_bg.g)
---
-  , _c.get_hl_table("NormalFloat", background_transparent)
+
+  , _c.get_hl_table("NormalFloat", theme.primary.g)
+  , _c.get_hl_table("FloatBorder", theme.primary.g)
+
   , _c.get_hl_table("FloatShadow", background_transparent)
   , _c.get_hl_table("FloatShadowThrough", background_transparent)
   }
@@ -90,6 +91,39 @@ M.setup = function()
   vim.api.nvim_create_autocmd("ColorScheme", {
     group = myhl_augroup_id,
     callback = function() _c.set_highlight_by_table(my_colorscheme) end,
+  })
+
+  vim.api.nvim_create_autocmd("BufEnter", {
+    group = myhl_augroup_id,
+    callback = function(args)
+      -- Get buftype for the buffer that triggered the event
+      local filetype = vim.bo[args.buf].filetype
+      local buftype = vim.bo[args.buf].buftype
+
+      if filetype == "neo-tree" then
+        _c.set_highlight_by_table({
+          _c.get_hl_table("NormalFloat", background_transparent),
+        })
+      elseif buftype == "nofile" then
+        _c.set_highlight_by_table({
+          _c.get_hl_table("NormalFloat", background_transparent),
+        })
+      else
+        _c.set_highlight_by_table({
+          _c.get_hl_table("NormalFloat", theme.primary.g),
+        })
+      end
+    end,
+  })
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+      "neo-tree",
+    },
+    callback = function()
+      _c.set_highlight_by_table({
+        _c.get_hl_table("NormalFloat", theme.primary.g)
+      })
+    end
   })
 
   _io.debug_echo("=== begin: default load ===")

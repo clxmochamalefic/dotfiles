@@ -7,6 +7,7 @@ local secondary = "#16437d"
 
 local accent = "#b1d1fa"
 local sub = "#ffcc00"
+local disabled = "#888888"
 
 local terminal_bg = "#2f446e"
 local terminal_fg = "#D8D8D8"
@@ -20,6 +21,7 @@ local azure = {
     accent    = accent,
     sub       = sub,
     terminal  = { bg = terminal_bg,   fg = terminal_fg },
+    disabled  = disabled,
 }
 
 return azure
