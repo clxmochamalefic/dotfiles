@@ -5,7 +5,7 @@
 local sources = {
   --    'tsnip',
   "lsp",
-  --    'buffer',
+  'buffer',
   "file",
   "vsnip",
   --"skkeleton",

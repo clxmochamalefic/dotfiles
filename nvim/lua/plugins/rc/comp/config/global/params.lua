@@ -30,7 +30,7 @@ end
 local function get_source_params()
   return {
     ["lsp"] = source_params_nvimlsp(),
-    --    ['buffer']   = source_params_buffer,
+    ['buffer']   = source_params_buffer,
     ["file"] = source_params_file,
     ["around"] = source_params_around,
   }

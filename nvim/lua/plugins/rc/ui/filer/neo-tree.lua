@@ -65,6 +65,92 @@ return {
           default = "*",
           highlight = "NeoTreeFileIcon"
         },
+        -- A list of functions, each representing a global custom command
+        -- that will be available in all sources (if not overridden in `opts[source_name].commands`)
+        -- see `:h neo-tree-custom-commands-global`
+        commands = {},
+        window = {
+          position = "float",
+          width = "20%",
+          min_width = 20,
+          max_width = "20%",
+          auto_expand_width = false,
+          popup = {
+            size = {
+              width = "40%",
+              height = "60%",
+            },
+            position = {
+              row = "50%",
+              col = "50%",
+            },
+          },
+          mapping_options = {
+            noremap = true,
+            nowait = true,
+          },
+          mappings = {
+            ["<space>"] = {
+              "toggle_node",
+              nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
+            },
+            ["<2-LeftMouse>"] = "open",
+            ["<cr>"] = "open_with_window_picker",
+            ["l"] = "open",
+            ["<esc>"] = "cancel", -- close preview or floating neo-tree window
+            ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
+            -- Read `# Preview Mode` for more information
+            ["L"] = "focus_preview",
+
+            --["s"] = "open_vsplit",
+            --["S"] = "open_split",
+            --["["] = "open_vsplit",
+            --["]"] = "open_split",
+
+            ["s"] = "vsplit_with_window_picker",
+            ["S"] = "split_with_window_picker",
+            ["["] = "vsplit_with_window_picker",
+            ["]"] = "split_with_window_picker",
+
+            ["t"] = "open_tabnew",
+            -- ["<cr>"] = "open_drop",
+            -- ["t"] = "open_tab_drop",
+            ["w"] = "open_with_window_picker",
+            --["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
+            --["C"] = "close_node",
+            ["h"] = "close_node",
+            -- ['C'] = 'close_all_subnodes',
+            --["z"] = "close_all_nodes",
+            ["H"] = "close_all_nodes",
+            --["Z"] = "expand_all_nodes",
+            ["b"] = add_config,
+            ["i"] = add_config,
+            ["B"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
+            ["I"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
+            ["d"] = "delete",
+            ["r"] = "rename",
+            ["y"] = "copy_to_clipboard",
+            ["x"] = "cut_to_clipboard",
+            ["p"] = "paste_from_clipboard",
+            ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
+            -- ["c"] = {
+            --  "copy",
+            --  config = {
+            --    show_path = "none" -- "none", "relative", "absolute"
+            --  }
+            --}
+            ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
+            ["q"] = "close_window",
+            ["R"] = "refresh",
+            ["<C-r>"] = "refresh",
+            ["?"] = "show_help",
+            --["<"] = "prev_source",
+            --[">"] = "next_source",
+            ["<C-i>"] = "show_file_details",
+
+            ["<C-c>"] = "clear_clipboard",
+          }
+        },
         modified = {
           symbol = "[+]",
           highlight = "NeoTreeModified",

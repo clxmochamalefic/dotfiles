@@ -46,7 +46,7 @@ return {
     -- 現在のカーソル位置のコンテキストによって filetype を切り換える
     'osyo-manga/vim-precious',
     lazy = true,
-    cond = false,
+    cond = true,
     dependencies = { 'Shougo/context_filetype.vim' },
     event = { 'BufEnter' }
   },
@@ -81,6 +81,10 @@ return {
     lazy = true,
     'deris/vim-rengbang',
     event = { 'InsertChange' },
+    cmd = {
+      "RengBang",
+      "RengBangUsePrev",
+    },
     init = function()
       -- Following settings is default value.
       vim.g.rengbang_default_pattern          = '\\(\\d\\+\\)'
