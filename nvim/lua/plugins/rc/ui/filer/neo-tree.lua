@@ -395,6 +395,7 @@ return {
 
       myconfig.setup()
 
+      _c.set_highlight_by_link("NeoTreeFloatNormal", "Normal")
       _c.set_highlight_by_link("NeoTreeFloatBorder", "Normal")
       _c.set_highlight_by_link("NeoTreeFloatTitle", "Normal")
       _c.set_highlight_by_link("NeoTreeTitleBar", "Normal")
