@@ -10,6 +10,8 @@ local opt = vim.opt
 local keymap = vim.keymap
 
 local _COLOUR = require("const.colour")
+local _COLOUR_AZURE = require("const.colour.azure")
+local theme = _COLOUR.get_mytheme_color_table(_COLOUR_AZURE)
 
 return {
   {
@@ -74,10 +76,10 @@ return {
         highlights = {
           -- highlights which map to a highlight group name and a table of it's values
           -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
-          Normal = {
-            guibg = _COLOUR.azure.g.secondary.bg,
-            guifg = _COLOUR.azure.g.secondary.fg,
-          },
+          --Normal = {
+          --  guibg = theme.secondary_bg.g.bg,
+          --  guifg = theme.secondary_bg.g.fg,
+          --},
           --NormalFloat = {
           --  link = 'Normal'
           --},
