@@ -68,4 +68,9 @@ return {
       vim.api.nvim_create_user_command("BlameToggleVirtual", '<cmd>BlameToggle window<CR>', {})
     end,
   },
+  {
+    'rhysd/conflict-marker.vim',
+    lazy = true,
+    event = { "FileReadPost", "VeryLazy" },
+  },
 }

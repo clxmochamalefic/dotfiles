@@ -27,7 +27,7 @@ return {
       "Shougo/ddc-source-lsp",
       "Shougo/ddc-source-around",
       --      'Shougo/ddc-buffer',
-      --      'matsui54/ddc-buffer',
+      'matsui54/ddc-source-buffer',
       --  'ddc-dictionary',
       "LumaKernel/ddc-source-file",
       "tani/ddc-fuzzy",
@@ -108,17 +108,44 @@ return {
     cond = false,
     "matsui54/denops-popup-preview.vim",
     dependencies = {
+      "nvim-lua/plenary.nvim",
       "vim-denops/denops.vim",
       "Shougo/pum.vim",
     },
-    event = { "User DenopsReady" },
+    event = {
+      --"User DenopsReady"
+      "VeryLazy",
+      "TextChangedP",
+      "MenuPopup",
+      "QuickFixCmdPost",
+    },
     config = function()
       vim.g.popup_preview_config = {
-        delay = 10,
+        --delay = 10,
+        delay = 1000,
         maxWidth = 100,
         winblend = _COLOUR.get_winblend() ,
       }
-      vim.api.nvim_call_function("popup_preview#enable", {})
+
+      local async = require("plenary.async")
+
+      -- 設定そのものを遅延ロード
+      --vim.defer_fn(function()
+      --  vim.api.nvim_call_function("popup_preview#enable", {})
+      --end, 500)
+
+      local fn_name = "popup_preview#enable"
+      local fn = vim.fn[fn_name]
+      vim.notify("popup-preview: ENTERED")
+      async.run(fn, function(result)
+        vim.notify("popup-preview: GET READY!!" .. result)
+      end)
+
+      --vim.notify("popup-preview: ENTERED")
+      --async.run(function()
+      --  vim.api.nvim_call_function("popup_preview#enable", {})
+      --  vim.notify("popup-preview: GET READY!!")
+      --end)
     end,
     --init = function() end,
   },
