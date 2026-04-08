@@ -100,10 +100,18 @@ M.setup = function()
       local filetype = vim.bo[args.buf].filetype
       local buftype = vim.bo[args.buf].buftype
 
+      -- ファイルタイプとバッファタイプに応じてborderの背景色を変更する
+      --    filetype: neo-tree (for neo-tree)
       if filetype == "neo-tree" then
         _c.set_highlight_by_table({
           _c.get_hl_table("NormalFloat", background_transparent),
         })
+      --    buftype: prompt (for nui.input (e.g. neo-tree-popup))
+      elseif buftype == "prompt" then
+        _c.set_highlight_by_table({
+          _c.get_hl_table("NormalFloat", background_transparent),
+        })
+      --    buftype: nofile
       elseif buftype == "nofile" then
         _c.set_highlight_by_table({
           _c.get_hl_table("NormalFloat", background_transparent),
