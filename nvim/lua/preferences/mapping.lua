@@ -45,9 +45,11 @@ mapping.setup = function()
   -- tabキーでターミナルの補完聞かない問題
   keymap.set({ "i", "c" }, "<C-a>", "<Home>", { noremap = true })
   keymap.set({ "i", "c" }, "<C-e>", "<End>", { noremap = true })
+
   --  today date and time
-  -- nmap <C-;> <ESC>i<C-R>=strftime("%Y/%m/%d")<CR><CR>
-  -- nmap <F7> <ESC>i<C-R>=strftime("%H:%M")<CR><CR>
+  keymap.set({ "i" }, "<F6>", [[<C-R>=strftime("%Y/%m/%d")<CR>]], { noremap = true })
+  keymap.set({ "i" }, "<F7>", [[<C-R>=strftime("%Y-%m%d")<CR>]], { noremap = true })
+  keymap.set({ "i" }, "<F8>", [[<C-R>=strftime("%H:%M:%S")<CR>]], { noremap = true })
 
   keymap.set({ "i", "c" }, "<S-Tab>", "<C-d>", { silent = true })
 
