@@ -6,6 +6,9 @@
 local _c = require("utils.colour")
 local myconfig = require("plugins.rc.ui.filer.config.neo-tree")
 
+-- デフォルトだと `%p(=AM/PMの各locale依存表記)` で文字化けする
+local date_format = "%Y-%m-%d %H:%M:%S"
+
 local add_config = {
   "add",
   -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
@@ -62,7 +65,7 @@ return {
           folder_empty = "󰜌",
           -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
           -- then these will never be used.
-          default = "*",
+          default = "",
           highlight = "NeoTreeFileIcon"
         },
         -- A list of functions, each representing a global custom command
@@ -186,10 +189,12 @@ return {
         },
         last_modified = {
           enabled = true,
+          format = date_format,
           required_width = 88, -- min width of window required to show this column
         },
         created = {
           enabled = true,
+          format = date_format,
           required_width = 110, -- min width of window required to show this column
         },
         symlink_target = {
