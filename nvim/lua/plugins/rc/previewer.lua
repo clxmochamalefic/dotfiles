@@ -29,6 +29,17 @@ return {
     end,
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'md' },
   },
+  {
+    "delphinus/md-render.nvim",
+    version = "*",
+    ft = { "md", "markdown" },
+    cmd = { "MdRender", "MdRenderTab" },
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons", version = "*" }, -- optional: file type icons in code blocks
+      { "delphinus/budoux.lua", version = "*" }, -- optional: CJK phrase-level line breaking
+    },
+    -- `:MdRender` or `:MdRenderTab`
+  },
 --  {
 --    lazy = true,
 --    'shuntaka9576/preview-swagger.nvim',
