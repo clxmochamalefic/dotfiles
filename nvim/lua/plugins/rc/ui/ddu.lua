@@ -4,7 +4,7 @@ local km_opts = require("const.keymap")
 local myddu = require("plugins.rc.ui.config.ddu")
 --local lsplist = require("plugins.rc.indevidual.lsplist")
 
-local willUse = true;
+local willUse = false;
 
 local M = {
   dependDenops = {

@@ -108,6 +108,8 @@ return {
       "xiyaowong/telescope-emoji.nvim",
 
       "delphinus/telescope-memo.nvim",
+
+      require("plugins.rc.ui.notify")[0],
     },
     cmd = {
       "Telescope",
@@ -122,6 +124,8 @@ return {
       "Telescope git_commits",
 
       "Telescope resume",
+
+      "Telescope notify",
     },
     keys = {
       -- buffer
@@ -143,6 +147,8 @@ return {
       -- symbol list
       { "<leader>s", get_symlist,             { mode = "n", desc = "Telescope: builtin lsp doc symbols" } },
       { "<leader>r", tu.CallBuiltinResume,    { mode = "n", desc = "Telescope: resume" } },
+
+      { "<leader>n", "<cmd>Telescope notify<cr>",  { mode = "n", desc = "Telescope: notify" } },
     },
     opts = {
       pickers = {
