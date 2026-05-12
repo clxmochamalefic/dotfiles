@@ -172,13 +172,26 @@ return {
         },
         file_ignore_patterns = {
           -- 検索から除外するものを指定
-          "^.git/",
-          "^.cache/",
-          "^Library/",
+          ".git/",
+          ".git",
+          ".cache/",
+          "Library/",
           "Parallels",
-          "^Movies",
-          "^Music",
+          "Movies",
+          "Music",
+          "build/",
+          "dist/",
+
+          --    node
           "node%_modules/.*",
+          "%lock.json",
+
+          --    CMake
+          "CMakeConfigureLog.yaml",
+          "CMakeCache.txt",
+          "CMake.*Compiler.cmake",
+          "index-.*.json",
+          "cache-.*.json",
         },
         vimgrep_arguments = {
           -- ripggrepコマンドのオプション
