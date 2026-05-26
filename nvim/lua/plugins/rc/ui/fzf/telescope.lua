@@ -192,6 +192,11 @@ return {
           "CMake.*Compiler.cmake",
           "index-.*.json",
           "cache-.*.json",
+          "cmakeFiles-.*.json",
+          ".*.tlog",
+          "ZERO_CHECK.vcxproj",
+          "ALL_BUILD.vcxproj",
+          ".*.depend",
         },
         vimgrep_arguments = {
           -- ripggrepコマンドのオプション
