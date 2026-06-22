@@ -27,6 +27,21 @@ local function switch_floating_window()
   end
 end
 
+local function paste_from_search_register()
+  local text = vim.fn.getreg('/')
+  local len = string.len(text)
+
+  if text:startswith("\\<") then
+    text = string.sub(text, 3, len-2)
+    len = len - 2
+  end
+  if text:endswith("\\>") then
+    text = string.sub(text, 1, len-2)
+    len = len - 2
+  end
+  vim.api.nvim_put({text}, 'c', true, true)
+end
+
 mapping.setup = function()
   -- ---------------------------------------------------------------------------
   -- input (key_mapping)
@@ -51,7 +66,10 @@ mapping.setup = function()
   keymap.set({ "i" }, "<F7>", [[<C-R>=strftime("%Y-%m%d")<CR>]], { noremap = true })
   keymap.set({ "i" }, "<F8>", [[<C-R>=strftime("%H:%M:%S")<CR>]], { noremap = true })
 
-  keymap.set({ "i", "c" }, "<S-Tab>", "<C-d>", { silent = true })
+  keymap.set({ "i", "c" }, "<S-Tab>", "<C-d>", { noremap = true, buffer = true, silent = true })
+
+  -- paste from yank (clipboard)
+  keymap.set({ "i", "c" }, "<C-b>", paste_from_search_register, { noremap = true, buffer = true, silent = true })
 
   -- switch floating winddow of diagnositcs or hover
   keymap.set({ "n", }, "\\", switch_floating_window, { noremap = true, silent = true })
