@@ -20,5 +20,13 @@ return {
           --block = '<leader>b',
         },
     },
+    config = function(_, opts)
+      local c = require("Comment")
+      c.setup(opts)
+
+      vim.notify("preference comment.ft")
+      local ft = require("Comment.ft")
+      ft.set("sql", { "-- %s", "/* %s */" })
+    end,
   }
 }
