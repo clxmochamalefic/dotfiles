@@ -89,7 +89,7 @@ mapping.setup = function()
       "xml",
       "html",
       "phtml",
-      "blade.php",
+      "blade",
     },
     callback = function()
       -- do something
