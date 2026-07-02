@@ -59,6 +59,13 @@ ft.filetype = function()
       vim.opt.ft = "cmake"
     end
   })
+
+
+  vim.filetype.add({
+    pattern = {
+      [".*%.blade%.php"] = "blade",
+    },
+  })
 end
 
 return ft

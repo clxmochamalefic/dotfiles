@@ -12,16 +12,37 @@ local adapter_dir = 'plugins.rc.lsp.dap.config.adapter.'
 --local java = require(lang_dir .. 'java')
 --local cpptools = require(lang_dir .. 'cpptools')
 local codelldb = require(adapter_dir .. 'codelldb')
+local phpdap = require(adapter_dir .. 'php_debug_adapter')
 
 local adapter_list = {}
+local ft_config_list = {}
 
-_table.insert_when(adapter_list, codelldb.name, codelldb.adapter_config, _fs.exists(codelldb.executable_path))
+---
+--- 実行ファイルが存在するアダプタだけ登録し、filetypeごとの設定もマージする
+---
+--- @param adapter my_adapter_config
+---
+local function register(adapter)
+  local inserted = _table.insert_when(
+    adapter_list,
+    adapter.name,
+    adapter.adapter_config,
+    _fs.exists(adapter.executable_path)
+  )
+  if inserted then
+    for ft, config in pairs(adapter.ft_config) do
+      ft_config_list[ft] = config
+    end
+  end
+end
+
+register(codelldb)
+register(phpdap)
 
 local M = {
   adapter_list = adapter_list,
-  -- TODO: 他のDAPとマージしないとならない
-  ft_config_list = codelldb.ft_config,
-
+  ft_config_list = ft_config_list,
+  lang = vim.tbl_keys(ft_config_list),
 }
 
 return M
