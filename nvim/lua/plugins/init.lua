@@ -1,10 +1,18 @@
 local opts = {
-  defaults = {
-    lazy = true,
-  },
+  --defaults = {
+  --  lazy = true,
+  --},
   performance = {
     cache = {
       enabled = true,
+    },
+    rtp = {
+      -- lazy.nvim resets the runtimepath on setup, which drops the dotfiles
+      -- path added in stdpath("config")/init.lua. Without it, spec re-imports
+      -- (run in the middle of `:Lazy update`/`sync` and by change detection)
+      -- cannot find `plugins.rc`, so the plugin list collapses to lazy.nvim
+      -- only and the UI/lockfile lose all update progress.
+      paths = { vim.fn.expand(vim.g.preference_path) },
     },
   },
 }
@@ -31,8 +39,7 @@ M.setup = function()
   --  end,
   --})
 
-  --require("lazy").setup("plugins.rc", opts)
-  require("lazy").setup("plugins.rc")
+  require("lazy").setup("plugins.rc", opts)
 end
 
 return M
