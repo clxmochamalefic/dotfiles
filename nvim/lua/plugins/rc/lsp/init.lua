@@ -13,6 +13,8 @@ local dap = require("plugins.rc.lsp.dap")
 local fmt = require("plugins.rc.lsp.formatter")
 local lnt = require("plugins.rc.lsp.linter")
 
+local trs = require("plugins.rc.lsp.treesitter")
+
 table.insert(M, lsp)
 table.insert(M, lss)
 table.insert(M, nls)
@@ -22,5 +24,7 @@ table.insert(M, nld)
 table.insert(M, dap)
 table.insert(M, fmt)
 table.insert(M, lnt)
+
+table.insert(M, trs)
 
 return M
