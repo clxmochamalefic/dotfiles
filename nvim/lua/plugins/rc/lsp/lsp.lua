@@ -51,6 +51,7 @@ return {
     lazy = true,
     --lazy = false,
     event = {
+      "VeryLazy",
       "FileReadPre",
       "BufReadPre",
       "InsertChange",
@@ -179,10 +180,36 @@ return {
         --    },
         --  },
         --},
+        ["csharp_ls"] = {
+          default_config = {
+            cmd = { 'csharp-ls' },
+            root_dir = util.root_pattern('.csproj', '.sln', '.git'),
+            filetypes = { 'cs' },
+            init_options = {
+              AutomaticWorkspaceInit = true,
+            },
+          },
+          docs = {
+            description = [[
+            https://github.com/razzmatazz/csharp-language-server
+
+            Language Server for C#.
+
+            csharp-ls requires the [dotnet-sdk](https://dotnet.microsoft.com/download) to be installed.
+
+            The preferred way to install csharp-ls is with `dotnet tool install --global csharp-ls`.
+            ]],
+          },
+        },
         ["docker_compose_language_service"] = {},
         ["dockerls"] = {},
         ["html"] = {},
         ["intelephense"] = {},
+        ["laravel_ls"] = {
+          cmd = { "laravel-ls" },
+          filetypes = { "php", "blade" },
+          root_markers = { "artisan", "composer.json", ".git" },
+        },
         ["luals"] = {
           cmd = { 'lua-language-server' },
           filetypes = { 'lua' },
@@ -321,5 +348,20 @@ return {
       --{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                             desc = "Quickfix List (Trouble)", },
     },
   },
-}
+  {
+    "jwalton512/vim-blade",
+    lazy = true,
+    ft = { "blade" },
+    config = function()
+      -- Define some single Blade directives. This variable is used for highlighting only.
+      vim.g.blade_custom_directives = {'datetime', 'javascript'}
+
+      -- Define pairs of Blade directives. This variable is used for highlighting and indentation.
+      vim.g.blade_custom_directives_pairs = {
+        markdown  = 'endmarkdown',
+        cache     = 'endcache',
+      }
+      end,
+    },
+  }
 

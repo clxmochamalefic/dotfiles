@@ -17,7 +17,11 @@ return {
       "delphinus/skkeleton_indicator.nvim",
       "ddc.vim",
     },
-    event = { "InsertEnter", "CursorHold" },
+    event = {
+      "VeryLazy",
+      "InsertEnter",
+      "CursorHold",
+    },
     keys = {
       {
         "<C-j>",

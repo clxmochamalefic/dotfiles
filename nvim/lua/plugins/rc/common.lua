@@ -69,7 +69,10 @@ return {
     -- かっこの自動補完
     'cohama/lexima.vim',
     lazy = true,
-    event = { 'InsertChange' },
+    event = {
+      'VeryLazy',
+      'InsertChange',
+    },
     init = function()
       vim.g.lexima_enable_basic_rules   = 1
       vim.g.lexima_enable_newline_rules = 1
@@ -80,7 +83,10 @@ return {
     -- 連番の自動入力
     lazy = true,
     'deris/vim-rengbang',
-    event = { 'InsertChange' },
+    event = {
+      'VeryLazy',
+      'InsertChange',
+    },
     cmd = {
       "RengBang",
       "RengBangUsePrev",

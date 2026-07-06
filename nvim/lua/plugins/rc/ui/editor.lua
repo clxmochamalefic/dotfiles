@@ -310,12 +310,20 @@ return {
   {
     lazy = true,
     "yutkat/wb-only-current-line.nvim",
-    event = { "FileReadPost", "InsertEnter" },
+    event = {
+      "VeryLazy",
+      "FileReadPost",
+      "InsertEnter",
+    },
   },
   {
     lazy = true,
     "kwkarlwang/bufresize.nvim",
-    event = { "FileReadPost", "InsertEnter" },
+    event = {
+      "VeryLazy",
+      "FileReadPost",
+      "InsertEnter",
+    },
     config = function()
       local bufresize = require("bufresize")
       bufresize.setup()

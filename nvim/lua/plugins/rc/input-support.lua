@@ -34,7 +34,10 @@ return {
     lazy = true,
     cond = false,
     "windwp/nvim-autopairs",
-    event = "InsertEnter",
+    event = {
+      "InsertEnter",
+      "VeryLazy",
+    },
     opts = {}, -- this is equalent to setup({}) function
     config = function()
       local npairs = require("nvim-autopairs")
@@ -45,7 +48,10 @@ return {
   --{
   --  lazy = true,
   --  "tyru/caw.vim",
-  --  event = "InsertEnter",
+  --  event = {
+  --    "InsertEnter",
+  --    "VeryLazy",
+  --  },
   --  opts = {}, -- this is equalent to setup({}) function
   --  config = function()
   --    local mopt = { noremap = true, silent = true }
