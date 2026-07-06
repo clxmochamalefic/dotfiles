@@ -175,12 +175,19 @@ return {
           ".git/",
           ".git",
           ".cache/",
+          ".claude/",
+          ".vs/",
+          ".vscode/",
           "Library/",
           "Parallels",
           "Movies",
           "Music",
           "build/",
           "dist/",
+
+          -- php
+          "vendor/.*",
+          "framework/.*",
 
           --    node
           "node%_modules/.*",
