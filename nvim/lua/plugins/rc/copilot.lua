@@ -1,14 +1,13 @@
-local g = vim.g
-local fn = vim.fn
-local opt = vim.opt
-local api = vim.api
-local keymap = vim.keymap
+-- ---------------------------------------------------------------------------
+-- AI PLUGINS
+-- ---------------------------------------------------------------------------
 
 return {
   {
     lazy = true,
     "github/copilot.vim",
     event = {
+      "VeryLazy",
       "InsertEnter",
     },
     config = function()
@@ -20,6 +19,8 @@ return {
         replace_keycodes = false
       }
       vim.keymap.set("i", "<C-\\>", "copilot#Accept()", keymap_opt)
+      vim.keymap.set("i", "<C-j>", "copilot#Accept()", keymap_opt)
+      --vim.keymap.set("i", "<C-Enter>", "copilot#Accept()", keymap_opt)
       vim.g.copilot_no_tab_map = true
     end,
   },
@@ -27,9 +28,10 @@ return {
     lazy = true,
     "CopilotC-Nvim/CopilotChat.nvim",
     event = {
+      "VeryLazy",
       "FileReadPost",
     },
-    branch = "canary",
+    build = "make tiktoken",
     dependencies = {
       { "github/copilot.vim" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
