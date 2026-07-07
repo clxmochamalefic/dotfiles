@@ -2,6 +2,7 @@
 -- TELESCOPE PLUGINS (fuzzy finder / fzf)
 -- ---------------------------------------------------------------------------
 
+local debug = require("utils.debug")
 local tu = require("plugins.rc.ui.fzf._util")
 
 local builtin = nil
@@ -15,30 +16,30 @@ local function get_symlist()
   end
   builtin.lsp_document_symbols()
 end
+local paste_reg_to_prompt = function()
+  local text = vim.fn.getreg('+')
+  vim.api.nvim_paste(text, false, -1)
+end
+local paste_search_to_prompt = function()
+  local text = vim.fn.getreg('/')
+  local len = string.len(text)
+
+  if text:startswith("\\<") then
+    text = string.sub(text, 3, len-2)
+    len = len - 2
+  end
+  if text:endswith("\\>") then
+    text = string.sub(text, 1, len-2)
+    len = len - 2
+  end
+
+  vim.api.nvim_paste(text, false, -1)
+end
 
 local function get_mappings(actions)
-  actions = actions or require("telescope.actions")
-  local paste_reg_to_prompt = function()
-    local text = vim.fn.getreg('+')
-    vim.api.nvim_paste(text, false, -1)
+  if actions == nil then
+    return {}
   end
-  local paste_search_to_prompt = function()
-    local text = vim.fn.getreg('/')
-    local len = string.len(text)
-
-    if text:startswith("\\<") then
-      text = string.sub(text, 3, len-2)
-      len = len - 2
-    end
-    if text:endswith("\\>") then
-      text = string.sub(text, 1, len-2)
-      len = len - 2
-    end
-
-    vim.api.nvim_paste(text, false, -1)
-  end
-vim.fn.getreg("/")
-
   return {
     i = {
       --["<esc>"] = actions.close,
@@ -64,8 +65,17 @@ vim.fn.getreg("/")
   }
 end
 
+--telescope.nvim: config start94516.5604644 [+0] (+0)
+--telescope.nvim: done `nvim_create_autocmd`94516.5605167 [+0] (+5.2300005336292e-05)
+--telescope.nvim: done `get_mappings()`94516.5605354 [+0] (+7.1000002208166e-05)
+--telescope.nvim: done `get_themes()`94516.5605562 [+0] (+9.180000051856e-05)
+--telescope.nvim: done `setup()`94516.5616961 [+0] (+0.0012317000073381)
+
+
 local function get_themes(themes)
-  themes = themes or require("telescope.themes")
+  if themes == nil then
+    return {}
+  end
   return {
     themes.get_dropdown({
       -- even more opts
@@ -98,8 +108,7 @@ return {
     --tag = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", build = 'make' },
-      --"nvim-telescope/telescope-fzf-native.nvim",
+      "nvim-telescope/telescope-fzf-native.nvim",
       --"nvim-telescope/telescope-frecency.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "pbogut/fzf-mru.vim",
@@ -109,7 +118,8 @@ return {
 
       "delphinus/telescope-memo.nvim",
 
-      require("plugins.rc.ui.notify")[0],
+      -- NOTE: Lua のリストは 1 始まりなので [0] だと nil になり依存に入らない
+      require("plugins.rc.ui.notify")[1],
     },
     cmd = {
       "Telescope",
@@ -157,6 +167,30 @@ return {
         },
         find_files = {
           path_display = tu.FileNameFirst,
+          -- 取り込み中のプレビュー再読込がメインループを塞いで
+          -- 入力の反映が遅れるため、find_files ではプレビューを使わない
+          previewer = false,
+          -- 除外は Lua パターン(file_ignore_patterns)ではなく fd 側で行う
+          -- Lua パターンは Windows のパスセパレータ(`\`)にマッチしない上に
+          -- 全エントリ×全パターンの照合コストがかかる
+          find_command = {
+            "fd",
+            "--type", "f",
+            "--color", "never",
+            -- 巨大ツリー(ホームディレクトリ直下等)で ,f したときの暴走ガード
+            -- 上限に達した場合は一覧が不完全になる点に注意
+            "--max-results", "30000",
+            "--exclude", ".git",
+            "--exclude", ".cache",
+            "--exclude", ".claude",
+            "--exclude", ".vs",
+            "--exclude", ".vscode",
+            "--exclude", "node_modules",
+            "--exclude", "vendor",
+            "--exclude", "framework",
+            "--exclude", "build",
+            "--exclude", "dist",
+          },
         },
         live_grep = {
           path_display = tu.FileNameFirst,
@@ -170,43 +204,20 @@ return {
           height = 0.7,
           anchor = "N",
         },
+        -- 検索から除外するものを指定
+        -- NOTE: ここは Lua パターンで全エントリと照合されるため最小限にする
+        --       (パスは Windows では `\` 区切りなので `[/\\]` で両対応させる)
+        --       find_files / live_grep の除外は fd / rg 側のオプションで行う
         file_ignore_patterns = {
-          -- 検索から除外するものを指定
-          ".git/",
-          ".git",
-          ".cache/",
-          ".claude/",
-          ".vs/",
-          ".vscode/",
-          "Library/",
-          "Parallels",
-          "Movies",
-          "Music",
-          "build/",
-          "dist/",
-
-          -- php
-          "vendor/.*",
-          "framework/.*",
-
-          --    node
-          "node%_modules/.*",
-          "%lock.json",
-
-          --    CMake
-          "CMakeConfigureLog.yaml",
-          "CMakeCache.txt",
-          "CMake.*Compiler.cmake",
-          "index-.*.json",
-          "cache-.*.json",
-          "cmakeFiles-.*.json",
-          ".*.tlog",
-          "ZERO_CHECK.vcxproj",
-          "ALL_BUILD.vcxproj",
-          ".*.depend",
+          "%.git[/\\]",
+          "node_modules[/\\]",
+          "vendor[/\\]",
+          "%-lock%.json$",
         },
         vimgrep_arguments = {
           -- ripggrepコマンドのオプション
+          -- NOTE: `-uu`(ignore 無視 + 隠しファイル)は vendor / node_modules
+          --       まで全走査して極端に遅くなるので使わない
           "rg",
           "--color=never",
           "--no-heading",
@@ -214,7 +225,13 @@ return {
           "--line-number",
           "--column",
           "--smart-case",
-          "-uu",
+          "--hidden",
+          "--glob=!.git/",
+          "--glob=!node_modules/",
+          "--glob=!vendor/",
+          "--glob=!framework/",
+          "--glob=!build/",
+          "--glob=!dist/",
         },
       },
       extensions = {
@@ -245,6 +262,18 @@ return {
       },
     },
     init = function()
+      -- vim.api.nvim_create_autocmd("FileType", {
+      --   pattern = "TelescopeResults",
+      --   callback = function(ctx)
+      --     vim.api.nvim_buf_call(ctx.buf, function()
+      --       vim.fn.matchadd("TelescopeParent", "\t\t.*$")
+      --       vim.api.nvim_set_hl(0, "TelescopeParent", { link = "Comment" })
+      --     end)
+      --   end,
+      -- })
+    end,
+    config = function(_, opts)
+      debug.show_now_ms("telescope.nvim: config start")
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "TelescopeResults",
         callback = function(ctx)
@@ -254,17 +283,25 @@ return {
           end)
         end,
       })
-    end,
-    config = function(_, opts)
+      debug.show_now_ms("telescope.nvim: done `nvim_create_autocmd`")
+
       local act = require("telescope.actions")
       local map = get_mappings(act)
       opts.defaults.mappings = map
+      debug.show_now_ms("telescope.nvim: done `get_mappings()`")
 
       local thm = require("telescope.themes")
       opts.defaults["ui-select"] = get_themes(thm)
+      debug.show_now_ms("telescope.nvim: done `get_themes()`")
 
       local t = require("telescope")
       t.setup(opts)
+      debug.show_now_ms("telescope.nvim: done `setup()`")
+
+      -- fzf-native (Cソーター) が使えるなら有効化する
+      -- これがないと Lua 製ソーターになり大量エントリで極端に遅くなる
+      pcall(t.load_extension, "fzf")
+      debug.show_now_ms("telescope.nvim: done `load_extension(fzf)`")
 
       builtin = t.builtin
     end,
