@@ -51,10 +51,11 @@ return {
     lazy = true,
     --lazy = false,
     event = {
-      "VeryLazy",
-      "FileReadPre",
-      "BufReadPre",
-      "InsertChange",
+      --"VeryLazy",
+      "FileReadPost",
+      "FileType",
+      --"BufReadPre",
+      --"InsertChange",
     },
     cmd = {
       "LspStart",

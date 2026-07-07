@@ -142,6 +142,10 @@ return {
 
       -- https://zenn.dev/kawarimidoll/articles/36b1cc92d00453
       vim.api.nvim_create_user_command("DapStart", dap_start, dap_start_complete)
+
+      --vim.api.nvim_create_user_command("DapAttach", function()
+      --  dap.attach();
+      --end)
     end,
   },
   {

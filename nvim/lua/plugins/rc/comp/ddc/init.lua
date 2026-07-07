@@ -115,7 +115,7 @@ return {
     event = {
       --"User DenopsReady"
       "VeryLazy",
-      "TextChangedP",
+      "TextChanged",
       "MenuPopup",
       "QuickFixCmdPost",
     },
@@ -156,7 +156,10 @@ return {
       "vim-denops/denops.vim",
       "Shougo/pum.vim",
     },
-    event = { "User DenopsReady" },
+    event = {
+      "User DenopsReady",
+      "VeryLazy",
+    },
     config = function()
       vim.g.signature_help_config = {
         contentsStyle = "currentLabel",

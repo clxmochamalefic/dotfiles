@@ -13,36 +13,67 @@ end
 
 return {
   {
-    'mikemcbride/telescope-mru.nvim',
+    'wsdjeg/mru.nvim',
     dependencies = {
       "nvim-telescope/telescope.nvim",
-      'junegunn/fzf',
     },
     lazy = true,
     keys = {
-      { "<leader>m", "<Cmd>Telescope fzf_mru<CR>", { mode = "n", desc = "Telescope: fzf_mru" } },
+      { "<leader>m", "<Cmd>Telescope mru<CR>", { mode = "n", desc = "Telescope: mru" } },
     },
     cmd = {
-      'Telescope fzf_mru',
+      'Telescope mru',
     },
     opts = {
-      ignore = function(path, ext)
-        return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
-      end,
-      max_items = 50,
+      --ignore = function(path, ext)
+      --  return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
+      --end,
+      --max_items = 50,
+      enable_cache = true,
+      mru_cache_file = vim.fn.stdpath('data') .. '/nvim-mru.json',
+      ignore_path_regexs = { '/.git/' },
+      enable_logger = true, -- require wsdjeg/logger.nvim
+      -- sort file by last modified time or last enter time
+      -- `lastmod`, `lastread`, `frecency`
+      -- or `lastenter`, default is `lastenter`
+      sort_by = 'lastenter',
     },
-    init = function()
-      vim.api.nvim_create_user_command("TelescopeMru", open_mru, {})
-    end,
-    config = function(_, opts)
-      instance_opts = opts
-
-      local t = require("telescope")
-      t.load_extension("mru_files")
-
-      func_mru = t.extensions.mru_files.mru_files
-    end,
+    --init = function()
+    --  vim.api.nvim_create_user_command("TelescopeMru", open_mru, {})
+    --end,
   },
+  -- {
+  --   'mikemcbride/telescope-mru.nvim',
+  --   dependencies = {
+  --     "nvim-telescope/telescope.nvim",
+  --     'junegunn/fzf',
+  --   },
+  --   lazy = true,
+  --   keys = {
+  --     { "<leader>m", "<Cmd>Telescope fzf_mru<CR>", { mode = "n", desc = "Telescope: fzf_mru" } },
+  --   },
+  --   cmd = {
+
+  --     'Telescope fzf_mru',
+  --   },
+  --   opts = {
+  --     ignore = function(path, ext)
+  --       return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
+  --     end,
+  --     max_items = 50,
+  --   },
+  --   init = function()
+  --     vim.api.nvim_create_user_command("TelescopeMru", open_mru, {})
+  --   end,
+  --   config = function(_, opts)
+  --     instance_opts = opts
+
+  --     local t = require("telescope")
+  --     t.load_extension("mru_files")
+
+  --     func_mru = t.extensions.mru_files.mru_files
+  --   end,
+  -- },
   --{
   --  lazy = true,
   --  'pbogut/fzf-mru.vim',

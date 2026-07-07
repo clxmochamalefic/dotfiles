@@ -37,9 +37,8 @@ local params = require('plugins.rc.comp.config.global.params')
 -- })
 
 local autocomplete_events = {
-  "InsertEnter",
-  "TextChangedI",
-  "TextChangedP",
+  --"InsertEnter",
+  "TextChanged",
   "CmdlineChanged",
 }
 
