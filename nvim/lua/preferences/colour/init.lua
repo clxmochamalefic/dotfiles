@@ -93,7 +93,7 @@ M.setup = function()
     callback = function() _c.set_highlight_by_table(my_colorscheme) end,
   })
 
-  vim.api.nvim_create_autocmd("BufEnter", {
+  vim.api.nvim_create_autocmd("BufWinEnter", {
     group = myhl_augroup_id,
     callback = function(args)
       -- Get buftype for the buffer that triggered the event
@@ -111,6 +111,13 @@ M.setup = function()
         _c.set_highlight_by_table({
           _c.get_hl_table("NormalFloat", background_transparent),
         })
+      elseif buftype == "terminal" then
+        if filetype == "snacks_terminal" then
+          _c.set_highlight_by_table({
+            _c.get_hl_table("Normal", background_transparent),
+            _c.get_hl_table("NormalFloat", background_transparent),
+          })
+        end
       --    buftype: nofile
       elseif buftype == "nofile" then
         _c.set_highlight_by_table({
