@@ -41,8 +41,12 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      { "mason-org/mason.nvim",           opts = {} },
-      { "mason-org/mason-lspconfig.nvim", opts = {} },
+      { "mason-org/mason.nvim", opts = {} },
+      -- NOTE: ここで `opts = {}` を付けない。付けると本体 config() の
+      --       vim.lsp.config() 登録より先に automatic_enable が走り、
+      --       `nvim foo.js` のような直接指定起動で未設定のサーバーが
+      --       起動してしまう (setup は mymason:setup() で行う)
+      "mason-org/mason-lspconfig.nvim",
       "vim-denops/denops.vim",
       "nvim-lua/plenary.nvim",
       "rcarriga/nvim-notify",
@@ -149,7 +153,6 @@ return {
       }
 
       local lspconfig = require("lspconfig")
-      mymason:setup()
 
       -- TODO: 👇 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
       local util = require 'lspconfig.util'
@@ -283,8 +286,9 @@ return {
       local augroup = vim.api.nvim_create_augroup('LspAttach', { clear = true })
       vim.api.nvim_create_autocmd({ 'LspAttach' }, {
         group = augroup,
-        callback = function()
-          local bufopts = { silent = true, buffer = bufnr, noremap = true }
+        callback = function(args)
+          local bufopts = { silent = true, buffer = args.buf, noremap = true }
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
           vim.keymap.set("n", "gk", openHover, bufopts)
           vim.keymap.set("n", "gj", openDiagnostics, bufopts)
 
@@ -300,6 +304,12 @@ return {
         v.capabilities = capabilities
         vim.lsp.config(name, v)
       end
+
+      -- NOTE: mason-lspconfig の automatic_enable (vim.lsp.enable) は
+      --       vim.lsp.config() の登録より後に呼ぶこと。
+      --       先に enable すると、ファイル直接指定起動 (`nvim foo.js`) の際に
+      --       init_options 等が適用される前のサーバーが起動してしまう
+      mymason:setup()
     end,
   },
   -- neodev.nvim ------------------------------
@@ -354,5 +364,41 @@ return {
       }
       end,
     },
-  }
+  -- blade 内の埋め込み言語 (<script> の javascript 等) に LSP を提供する。
+  -- treesitter のインジェクション情報を元にコードを隠しバッファへ抽出し、
+  -- そこに attach した LSP (ts_ls) へ定義ジャンプ・補完・hover をプロキシする
+  {
+    "jmbuhr/otter.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "neovim/nvim-lspconfig",
+    },
+    lazy = true,
+    ft = { "blade" },
+    config = function()
+      local otter = require("otter")
+      otter.setup({
+        lsp = {
+          -- デフォルトは { "BufWritePost" } (保存時のみ)。
+          -- 編集中も blade バッファへ診断が同期されるようにする
+          diagnostic_update_events = { "BufWritePost", "InsertLeave", "TextChanged" },
+        },
+      })
+
+      local function activate()
+        -- blade パーサー未導入時などにエラーで落ちないよう pcall
+        pcall(otter.activate, { "javascript", "css" })
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("otter-activate", { clear = true }),
+        pattern = { "blade" },
+        callback = activate,
+      })
+      -- ft トリガーでロードされた時点では FileType は発火済みのため、
+      -- 開いているバッファに対しても activate する
+      activate()
+    end,
+  },
+}
 
