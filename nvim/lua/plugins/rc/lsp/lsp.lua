@@ -183,7 +183,7 @@ return {
         --},
         ["csharp_ls"] = {
           cmd = { 'csharp-ls' },
-          root_markers = util.root_pattern('.csproj', '.sln', '.git'),
+          root_markers = { '.csproj', '.sln', '.git' },
           filetypes = { 'cs' },
           settings = {
             init_options = {
