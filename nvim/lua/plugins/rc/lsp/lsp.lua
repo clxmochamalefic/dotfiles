@@ -149,7 +149,7 @@ return {
       }
 
       local lspconfig = require("lspconfig")
-      mymason.setup()
+      mymason:setup()
 
       -- TODO: 👇 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
       local util = require 'lspconfig.util'
@@ -182,24 +182,13 @@ return {
         --  },
         --},
         ["csharp_ls"] = {
-          default_config = {
-            cmd = { 'csharp-ls' },
-            root_dir = util.root_pattern('.csproj', '.sln', '.git'),
-            filetypes = { 'cs' },
+          cmd = { 'csharp-ls' },
+          root_markers = util.root_pattern('.csproj', '.sln', '.git'),
+          filetypes = { 'cs' },
+          settings = {
             init_options = {
               AutomaticWorkspaceInit = true,
             },
-          },
-          docs = {
-            description = [[
-            https://github.com/razzmatazz/csharp-language-server
-
-            Language Server for C#.
-
-            csharp-ls requires the [dotnet-sdk](https://dotnet.microsoft.com/download) to be installed.
-
-            The preferred way to install csharp-ls is with `dotnet tool install --global csharp-ls`.
-            ]],
           },
         },
         ["docker_compose_language_service"] = {},
@@ -211,18 +200,20 @@ return {
           filetypes = { "php", "blade" },
           root_markers = { "artisan", "composer.json", ".git" },
         },
-        ["luals"] = {
+        ["lua_ls"] = {
           cmd = { 'lua-language-server' },
           filetypes = { 'lua' },
           root_markers = {
             { '.luarc.json', '.luarc.jsonc' },
             '.git',
           },
-          Lua = {
-            hint = { enable = true, },
-            completion = { callSnippet = "Replace", },
-            runtime = {
-              version = 'LuaJIT',
+          settings = {
+            Lua = {
+              hint = { enable = true, },
+              completion = { callSnippet = "Replace", },
+              runtime = {
+                version = 'LuaJIT',
+              },
             },
           },
         },
@@ -267,22 +258,21 @@ return {
         --["svelte"] = {},
         ["tailwindcss"] = {},
         ["ts_ls"] = {
-          root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json'),
-          single_file_support = true,
+          filetypes = {
+            'javascript',
+            'javascriptreact',
+            'typescript',
+            'typescriptreact',
+          },
+          root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+          init_options = {
+            tsserver = {
+              -- workspace に typescript が無いプロジェクト用のフォールバック。
+              -- mason 同梱の typescript は v7 (tsserver.js 非搭載) のため 5.x を明示指定する
+              path = vim.fn.stdpath("data") .. "/ts5/node_modules/typescript/lib",
+            },
+          },
           settings = {
-            ["ts_ls"] = {
-              filetypes = {
-                'javascript',
-                'javascriptreact',
-                'javascript.jsx',
-                'typescript',
-                'typescriptreact',
-                'typescript.tsx',
-              },
-            },
-            docs = {
-              description = [[https://github.com/typescript-language-server/typescript-language-server]],
-            },
           },
         },
         --["vtsls"] = {},
