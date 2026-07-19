@@ -278,10 +278,34 @@ return {
           settings = {
           },
         },
+        ["habit-language-server"] = {
+            default_config = {
+              -- cargo install --path . でインストールした場合は 'habit-language-server' のみで OK
+              -- フルパスを指定する場合: vim.fn.expand('~/.cargo/bin/habit-language-server')
+              cmd = { 'habit-language-server' },
+
+              -- 対象ファイルタイプ（追加・削除して調整してください）
+              --filetypes = { 'text', 'markdown', 'gitcommit', 'rst' },
+
+              -- ルートディレクトリが不要なサーバーなので常に cwd を使う
+              root_dir = function(_)
+                return vim.fn.getcwd()
+              end,
+
+              -- ファイル単体でも動作させる
+              single_file_support = true,
+
+              settings = {},
+            },
+            docs = {
+              description = 'habit-language-server — 入力履歴ベースの補完 LSP',
+            },
+        },
         --["vtsls"] = {},
         --["vue_ls"] = {},
       }
       -- TODO: 👆 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
+      --require('plugins.rc.lsp.config.server.habit_ls')
 
       local augroup = vim.api.nvim_create_augroup('LspAttach', { clear = true })
       vim.api.nvim_create_autocmd({ 'LspAttach' }, {

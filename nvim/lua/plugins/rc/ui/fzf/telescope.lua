@@ -40,6 +40,8 @@ local function get_mappings(actions)
   if actions == nil then
     return {}
   end
+  vim.fn.getreg("/")
+
   return {
     i = {
       --["<esc>"] = actions.close,
