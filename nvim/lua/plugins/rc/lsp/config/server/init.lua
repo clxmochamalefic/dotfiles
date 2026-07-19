@@ -30,6 +30,7 @@ local M = {
     lua_ls = require(path .. "lua_ls"),
     prettierd = require(path .. "prettierd"),
     rust = require(path .. "rust_analyzer"),
+    habitls = require(path .. "habit_ls"),
   },
   no_mason = {
     "prettierd",

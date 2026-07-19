@@ -35,7 +35,10 @@
           "PackageIdentifier": "Neovim.Neovim"
         },
         {
-          "PackageIdentifier": "Microsoft.WindowsTerminal.Preview"
+          "PackageIdentifier": "Microsoft.WindowsTerminal"
+        },
+        {
+          "PackageIdentifier": "tree-sitter.tree-sitter-cli"
         },
         {
           "PackageIdentifier": "JanDeDobbeleer.OhMyPosh"

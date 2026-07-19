@@ -2,7 +2,7 @@
 -- https://github.com/Shougo/ddc-matcher_head
 -- https://github.com/Shougo/ddc-sorter_rank
 local source_option_default = {
-  mark = "   ",
+  mark = "  default  ",
   ignoreCase = true,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
@@ -14,7 +14,7 @@ local source_option_default = {
   --maxItems = 10,
 }
 local source_option_around = {
-  mark = "   ",
+  mark = "  around ",
   isVolatile = true,
   minAutoCompleteLength = 3,
   matchers = { "matcher_fuzzy" },
@@ -23,20 +23,20 @@ local source_option_around = {
   maxItems = 8,
 }
 local source_option_buffer = {
-  mark = "   ",
+  mark = "  buffer  ",
   isVolatile = true,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
   converters = { "converter_fuzzy" },
 }
 local source_option_file = {
-  mark = "   ",
+  mark = "  file  ",
   forceCompletionPattern = "[\\w@:~._-]/[\\w@:~._-]*",
   minAutoCompleteLength = 4,
   sorters = { "sorter_fuzzy" },
 }
 local source_option_nvimlsp = {
-  mark = "   ",
+  mark = "  LSP  ",
   isVolatile = true,
   forceCompletionPattern = "\\.\\w*|:\\w*|->\\w*",
   matchers = { "matcher_fuzzy" },
@@ -44,14 +44,14 @@ local source_option_nvimlsp = {
   converters = { "converter_fuzzy" },
 }
 local source_option_omni = {
-  mark = "   ",
+  mark = "  omni ",
   isVolatile = true,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
   converters = { "converter_fuzzy" },
 }
 local source_option_skkeleton = {
-  mark = " 🎌 ",
+  mark = " 🎌 skk ",
   isVolatile = true,
   matchers = { "skkeleton" },
   sorters = {},
@@ -65,7 +65,7 @@ local source_option_skkeleton = {
 --   sorters = ['sorter_fuzzy'],
 -- }
 local source_option_vsnip = {
-  mark = "   ",
+  mark = "  vsnip  ",
   dup = true,
   matchers = { "matcher_fuzzy" },
   sorters = { "sorter_fuzzy" },
@@ -79,7 +79,7 @@ local source_option_vsnip = {
 --    converters  = {'converter_fuzzy'}
 --  }
 local source_option_cmdline = {
-  mark = "   ",
+  mark = "  vim.cmd ",
   minKeywordLength = 2,
   maxKeywordLength = 50,
   isVolatile = true,
@@ -88,7 +88,7 @@ local source_option_cmdline = {
   converters = { "converter_fuzzy" },
 }
 local source_option_cmdlinehistory = {
-  mark = "   ",
+  mark = "  history.vim.cmd  ",
   minKeywordLength = 2,
   maxKeywordLength = 50,
   isVolatile = true,
@@ -97,7 +97,7 @@ local source_option_cmdlinehistory = {
   converters = { "converter_fuzzy" },
 }
 local source_option_shellhistory = {
-  mark = "   ",
+  mark = "  history.shell  ",
   isVolatile = true,
   minKeywordLength = 2,
   maxKeywordLength = 50,
