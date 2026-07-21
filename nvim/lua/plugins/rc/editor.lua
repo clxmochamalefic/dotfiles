@@ -1,6 +1,18 @@
 
 return {
   {
+    -- matchit の完全代替。treesitter インジェクションを認識するため、
+    -- blade ファイルの <script> 内 JavaScript の {} ジャンプも正しく動作する。
+    "andymass/vim-matchup",
+    lazy = false,
+    init = function()
+      -- matchit が先にロードされないよう事前に無効化
+      vim.g.loaded_matchit = 1
+      -- カーソル位置の対応括弧をポップアップで表示
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    end,
+  },
+  {
     lazy = true,
     'numToStr/Comment.nvim',
     event = { 'FileReadPost', 'VeryLazy', },
