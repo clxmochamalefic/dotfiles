@@ -79,7 +79,7 @@ return {
         spinner = 1000,
         lsp_client_name_enddelay = 1000
       },
-      spinner_symbols = { "", "健", "兼", "券", "剣", "喧", "圏", "堅" },
+      spinner_symbols = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
     },
     config = function(_, opts)
       -- lualine-lsp-progress ------------------------------
@@ -87,6 +87,8 @@ return {
       local ll = require("lualine")
       local p = ll.get_config()
       sl_util.ins_lual_c(p, opts)
+      -- lsp_progress の後にキャップを挿入して中央側の三角形を描画する
+      sl_util.ins_lual_c(p, require("plugins.rc.ui.statusline.config").inner_cap_right)
       ll.setup(p)
     end,
   },
