@@ -79,6 +79,7 @@ local function config_draw()
 
   --  display line number
   opt.number = true
+  opt.signcolumn = "yes"
 
   --  display linespace(lineheight)
   opt.linespace = 2

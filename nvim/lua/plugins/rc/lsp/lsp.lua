@@ -312,6 +312,7 @@ return {
         group = augroup,
         callback = function(args)
           local bufopts = { silent = true, buffer = args.buf, noremap = true }
+          vim.keymap.set("n", "<C-j>", vim.lsp.buf.definition, bufopts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
           vim.keymap.set("n", "gk", openHover, bufopts)
           vim.keymap.set("n", "gj", openDiagnostics, bufopts)
