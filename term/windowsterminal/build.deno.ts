@@ -19,6 +19,7 @@ const listDirPath = `${profileDirPath}/list`;
 
 const base = JSON.parse(await read(srcDirPath + "/base.json"));
 const actions = JSON.parse(await read(srcDirPath + "/actions.json"));
+const keybindings = JSON.parse(await read(srcDirPath + "/keybindings.json"));
 const font = JSON.parse(await read(srcDirPath + "/font.json")) as Font;
 
 // colorschemes
@@ -45,6 +46,7 @@ const profiles = {
 
 // combine
 base.actions = actions;
+base.keybindings = keybindings;
 base.font = font;
 base.profiles = profiles;
 base.schemes = colorschemeList;
