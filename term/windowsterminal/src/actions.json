@@ -1,35 +1,115 @@
 [
-  {
-    "command": 
     {
-      "action": "copy",
-      "singleLine": false
+        "command": 
+        {
+            "action": "swapPane",
+            "direction": "up"
+        },
+        "id": "User.swapPane.6CD791B"
     },
-    "keys": "ctrl+c"
-  },
-  {
-    "command": "paste"
-  },
-  {
-    "command": "find",
-    "keys": "ctrl+shift+f"
-  },
-  {
-    "command": "unbound",
-    "keys": "ctrl+v"
-  },
-  {
-    "command": "unbound",
-    "keys": "ctrl+shift+v"
-  },
-  {
-    "command": 
     {
-      "action": "splitPane",
-      "split": "auto",
-      "splitMode": "duplicate"
+        "command": 
+        {
+            "action": "moveFocus",
+            "direction": "down"
+        },
+        "id": "User.moveFocus.F747588A"
     },
-    "keys": "alt+shift+d"
-  }
+    {
+        "command": 
+        {
+            "action": "resizePane",
+            "direction": "left"
+        },
+        "id": "User.resizePane.2A0DA8E0"
+    },
+    {
+        "command": 
+        {
+            "action": "moveFocus",
+            "direction": "left"
+        },
+        "id": "User.moveFocus.2A0DA8E0"
+    },
+    {
+        "command": 
+        {
+            "action": "resizePane",
+            "direction": "down"
+        },
+        "id": "User.resizePane.F747588A"
+    },
+    {
+        "command": 
+        {
+            "action": "swapPane",
+            "direction": "left"
+        },
+        "id": "User.swapPane.2A0DA8E0"
+    },
+    {
+        "command": 
+        {
+            "action": "moveFocus",
+            "direction": "up"
+        },
+        "id": "User.moveFocus.6CD791B"
+    },
+    {
+        "command": 
+        {
+            "action": "resizePane",
+            "direction": "right"
+        },
+        "id": "User.resizePane.87C324ED"
+    },
+    {
+        "command": 
+        {
+            "action": "splitPane",
+            "split": "down"
+        },
+        "id": "User.splitPane.D5151347"
+    },
+    {
+        "command": 
+        {
+            "action": "resizePane",
+            "direction": "up"
+        },
+        "id": "User.resizePane.6CD791B"
+    },
+    {
+        "command": 
+        {
+            "action": "moveFocus",
+            "direction": "right"
+        },
+        "id": "User.moveFocus.87C324ED"
+    },
+    {
+        "command": 
+        {
+            "action": "swapPane",
+            "direction": "down"
+        },
+        "id": "User.swapPane.F747588A"
+    },
+    {
+        "command": 
+        {
+            "action": "swapPane",
+            "direction": "right"
+        },
+        "id": "User.swapPane.87C324ED"
+    },
+    {
+        "command": 
+        {
+            "action": "splitPane",
+            "split": "right"
+        },
+        "id": "User.splitPane.864CD510"
+    }
 ]
 
