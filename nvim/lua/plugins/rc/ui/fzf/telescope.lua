@@ -141,11 +141,11 @@ return {
     },
     keys = {
       -- buffer
-      { "z",         tu.CallBuiltinBuffer,    { mode = "n", desc = "Telescope: buffers" } },
+      { "zz",         tu.CallBuiltinBuffer,    { mode = "n", desc = "Telescope: buffers" } },
       -- find file
-      { "<leader>f", tu.CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
+      { "<leader>f",  tu.CallBuiltinFindFiles, { mode = "n", desc = "Telescope: Find files" } },
       -- find help
-      { "<F1>", tu.CallBuiltinHelpTags,       { mode = "n", desc = "Telescope: help tags" } },
+      { "<F1>",       tu.CallBuiltinHelpTags,  { mode = "n", desc = "Telescope: help tags" } },
 
       -- freecency in project root
       --{
