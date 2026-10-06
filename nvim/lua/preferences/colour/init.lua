@@ -54,6 +54,8 @@ local function get_common_flavour_colour_override()
 
   , _c.get_hl_table("FloatShadow", background_transparent)
   , _c.get_hl_table("FloatShadowThrough", background_transparent)
+
+  , _c.get_hl_table("Comment", theme.comment.g)
   }
 end
 

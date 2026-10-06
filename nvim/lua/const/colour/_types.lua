@@ -20,7 +20,8 @@
 --- @field accent     my_colour_pair|my_colour_display_type|string accent colour / アクセントカラー
 --- @field sub        my_colour_pair|my_colour_display_type|string sub colour / サブカラー
 --- @field terminal   my_colour_pair|my_colour_display_type|string terminal colour / ターミナルカラー
---- @field disabled   my_colour_pair|my_colour_display_type|string 無効化色
+--- @field disabled   my_colour_pair|my_colour_display_type|string disabled colour / 無効化色
+--- @field comment    my_colour_pair|my_colour_display_type|string comment-out colour / コメント色
 ---
 
 ---
@@ -31,12 +32,14 @@
 --- @field accent       my_colour_display_type accent colour / アクセントカラー
 --- @field sub          my_colour_display_type sub colour / サブカラー
 --- @field terminal     my_colour_display_type terminal colour / ターミナルカラー
---- @field disabled   my_colour_pair|my_colour_display_type|string 無効化色
---- @field primary_bg   my_colour_display_type primary colour / 基本色
---- @field secondary_bg my_colour_display_type secondary colour / 補助色
---- @field accent_bg    my_colour_display_type accent colour / アクセントカラー
---- @field sub_bg       my_colour_display_type sub colour / サブカラー
---- @field terminal_bg  my_colour_display_type terminal colour / ターミナルカラー
---- @field disabled_bg  my_colour_pair|my_colour_display_type|string 無効化色
+--- @field disabled     my_colour_display_type disabled colour / 無効化色
+--- @field comment      my_colour_display_type comment-out colour / コメント色
+--- @field primary_bg   my_colour_display_type primary colour / 基本背景色
+--- @field secondary_bg my_colour_display_type secondary colour / 補助背景色
+--- @field accent_bg    my_colour_display_type accent colour / アクセントカラー背景色
+--- @field sub_bg       my_colour_display_type sub colour / サブカラー背景色
+--- @field terminal_bg  my_colour_display_type terminal colour / ターミナルカラー背景色
+--- @field disabled_bg  my_colour_display_type disabled colour / 無効化背景色
+--- @field comment_bg   my_colour_display_type comment-out colour / コメント背景色
 ---
 
