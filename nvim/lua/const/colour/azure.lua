@@ -1,13 +1,14 @@
 require("const.colour._types")
 
-local primary_bg = "#132345"
-local primary_fg = "#D8D8D8"
+local primary_bg  = "#132345"
+local primary_fg  = "#D8D8D8"
 
-local secondary = "#16437d"
+local secondary   = "#16437d"
 
-local accent = "#b1d1fa"
-local sub = "#ffcc00"
-local disabled = "#888888"
+local accent      = "#b1d1fa"
+local sub         = "#ffcc00"
+local disabled    = "#AAAAAA"
+local comment     = "#7aa37e"
 
 local terminal_bg = "#2f446e"
 local terminal_fg = "#D8D8D8"
@@ -22,6 +23,7 @@ local azure = {
     sub       = sub,
     terminal  = { bg = terminal_bg,   fg = terminal_fg },
     disabled  = disabled,
+    comment   = comment,
 }
 
 return azure
