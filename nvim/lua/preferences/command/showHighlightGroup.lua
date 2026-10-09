@@ -25,8 +25,13 @@ local function showHighlightGroup()
   end
 end
 
+local function showHighlightGroupList()
+  vim.cmd([[new | put =execute('hi')]])
+end
+
 M.setup = function()
   vim.api.nvim_create_user_command("ShowHighlightGroup", showHighlightGroup, {})
+  vim.api.nvim_create_user_command("ShowHighlightGroupList", showHighlightGroupList, {})
 end
 
 return M
