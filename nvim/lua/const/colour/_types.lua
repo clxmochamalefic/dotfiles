@@ -21,6 +21,8 @@
 --- @field sub        my_colour_pair|my_colour_display_type|string sub colour / サブカラー
 --- @field terminal   my_colour_pair|my_colour_display_type|string terminal colour / ターミナルカラー
 --- @field disabled   my_colour_pair|my_colour_display_type|string disabled colour / 無効化色
+--- @field str        my_colour_pair|my_colour_display_type|string string colour / 文字列色
+--- @field nvimstr    my_colour_pair|my_colour_display_type|string NvimString colour / NvimString文字列色
 --- @field comment    my_colour_pair|my_colour_display_type|string comment-out colour / コメント色
 ---
 
@@ -40,6 +42,8 @@
 --- @field sub_bg       my_colour_display_type sub colour / サブカラー背景色
 --- @field terminal_bg  my_colour_display_type terminal colour / ターミナルカラー背景色
 --- @field disabled_bg  my_colour_display_type disabled colour / 無効化背景色
+--- @field str_bg       my_colour_display_type string colour / 文字列背景色
+--- @field nvimstr_bg   my_colour_display_type NvimString colour / NvimString文字列背景色
 --- @field comment_bg   my_colour_display_type comment-out colour / コメント背景色
 ---
 

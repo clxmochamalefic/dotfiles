@@ -34,6 +34,19 @@ function M:setup()
   vim.g.neovide_padding_bottom = 0
   vim.g.neovide_padding_right = 0
   vim.g.neovide_padding_left = 0
+
+
+  -- 挿入モードで Shift + Insert を使ってペースト
+  vim.keymap.set('i', '<S-Insert>', '<C-R>+', { noremap = true, silent = true })
+
+  -- ノーマルモードで Shift + Insert を使ってペースト
+  vim.keymap.set('n', '<S-Insert>', '"+P', { noremap = true, silent = true })
+
+  -- Exモードで Shift + Insert を使ってペースト
+  vim.keymap.set('c', '<S-Insert>', '<C-R>+', { noremap = true, silent = false })
+
+  -- ターミナルモード等で使う場合
+  vim.keymap.set('t', '<S-Insert>', '<C-W>"+', { noremap = true, silent = true })
 end
 
 return M
