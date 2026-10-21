@@ -1,0 +1,22 @@
+{
+  "guid": "{43b6a55b-4fa3-43ed-b14e-5164d98571b4}",
+  "name": "PowerShell7",
+  "commandline": "pwsh.exe",
+  "elevate": false,
+
+  "colorScheme": "One Half Dark",
+  "font": 
+  {
+      "cellHeight": "1.6",
+      "face": "IntoneMono Nerd Font Mono",
+      "size": 10
+  },
+
+  "icon": "%WINTERM_PATH%\\ProfileIcons\\pwsh.scale-200.png",
+  "startingDirectory": "%USERPROFILE%",
+  "opacity": 90,
+  "source": "Windows.Terminal.PowershellCore",
+
+  "useAcrylic": false,
+  "hidden": false
+}
