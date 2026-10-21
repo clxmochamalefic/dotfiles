@@ -9,6 +9,9 @@ local accent      = "#b1d1fa"
 local sub         = "#ffcc00"
 local disabled    = "#AAAAAA"
 local comment     = "#7aa37e"
+local str         = "#ae7fd4"
+--local nvimstr     = "#98c379"
+
 
 local terminal_bg = "#2f446e"
 local terminal_fg = "#D8D8D8"
@@ -23,6 +26,8 @@ local azure = {
     sub       = sub,
     terminal  = { bg = terminal_bg,   fg = terminal_fg },
     disabled  = disabled,
+    str       = str,
+    --nvimstr   = nvimstr,
     comment   = comment,
 }
 

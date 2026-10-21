@@ -10,6 +10,7 @@ return {
       vim.g.loaded_matchit = 1
       -- カーソル位置の対応括弧をポップアップで表示
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      vim.keymap.set("n", "z%", "<Nop>")
     end,
   },
   {
