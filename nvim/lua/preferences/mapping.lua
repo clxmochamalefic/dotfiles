@@ -4,6 +4,10 @@ local fn = vim.fn
 local api = vim.api
 local keymap = vim.keymap
 
+local get_date_slash_separated_str  = [[<C-R>=strftime("%Y/%m/%d")<CR>]]
+local get_date_hyphen_separated_str = [[<C-R>=strftime("%Y-%m%d")<CR>]]
+local get_time_coron_separated_str  = [[<C-R>=strftime("%H:%M:%S")<CR>]]
+
 local function get_floating_window_id()
   -- 現在のタブページ内の全ウィンドウIDを取得
   local wins = vim.api.nvim_tabpage_list_wins(0)
@@ -62,9 +66,12 @@ mapping.setup = function()
   keymap.set({ "i", "c" }, "<C-e>", "<End>", { noremap = true })
 
   --  today date and time
-  keymap.set({ "i" }, "<F6>", [[<C-R>=strftime("%Y/%m/%d")<CR>]], { noremap = true })
-  keymap.set({ "i" }, "<F7>", [[<C-R>=strftime("%Y-%m%d")<CR>]], { noremap = true })
-  keymap.set({ "i" }, "<F8>", [[<C-R>=strftime("%H:%M:%S")<CR>]], { noremap = true })
+  keymap.set({ "i" }, "<F6>", get_date_slash_separated_str, { noremap = true })
+  keymap.set({ "i" }, "<F7>", get_date_hyphen_separated_str, { noremap = true })
+  keymap.set({ "i" }, "<F8>", get_time_coron_separated_str, { noremap = true })
+
+  keymap.set({ "i" }, "<C-;>", get_date_slash_separated_str, { noremap = true })
+  keymap.set({ "i" }, "<C-:>", get_time_coron_separated_str, { noremap = true })
 
   keymap.set({ "i", "c" }, "<S-Tab>", "<C-d>", { noremap = true, buffer = true, silent = true })
 
