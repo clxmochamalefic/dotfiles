@@ -1,7 +1,8 @@
 {
   "guid": "{43801ed6-d115-4ad6-903d-e064aa9215f2}",
   "name": "\u3010RunAs\u3011 cmd",
-  "commandline": "%SystemRoot%\\System32\\cmd.exe",
+  "commandline": "cmd.exe",
+  "icon": "ms-appx:///ProfileIcons/{0caa0dad-35be-5f56-a8ff-afceeeaa6101}.png",
   "elevate": true,
 
   "useAcrylic": false,
