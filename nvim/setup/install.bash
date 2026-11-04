@@ -45,3 +45,6 @@ echo "export LUA_EXE_PATH=$LUA_PATH" >> ~/.bashrc
 
 echo "finished and all correct"
 
+echo ""
+cat "$CURRENT_PATH/message.postinstall.txt"
+echo ""

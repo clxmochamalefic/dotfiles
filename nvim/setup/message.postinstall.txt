@@ -1,0 +1,26 @@
+================================================================================
+||                                ⚠️ WARNING ⚠️                               ||
+================================================================================
+
+this install script DIDNOT install dependencies of runtime
+このインストールスクリプトでは依存関係のインストールは実施されていません
+
+plz install that of below
+以下の依存関係のインストールをお願いします
+
+- deno
+- python3
+- node.js
+- npm
+- tree-sitter
+
+HOW TO INSTALL / インストール方法
+
+plz use below if u using `mise-en-place`
+`mise-en-place` を使用している場合は以下を使用してください
+
+- mise use -g deno@latest
+- mise use -g python@latest
+- mise use -g node@latest
+- mise use -g npm@latest
+- mise use -g tree-sitter@latest
