@@ -3,7 +3,6 @@
 ---@diagnostic disable: unused-local
 
 local myutils = require 'utils'
-local nvim_lsputils = require'plugins.plugin.config.lsp.lsputils'
 
 local g = vim.g
 local o = vim.o
