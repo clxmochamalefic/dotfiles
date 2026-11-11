@@ -11,6 +11,17 @@ function gn()
   neovide ~ 
 }
 
+function unzip($Path)
+{
+    Expand-Archive -Path $Path -DestinationPath .
+}
+
+function gzip($Path)
+{
+    Expand-Archive -Path $Path -DestinationPath .
+}
+
+
 function ssho()
 {
   ssh -o ServerAliveInterval=60 $args 
@@ -54,6 +65,6 @@ function reload()
 
 function su($uname)
 {
-      Start-Process pwsh.exe -Credential $uname
+  Start-Process pwsh.exe -Credential $uname
 }
 

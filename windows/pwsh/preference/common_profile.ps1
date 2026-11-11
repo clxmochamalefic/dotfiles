@@ -4,8 +4,6 @@ Import-Module posh-git
 $pwshconfPath = [System.Environment]::GetEnvironmentVariable('PWSHCONF', 'USER')
 oh-my-posh init pwsh --config "$env:PWSHCONF\mytheme.omp.yaml" | Invoke-Expression
 
-#   TODO: これ本当に必要かチェック
-#   volta completions
 $profilePath = "${HOME}\Documents\PowerShell"
 if (!(Test-Path -Path $profilePath)) {
   mkdir $profilePath
