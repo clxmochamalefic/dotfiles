@@ -195,6 +195,9 @@ function Remove-GitProfile
     if (!($keys -contains 'userProfileName'))
     {
       Write-Error $notfoundUserProfileErrorMessage
+
+      Write-Error '`Get-IniContent` に失敗する場合は以下を実行してください'
+      Write-Error '    Install-Module -Scope CurrentUser PsIni'
       return
     }
 
@@ -245,6 +248,52 @@ function Set-GitLocalUserProfile
     $value = $ini[$userProfileName]
     git config --local user.name $value['name']
     git config --local user.email $value['email']
+  }
+
+  end
+  {
+  }
+}
+
+
+<#
+ # Set-GitLocalIdentityKey
+ # `git config --add --local core.sshCommand "ssh -i <identityKeyPath> -F /dev/null"` to your local repository
+ #
+ # @param [string] $identityKeyPath - identity key path (can use relative)
+#>
+function Set-GitLocalIdentityKey
+{
+  [CmdletBinding(SupportsShouldProcess=$True)]
+  #Param([System.IO.Path]$identityKeyPath)
+  Param([String]$identityKeyPath)
+  begin
+  {
+    if (!$PSCmdlet.ShouldProcess($identityKeyPath))
+    {
+      Write-Output "### set user profile of git LOCAL repository from local user profile dictionary ###"
+      Write-Output "Usage: Set-GitLocalIdentityKey -identityKeyPath <identity key path>"
+      Exit
+    }
+  }
+  process
+  {
+    Write-Output 'BEGIN: Set-GitLocalIdentityKey()'
+    $identityKeyAbsolutePath = Resolve-Path $identityKeyPath
+    $identityKeyAbsolutePath = $identityKeyAbsolutePath.Path.Replace('\', '/')
+    if (!(Test-Path $identityKeyAbsolutePath)) {
+      $notfoundKeyErrorMessage = "user profile: ${identityKeyPath} is not exists"
+      Write-Error $notfoundKeyErrorMessage
+      return
+    }
+
+    $sshCommand = "ssh -i ${identityKeyAbsolutePath} -F /dev/null"
+
+    Write-Output ''
+    Write-Output "execute: git config --add --local core.sshCommand '${sshCommand}'"
+    git config --local core.sshCommand "${sshCommand}"
+    Write-Output 'Done.'
+    Write-Output ''
   }
 
   end
