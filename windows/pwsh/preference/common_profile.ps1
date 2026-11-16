@@ -1,9 +1,8 @@
-# import completions
-#   git
-Import-Module posh-git
+# oh-my-posh preferences
 $pwshconfPath = [System.Environment]::GetEnvironmentVariable('PWSHCONF', 'USER')
 oh-my-posh init pwsh --config "$env:PWSHCONF\mytheme.omp.yaml" | Invoke-Expression
 
+# profile preferences
 $profilePath = "${HOME}\Documents\PowerShell"
 if (!(Test-Path -Path $profilePath)) {
   mkdir $profilePath
@@ -16,8 +15,7 @@ if (!(Test-Path -Path $completionPath)) {
 
 Get-ChildItem $completionPath | ForEach-Object { . $_ }
 
-#   commandline use feel modifing to the bash
-Import-Module PSReadline
+# commandline use feel modifing to the bash
 Set-PSReadLineOption -EditMode Emacs
 # Remove-PSReadLineKeyHandler -Chord Ctrl+J Ctrl+H Ctrl+G
 Remove-PSReadLineKeyHandler -Chord Ctrl+j 
