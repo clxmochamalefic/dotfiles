@@ -12,23 +12,23 @@ ft.tabstop = function()
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     group = augroup,
     pattern = {
-      "*.html",
-      "*.phtml",
-      "*.js",
-      "*.jsx",
-      "*.ts",
-      "*.tsx",
-      "*.css",
-      "*.sass",
-      "*.scss",
-      "*.prisma",
-      "*.vim",
-      "*.yaml",
-      "*.yml",
+      --"*.html",
+      --"*.phtml",
+      --"*.js",
+      --"*.jsx",
+      --"*.ts",
+      --"*.tsx",
+      --"*.css",
+      --"*.sass",
+      --"*.scss",
+      --"*.prisma",
+      --"*.vim",
+      --"*.yaml",
+      --"*.yml",
       "*.toml",
       "*.tml",
       "*.lua",
-      "*.blade.php"
+      --"*.blade.php"
     },
     callback = function ()
       -- do something
@@ -42,7 +42,7 @@ ft.tabstop = function()
     },
     callback = function ()
       -- do something
-      vim.opt.tabstop = 2
+      vim.opt.tabstop = 4
     end
   })
 end
