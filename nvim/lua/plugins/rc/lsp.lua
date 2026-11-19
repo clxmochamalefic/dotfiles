@@ -305,9 +305,29 @@ return {
     },
     dependencies = {
       "kevinhwang91/promise-async",
-      "luukvbaal/statuscol.nvim",
+      {
+        lazy = true,
+        "luukvbaal/statuscol.nvim",
+        opts = function()
+          local builtin = require('statuscol.builtin')
+          return {
+            setopt = true,
+            -- override the default list of segments with:
+            -- number-less fold indicator, then signs, then line number & separator
+            segments = {
+              { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
+              { text = { '%s' }, click = 'v:lua.ScSa' },
+              {
+                text = { builtin.lnumfunc, ' ' },
+                condition = { true, builtin.not_empty },
+                click = 'v:lua.ScLa',
+              },
+            },
+          }
+        end,
+      },
     },
-    config = function()
+    init = function()
       vim.o.foldcolumn = '1' -- '0' is not bad
       --vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
       vim.o.foldlevel = 99
@@ -315,6 +335,8 @@ return {
       --vim.o.foldmethod = "expr"
       vim.o.foldenable = true
       -- vim.o.foldtext = "" -- Optional; for those who dislike the default fold display
+    end,
+    config = function()
       require('ufo').setup({
         provider_selector = function(bufnr, filetype, buftype)
           return {'treesitter', 'indent'}

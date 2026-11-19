@@ -46,6 +46,12 @@ local function paste_from_search_register()
   vim.api.nvim_put({text}, 'c', true, true)
 end
 
+
+mapping.fold = function()
+  keymap.set("n", "H", "<cmd>foldclose<cr>", { noremap = true, silent = true })
+  keymap.set("n", "L", "<cmd>foldopen<cr>", { noremap = true, silent = true })
+end
+
 mapping.setup = function()
   -- ---------------------------------------------------------------------------
   -- input (key_mapping)
@@ -121,6 +127,7 @@ mapping.setup = function()
   -- inoremap {<Enter> {}<Left><CR><BS><ESC><S-o>
   -- inoremap [<Enter> []<Left><CR><BS><ESC><S-o>
   -- inoremap (<Enter> ()<Left><CR><BS><ESC><S-o>
+  mapping.fold()
 end
 
 return mapping
