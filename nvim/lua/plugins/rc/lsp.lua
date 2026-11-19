@@ -297,14 +297,35 @@ return {
   {
     lazy = true,
     "kevinhwang91/nvim-ufo",
+    event = "BufReadPost",
+    keys = {
+      { "zR", function() require("ufo").openAllFolds() end,  { mode = "n", desc = "nvim-ufo: open folds / ALL" } },
+      { "zM", function() require("ufo").closeAllFolds() end, { mode = "n", desc = "nvim-ufo: close folds / ALL" } },
+
+    },
     dependencies = {
       "kevinhwang91/promise-async",
+      "luukvbaal/statuscol.nvim",
     },
+    config = function()
+      vim.o.foldcolumn = '1' -- '0' is not bad
+      --vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      --vim.o.foldmethod = "expr"
+      vim.o.foldenable = true
+      -- vim.o.foldtext = "" -- Optional; for those who dislike the default fold display
+      require('ufo').setup({
+        provider_selector = function(bufnr, filetype, buftype)
+          return {'treesitter', 'indent'}
+        end
+      })
+    end,
   },
   {
     lazy = true,
     'kosayoda/nvim-lightbulb',
-    events = { 'BufRead' },
+    event = { 'BufRead' },
     dependencies = {
       "neovim/nvim-lspconfig",
     },
