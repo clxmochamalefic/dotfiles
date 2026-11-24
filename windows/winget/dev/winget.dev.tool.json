@@ -17,7 +17,7 @@
           "PackageIdentifier": "GitHub.cli"
         },
         {
-          "PackageIdentifier": "dbeaver.dbeaver"
+          "PackageIdentifier": "Microsoft.Coreutils"
         },
         {
           "PackageIdentifier": "MSYS2.MSYS2"
