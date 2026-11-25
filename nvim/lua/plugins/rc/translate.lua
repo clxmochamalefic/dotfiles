@@ -1,17 +1,14 @@
 return {
   {
-    "skanehira/denops-translate.vim",
-    dependencies = {
-      "vim-denops/denops.vim",
-    },
     lazy = true,
+    "voldikss/vim-translator",
     cmd = { "Translate", "TranslatePopup" },
     keys = {
-      { "<leader>t", "<Plug>(Translate)", { mode = "n", noremap = true } },
-      { "<leader>t", "<Plug>(Translate)", { mode = "v", noremap = true } },
+      { "gt", "<Plug>TranslateW", mode = "n", noremap = true },
+      { "gt", "<Plug>TranslateWV", mode = "v", noremap = true },
     },
-    config = function()
-      --vim.keymap.set("", "<leader>q", M.CloseAllFloatingWindows, { noremap = true })
+    init = function()
+      vim.g.translator_target_lang = "ja"
     end,
   },
 }
