@@ -14,18 +14,20 @@ end
 
 function M.setup_clipboard()
   vim.opt.clipboard = "unnamedplus"
-  vim.g.clipboard = {
-    name = "win32yank-wsl",
-    copy = {
-      ["+"] = "win32yank.exe -i",
-      ["*"] = "win32yank.exe -i",
-    },
-    paste = {
-      ["+"] = "win32yank.exe -o",
-      ["*"] = "win32yank.exe -o",
-    },
-    cache_enabled = 1,
-  }
+  if vim.fn.has("wsl") == 1 then
+    vim.g.clipboard = {
+      name = "win32yank-wsl",
+      copy = {
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf",
+      },
+      paste = {
+        ["+"] = "win32yank.exe -o --lf",
+        ["*"] = "win32yank.exe -o --lf",
+      },
+      cache_enabled = 0,
+    }
+  end
 end
 
 return M
