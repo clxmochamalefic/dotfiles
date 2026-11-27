@@ -1,513 +1,320 @@
--- LSP ------------------------------
+-- ---------------------------------------------------------------------------
+-- LSP COMMON PLUGINS
+-- ---------------------------------------------------------------------------
+--
+---@diagnostic disable: undefined-global
 
----@diagnostic disable: unused-local
-
-local myutils = require 'utils'
-
-local g = vim.g
-local o = vim.o
-local fn = vim.fn
-local api = vim.api
-local opt = vim.opt
-local keymap = vim.keymap
-local diagnostic = vim.diagnostic
-
-local lsp = vim.lsp
+local myutils = require("utils")
+local mymason = require("plugins.rc.lsp.mason")
 
 local border = "rounded"
 
-local function on_cursor_hold()
-  if lsp.buf.server_ready() then
-    diagnostic.open_float()
-  end
-end
-
-local diagnostic_hover_augroup_name = "lspconfig-diagnostic"
-
-local icons = {
-  package_installed = "✓",
-  package_uninstalled = "✗",
-  package_pending = "⟳",
-}
-
-local servers = {
-  "tsserver",
-  "denols",
-  "prismals",
-  "omnisharp",
-  "dockerls",
-  "eslint",
-  "jsonls",
-  "intelephense",
-  "powershell_es",
-  "sqlls",
-  "lemminx",
-  "yamlls",
-  "html",
-  "cssls",
-  "marksman",
-  "clangd",
-  "vimls",
-  "lua_ls",
-}
-
-local pattern_opts = {
-  ["tsserver"] = function(lspconfig, opts)
-    local is_node = lspconfig.util.find_node_modules_ancestor
-    --if is_node and (not enabled_vtsls) then
-    --  lspconfig["tsserver"].setup({})
-    --end
-    if is_node then
-      lspconfig["tsserver"].setup({
-        root_dir = lspconfig.util.root_pattern("package.json"),
-      })
-    end
-  end,
-  ["denols"] = function(lspconfig, opts)
-    lspconfig["denols"].setup({
-      root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
-      init_options = {
-        lint = true,
-        unstable = true,
-        suggest = {
-          imports = {
-            hosts = {
-              ["https://deno.land"] = true,
-              ["https://cdn.nest.land"] = true,
-              ["https://crux.land"] = true,
-            },
-          },
-        },
-      },
-    })
-  end,
-}
-
-local function enable_diagnostics_hover()
-  api.nvim_create_augroup(diagnostic_hover_augroup_name, { clear = true })
-  api.nvim_create_autocmd({ "CursorHold" }, { group = diagnostic_hover_augroup_name, callback = on_cursor_hold })
-end
-
-local function disable_diagnostics_hover()
-  api.nvim_clear_autocmds({ group = diagnostic_hover_augroup_name })
-end
-
-local function on_hover()
-  disable_diagnostics_hover()
-
-  lsp.buf.hover()
-
-  api.nvim_create_augroup("lspconfig-enable-diagnostics-hover", { clear = true })
-  -- ウィンドウの切り替えなどのイベントが絡んでくるとおかしくなるかもしれない
-  api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-    group = "lspconfig-enable-diagnostics-hover",
-    callback = function()
-      api.nvim_clear_autocmds({ group = "lspconfig-enable-diagnostics-hover" })
-      enable_diagnostics_hover()
-    end,
+local function openDiagnostics()
+  vim.diagnostic.open_float(nil, {
+    focus = false,
+    border = border,
   })
 end
 
-local formatting_callback = function(client, bufnr)
-  keymap.set("n", "<Leader>f", function()
-    local params = require('vim.lsp.util').make_formatting_params({})
-    client.request("textDocument/formatting", params, nil, bufnr)
-  end, { buffer = bufnr })
+local function openHover()
+  vim.lsp.buf.hover({
+    focus = false,
+    border = border,
+  })
+end
+
+local function text_document_format(diag)
+  -- return string.format("%s (%s: %s)", diag.message, diag.source, diag.code)
+  return string.format("💡(%s)", diag.source)
 end
 
 return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      { "mason-org/mason.nvim",           opts = {} },
+      { "mason-org/mason-lspconfig.nvim", opts = {} },
+      "vim-denops/denops.vim",
       "nvim-lua/plenary.nvim",
       "rcarriga/nvim-notify",
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mfussenegger/nvim-dap",
+    },
+    lazy = true,
+    --lazy = false,
+    event = {
+      "FileReadPre",
+      "BufReadPre",
+      "InsertChange",
     },
     cmd = {
+      "LspStart",
+      "LspRestart",
+      "LspStop",
       "LspInstall",
       "LspUninstall",
       "LspInfo",
+
+      "Mason",
     },
     config = function()
       -- general settings
-      diagnostic.config({
+      vim.diagnostic.config({
         float = {
-          source = "always", -- Or "if_many"
+          source = "if_many", -- Or "if_many"
+          border = border,
         },
       })
-      lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        lsp.diagnostic.on_publish_diagnostics,
-        {
-          virtual_text = {
-            format = function(diagnostic)
-              return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
-            end
-          }
-        }
-      )
-      lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = border,
-        virtual_text = false,
-        focus = false,
-        silent = true,
+      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+        -- virtual_text = false,
+        virtual_text = {
+          format = text_document_format,
+        },
       })
-      lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = border,
-      })
+      vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+        local diag = vim.lsp.diagnostic.get_line_diagnostics()
+        config = config or {}
+        config.focus_id = ctx.method
+        if not (result and result.contents) then
+          -- vim.notify("No information available: result")
+          return
+        end
+        -- myutils.io.echo_table("result.contents", result.contents)
+
+        local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+        markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+
+        local nv = myutils.env.get_nvim_version()
+
+
+        config.border = border
+        config.focus = false
+        config.silent = true
+
+        local cid = ctx.client_id
+        local client = vim.lsp.get_client_by_id(cid)
+        config.title = "hover: " .. client.name
+
+        return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
+      end
+
+      local signatureHelpStack = {}
+      vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
+        local uri = result.uri
+        local bufnr = vim.uri_to_bufnr(uri)
+        if not bufnr then
+          return
+        end
+
+        local diagnostics = result.diagnostics
+        vim.lsp.diagnostic.set(diagnostics, bufnr, ctx.client_id)
+        if not vim.api.nvim_buf_is_loaded(bufnr) then
+          return
+        end
+
+        local cid = ctx.client_id
+        local line = vim.fn["line"](".")
+        local key = bufnr .. "_" .. cid .. "_" .. "l" .. line
+        if myutils.table.is_key_exists(signatureHelpStack, key) then
+          vim.notify("suppress lsp diag: " .. key)
+          return
+        end
+        signatureHelpStack[key] = result
+
+        config.border = border
+        config.focus = false
+        config.silent = true
+
+        local cid = ctx.client_id
+        local client = vim.lsp.get_client_by_id(cid)
+        config.title = "sigHelp: " .. client.name
+
+        vim.lsp.diagnostic.show(diagnostics, bufnr, ctx.client_id, config)
+      end
+
       --        You will likely want to reduce updatetime which affects CursorHold
       --        note: this setting is global and should be set only once
-      o.updatetime = 1000
-      api.nvim_set_option('updatetime', 1000)
+      vim.api.nvim_set_option("updatetime", 1000)
 
-      --vim.api.nvim_create_autocmd("LspAttach", {
-      --  callback = function(args)
-      --    -- ここに `textDocument/hover` で表示させたくないファイルタイプを指定する
-      --    local ft = vim.bo[args.buf].filetype
-      --    if ft == 'NvimTree' or ft == 'NeogitCommitMessage' or ft == 'toggleterm' then
-      --      return
-      --    end
-      --    vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
-      --    vim.cmd [[autocmd CursorHold,CursorHoldI * silent lua vim.lsp.buf.hover()]]
-      --  end,
-      --})
-
-      local capabilities = lsp.protocol.make_client_capabilities()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       }
 
-      require("mason").setup()
-      local lspconfig = require "lspconfig"
-      local malspconfig = require "mason-lspconfig"
+      local lspconfig = require("lspconfig")
+      mymason.setup()
 
-      local on_attach = function(client, bufnr)
-        local async = require("plenary.async")
-        local notify = require("notify").async
-        myutils.io.debug_echo("LSP started" .. client.name)
-        async.run(function()
-          notify("LSP started: " .. client.name).events.close()
-        end)
+      -- TODO: 👇 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
+      local util = require 'lspconfig.util'
+      local server_preferences = {
+        --["astro"] = {},
+        ["cssls"] = {},
+        ["css_variables"] = {},
+        --["cssmodules_ls"] = {},
+        --["denols"] = {
+        --  filetypes = {
+        --    'typescript',
+        --  },
+        --  root_dir = util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json"),
+        --  single_file_support = true,
+        --  settings = {
+        --    deno = {
+        --      enable = true,
+        --      lint = true,
+        --      unstable = true,
+        --      suggest = {
+        --        imports = {
+        --          hosts = {
+        --            ["https://deno.land"] = true,
+        --            ["https://cdn.nest.land"] = true,
+        --            ["https://crux.land"] = true,
+        --          },
+        --        },
+        --      }
+        --    },
+        --  },
+        --},
+        ["docker_compose_language_service"] = {},
+        ["dockerls"] = {},
+        ["html"] = {},
+        ["intelephense"] = {},
+        ["luals"] = {
+          cmd = { 'lua-language-server' },
+          filetypes = { 'lua' },
+          root_markers = {
+            { '.luarc.json', '.luarc.jsonc' },
+            '.git',
+          },
+          Lua = {
+            hint = { enable = true, },
+            completion = { callSnippet = "Replace", },
+            runtime = {
+              version = 'LuaJIT',
+            },
+          },
+        },
+        ["marksman"] = {},
+        --["rust_analyzer"] = {
+        --  root_dir = util.root_pattern('Cargo.toml'),
+        --  filetypes = { "rust" },
+        --  cmd = { "ra-multiplex" },
+        --  settings = {
+        --    ["rust_analyzer"] = {
+        --      lru = {
+        --        Capacity = 64,
+        --      },
+        --      assist = {
+        --        importGranularity = "module",
+        --        importPrefix = "by_crate",
+        --      },
+        --      procMacro = {
+        --        enable = true,
+        --      },
+        --      checkOnSave = {
+        --        command = "clippy",
+        --        allTargets = false,
+        --      },
+        --      cargo = {
+        --        loadOutDirsFromCheck = true,
+        --        -- allFeatures = true,
+        --      },
+        --      completion = {
+        --        autoimport = {
+        --          enable = true,
+        --        },
+        --      },
+        --      diagnostics = {
+        --        disabled = {
+        --          "unresolved-macro-call",
+        --        },
+        --      },
+        --    },
+        --  },
+        --},
+        --["svelte"] = {},
+        ["tailwindcss"] = {},
+        ["ts_ls"] = {
+          root_dir = util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json'),
+          single_file_support = true,
+          settings = {
+            ["ts_ls"] = {
+              filetypes = {
+                'javascript',
+                'javascriptreact',
+                'javascript.jsx',
+                'typescript',
+                'typescriptreact',
+                'typescript.tsx',
+              },
+            },
+            docs = {
+              description = [[https://github.com/typescript-language-server/typescript-language-server]],
+            },
+          },
+        },
+        --["vtsls"] = {},
+        --["vue_ls"] = {},
+      }
+      -- TODO: 👆 ここ外だししたいが、 `lspconfig.util.root_pattern` に依存しているので考えるのがめんどい
 
-        -- auto hover popup for loaded filetypes
-        if client.filetypes then
-          for i, v in ipairs(client.filetypes) do
-            vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ lua vim.diagnostic.open_float(nil, {focus=false})]])
-            vim.cmd([[autocmd CursorHold,CursorHoldI ]] .. v .. [[ silent lua vim.lsp.buf.hover()]])
-          end
-        end
+      local augroup = vim.api.nvim_create_augroup('LspAttach', { clear = true })
+      vim.api.nvim_create_autocmd({ 'LspAttach' }, {
+        group = augroup,
+        callback = function()
+          local bufopts = { silent = true, buffer = bufnr, noremap = true }
+          vim.keymap.set("n", "gk", openHover, bufopts)
+          vim.keymap.set("n", "gj", openDiagnostics, bufopts)
 
+          vim.keymap.set("n", "gn", vim.diagnostic.goto_next, bufopts)
+          vim.keymap.set("n", "gN", vim.diagnostic.goto_prev, bufopts)
 
-        local bufopts = { silent = true, buffer = bufnr }
-        -- keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        -- keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        -- keymap.set('n', 'gx', vim.lsp.buf.type_definition, bufopts)
-        -- keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        -- keymap.set('n', 'gX', vim.lsp.buf.references, bufopts)
-        keymap.set('n', '<F2>', vim.lsp.buf.rename, bufopts)
-        keymap.set('n', '<F3>', function() vim.lsp.buf.format { async = true } end, bufopts)
-      end
-
-      malspconfig.setup({
-        ensure_installed = servers,
-        automatic_installation = true,
-      })
-      malspconfig.setup_handlers({
-        function(server_name)
-          local opts = {
-            on_attach = on_attach,
-            capabilities = capabilities,
-          }
-
-          if myutils.isContainsInArray(pattern_opts, server_name) then
-            pattern_opts[server_name](lspconfig, opts)
-            return
-          else
-            lspconfig[server_name].setup(opts)
-          end
+          vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, bufopts)
+          vim.keymap.set("n", "<F3>", function() vim.lsp.buf.format({ async = true }) end, bufopts)
         end,
       })
 
-      --local augroup_id = api.nvim_create_augroup("my_lspinfo_preference", { clear = true })
-      --api.nvim_create_autocmd("FileType", {
-      --  group = augroup_id,
-      --  pattern = { "lspinfo" },
-      --  callback = function()
-      --    --ddu_ff_my_settings()
-      --  end,
-      --})
-
-      myutils.io.end_debug("ddu ff")
-    end,
-  },
-  {
-    --lazy = true,
-    "williamboman/mason.nvim",
-    dependencies = {
-      "vim-denops/denops.vim",
-      "mfussenegger/nvim-dap",
-    },
-    cmd = {
-      "Mason",
-      "MasonInstall",
-      "MasonUninstall",
-      "MasonUninstallAll",
-      "MasonLog",
-    },
-    opts = {
-      ui = {
-        icons = icons,
-      },
-    },
-    config = function()
-    end,
-  },
-  {
-    --lazy = true,
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = {
-      "vim-denops/denops.vim",
-      "mfussenegger/nvim-dap",
-    },
-    --    opts = function(_, opts)
-    --      if not opts.handlers then
-    --        opts.handlers = {}
-    --      end
-    --      opts.handlers[1] = function(server)
-    --        require("myutils.lsp").setup(server)
-    --      end
-    --    end,
-    config = function()
+      for name, v in pairs(server_preferences) do
+        v.capabilities = capabilities
+        vim.lsp.config(name, v)
+      end
     end,
   },
   -- neodev.nvim ------------------------------
   {
-    'folke/neodev.nvim',
-    config = function()
-      require("neodev").setup({})
-    end
-  },
-  {
-    lazy = true,
-    'mfussenegger/nvim-dap',
-  },
-  {
-    lazy = true,
-    "kevinhwang91/nvim-ufo",
-    event = "BufReadPost",
-    keys = {
-      { "zR", function() require("ufo").openAllFolds() end,  { mode = "n", desc = "nvim-ufo: open folds / ALL" } },
-      { "zM", function() require("ufo").closeAllFolds() end, { mode = "n", desc = "nvim-ufo: close folds / ALL" } },
-
-    },
+    "aznhe21/actions-preview.nvim",
     dependencies = {
-      "kevinhwang91/promise-async",
+      --"kosayoda/nvim-lightbulb",
+      "neovim/nvim-lspconfig",
+    },
+    lazy = true,
+    event = { "LspAttach" },
+    keys = {
       {
-        lazy = true,
-        "luukvbaal/statuscol.nvim",
-        opts = function()
-          local builtin = require('statuscol.builtin')
-          return {
-            setopt = true,
-            -- override the default list of segments with:
-            -- number-less fold indicator, then signs, then line number & separator
-            segments = {
-              { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
-              { text = { '%s' }, click = 'v:lua.ScSa' },
-              {
-                text = { builtin.lnumfunc, ' ' },
-                condition = { true, builtin.not_empty },
-                click = 'v:lua.ScLa',
-              },
-            },
-          }
-        end,
+        "<M-.>",
+        "<Cmd>lua require('actions-preview').code_actions()<CR>",
+        {
+          buffer = bufnr,
+          mode = "n",
+          desc = "LSP: Code action",
+        }
       },
     },
-    init = function()
-      vim.o.foldcolumn = '1' -- '0' is not bad
-      --vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-      vim.o.foldlevel = 99
-      vim.o.foldlevelstart = 99
-      --vim.o.foldmethod = "expr"
-      vim.o.foldenable = true
-      -- vim.o.foldtext = "" -- Optional; for those who dislike the default fold display
-    end,
     config = function()
-      require('ufo').setup({
-        provider_selector = function(bufnr, filetype, buftype)
-          return {'treesitter', 'indent'}
-        end
-      })
+      require("actions-preview").setup({})
     end,
   },
   {
-    lazy = true,
-    'kosayoda/nvim-lightbulb',
-    event = { 'BufRead' },
-    dependencies = {
-      "neovim/nvim-lspconfig",
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      { "<leader>x", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",           desc = "Buffer Diagnostics (Trouble)", },
+      { "<leader>X", "<cmd>Trouble diagnostics toggle<cr>",                        desc = "Diagnostics (Trouble)", },
+      --{ "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",                desc = "Symbols (Trouble)", },
+      --{ "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "LSP Definitions / references / ... (Trouble)", },
+      --{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>",                            desc = "Location List (Trouble)", },
+      --{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",                             desc = "Quickfix List (Trouble)", },
     },
-    config = function()
-      local default_config = {
-        -- Priority of the lightbulb for all handlers except float.
-        priority = 10,
-
-        -- Whether or not to hide the lightbulb when the buffer is not focused.
-        -- Only works if configured during NvimLightbulb.setup
-        hide_in_unfocused_buffer = true,
-
-        -- Whether or not to link the highlight groups automatically.
-        -- Default highlight group links:
-        --   LightBulbSign -> DiagnosticSignInfo
-        --   LightBulbFloatWin -> DiagnosticFloatingInfo
-        --   LightBulbVirtualText -> DiagnosticVirtualTextInfo
-        --   LightBulbNumber -> DiagnosticSignInfo
-        --   LightBulbLine -> CursorLine
-        -- Only works if configured during NvimLightbulb.setup
-        link_highlights = true,
-
-        -- Perform full validation of configuration.
-        -- Available options: "auto", "always", "never"
-        --   "auto" only performs full validation in NvimLightbulb.setup.
-        --   "always" performs full validation in NvimLightbulb.update_lightbulb as well.
-        --   "never" disables config validation.
-        validate_config = "auto",
-
-        -- Code action kinds to observe.
-        -- To match all code actions, set to `nil`.
-        -- Otherwise, set to a table of kinds.
-        -- Example: { "quickfix", "refactor.rewrite" }
-        -- See: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#codeActionKind
-        action_kinds = nil,
-
-        -- Configuration for various handlers:
-        -- 1. Sign column.
-        sign = {
-          enabled = true,
-          -- Text to show in the sign column.
-          -- Must be between 1-2 characters.
-          text = "💡",
-          -- Highlight group to highlight the sign column text.
-          hl = "LightBulbSign",
-        },
-
-        -- 2. Virtual text.
-        virtual_text = {
-          enabled = false,
-          -- Text to show in the virt_text.
-          text = "💡",
-          -- Position of virtual text given to |nvim_buf_set_extmark|.
-          -- Can be a number representing a fixed column (see `virt_text_pos`).
-          -- Can be a string representing a position (see `virt_text_win_col`).
-          pos = "eol",
-          -- Highlight group to highlight the virtual text.
-          hl = "LightBulbVirtualText",
-          -- How to combine other highlights with text highlight.
-          -- See `hl_mode` of |nvim_buf_set_extmark|.
-          hl_mode = "combine",
-        },
-
-        -- 3. Floating window.
-        float = {
-          enabled = false,
-          -- Text to show in the floating window.
-          text = "💡",
-          -- Highlight group to highlight the floating window.
-          hl = "LightBulbFloatWin",
-          -- Window options.
-          -- See |vim.lsp.util.open_floating_preview| and |nvim_open_win|.
-          -- Note that some options may be overridden by |open_floating_preview|.
-          win_opts = {
-            focusable = false,
-          },
-        },
-
-        -- 4. Status text.
-        -- When enabled, will allow using |NvimLightbulb.get_status_text|
-        -- to retrieve the configured text.
-        status_text = {
-          enabled = false,
-          -- Text to set if a lightbulb is available.
-          text = "💡",
-          -- Text to set if a lightbulb is unavailable.
-          text_unavailable = "",
-        },
-
-        -- 5. Number column.
-        number = {
-          enabled = false,
-          -- Highlight group to highlight the number column if there is a lightbulb.
-          hl = "LightBulbNumber",
-        },
-
-        -- 6. Content line.
-        line = {
-          enabled = false,
-          -- Highlight group to highlight the line if there is a lightbulb.
-          hl = "LightBulbLine",
-        },
-
-        -- Autocmd configuration.
-        -- If enabled, automatically defines an autocmd to show the lightbulb.
-        -- If disabled, you will have to manually call |NvimLightbulb.update_lightbulb|.
-        -- Only works if configured during NvimLightbulb.setup
-        autocmd = {
-          -- Whether or not to enable autocmd creation.
-          --enabled = false,
-          enabled = true,
-          -- See |updatetime|.
-          -- Set to a negative value to avoid setting the updatetime.
-          updatetime = 200,
-          -- See |nvim_create_autocmd|.
-          events = { "CursorHold", "CursorHoldI" },
-          -- See |nvim_create_autocmd| and |autocmd-pattern|.
-          pattern = { "*" },
-        },
-
-        -- Scenarios to not show a lightbulb.
-        ignore = {
-          -- LSP client names to ignore.
-          -- Example: {"null-ls", "lua_ls"}
-          clients = {},
-          -- Filetypes to ignore.
-          -- Example: {"neo-tree", "lua"}
-          ft = {},
-          -- Ignore code actions without a `kind` like refactor.rewrite, quickfix.
-          actions_without_kind = false,
-        },
-      }
-      require("nvim-lightbulb").setup(default_config)
-
-    end
-  },
-  {
-    lazy = true,
-    "aznhe21/actions-preview.nvim",
-    event = { 'LspAttach' },
-    dependencies = {
-      'kosayoda/nvim-lightbulb',
-      "neovim/nvim-lspconfig",
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("LspAttach", {
-        desc = "Setup code action preview",
-        callback = function(args)
-          local bufnr = args.buf
-
-          vim.keymap.set("n", "<leader><space>", function()
-            require("actions-preview").code_actions()
-          end, { buffer = bufnr, desc = "LSP: Code action" })
-        end,
-      })
-    end,
-    config = function()
-      require("actions-preview").setup {}
-    end,
   },
 }
-
-
