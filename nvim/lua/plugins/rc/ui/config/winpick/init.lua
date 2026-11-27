@@ -2,9 +2,6 @@
 --  WINPICK CONFIG
 -- ---------------------------------------------------------------------------
 
-local api = vim.api
-local opt = vim.opt
-
 local try_catch = require("utils.try_catch")
 local wndutil = require("utils.window")
 
@@ -21,11 +18,11 @@ local excluded_filetypes = {
 }
 local excluded_buftypes = {
   --"",
-  --"NvimTree",
+  "NvimTree",
   "NeogitCommitMessage",
   --"toggleterm",
   "gitrebase",
-  --"nofile",
+  "nofile",
   "notify",
   --"noice",
 }
@@ -111,7 +108,7 @@ M.setup = function()
   M.winpick = require("winpick")
   M.winpick.setup(M.opts)
 
-  api.nvim_create_user_command("WinPick", M.choose_for_focus, {})
+  vim.api.nvim_create_user_command("WinPick", M.choose_for_focus, {})
   --vim.keymap.set("n", "-", M.choose_for_focus)
 end
 
